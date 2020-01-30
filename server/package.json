@@ -1,0 +1,12 @@
+{
+    "name": "schedule-me-up",
+    "version": "0.1.0",
+    "scripts": {},
+    "description": "",
+    "main": "server.js",
+    "author": "Group 2",
+    "dependencies": {
+      "express": "^4.16.2"
+    }
+  }
+  
