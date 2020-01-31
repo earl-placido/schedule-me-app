@@ -11,7 +11,7 @@
     "containerDefinitions": [
         {
             "name": "server",
-            "image": "node:0.12",
+            "image": "node",
             "essential": true,
             "memory": 128,
             "portMappings": [

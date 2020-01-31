@@ -2,12 +2,21 @@
   "name": "schedule-me-up",
   "version": "0.1.0",
   "scripts": {
-    "dev": "node server.js"
+    "dev": "nodemon server.js",
+    "db:init": "node db/util/init_db.js"
   },
   "description": "",
   "main": "server.js",
   "author": "Group 2",
   "dependencies": {
-    "express": "^4.16.2"
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.16.2",
+    "mysql": "^2.18.1",
+    "promise-mysql": "^4.1.2",
+    "require-sql": "^1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
   }
 }
