@@ -1,0 +1,35 @@
+{
+    "AWSEBDockerrunVersion": 2,
+    "volumes": [
+        {
+            "name": "server",
+            "host": {
+                "sourcePath": "/var/app/current/server"
+            }
+        }
+    ],
+    "containerDefinitions": [
+        {
+            "name": "server",
+            "image": "node:0.12",
+            "essential": true,
+            "memory": 128,
+            "portMappings": [
+                {
+                    "hostPort": 80,
+                    "containerPort": 8000
+                }
+            ],
+            "command": [
+                "/bin/bash",
+                "/usr/src/app/run.sh"
+            ],
+            "mountPoints": [
+                {
+                    "sourceVolume": "server",
+                    "containerPath": "/usr/src/app"
+                }
+            ]
+        } 
+    ]
+  }
