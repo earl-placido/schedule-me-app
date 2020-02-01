@@ -96,12 +96,6 @@ To get into our docker container virtual environment, run:
 docker exec -it web /bin/sh
 ```
 
-replace $(YOUR CONTAINER ID) with your docker instance which can be found through:
-
-```
-docker ps 
-```
-
 Once you get access into the docker container, you can install the node dependencies for the web project.
 
 
