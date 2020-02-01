@@ -12,7 +12,8 @@ matrix:
       - (cd client/web && docker-compose up -d --build)
       script:
         - docker exec $(docker ps -q) /bin/sh -c "npm run test:ci"
-        - docker exec $(docker ps -q) /bin/sh -c "npm run build"
+        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build"
+        i if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build_dev"
       after_script:
       - docker-compose down      
       deploy:
