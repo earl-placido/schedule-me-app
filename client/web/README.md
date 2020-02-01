@@ -59,7 +59,7 @@ The -d argument is to detach the running docker container, so we can write more 
 calling this docker-compose up is similar to calling:
 
 ```
-docker run docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm web_web_app_scheduler
+docker run docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --name web --rm web_web_app_scheduler
 ```
 
 the -v argument mounts the current working directory to a location in docker. For this example: ```${PWD}:/app``` , we are mounting our current working directory (project web root) to /app location in docker.
@@ -67,6 +67,8 @@ The other -v argument does not have ```:```, this means that it is creating a na
 <b> We will always have to ensure that we are installing package dependencies inside our docker image instead of our own computer </b>
 
 the -p exposes ports to the host. For this example, we are exposing ports 3001 and 3000 to our host so we can access the web browser to visualize the changes we made to the app inside the docker.
+
+--name assigns a name to the docker that you ran so that when we do ```docker exec ``` we can point it to the container name instead of the id. For instance ```docker exec -it CONTAINER_ID``` instead of CONTAINER_ID we can use the container_name assigned ```docker exec -it web ``` for this use case.
 
 --rm removes the container after the container exits
 
@@ -91,7 +93,7 @@ NOTE: Always make sure to install dependencies inside your docker container as w
 To get into our docker container virtual environment, run:
 
 ```
-docker exec -it $(YOUR CONTAINER ID) /bin/sh
+docker exec -it web /bin/sh
 ```
 
 replace $(YOUR CONTAINER ID) with your docker instance which can be found through:
