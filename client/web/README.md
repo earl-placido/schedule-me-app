@@ -7,6 +7,8 @@ A great image explanation between the comparison of VM and docker:
 
 
 # Getting Started
+Docker is required before setting up the project. You can get docker from https://www.docker.com/ .
+
 When you are first running this web app, you have to build the docker image for your own computer first. In order to build the docker image first, we would need a Dockerfile. A docker-compose.yml has already been created so that we could just run the docker-compose to build our docker images. In order to build our docker image using docker-compose we can run:
 
 ```
