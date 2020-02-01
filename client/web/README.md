@@ -7,3 +7,75 @@ A great image explanation between the comparison of VM and docker:
 
 
 # Getting Started
+When you are first running this web app, you have to build the docker image for your own computer first. In order to build the docker image first, we would need a Dockerfile. A docker-compose.yml has already been created so that we could just run the docker-compose to build our docker images. In order to build our docker image using docker-compose we can run:
+
+```
+docker-compose up
+```
+
+You should see <b>Compiled successfully! </b> in your command prompt.
+
+You can also run your docker compose using this code:
+```
+docker-compose up -d
+```
+
+The -d argument is to detach the running docker container, so we can write more commands in our current terminal session.
+
+> In our docker-compose.yml we can see:
+> 
+> ```
+> version: '3.7'
+>   
+> services:
+> 
+> 
+>   web_app_scheduler:
+> 
+>     container_name: web
+> 
+>     build:
+> 
+>       context: .
+> 
+>       dockerfile: Dockerfile
+> 
+>     volumes:
+> 
+>       - '.:/app'
+> 
+>       - '/app/node_modules'
+> 
+>     ports:
+> 
+>       - '3001:3000'
+> 
+>     environment:
+> 
+>       - NODE_ENV=development
+> 
+> ```
+
+calling this docker-compose up is similar to calling:
+
+```
+docker run docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm web_web_app_scheduler
+```
+
+the -v argument mounts the current working directory to a location in docker. For this example: ```${PWD}:/app``` , we are mounting our current working directory (project web root) to /app location in docker.
+The other -v argument does not have ```:```, this means that it is creating a named volume in docker with that directory that is passed into the argument. This means that we do not want docker to delete this directory when docker exits. 
+<b> We will always have to ensure that we are installing package dependencies inside our docker image instead of our own computer </b>
+
+the -p exposes ports to the host. For this example, we are exposing ports 3001 and 3000 to our host so we can access the web browser to visualize the changes we made to the app inside the docker.
+
+--rm removes the container after the container exits
+
+# Running project
+In order to run our project, run the code:
+
+```
+docker-compose up -d
+```
+
+Once it is successful, you should be able to see your web app through ```localhost:3001```.
+
