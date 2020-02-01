@@ -1,10 +1,10 @@
 const mysql = require("promise-mysql");
 
 const MYSQLDB = {
-  host: process.env.DB_HOST,
+  host: process.env.RDS_HOSTNAME || process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME
+  database: process.env.RDS_DB_NAME || process.env.DB_NAME,
 };
 
 function insertData(id, data) {

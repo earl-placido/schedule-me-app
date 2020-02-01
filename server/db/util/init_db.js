@@ -6,19 +6,22 @@ const mysql = require('promise-mysql');
 const schemaFile = require('../schema.sql');
 
 const DB_VARIABLES = {
-    host: process.env.DB_HOST,
+    host: process.env.RDS_HOSTNAME || process.env.DB_HOST,
+    port: process.env.RDS_PORT || process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    rootUser: process.env.MYSQL_ROOT_USER,
-    rootPassword: process.env.MYSQL_ROOT_PASSWORD
+    database: process.env.RDS_DB_NAME || process.env.DB_NAME,
+    rootUser: process.env.RDS_USERNAME || process.env.MYSQL_ROOT_USER,
+    rootPassword: process.env.RDS_PASSWORD || process.env.MYSQL_ROOT_PASSWORD
 }
+
 console.log(DB_VARIABLES);
 
 console.log('Initializing Database');
 
 mysql.createConnection({
     host: DB_VARIABLES.host,
+    port: DB_VARIABLES.port,
     user: DB_VARIABLES.rootUser,
     password: DB_VARIABLES.rootPassword
 }).then(conn => {
@@ -30,6 +33,7 @@ mysql.createConnection({
     console.log(`Created database ${DB_VARIABLES.database}`);
     return mysql.createConnection({
         host: DB_VARIABLES.host,
+        port: DB_VARIABLES.port,
         user: DB_VARIABLES.rootUser,
         password: DB_VARIABLES.rootPassword,
         database: DB_VARIABLES.database,
@@ -37,11 +41,14 @@ mysql.createConnection({
     });
 }).then(conn => {
     console.log(`Connected to database ${DB_VARIABLES.database}`);
-    let response = conn.query(`
-        CREATE USER IF NOT EXISTS ??@${mysql.escapeId(DB_VARIABLES.host, true)} IDENTIFIED BY ?;
-        GRANT ALL ON *.* TO ??@${mysql.escapeId(DB_VARIABLES.host, true)};
+    // GRANT ALL PRIVILEGES doesn't work so I just listened all of them except SUPER
+    const query = mysql.format(`
+        CREATE USER IF NOT EXISTS ??@'%' IDENTIFIED BY ?;
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, RELOAD, PROCESS, REFERENCES, INDEX, ALTER, SHOW DATABASES, CREATE TEMPORARY TABLES, LOCK TABLES, EXECUTE, REPLICATION SLAVE, REPLICATION CLIENT, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, CREATE USER, EVENT, TRIGGER ON *.* TO ??@'%';
         flush privileges;
     `, [DB_VARIABLES.user, DB_VARIABLES.password, DB_VARIABLES.user] );
+
+    let response = conn.query(query);
     conn.end();
     return response;
 })
@@ -49,6 +56,7 @@ mysql.createConnection({
     console.log(`Created user: ${DB_VARIABLES.user}`);
     return mysql.createConnection({
         host: DB_VARIABLES.host,
+        port: DB_VARIABLES.port,
         user: DB_VARIABLES.user,
         password: DB_VARIABLES.password,
         database: DB_VARIABLES.database,

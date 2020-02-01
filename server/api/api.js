@@ -9,4 +9,6 @@ const example = require('./routes/exampleRouter');
 // Attach routes
 router.use('/example', example);
 
+
+
 module.exports = router;
