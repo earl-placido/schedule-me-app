@@ -71,6 +71,7 @@ the -p exposes ports to the host. For this example, we are exposing ports 3001 a
 --rm removes the container after the container exits
 
 # Running project
+
 In order to run our project, run the code:
 
 ```
@@ -78,4 +79,27 @@ docker-compose up -d
 ```
 
 Once it is successful, you should be able to see your web app through ```localhost:3001```.
+
+Editing any files in src folder will do a hot-reload.
+
+hot-reload means that any changes made to the source code will get updated instantly to the web app. You will see the updates instantly in your web browser.
+
+# Installing dependencies
+
+NOTE: Always make sure to install dependencies inside your docker container as we created a named volume for node_modules folder.
+
+To get into our docker container virtual environment, run:
+
+```
+docker exec -it $(YOUR CONTAINER ID) /bin/sh
+```
+
+replace $(YOUR CONTAINER ID) with your docker instance which can be found through:
+
+```
+docker ps 
+```
+
+Once you get access into the docker container, you can install the node dependencies for the web project.
+
 
