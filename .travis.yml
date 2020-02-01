@@ -20,13 +20,13 @@ matrix:
         - provider: surge
           skip_cleanup: true
           domain: schedule-me-up_dev.surge.sh
-          project: ./build/
+          project: ./client/web/build/
           on:
             branch: dev
         - provider: surge
           skip_cleanup: true
           domain: schedule-me-up.surge.sh
-          project: ./build/
+          project: ./client/web/build/
           on:
             branch: master
 #    - language: android
