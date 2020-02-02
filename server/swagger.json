@@ -1,0 +1,72 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "schedule-me-up API",
+      "description": "API description for schedule-me-up",
+      "version": "1.0.0"
+    },
+    "host": "schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/",
+    "basePath": "",
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "paths": {
+      "/example/{id}": {
+        "get": {
+          "summary": "Get data based on id",
+          "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+          ],
+          "description": "Returns data based on its id",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "post": {
+          "summary": "Add/update data for certain ID",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of pet that needs to be updated",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            },
+            {
+              "name": "data",
+              "in": "formData",
+              "description": "Data",
+              "required": true,
+              "type": "string"
+            }
+          ],
+          "responses": {
+            "405": {
+              "description": "Invalid input"
+            }
+          }
+        }
+      }
+    }
+  }
