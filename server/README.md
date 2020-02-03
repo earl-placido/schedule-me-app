@@ -4,8 +4,8 @@
 
 | Environment | URL                                                          |
 | ----------- | ------------------------------------------------------------ |
-| Production  | [schedule-me-up-prod.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1](http://schedule-me-up-prod.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1) |
-| Develop     | [schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1](http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1) |
+| [Production](http://schedule-me-up-prod.aufeskudeq.us-east-2.elasticbeanstalk.com/api/)  | [schedule-me-up-prod.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1](http://schedule-me-up-prod.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1) |
+| [Develop](http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/)     | [schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1](http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1) |
 
 ---
 
