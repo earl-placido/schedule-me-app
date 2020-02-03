@@ -58,11 +58,15 @@ The -d argument is to detach the running docker container, so we can write more 
 > 
 > ```
 
-calling this docker-compose up is similar to calling:
+calling docker-compose up will execute docker run command with the configuration specified in the docker-compose.yml.
+
+calling this docker-compose up is similar to running this script:
 
 ```
 docker run docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --name web --rm web_web_app_scheduler
 ```
+
+we can just run docker-compose up instead of docker run as docker-compose up is a simplified version with specified configuration as docker run.
 
 the -v argument mounts the current working directory to a location in docker. For this example: ```${PWD}:/app``` , we are mounting our current working directory (project web root) to /app location in docker.
 The other -v argument does not have ```:```, this means that it is creating a named volume in docker with that directory that is passed into the argument. This means that we do not want docker to delete this directory when docker exits. 
