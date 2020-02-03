@@ -6,13 +6,13 @@ const mysql = require('promise-mysql');
 const schemaFile = require('../schema.sql');
 
 const DB_VARIABLES = {
-    host: process.env.RDS_HOSTNAME || process.env.DB_HOST,
-    port: process.env.RDS_PORT || process.env.DB_PORT,
+    host: process.env.RDS_HOSTNAME,
+    port: process.env.RDS_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.RDS_DB_NAME || process.env.DB_NAME,
-    rootUser: process.env.RDS_USERNAME || process.env.MYSQL_ROOT_USER,
-    rootPassword: process.env.RDS_PASSWORD || process.env.MYSQL_ROOT_PASSWORD
+    database: process.env.RDS_DB_NAME,
+    rootUser: process.env.RDS_USERNAME,
+    rootPassword: process.env.RDS_PASSWORD
 }
 
 console.log(DB_VARIABLES);
