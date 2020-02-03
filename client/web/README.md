@@ -58,7 +58,9 @@ The -d argument is to detach the running docker container, so we can write more 
 > 
 > ```
 
-calling docker-compose up will execute docker run command with the configuration specified in the docker-compose.yml.
+calling docker-compose up will run docker with the configuration specified in the docker-compose.yml.
+
+---
 
 calling this docker-compose up is similar to running this script:
 
