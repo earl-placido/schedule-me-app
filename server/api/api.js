@@ -3,10 +3,12 @@ const router = express.Router();
 
 
 // API endpoints
-const example = require('./routes/exampleRouter');
+const auth = require('./routes/auth');
+const example = require('./routes/exampleRouter');  
 
 
 // Attach routes
+router.use('/', auth);
 router.use('/example', example);
 
 

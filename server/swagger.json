@@ -5,7 +5,7 @@
       "description": "API description for schedule-me-up",
       "version": "1.0.0"
     },
-    "host": "schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/",
+    "host": "schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1",
     "basePath": "",
     "schemes": [
       "http",
@@ -48,7 +48,7 @@
             {
               "name": "id",
               "in": "path",
-              "description": "ID of pet that needs to be updated",
+              "description": "ID of data that needs to be inserted/updated",
               "required": true,
               "type": "integer",
               "format": "int64"

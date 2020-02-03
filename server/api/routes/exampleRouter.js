@@ -1,10 +1,10 @@
-
 const express = require('express');
-const exampleRouter = express.Router();
 const responses = require('../util/responses');
-const exampleController = require('../controller/exampleController');
+const router = express.Router();
 
-exampleRouter.get('/:id', (req, res, next) => {
+const exampleController = require('../model/exampleModel');
+
+router.get('/:id', (req, res, next) => {
     const { id } = req.params;
     
     return exampleController.getData(id)
@@ -12,7 +12,7 @@ exampleRouter.get('/:id', (req, res, next) => {
         .catch(next);
 });
 
-exampleRouter.post('/:id', (req, res, next) => {
+router.post('/:id', (req, res, next) => {
     const { id } = req.params;
     const data = req.body.data;
     
@@ -21,4 +21,4 @@ exampleRouter.post('/:id', (req, res, next) => {
         .catch(next);
 });
 
-module.exports = exampleRouter;
+module.exports = router;
