@@ -13,7 +13,7 @@ matrix:
       script:
         - docker exec $(docker ps -q) /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build"
-        i if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build_dev"
+        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build_dev"
       after_script:
       - docker-compose down      
       deploy:
