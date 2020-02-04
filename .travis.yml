@@ -8,12 +8,20 @@ matrix:
       cache:
         directories:
           - ./client/web/node_modules
+          - ./server/node_modules
       before_install:
-        - (cd client/web && travis_wait docker-compose up -d)
+      - (cd client/web && docker-compose up -d --build)
+      before_script:
+        - cd server
+        - npm install
+        - npm run db:dev
       script:
-        - docker exec web /bin/sh -c "npm run test:ci"
-        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
-        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
+        - docker exec $(docker ps -q) /bin/sh -c "npm run test:ci"
+        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build"
+        i if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec $(docker ps -q) /bin/sh -c "npm run build_dev"
+      script:
+        - cd server
+        - npm test
       after_script:
       - docker-compose down      
       deploy:
@@ -29,6 +37,28 @@ matrix:
           project: ./client/web/build/
           on:
             branch: master
+        - provider: elasticbeanstalk
+            access_key_id:
+              secure: $EBS_ACCESS_KEY
+            secret_access_key:
+              secure: $EBS_ACCESS_KEY
+            region: "us-east-2"
+            app: "schedule-me-up"
+            env: "schedule-me-up-dev"
+            bucket_name: "elasticbeanstalk-us-east-2-508404004676"
+            on:
+              branch: dev
+        - provider: elasticbeanstalk
+            access_key_id:
+              secure: $EBS_ACCESS_KEY
+            secret_access_key:
+              secure: '$EBS_SECRET_KEY'
+            region: "us-east-2"
+            app: "schedule-me-up"
+            env: "schedule-me-up-prod"
+            bucket_name: "elasticbeanstalk-us-east-2-508404004676"
+            on:
+              branch: master
 #    - language: android
 #      dist: trusty
 #      android:
