@@ -11,7 +11,7 @@ matrix:
           - ./client/web/node_modules
           - ./server/node_modules
       before_install:
-      - (cd client/web && docker-compose up -d --build)
+      - (cd client/web && docker-compose up -d)
       before_script:
         - cd server
         - npm install
@@ -19,8 +19,8 @@ matrix:
       script:
         - npm test
         - docker exec web /bin/sh -c "npm run test:ci"
-        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build"
-        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"
+        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
+        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
       after_script:
         - docker-compose down      
       deploy:
