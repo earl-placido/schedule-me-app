@@ -15,10 +15,7 @@ const DB_VARIABLES = {
     rootPassword: process.env.RDS_PASSWORD
 }
 
-console.log(DB_VARIABLES);
-
 console.log('Initializing Database');
-
 mysql.createConnection({
     host: DB_VARIABLES.host,
     port: DB_VARIABLES.port,
