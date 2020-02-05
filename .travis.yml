@@ -9,7 +9,7 @@ matrix:
         directories:
           - ./client/web/node_modules
       before_install:
-      - (cd client/web && docker-compose up -d)
+      - travis_wait (cd client/web && docker-compose up -d)
       script:
         - docker exec web /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
