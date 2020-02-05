@@ -22,7 +22,7 @@ matrix:
           domain: schedule-me-up_dev.surge.sh
           project: ./client/web/build/
           on:
-            branch: dev
+            branch: develop
         - provider: surge
           skip_cleanup: true
           domain: schedule-me-up.surge.sh
