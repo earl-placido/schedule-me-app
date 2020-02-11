@@ -7,9 +7,7 @@ import "antd/dist/antd.css";
 const { Header, Content, Footer } = Layout;
 
 export default class App extends Component {
-    useEffect= () => {
-        document.title = "new title"
-     };
+
 
     render() {
         return (
