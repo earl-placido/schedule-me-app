@@ -58,12 +58,12 @@ DROP TABLE IF EXISTS `OptimalAvailability`;
 CREATE TABLE `OptimalAvailability`
 (
   OptimalAvailabilityId INT NOT NULL AUTO_INCREMENT,
-  GroupMembershipId INT NOT NULL,
+  GroupId INT NOT NULL,
   StartTime DATETIME NOT NULL,
   EndTime DATETIME NOT NULL,
   LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (OptimalAvailabilityId),
-  CONSTRAINT FK_OptimalAvailability_GroupMembershipId FOREIGN KEY (GroupMembershipId) REFERENCES `GroupMemberships`(GroupMembershipId)
+  CONSTRAINT FK_OptimalAvailability_GroupId FOREIGN KEY (GroupId) REFERENCES `Groups`(GroupId)
 );
 
 SET FOREIGN_KEY_CHECKS=1;
