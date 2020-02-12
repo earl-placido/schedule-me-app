@@ -39,16 +39,16 @@ CREATE TABLE `GroupMembers`
   GroupId INT NOT NULL,
   UserId INT NULL,
   MemberRole NVARCHAR(2) NULL,
-  PRIMARY KEY (GroupMembershipId),
-  CONSTRAINT FK_GroupMemberships_GroupId FOREIGN KEY (GroupId) REFERENCES `Groups`(GroupId),
-  CONSTRAINT FK_GroupMemberships_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
+  PRIMARY KEY (GroupMembersId),
+  CONSTRAINT FK_GroupMembers_GroupId FOREIGN KEY (GroupId) REFERENCES `Groups`(GroupId),
+  CONSTRAINT FK_GroupMembers_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
 );
 
 DROP TABLE IF EXISTS `Availability`;
 CREATE TABLE `Availability`
 (
   AvailabilityId INT NOT NULL AUTO_INCREMENT,
-  GroupMembershipId INT NOT NULL,
+  GroupMembersId INT NOT NULL,
   StartTime DATETIME NOT NULL,
   EndTime DATETIME NOT NULL, 
   PRIMARY KEY (AvailabilityId),
