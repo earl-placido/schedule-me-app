@@ -43,15 +43,15 @@ CREATE TABLE `GroupMemberships`
   CONSTRAINT FK_GroupMemberships_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
 );
 
-DROP TABLE IF EXISTS `MemberAvailability`;
-CREATE TABLE `MemberAvailability`
+DROP TABLE IF EXISTS `UserAvailability`;
+CREATE TABLE `UserAvailability`
 (
-  MemberAvailabilityId INT NOT NULL AUTO_INCREMENT,
-  GroupMembershipId INT NOT NULL,
+  UserAvailabilityId INT NOT NULL AUTO_INCREMENT,
+  UserId INT NOT NULL,
   StartTime DATETIME NOT NULL,
   EndTime DATETIME NOT NULL, 
-  PRIMARY KEY (MemberAvailabilityId),
-  CONSTRAINT FK_MemberAvailability_GroupMembershipId FOREIGN KEY (GroupMembershipId) REFERENCES `GroupMemberships`(GroupMembershipId)
+  PRIMARY KEY (UserAvailabilityId),
+  CONSTRAINT FK_UserAvailability_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
 );
 
 DROP TABLE IF EXISTS `OptimalAvailability`;
