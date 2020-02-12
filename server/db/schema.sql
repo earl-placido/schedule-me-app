@@ -32,26 +32,27 @@ CREATE TABLE `Groups`
   CONSTRAINT FK_Groups_UserId FOREIGN KEY (GroupOwnerId) REFERENCES `Users`(UserId)
 );
 
-DROP TABLE IF EXISTS `GroupMemberships`;
-CREATE TABLE `GroupMemberships`
+DROP TABLE IF EXISTS `GroupMembers`;
+CREATE TABLE `GroupMembers`
 (
-  GroupMembershipId INT NOT NULL AUTO_INCREMENT,
+  GroupMembersId INT NOT NULL AUTO_INCREMENT,
   GroupId INT NOT NULL,
-  UserId INT NOT NULL,
+  UserId INT NULL,
+  MemberRole NVARCHAR(2) NULL,
   PRIMARY KEY (GroupMembershipId),
   CONSTRAINT FK_GroupMemberships_GroupId FOREIGN KEY (GroupId) REFERENCES `Groups`(GroupId),
   CONSTRAINT FK_GroupMemberships_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
 );
 
-DROP TABLE IF EXISTS `UserAvailability`;
-CREATE TABLE `UserAvailability`
+DROP TABLE IF EXISTS `Availability`;
+CREATE TABLE `Availability`
 (
-  UserAvailabilityId INT NOT NULL AUTO_INCREMENT,
-  UserId INT NOT NULL,
+  AvailabilityId INT NOT NULL AUTO_INCREMENT,
+  GroupMembershipId INT NOT NULL,
   StartTime DATETIME NOT NULL,
   EndTime DATETIME NOT NULL, 
-  PRIMARY KEY (UserAvailabilityId),
-  CONSTRAINT FK_UserAvailability_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
+  PRIMARY KEY (AvailabilityId),
+  CONSTRAINT FK_Availability_GroupMembersId FOREIGN KEY (GroupMembersId) REFERENCES `GroupMembers`(GroupMembersId)
 );
 
 DROP TABLE IF EXISTS `OptimalAvailability`;
