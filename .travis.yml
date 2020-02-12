@@ -5,17 +5,24 @@ matrix:
         - "stable"
       services:
         - docker
+        - mysql
       cache:
         directories:
           - ./client/web/node_modules
+          - ./server/node_modules
       before_install:
         - (cd client/web && travis_wait docker-compose up -d)
+      before_script:
+        - cd server
+        - npm install
+        - npm run db:init
       script:
+        - npm test
         - docker exec web /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
         - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
       after_script:
-      - docker-compose down      
+        - docker-compose down      
       deploy:
         - provider: surge
           skip_cleanup: true
@@ -27,6 +34,28 @@ matrix:
           skip_cleanup: true
           domain: schedule-me-up.surge.sh
           project: ./client/web/build/
+          on:
+            branch: master
+        - provider: elasticbeanstalk
+          access_key_id:
+            secure: $EBS_ACCESS_KEY
+          secret_access_key:
+            secure: '$EBS_SECRET_KEY'
+          region: "us-east-2"
+          app: "schedule-me-up"
+          env: "schedule-me-up-dev"
+          bucket_name: "elasticbeanstalk-us-east-2-508404004676"
+          on:
+            branch: develop
+        - provider: elasticbeanstalk
+          access_key_id:
+            secure: $EBS_ACCESS_KEY
+          secret_access_key:
+            secure: '$EBS_SECRET_KEY'
+          region: "us-east-2"
+          app: "schedule-me-up"
+          env: "schedule-me-up-prod"
+          bucket_name: "elasticbeanstalk-us-east-2-508404004676"
           on:
             branch: master
 #    - language: android
