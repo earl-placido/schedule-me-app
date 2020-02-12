@@ -18,6 +18,7 @@ matrix:
         - npm run db:init
       script:
         - npm test
+        - docker exec web /bin/sh -c "eslint src"
         - docker exec web /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
         - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
