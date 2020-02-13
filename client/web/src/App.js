@@ -8,12 +8,13 @@ const { Header, Content, Footer } = Layout;
 
 export default class App extends Component {
 
-
     render() {
+        const { headerStyle, contentStyle, containerStyle, footerStyle } = styles
+
         return (
             <div className="App">
                 <Layout>
-                    <Header style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+                    <Header style={ headerStyle }>
                         <div className="logo" />
                         <Menu
                             theme="dark"
@@ -21,21 +22,44 @@ export default class App extends Component {
                             defaultSelectedKeys={['1']}
                             style={{ lineHeight: '64px' }}
                         >
-                            <Menu.Item key="1">Groups</Menu.Item>
-                            <Menu.Item key="2">nav 2</Menu.Item>
-                            <Menu.Item key="3">nav 3</Menu.Item>
+                            
                         </Menu>
                     </Header>
 
-                    <Content style={{ padding: '0 50px', marginTop: 64 }}>
-                        <div style={{ background: '#fff', padding: 24, minHeight: 500, marginTop: 20}}>
+                    <Content style={ contentStyle }>
+                        <div style={ containerStyle }>
                             <CreateGroup/>
                         </div>
                     </Content>
 
-                    <Footer style={{ textAlign: 'center' }}>schedule-me-up</Footer>
+                    <Footer style={ footerStyle }>schedule-me-up</Footer>
                 </Layout>
             </div>
         )
     };
 }
+
+const styles = {
+    headerStyle : {
+        position: 'fixed', 
+        zIndex: 1, 
+        width: '100%' 
+    },
+
+    contentStyle : {
+        padding: '0 50px', 
+        marginTop: 64 
+    },
+
+    containerStyle :{
+        background: '#fff', 
+        padding: 24, 
+        minHeight: 500, 
+        marginTop: 20
+    },
+
+    footerStyle : {
+        textAlign: 'center' 
+    }
+}
+

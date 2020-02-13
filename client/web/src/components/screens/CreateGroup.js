@@ -8,22 +8,23 @@ export default class CreateGroup extends Component {
 
     render() {
         const { Step } = Steps;
+        const { containerStyle, cardStyle, buttonContainerStyle } = styles;
 
         return (
             <div >
                 <Row style={{ padding: 50 }}>
                     <Col span={16} offset={4}>
-                        <Steps size="small" current={0}>
-                            <Step title="Group Information" />
-                            <Step title="Meeting Information" />
+                        <Steps current={0}>
+                            <Step title="Group" />
+                            <Step title="Meeting" />
                             <Step title="Share" />
                         </Steps>
 
                     </Col>
                 </Row>
 
-                <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <Card style={{ width: 800 }}>
+                <div style={ containerStyle }>
+                    <Card style={ cardStyle }>
                         <Row>
                             <Col span={20} offset={2}>
                                 <GroupInfoForm />
@@ -31,10 +32,15 @@ export default class CreateGroup extends Component {
                         </Row>
 
                         <Row>
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                <Button type="primary">
+                            <div style={ buttonContainerStyle }>
+                                <Button disabled> 
+                                    <Icon type="left" />
+                                    Previous
+                                </Button>
+
+                                <Button type="primary"> 
                                     Continue
-                        <Icon type="right" />
+                                    <Icon type="right" />
                                 </Button>
                             </div>
 
@@ -45,4 +51,20 @@ export default class CreateGroup extends Component {
             </div >
         )
     };
+}
+
+const styles = {
+    containerStyle : {
+        display: 'flex', 
+        justifyContent: 'center' 
+    },
+
+    cardStyle : {
+        width: 800
+    },
+
+    buttonContainerStyle : {
+        display: 'flex', 
+        justifyContent: 'space-between'
+    }
 }
