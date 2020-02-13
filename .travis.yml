@@ -22,6 +22,7 @@ matrix:
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
         - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
       after_script:
+        - cd client/web
         - docker-compose down      
       deploy:
         - provider: surge
@@ -45,6 +46,7 @@ matrix:
           app: "schedule-me-up"
           env: "schedule-me-up-dev"
           bucket_name: "elasticbeanstalk-us-east-2-508404004676"
+          skip_cleanup: true
           on:
             branch: develop
         - provider: elasticbeanstalk
@@ -56,6 +58,7 @@ matrix:
           app: "schedule-me-up"
           env: "schedule-me-up-prod"
           bucket_name: "elasticbeanstalk-us-east-2-508404004676"
+          skip_cleanup: true
           on:
             branch: master
 #    - language: android
