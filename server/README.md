@@ -8,7 +8,13 @@
 | [Develop](http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/)     | [schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1](http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1) |
 
 ---
+## Server Architecture
+The server will handle all of the functionality that relates to persistence, such as database queries as well as communication between the application's business layer and the database. Within the **api** folder are three main folders:
+* **routes** - Contains all routes/endpoints required for the application to access the server side
+* **model** - Contains all the logic required to make calls to the database
+* **util** - Contains all the logic that might be utilized between files in the server
 
+Tests for the database can be created within the **tests** folder. There should be **one test file per corresponding file in model**. 
 
 ## How to run
 1. Create an `.env` file inside `/server`:
