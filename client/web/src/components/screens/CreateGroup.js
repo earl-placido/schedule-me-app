@@ -50,7 +50,7 @@ export default class CreateGroup extends Component {
                 </div>
             </div >
         )
-    };
+    }
 }
 
 const styles = {
