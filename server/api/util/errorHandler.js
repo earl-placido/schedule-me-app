@@ -8,9 +8,9 @@ function unauthorized(req, res, next) {
     return;
 }
 
-function notFound(req, res, next) {
+function notFound(req, res, message) {
     res.status(responses.NOT_FOUND);
-    res.send({ error: 'Not found.' });
+    res.send({ error: message });
     return;
 };
 

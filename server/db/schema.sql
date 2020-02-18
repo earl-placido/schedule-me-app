@@ -24,7 +24,6 @@ CREATE TABLE `Groups`
   GroupDescription NVARCHAR(200) NULL,
   GroupOwnerId INT NOT NULL,
   LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  ShareableURL NVARCHAR(10) NOT NULL,
   MeetingDuration TIME NULL,
   MeetingFrequency NVARCHAR(2) NULL,
   MeetingLocation NVARCHAR(100) NULL,
@@ -40,8 +39,8 @@ CREATE TABLE `GroupMembers`
   UserId INT NULL,
   MemberRole NVARCHAR(2) NULL,
   PRIMARY KEY (GroupMembersId),
-  CONSTRAINT FK_GroupMembers_GroupId FOREIGN KEY (GroupId) REFERENCES `Groups`(GroupId),
-  CONSTRAINT FK_GroupMembers_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId)
+  CONSTRAINT FK_GroupMembers_GroupId FOREIGN KEY (GroupId) REFERENCES `Groups`(GroupId) ON DELETE CASCADE,
+  CONSTRAINT FK_GroupMembers_UserId FOREIGN KEY (UserId) REFERENCES `Users`(UserId) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS `Availability`;
@@ -68,3 +67,5 @@ CREATE TABLE `OptimalAvailability`
 );
 
 SET FOREIGN_KEY_CHECKS=1;
+
+INSERT INTO `Users` (`UserName`) VALUES ('TestUser');

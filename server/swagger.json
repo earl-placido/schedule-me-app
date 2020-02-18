@@ -5,7 +5,7 @@
       "description": "API description for schedule-me-up",
       "version": "1.0.0"
     },
-    "host": "schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/api/v1",
+    "host": "localhost:8000/api/v1",
     "basePath": "",
     "schemes": [
       "http",
@@ -14,6 +14,9 @@
     "paths": {
       "/example/{id}": {
         "get": {
+          "tags": [
+            "example"
+          ],
           "summary": "Get data based on id",
           "parameters": [
               {
@@ -36,6 +39,9 @@
           }
         },
         "post": {
+          "tags":[
+            "example"
+          ],
           "summary": "Add/update data for certain ID",
           "description": "",
           "consumes": [
@@ -64,6 +70,126 @@
           "responses": {
             "405": {
               "description": "Invalid input"
+            }
+          }
+        }
+      },
+      "/groups/": {
+        "get": {
+          "tags": [
+            "Groups"
+          ],
+          "summary": "Get all groups",
+          "description": "Get all groups from userId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "post": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Add a new group",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupName",
+              "in": "formData",
+              "type":"string",
+              "description": "Name of group",
+              "required": true
+            },
+            {
+              "name": "groupDesc",
+              "type": "string",
+              "in": "formData",
+              "description": "Description of group"
+            },
+            {
+              "name": "meetingDuration",
+              "type": "string",
+              "in": "formData",
+              "description": "Duration of meeting"
+            },
+            {
+              "name": "meetingFrequency",
+              "type": "string",
+              "in": "formData",
+              "description": "Frequency of meetings"
+            },
+            {
+              "name": "meetingLocation",
+              "type": "string",
+              "in": "formData",
+              "description": "Location of meetings"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Returns the group id of newly created group"
+            }
+          }
+        }
+      },
+      "/groups/{groupId}": {
+        "get": {
+          "tags": [
+            "Groups"
+          ],
+          "summary": "Get group information from groupId",
+          "parameters": [
+              {
+                "name": "groupId",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+          ],
+          "description": "Get group information from groupId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "delete": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Delete a group with a certain groupId",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "description": "groupId of group to be deleted",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Group deleted"
             }
           }
         }
