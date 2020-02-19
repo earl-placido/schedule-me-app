@@ -5,8 +5,7 @@
       "description": "API description for schedule-me-up",
       "version": "1.0.0"
     },
-    "host": "localhost:8000/api/v1",
-    "basePath": "",
+    "basePath": "/api/v1",
     "schemes": [
       "http",
       "https"

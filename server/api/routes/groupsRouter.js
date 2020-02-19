@@ -8,8 +8,7 @@ const groupsModel = require('../model/groupsModel');
 // Create a new group
 router.post('/', (req, res, next) => {
     const newGroup = req.body;
-    const groupOwnerId = 1; // temporary for now, will get this with auth once it is setup
-    let newGroupId = -1;
+    const groupOwnerId = 1; // temporary for now, will update this with auth once it is setup
 
     if (!newGroup.groupName) {
         errorHandler.notFound(req, res, `groupName is required.`);
@@ -24,10 +23,9 @@ router.post('/', (req, res, next) => {
                 newGroup.meetingFrequency, 
                 newGroup.meetingLocation)
             .then((result) => {
-                newGroupId = result;
+                let newGroupId = result;
                 return groupsModel.newMember(newGroupId, groupOwnerId, 'AD')
                     .then((result) => {
-                        console.log(result);
                         res.status(responses.CREATED).json({groupId: newGroupId})
                     });
             }).catch(next); // returns the id of the created group
@@ -36,7 +34,7 @@ router.post('/', (req, res, next) => {
 
 // Get all groups
 router.get('/', (req, res, next) => {
-    const userId = 1; // temporary for now, will get this with auth once it is setup
+    const userId = 1; // temporary for now, will update this with auth once it is setup
     if (!userId) {
         errorHandler.notFound(req, res, `userId is required.`);
     }
