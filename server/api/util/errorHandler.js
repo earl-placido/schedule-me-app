@@ -1,6 +1,6 @@
 const responses = require('./responses');
 
-function unauthorized(req, res, next) {
+function unauthorized(req, res) {
     res.status(responses.UNAUTHORIZED).json({
         status: responses.UNAUTHORIZED,
         err: 'Authentication failed.'
@@ -8,19 +8,19 @@ function unauthorized(req, res, next) {
     return;
 }
 
-function notFound(req, res, next) {
+function notFound(req, res) {
     res.status(responses.NOT_FOUND);
     res.send({ error: 'Not found.' });
     return;
-};
+}
 
-function serverError(err, req, res, next) {
+function serverError(err, req, res) {
     res.status(err.status || responses.SERVER_ERROR);
     res.send({ error: err.message });
     return;
-};
+}
 
-function noTokenProvided(req, res, next) {
+function noTokenProvided(req, res) {
     res.status(responses.FORBIDDEN).json({
       status: responses.FORBIDDEN,
       err: 'No token provided.'
