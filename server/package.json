@@ -4,11 +4,18 @@
   "scripts": {
     "dev": "nodemon server.js",
     "test": "node db/util/init_db.js & jest -i",
-    "db:init": "node db/util/init_db.js"
+    "db:init": "node db/util/init_db.js",
+    "precommit": "lint-staged"
   },
   "description": "",
   "main": "server.js",
   "author": "Group 2",
+  "lint-staged": {
+    "**/*.{js,jsx,json,scss}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
@@ -25,6 +32,9 @@
     "swagger-ui-express": "^4.1.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.2"
+    "eslint": "^6.8.0",
+    "lint-staged": "^10.0.7",
+    "nodemon": "^2.0.2",
+    "prettier": "^1.19.1"
   }
 }

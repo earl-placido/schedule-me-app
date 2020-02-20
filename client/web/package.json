@@ -17,10 +17,17 @@
     "test": "react-scripts test",
     "test:ci": "CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "deploy_dev": "surge --domain schedule-me-up_dev.surge.sh build"
+    "deploy_dev": "surge --domain schedule-me-up_dev.surge.sh build",
+    "precommit": "lint-staged"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json,scss}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "browserslist": {
     "production": [
@@ -38,6 +45,7 @@
     "eslint": "^6.8.0",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-react": "^7.18.3"
+    "eslint-plugin-react": "^7.18.3",
+    "prettier": "^1.19.1"
   }
 }
