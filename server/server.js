@@ -1,62 +1,51 @@
 require('dotenv').config();
-const express = require('express');
-const bodyParser = require('body-parser');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
-const passport = require('passport');
-const cookieParser = require('cookie-parser');
-const cookieSession = require('cookie-session');
 
-const api = require('./api/api.js');
-const googleAuth = require('./auth/googleAuth.js');
-const errorHandler = require('./api/util/errorHandler.js');
+// import node modules
+const express = require('express');
+const http = require('http');
+const passport = require('passport');
+const session = require('express-session');
+const cors = require('cors');
+const socketio = require('socket.io');
+const swaggerUi = require('swagger-ui-express');
+
+// json for defining our Swagger page
+const swaggerDocument = require('./swagger.json');
+
+// import server code & configs
+const api = require('./api/api');
+const errorHandler = require('./api/util/errorHandler');
+const passportInit = require('./api/util/passportInit');
 
 const app = express();
-const port = process.env.SERVER_PORT || 8000;
+const server = http.createServer(app);
+const io = socketio(server);
 
-app.use(bodyParser.urlencoded({ extended: false}));
-app.use(bodyParser.json());
-
-googleAuth(passport);
+app.use(express.json());
 app.use(passport.initialize());
-    
-app.get('/', (req, res) => {
-    if (req.session.token) {
-        res.cookie('token', req.session.token);
-        res.json({
-            status: 'session cookie set'
-        });
-    } else {
-        res.cookie('token', '')
-        res.json({
-            status: 'session cookie not set'
-        });
-    }
-});
+passportInit(passport);
 
-app.get('/auth/google', passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/userinfo.profile']
+app.use(cors({
+  origin: process.env.SERVER_ENV === 'production' 
+    ? 'https://schedule-me-up.surge.sh/' : process.env.SERVER_ENV === 'develop' 
+    ? 'https://schedule-me-up_dev.surge.sh/' : 'http://localhost:3000/'
 }));
 
-app.get('/auth/google/callback',
-    passport.authenticate('google', {failureRedirect:'/'}),
-    (req, res) => {
-        req.session.token = req.user.token;
-        res.redirect('/');
-    }
-);
+app.use(session({ 
+  secret: process.env.SESSION_SECRET, 
+  resave: true, 
+  saveUninitialized: true 
+}));
 
-app.get('/logout', (req, res) => {
-    req.logout();
-    req.session = null;
-    res.redirect('/');
-});
+app.set('io', io);
 
-app.use('/api/v1', api);
 app.use('/api', swaggerUi.serve);
 app.get('/api', swaggerUi.setup(swaggerDocument));
 
+app.use('/api/v1', api);
 app.use(errorHandler.notFound);
 app.use(errorHandler.serverError);
 
-app.listen(port, () => console.log(`schedule-me-up has started on port: ${port}`));
+server.listen(process.env.SERVER_PORT || 8000, () => {
+    console.log(`schedule-me-up has started on port: ${process.env.SERVER_PORT || 8000}`)
+});
