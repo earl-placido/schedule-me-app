@@ -18,6 +18,7 @@ matrix:
         - (cd client/mobile && npm install)
       script:
         - (cd server && npm test && npx eslint ./)
+        - (cd client/mobile && npm run test:ci && npm run lint)
         - docker exec web /bin/sh -c "eslint src"
         - docker exec web /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
