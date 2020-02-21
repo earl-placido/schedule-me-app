@@ -14,18 +14,15 @@ matrix:
         - (cd client/web && travis_wait docker-compose up -d)
         - docker exec web /bin/sh -c "npm install"
       before_script:
-        - cd server
-        - npm install
-        - npm run db:init
+        - (cd server && npm install)
       script:
-        - npm test
+        - (cd server && npm test && npx eslint ./)
         - docker exec web /bin/sh -c "eslint src"
         - docker exec web /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
         - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
       after_script:
-        - cd client/web
-        - docker-compose down      
+        - (cd client/web && travis_wait docker-compose down)      
       deploy:
         - provider: surge
           skip_cleanup: true
