@@ -29,11 +29,10 @@ CREATE TABLE `Group`
   GroupOwnerId INT NOT NULL,
   LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   ShareableURL NVARCHAR(10) NOT NULL,
-  MeetingDuration TIME NULL,
-  MeetingFrequency NVARCHAR(2) NULL,
-  MeetingLocation NVARCHAR(100) NULL,
+  MeetingId INT NOT NULL,
   PRIMARY KEY (GroupId, GroupOwnerId),
-  CONSTRAINT FK_Group_UserId FOREIGN KEY (GroupOwnerId) REFERENCES `User`(UserId)
+  CONSTRAINT FK_Group_UserId FOREIGN KEY (GroupOwnerId) REFERENCES `User`(UserId),
+  CONSTRAINT FK_Group_MeetingId FOREIGN KEY (MeetingId) REFERENCES `Meeting`(MeetingId)
 );
 
 DROP TABLE IF EXISTS `GroupMember`;
@@ -75,8 +74,10 @@ DROP TABLE IF EXISTS `Meeting`;
 CREATE TABLE `Meeting`
 (
   MeetingId INT NOT NULL AUTO_INCREMENT,
+  MeetingDuration TIME NULL,
+  MeetingFrequency NVARCHAR(2) NULL,
+  MeetingLocation NVARCHAR(100) NULL,
   LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  Duration TIME NULL,
   PRIMARY KEY (MeetingId)
 );
 
