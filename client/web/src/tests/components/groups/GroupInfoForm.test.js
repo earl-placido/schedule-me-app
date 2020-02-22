@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import App from './App';
+import GroupInfoForm from '../../../components/groups/GroupInfoForm';
 
 test('Renders', () => {
-  render(<App />);
+  render(<GroupInfoForm />);
 });
