@@ -1,7 +1,25 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import CreateGroup from '../../components/screens/CreateGroup';
+import {Provider} from 'react-redux';
+import Adapter from 'enzyme-adapter-react-16';
+import {shallow, configure} from 'enzyme';
+import configureStore from 'redux-mock-store';
 
-test('Renders', () => {
-  render(<CreateGroup />);
+import CreateGroup from '../../components/screens/CreateGroup/CreateGroup';
+
+configure({adapter: new Adapter()});
+
+describe('CreateGroup', () => {
+  const initialState = {groupName: 'groupName', groupDescription: 'groupDescription', success: true, currentPage: 0};
+  const mockStore = configureStore();
+  let store, container;
+
+  beforeEach(() => {
+    store = mockStore(initialState);
+    container = shallow(<Provider store={store}><CreateGroup /></Provider>);
+  });
+
+  it('should render CreateGroup', () => {
+    expect(container.length).toEqual(1);
+  });
+  
 });
