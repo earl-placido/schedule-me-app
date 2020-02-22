@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import { Steps, Row, Col, Card, Button, Icon } from 'antd';
-import GroupInfoForm from '../groups/GroupInfoForm'
+import { connect } from 'react-redux';
+
+import GroupInfoForm from '../../groups/GroupInfoForm';
+import {updateGroupName, updateGroupDescription, handleSubmit} from './duck';
 import "antd/dist/antd.css";
 
 
-export default class CreateGroup extends Component {
+class CreateGroup extends Component {
+
+    finalizeGroup() {
+        this.props.handleSubmit(this.props.groupName);
+    }
 
     render() {
         const { Step } = Steps;
@@ -25,9 +32,13 @@ export default class CreateGroup extends Component {
 
                 <div style={ containerStyle }>
                     <Card style={ cardStyle }>
+                    
                         <Row>
                             <Col span={20} offset={2}>
-                                <GroupInfoForm />
+                                <GroupInfoForm 
+                                handleGroupName={this.props.updateGroupName} 
+                                handleGroupDescription={this.props.updateGroupDescription} 
+                                success={this.props.success}/>
                             </Col>
                         </Row>
 
@@ -38,7 +49,7 @@ export default class CreateGroup extends Component {
                                     Previous
                                 </Button>
 
-                                <Button type="primary"> 
+                                <Button type="primary" onClick={this.finalizeGroup.bind(this)}> 
                                     Continue
                                     <Icon type="right" />
                                 </Button>
@@ -68,3 +79,10 @@ const styles = {
         justifyContent: 'space-between'
     }
 }
+
+const mapStateToProps = ({ CreateGroupReducer }) => {
+    const { groupName, groupDescription, success } = CreateGroupReducer;
+    return {groupName, groupDescription, success};
+};
+
+export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, handleSubmit})(CreateGroup);
