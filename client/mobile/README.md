@@ -13,4 +13,4 @@
 3. `cd scheduler-app/client/mobile`
 4. `npm install`
 5. Install pods in the ios folder: `cd ios && pod install`
-5. Run the following command in the mobile folder: `react-native run-android`
+5. Run the following command in the mobile folder: `react-native run-ios`
