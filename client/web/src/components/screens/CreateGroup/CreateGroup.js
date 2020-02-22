@@ -3,14 +3,41 @@ import { Steps, Row, Col, Card, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 
 import GroupInfoForm from '../../groups/GroupInfoForm';
-import {updateGroupName, updateGroupDescription, handleSubmit} from './duck';
+import GroupMeetingForm from '../../groups/GroupMeetingForm';
+import {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage} from './duck';
 import "antd/dist/antd.css";
 
 
 class CreateGroup extends Component {
 
-    finalizeGroup() {
-        this.props.handleSubmit(this.props.groupName);
+    goPreviousPage() {
+        this.props.goPreviousPage(this.props.currentPage);
+    }
+
+    goNextPage() {
+        this.props.goNextPage(this.props.groupName, this.props.currentPage);
+    }
+
+    groupComponents() {
+
+        switch(this.props.currentPage) {
+            case(0): { // create group info
+                return (<GroupInfoForm 
+                    handleGroupName={this.props.updateGroupName} 
+                    handleGroupDescription={this.props.updateGroupDescription} 
+                    success={this.props.success}/>);
+            }
+            case(1): { // meeting
+                return <GroupMeetingForm/>
+            }
+            case(2): { // share
+
+            }
+            default: {
+                return null;
+            }
+        }
+ 
     }
 
     render() {
@@ -19,9 +46,10 @@ class CreateGroup extends Component {
 
         return (
             <div >
+            
                 <Row style={{ padding: 50 }}>
                     <Col span={16} offset={4}>
-                        <Steps current={0}>
+                        <Steps current={this.props.currentPage}>
                             <Step title="Group" />
                             <Step title="Meeting" />
                             <Step title="Share" />
@@ -35,21 +63,18 @@ class CreateGroup extends Component {
                     
                         <Row>
                             <Col span={20} offset={2}>
-                                <GroupInfoForm 
-                                handleGroupName={this.props.updateGroupName} 
-                                handleGroupDescription={this.props.updateGroupDescription} 
-                                success={this.props.success}/>
+                                {this.groupComponents()}
                             </Col>
                         </Row>
 
                         <Row>
                             <div style={ buttonContainerStyle }>
-                                <Button disabled> 
+                                <Button disabled={this.props.currentPage === 0} onClick={this.goPreviousPage.bind(this)}> 
                                     <Icon type="left" />
                                     Previous
                                 </Button>
 
-                                <Button type="primary" onClick={this.finalizeGroup.bind(this)}> 
+                                <Button type="primary" onClick={this.goNextPage.bind(this)}> 
                                     Continue
                                     <Icon type="right" />
                                 </Button>
@@ -81,8 +106,8 @@ const styles = {
 }
 
 const mapStateToProps = ({ CreateGroupReducer }) => {
-    const { groupName, groupDescription, success } = CreateGroupReducer;
-    return {groupName, groupDescription, success};
+    const { groupName, groupDescription, success, currentPage } = CreateGroupReducer;
+    return {groupName, groupDescription, success, currentPage};
 };
 
-export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, handleSubmit})(CreateGroup);
+export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage})(CreateGroup);

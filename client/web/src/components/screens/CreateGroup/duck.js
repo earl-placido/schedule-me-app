@@ -1,6 +1,7 @@
 const UPDATE_GROUP_NAME = 'update_group_name';
 const UPDATE_GROUP_DESCRIPTION = 'update_group_description';
-const SUBMIT_NEW_GROUP = 'submit_new_group';
+const GO_NEXT_PAGE = 'go_next_page';
+const GO_PREVIOUS_PAGE = 'go_previous_page';
 
 export const updateGroupName = (groupName) => {
     return {
@@ -17,14 +18,25 @@ export const updateGroupDescription = (groupDescription) => {
 };
 
 // return true if success, false if fail
-export const handleSubmit = (groupName) => {
-    if (groupName.length == 0) 
-        return {type: SUBMIT_NEW_GROUP, payload: false};
+export const goNextPage = (groupName, currentPage) => {
+    if (groupName.length === 0) 
+        return {type: GO_NEXT_PAGE, payload: {success: true, currentPage: currentPage+1}};
     else
-        return {type: SUBMIT_NEW_GROUP, payload: true};
+        return {type: GO_NEXT_PAGE, payload: true};
 };
 
-const INITIAL_STATE = {groupName: '', groupDescription: '', success: true};
+export const goPreviousPage = (currentPage) => {
+    let newPage = currentPage;
+    if (currentPage > 0) 
+        newPage = currentPage - 1;
+
+    return {
+        type: GO_PREVIOUS_PAGE, 
+        payload: newPage
+    };
+};
+
+const INITIAL_STATE = {groupName: '', groupDescription: '', success: true, currentPage: 0};
 
 export default(state=INITIAL_STATE, action) => {
     switch(action.type) {
@@ -34,8 +46,11 @@ export default(state=INITIAL_STATE, action) => {
         case (UPDATE_GROUP_DESCRIPTION): {
             return {...state, groupDescription: action.payload};
         }
-        case (SUBMIT_NEW_GROUP): {
-            return {...state, success: action.payload};
+        case (GO_NEXT_PAGE): {
+            return {...state, ...action.payload};
+        }
+        case (GO_PREVIOUS_PAGE): {
+            return {...state, currentPage: action.payload};
         }
         default: {
             return INITIAL_STATE;

@@ -8,7 +8,7 @@ const { TextArea } = Input;
 export default class GroupInfoForm extends Component{
     render(){
 
-        const {errorInput, errorText } = styles;
+        const { errorText } = styles;
 
         return(
             <Form onSubmit={this.handleSubmit} className="login-form">
@@ -41,8 +41,5 @@ const styles = {
         fontSize: 12,
         color: 'red',
         marginLeft: 10
-    },
-    errorInput: {
-        borderColor: 'red'
     }
 };

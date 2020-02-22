@@ -13,7 +13,7 @@ export default class App extends Component {
         const { headerStyle, contentStyle, containerStyle, footerStyle } = styles
 
         return (
-            <Router className="App">
+            <Router>
                 <Layout>
                     <Header style={ headerStyle }>
                         <div className="logo" />
