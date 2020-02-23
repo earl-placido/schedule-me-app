@@ -3,49 +3,46 @@ require('dotenv').config();
 // import node modules
 const express = require('express');
 const http = require('http');
-const passport = require('passport');
-const session = require('express-session');
 const cors = require('cors');
-const socketio = require('socket.io');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const swaggerUi = require('swagger-ui-express');
+const expressServerUtils = require('express-server-utils');
 
 // json for defining our Swagger page
 const swaggerDocument = require('./swagger.json');
 
 // import server code & configs
 const api = require('./api/api');
-const errorHandler = require('./api/util/errorHandler');
-const passportInit = require('./api/util/passportInit');
 
-const app = express();
-const server = http.createServer(app);
-const io = socketio(server);
+const app = initApp();
+initServer(app, process.env.SERVER_PORT || 8000);
 
-app.use(express.json());
-app.use(passport.initialize());
-passportInit(passport);
+function initApp() {
+  let app = express();
 
-app.use(cors({
-  origin: process.env.SERVER_ENV === 'production' 
-    ? 'https://schedule-me-up.surge.sh/' : process.env.SERVER_ENV === 'develop' 
-    ? 'https://schedule-me-up_dev.surge.sh/' : 'http://localhost:3000/'
-}));
+  app.use(cors({
+    origin: true,
+    methods: 'GET, HEAD, PUT, PATCH, POST, DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+  }));
 
-app.use(session({ 
-  secret: process.env.SESSION_SECRET, 
-  resave: true, 
-  saveUninitialized: true 
-}));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
 
-app.set('io', io);
+  app.use('/api', swaggerUi.serve);
+  app.get('/api', swaggerUi.setup(swaggerDocument));
+  app.use('/api/v1', api);
 
-app.use('/api', swaggerUi.serve);
-app.get('/api', swaggerUi.setup(swaggerDocument));
+  return app;
+}
 
-app.use('/api/v1', api);
-app.use(errorHandler.notFound);
-app.use(errorHandler.serverError);
+function initServer(app, port) {
+  let server = expressServerUtils(http.createServer(app), port);
 
-server.listen(process.env.SERVER_PORT || 8000, () => {
-    console.log(`schedule-me-up has started on port: ${process.env.SERVER_PORT || 8000}`)
-});
+  server.listen();
+  server.handleOnError();
+  server.handleOnListening();
+}

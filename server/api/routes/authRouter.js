@@ -1,23 +1,30 @@
 const express = require('express');
-const router = express.Router();
 const passport = require('passport');
+const tokenHelper = require('../util/tokenHelper');
+const userModel = require('../model/userModel');
 
-const googleAuth = passport.authenticate('google', { scope: ['profile'] });
+const router = express.Router();
+require('../util/passportInit')(passport);
 
-const addSocketIdtoSession = (req, res, next) => {
-  req.session.socketId = req.query.socketId;
-  next();
-};
+router.route('/auth/google')
+    .post(passport.authenticate('google-token', {session: false}), (req, res, next) => {
+        if (!req.user) {
+            return res.send(401, 'User Not Authenticated');
+        }
+        console.log(`${req.user.displayName} ${req.user.emails[0].value}\n`);
 
-router.get('/google', addSocketIdtoSession, googleAuth);
+        userModel.getUser(req.user.emails[0].value).then(user => {
+            console.log(user);
+            if(user) {
+                userModel.newUser(req.user.displayName, req.user.emails[0].value);
+            }
 
-router.get('/google/callback', googleAuth, (req) => {
-  const io = req.app.get('io');
-  const user = { 
-    name: req.user.displayName,
-    photo: req.user.photos[0].value.replace(/sz=50/gi, 'sz=250')
-  };
-  io.in(req.session.socketId).emit('google', user);
-});
+            req.auth = {
+                id: req.user.id
+            };
+
+            next();
+        });
+    }, tokenHelper.createToken, tokenHelper.sendToken);
 
 module.exports = router;

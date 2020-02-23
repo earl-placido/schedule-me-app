@@ -1,30 +1,19 @@
 require('dotenv').config();
-const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+const GoogleTokenStrategy = require('passport-google-token').Strategy;
+const passport = require('passport');
 
 const GOOGLE_CONFIG = {
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.SERVER_ENV === 'production' 
-    ? 'https://schedule-me-up.surge.sh/' : process.env.SERVER_ENV === 'develop' 
-    ? 'https://schedule-me-up_dev.surge.sh/' : 'https://tolocalhost.com/api'
+  callbackURL: process.env.CALLBACK_URL
 }
 
-module.exports = (passport) => {
-    passport.serializeUser((user, done) => {
-        done(null, user);
-    });
-    passport.deserializeUser((user, done) => {
-        done(null, user);
-    });
-    passport.use(new GoogleStrategy({
+module.exports = () => {
+    passport.use(new GoogleTokenStrategy({
             clientID: GOOGLE_CONFIG.clientID,
-            clientSecret: GOOGLE_CONFIG.clientSecret,
-            callbackURL: GOOGLE_CONFIG.callbackURL
+            clientSecret: GOOGLE_CONFIG.clientSecret
         },
         (token, refreshToken, profile, done) => {
-            return done(null, {
-                profile: profile,
-                token: token
-            });
+            return done(null, profile);
         }));
 };
