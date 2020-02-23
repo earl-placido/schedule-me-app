@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import GroupInfoForm from '../../groups/GroupInfoForm';
 import GroupMeetingForm from '../../groups/GroupMeetingForm';
-import {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage} from './duck';
+import {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
 import "antd/dist/antd.css";
 
 
@@ -25,6 +25,8 @@ class CreateGroup extends Component {
                 return (<GroupInfoForm 
                     handleGroupName={this.props.updateGroupName} 
                     handleGroupDescription={this.props.updateGroupDescription} 
+                    groupName={this.props.groupName}
+                    groupDescription={this.props.groupDescription}
                     success={this.props.success}/>);
             }
             case(1): { // meeting
@@ -74,7 +76,7 @@ class CreateGroup extends Component {
                                     Previous
                                 </Button>
 
-                                <Button type="primary" onClick={this.goNextPage.bind(this)}> 
+                                <Button id="nextButton" type="primary" onClick={this.goNextPage.bind(this)}> 
                                     Continue
                                     <Icon type="right" />
                                 </Button>

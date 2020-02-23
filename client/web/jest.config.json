@@ -2,5 +2,6 @@
     "testRegex": "((\\.|/*.)(test))\\.js?$",
     "moduleNameMapper": {
       "^.+\\.(css|less)$": "<rootDir>/config/CSSStub.js"
-    }
+    },
+    "verbose": false
   }

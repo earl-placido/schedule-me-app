@@ -19,10 +19,10 @@ export const updateGroupDescription = (groupDescription) => {
 
 // return true if success, false if fail
 export const goNextPage = (groupName, currentPage) => {
-    if (groupName.length === 0) 
-        return {type: GO_NEXT_PAGE, payload: {success: true, currentPage: currentPage+1}};
+    if (groupName.length === 0)  // must have a value for group name
+        return {type: GO_NEXT_PAGE, payload: {success: false}};
     else
-        return {type: GO_NEXT_PAGE, payload: true};
+        return {type: GO_NEXT_PAGE, payload: {success: true, currentPage: currentPage+1 }};
 };
 
 export const goPreviousPage = (currentPage) => {
