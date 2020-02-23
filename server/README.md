@@ -39,8 +39,8 @@ Tests for the database can be created within the **tests** folder. There should 
         DB_PASSWORD=password
 
         ### Auth Config
-        GOOGLE_CLIENT_ID=
-        GOOGLE_CLIENT_SECRET=
+        GOOGLE_CLIENT_ID=<Client ID from Google API>
+        GOOGLE_CLIENT_SECRET=<Client SECRET from Google API>
         CALLBACK_URL=http://localhost:3000/api/v1/auth/google/callback
         SECRET_KEY=schedule-me-up-super-secret-key
         ```

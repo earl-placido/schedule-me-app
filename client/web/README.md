@@ -85,7 +85,14 @@ the -p exposes ports to the host. For this example, we are exposing ports 3001 a
 
 # Running project
 
-In order to run our project, run the code:
+In order to run our project, first create a `.env` file within the `client/web/` and must contain:
+
+```
+REACT_APP_SERVER_ENDPOINT=http://localhost:8000
+REACT_APP_GOOGLE_CLIENT_ID=<Client ID from Google API>
+```
+
+Then run the code:
 
 ```
 docker-compose up -d

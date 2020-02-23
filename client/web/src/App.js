@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Layout, Menu } from 'antd';
-import CreateGroup from './components/screens/CreateGroup'
+import CreateGroup from './components/screens/CreateGroup';
+import LoginGoogle from './components/login/LoginGoogle';
 import "antd/dist/antd.css";
 
 const { Header, Content, Footer } = Layout;
@@ -21,9 +22,10 @@ export default class App extends Component {
                             mode="horizontal"
                             defaultSelectedKeys={['1']}
                             style={{ lineHeight: '64px' }}
-                        >
-                            
+                        >   
                         </Menu>
+                        
+                        <LoginGoogle/>
                     </Header>
 
                     <Content style={ contentStyle }>
