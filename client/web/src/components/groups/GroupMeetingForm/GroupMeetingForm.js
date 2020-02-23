@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Form, Icon, Input } from 'antd';
 import "antd/dist/antd.css";
 
-const { TextArea } = Input;
-
 export default class GroupMeetingForm extends Component{
     render(){
         return(

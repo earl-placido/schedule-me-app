@@ -40,7 +40,7 @@ export default class CreateGroup extends Component {
     render() {
         const { current } = this.state;
         const { Step } = Steps;
-        const { containerStyle, cardStyle, buttonContainerStyle } = styles;
+        const { containerStyle, cardStyle } = styles;
 
         return (
             <div >
@@ -99,10 +99,5 @@ const styles = {
 
     cardStyle : {
         width: 800
-    },
-
-    buttonContainerStyle : {
-        display: 'flex', 
-        justifyContent: 'space-between'
     }
 }
