@@ -1,10 +1,9 @@
 import React from 'react';
-import {Provider} from 'react-redux';
 import Adapter from 'enzyme-adapter-react-16';
 import {shallow, mount, configure} from 'enzyme';
-import renderer from 'react-test-renderer';
 import configureStore from 'redux-mock-store';
 
+import { goNextPage } from '../../actions/components/screens/CreateGroup.action';
 import CreateGroup from '../../components/screens/CreateGroup/CreateGroup';
 
 configure({adapter: new Adapter()});
@@ -14,13 +13,12 @@ describe('CreateGroup', () => {
   const mockStore = configureStore();
   let store, component;
 
-  store = mockStore(initialState);
-  component = shallow(<CreateGroup store={store} />).dive();
-  // beforeEach(() => {
-  //   store = mockStore(initialState);
-  //   container = shallow(<CreateGroup store={store} />);
-  //   console.log(container);
-  // });
+  beforeEach(() => {
+    store = mockStore(initialState);
+  // mapDispatchProps contains updateGroupName, updateGroupDescription, goNextPage, goPreviousPage
+    component = shallow(
+    <CreateGroup store={store}/>).dive();
+  });
 
 
   it('should render CreateGroup', () => {
@@ -33,6 +31,11 @@ describe('CreateGroup', () => {
       expect(component.props().success).toEqual(true);
       expect(component.props().currentPage).toEqual(0);
   });
-  
+
+  it('should run expected action props from redux', () => {
+    component.dive().find('#nextButton').simulate('click');
+    expect(store.getActions()[0].payload).toEqual({success: true, currentPage:1 });
+  });
+
   
 });

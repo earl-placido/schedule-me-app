@@ -10,14 +10,6 @@ import "antd/dist/antd.css";
 
 class CreateGroup extends Component {
 
-    goPreviousPage() {
-        this.props.goPreviousPage(this.props.currentPage);
-    }
-
-    goNextPage() {
-        this.props.goNextPage(this.props.groupName, this.props.currentPage);
-    }
-
     groupComponents() {
 
         switch(this.props.currentPage) {
@@ -71,12 +63,16 @@ class CreateGroup extends Component {
 
                         <Row>
                             <div style={ buttonContainerStyle }>
-                                <Button disabled={this.props.currentPage === 0} onClick={this.goPreviousPage.bind(this)}> 
+                                <Button 
+                                disabled={this.props.currentPage === 0} 
+                                onClick={() => {this.props.goPreviousPage(this.props.currentPage)}}> 
                                     <Icon type="left" />
                                     Previous
                                 </Button>
 
-                                <Button id="nextButton" type="primary" onClick={this.goNextPage.bind(this)}> 
+                                <Button id="nextButton" 
+                                type="primary" 
+                                onClick={() => {this.props.goNextPage(this.props.groupName, this.props.currentPage)}}> 
                                     Continue
                                     <Icon type="right" />
                                 </Button>

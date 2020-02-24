@@ -13,7 +13,7 @@ export const updateGroupName = (groupName) => {
 export const updateGroupDescription = (groupDescription) => {
     return {
         type: UPDATE_GROUP_DESCRIPTION,
-        payload: updateGroupDescription
+        payload: groupDescription
     };
 };
 
