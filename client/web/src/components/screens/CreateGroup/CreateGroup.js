@@ -64,6 +64,7 @@ class CreateGroup extends Component {
                         <Row>
                             <div style={ buttonContainerStyle }>
                                 <Button 
+                                id="previousButton"
                                 disabled={this.props.currentPage === 0} 
                                 onClick={() => {this.props.goPreviousPage(this.props.currentPage)}}> 
                                     <Icon type="left" />

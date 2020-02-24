@@ -1,7 +1,7 @@
-const UPDATE_GROUP_NAME = 'update_group_name';
-const UPDATE_GROUP_DESCRIPTION = 'update_group_description';
-const GO_NEXT_PAGE = 'go_next_page';
-const GO_PREVIOUS_PAGE = 'go_previous_page';
+export const UPDATE_GROUP_NAME = 'update_group_name';
+export const UPDATE_GROUP_DESCRIPTION = 'update_group_description';
+export const GO_NEXT_PAGE = 'go_next_page';
+export const GO_PREVIOUS_PAGE = 'go_previous_page';
 
 export const updateGroupName = (groupName) => {
     return {

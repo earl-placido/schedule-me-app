@@ -3,7 +3,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import {shallow, mount, configure} from 'enzyme';
 import configureStore from 'redux-mock-store';
 
-import { goNextPage } from '../../actions/components/screens/CreateGroup.action';
+import { GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME } from '../../actions/components/screens/CreateGroup.action';
 import CreateGroup from '../../components/screens/CreateGroup/CreateGroup';
 
 configure({adapter: new Adapter()});
@@ -15,7 +15,6 @@ describe('CreateGroup', () => {
 
   beforeEach(() => {
     store = mockStore(initialState);
-  // mapDispatchProps contains updateGroupName, updateGroupDescription, goNextPage, goPreviousPage
     component = shallow(
     <CreateGroup store={store}/>).dive();
   });
@@ -32,10 +31,25 @@ describe('CreateGroup', () => {
       expect(component.props().currentPage).toEqual(0);
   });
 
-  it('should run expected action props from redux', () => {
+  it('should run goNextPage in CreateGroup', () => {
     component.dive().find('#nextButton').simulate('click');
-    expect(store.getActions()[0].payload).toEqual({success: true, currentPage:1 });
+    console.log(store.getActions()[0]);
+    expect(store.getActions()[0].type).toEqual(GO_NEXT_PAGE);
   });
 
-  
+  it('should run goPreviousPage in CreateGroup', () => {
+    component.dive().find('#previousButton').simulate('click');
+    expect(store.getActions()[0].type).toEqual(GO_PREVIOUS_PAGE);
+  });
+
+  it('should run updateGroupName in CreateGroup', () => {
+    component.dive().find('GroupInfoForm').dive().find('#groupNameInput').simulate('change', {target: {value: 'changed'}});
+    expect(store.getActions()[0].type).toEqual(UPDATE_GROUP_NAME);
+  });
+
+  it('should run updateGroupDescription in CreateGroup', () => {
+    component.dive().find('GroupInfoForm').dive().find('#groupDescriptionInput').simulate('change', {target: {value: 'changed'}});
+    expect(store.getActions()[0].type).toEqual(UPDATE_GROUP_DESCRIPTION);
+  });
+
 });
