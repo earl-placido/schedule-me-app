@@ -1,4 +1,4 @@
-import {updateGroupName, updateGroupDescription, goPreviousPage, goNextPage,
+import CreateGroupReducer, {updateGroupName, updateGroupDescription, goPreviousPage, goNextPage,
 GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME } from '../../../../actions/components/screens/CreateGroup.action';
 
 describe('CreateGroup action', () => {
@@ -43,4 +43,33 @@ describe('CreateGroup action', () => {
         expect(goNextPageAction.payload).toEqual(0);
     });
     
+});
+
+describe('test CreateGroup reducer', () => {
+    const INITIAL_STATE = {groupName: '', groupDescription: '', success: true, currentPage: 0};
+
+    it('test update group name', () => {
+        const payload = {type: UPDATE_GROUP_NAME, payload: 'groupName'};
+        const reducerItem = CreateGroupReducer(INITIAL_STATE, payload);
+        expect(reducerItem.groupName).toEqual('groupName');
+    });
+
+    it('test update group description', () => {
+        const payload = {type: UPDATE_GROUP_DESCRIPTION, payload: 'groupDescription'};
+        const reducerItem = CreateGroupReducer(INITIAL_STATE, payload);
+        expect(reducerItem.groupDescription).toEqual('groupDescription');
+    });
+
+    it('test go next page', () => {
+        const payload = {type: GO_NEXT_PAGE, payload: {success: true, currentPage: 1 }};
+        const reducerItem = CreateGroupReducer(INITIAL_STATE, payload);
+        expect(reducerItem.success).toEqual(true);
+        expect(reducerItem.currentPage).toEqual(1);
+    });
+
+    it('test go previous page', () => {
+        const payload = {type: GO_PREVIOUS_PAGE, payload: 0};
+        const reducerItem = CreateGroupReducer(INITIAL_STATE, payload);
+        expect(reducerItem.currentPage).toEqual(0);
+    });
 });
