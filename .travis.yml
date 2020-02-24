@@ -12,7 +12,6 @@ matrix:
           - ./server/node_modules
       before_install:
         - (cd client/web && travis_wait docker-compose up -d)
-        - docker exec web /bin/sh -c "npm install"
       before_script:
         - (cd server && npm install)
       script:
