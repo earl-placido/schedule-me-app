@@ -18,11 +18,14 @@ export const updateGroupDescription = (groupDescription) => {
 };
 
 // return true if success, false if fail
-export const goNextPage = (groupName, currentPage) => {
+export const goNextPage = (groupName, currentPage) => {  // pass in meeting and share parameters once done
     if (groupName.length === 0)  // must have a value for group name
         return {type: GO_NEXT_PAGE, payload: {success: false}};
+    
+    if(currentPage === 2)
+        return {type: GO_NEXT_PAGE, payload: {success: true, currentPage }};
     else
-        return {type: GO_NEXT_PAGE, payload: {success: true, currentPage: currentPage+1 }};
+    return {type: GO_NEXT_PAGE, payload: {success: true, currentPage: currentPage+1 }};
 };
 
 export const goPreviousPage = (currentPage) => {
