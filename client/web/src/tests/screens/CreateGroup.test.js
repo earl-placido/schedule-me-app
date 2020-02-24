@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import App from './App';
+import CreateGroup from '../../components/screens/CreateGroup';
 
 test('Renders', () => {
-  render(<App />);
+  render(<CreateGroup />);
 });
