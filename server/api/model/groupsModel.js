@@ -4,7 +4,8 @@ const MYSQLDB = {
   host: process.env.RDS_HOSTNAME,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME
+  database: process.env.RDS_DB_NAME,
+  multipleStatements: true
 };
 
 module.exports = {
@@ -12,19 +13,23 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    INSERT INTO schedulemeup.groups
+                    INSERT INTO schedulemeup.meeting
+                    (MeetingDuration,
+                    MeetingFrequency, 
+                    MeetingLocation)
+                    VALUES (?, ?, ?);
+                    
+                    INSERT INTO schedulemeup.group
                     (GroupName,
-                     GroupDescription,
-                     GroupOwnerId,
-                     MeetingDuration,
-                     MeetingFrequency,
-                     MeetingLocation)
-                    VALUES (?, ?, ?, ?, ?, ?)
+                    GroupDescription,
+                    GroupOwnerId,
+                    MeetingId)
+                    VALUES (?, ?, ?, LAST_INSERT_ID());
                 `,
-                [gName, gDesc, gOwnerId, mDuration, mFrequency, mLocation]
+                [mDuration, mFrequency, mLocation, gName, gDesc, gOwnerId]
             ).then(res => {
                 conn.end();
-                return res.insertId;
+                return res[1].insertId;
             }).catch(err => {
                 conn.end();
                 return err;
@@ -36,9 +41,9 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    SELECT * 
-                    FROM schedulemeup.groupmembers as GM, schedulemeup.groups as G 
-                    WHERE GM.GroupId = G.GroupId AND GM.UserId = ?;
+                    SELECT *
+                    FROM schedulemeup.group as G, schedulemeup.meeting as M, schedulemeup.groupmember as GM
+                    WHERE G.MeetingId = M.MeetingId AND GM.GroupId = G.GroupId AND GM.UserId = ?;
                 `,
                 [userId]
             ).then(res => {
@@ -55,9 +60,9 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    SELECT * 
-                    FROM schedulemeup.groups
-                    WHERE GroupId = ?;
+                    SELECT *
+                    FROM schedulemeup.group as G, schedulemeup.meeting as M 
+                    WHERE G.MeetingId = M.MeetingId AND G.GroupId = ?;
                 `,
                 [groupId]
             ).then(res => {
@@ -74,10 +79,15 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    DELETE FROM schedulemeup.groups
-                    WHERE GroupId = ?
+                    SET @meetingId = (SELECT MeetingId FROM schedulemeup.group WHERE GroupId = ?);
+
+                    DELETE FROM schedulemeup.group
+                    WHERE GroupId = ?;
+
+                    DELETE FROM schedulemeup.meeting
+                    WHERE MeetingId = @meetingId;
                 `,
-                [groupId]
+                [groupId, groupId]
             ).then(res => {
                 conn.end();
                 return res;
@@ -92,7 +102,7 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    INSERT INTO schedulemeup.groupmembers
+                    INSERT INTO schedulemeup.groupmember
                     (GroupId, UserId, MemberRole)
                     VALUES
                     (?, ?, ?)

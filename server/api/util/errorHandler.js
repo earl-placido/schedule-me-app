@@ -10,7 +10,7 @@ function unauthorized(req, res) {
 
 function notFound(req, res) {
     res.status(responses.NOT_FOUND);
-    res.send({ error: message });
+    res.send('Not found');
     return;
 }
 

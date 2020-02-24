@@ -115,6 +115,7 @@
             {
               "name": "meetingDuration",
               "type": "string",
+              "format": "date",
               "in": "formData",
               "description": "Duration of meeting"
             },

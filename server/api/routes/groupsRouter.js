@@ -1,6 +1,5 @@
 const express = require('express');
 const responses = require('../util/responses');
-const errorHandler = require('../util/errorHandler');
 const router = express.Router();
 
 const groupsModel = require('../model/groupsModel');
@@ -11,7 +10,8 @@ router.post('/', (req, res, next) => {
     const groupOwnerId = 1; // temporary for now, will update this with auth once it is setup
 
     if (!newGroup.groupName) {
-        errorHandler.notFound(req, res, `groupName is required.`);
+        res.status(responses.NOT_FOUND);
+        res.send({ error: `groupName is required.`});
     }
     else {
         return groupsModel
@@ -21,11 +21,13 @@ router.post('/', (req, res, next) => {
                 newGroup.groupDesc,
                 newGroup.meetingDuration, 
                 newGroup.meetingFrequency, 
-                newGroup.meetingLocation)
+                newGroup.meetingLocation)   // create new group
             .then((result) => {
                 let newGroupId = result;
+
+                // add owner to the group with owner privileges
                 return groupsModel.newMember(newGroupId, groupOwnerId, 'AD')
-                    .then((result) => {
+                    .then(() => {
                         res.status(responses.CREATED).json({groupId: newGroupId})
                     });
             }).catch(next); // returns the id of the created group
@@ -36,7 +38,8 @@ router.post('/', (req, res, next) => {
 router.get('/', (req, res, next) => {
     const userId = 1; // temporary for now, will update this with auth once it is setup
     if (!userId) {
-        errorHandler.notFound(req, res, `userId is required.`);
+        res.status(responses.NOT_FOUND);
+        res.send({ error: `userId is required.`});
     }
     else {
         return groupsModel
@@ -56,7 +59,8 @@ router.get('/:groupId', (req, res, next) => {
                 res.status(responses.SUCCESS).json(result[0])
             }
             else {
-                errorHandler.notFound(req, res, `GroupId ${groupId} does not exist.`);
+                res.status(responses.NOT_FOUND);
+                res.send({ error: `GroupId ${groupId} does not exist.`});
             }
         }).catch(next);
 });
@@ -72,7 +76,8 @@ router.delete('/:groupId', (req, res, next) => {
                 });
             }
             else {
-                errorHandler.notFound(req, res, `GroupId ${groupId} does not exist.`);
+                res.status(responses.NOT_FOUND);
+                res.send({ error: `GroupId ${groupId} does not exist.`});
             }
         }).catch(next);
 });
