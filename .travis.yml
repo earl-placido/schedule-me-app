@@ -11,7 +11,7 @@ matrix:
           - ./client/web/node_modules
           - ./server/node_modules
       before_install:
-        - (cd client/web && travis_wait docker-compose up -d)
+        - (cd client/web &&  docker-compose up -d)
       before_script:
         - (cd server && npm install)
       script:
