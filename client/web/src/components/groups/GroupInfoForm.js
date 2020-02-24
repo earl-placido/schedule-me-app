@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input } from 'antd';
+import PropTypes from 'prop-types';
+
 import "antd/dist/antd.css";
 import "../../css/app.css";
 
@@ -48,4 +50,12 @@ const styles = {
         color: 'red',
         marginLeft: 10
     }
+};
+
+GroupInfoForm.propTypes = {
+    handleGroupName: PropTypes.func,
+    handleGroupDescription: PropTypes.func,
+    groupName: PropTypes.any,
+    success: PropTypes.any,
+    groupDescription: PropTypes.any
 };

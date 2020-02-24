@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
-import { BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import "antd/dist/antd.css";

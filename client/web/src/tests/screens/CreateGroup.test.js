@@ -1,6 +1,6 @@
 import React from 'react';
 import Adapter from 'enzyme-adapter-react-16';
-import {shallow, mount, configure} from 'enzyme';
+import {shallow, configure} from 'enzyme';
 import configureStore from 'redux-mock-store';
 
 import { GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME } from '../../actions/components/screens/CreateGroup.action';

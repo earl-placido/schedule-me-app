@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Steps, Row, Col, Card, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';  // to prevent eslint from showing errors that props not found
 
 import GroupInfoForm from '../../groups/GroupInfoForm';
 import GroupMeetingForm from '../../groups/GroupMeetingForm';
@@ -25,7 +26,7 @@ class CreateGroup extends Component {
                 return <GroupMeetingForm/>
             }
             case(2): { // share
-
+                return null;
             }
             default: {
                 return null;
@@ -107,6 +108,18 @@ const styles = {
 const mapStateToProps = ({ CreateGroupReducer }) => {
     const { groupName, groupDescription, success, currentPage } = CreateGroupReducer;
     return {groupName, groupDescription, success, currentPage};
+};
+
+// set this so eslint won't show error prop not found for redux
+CreateGroup.propTypes = {
+    groupName: PropTypes.any,
+    groupDescription: PropTypes.any,
+    success: PropTypes.any,
+    currentPage: PropTypes.any,
+    updateGroupName: PropTypes.func,
+    updateGroupDescription: PropTypes.func,
+    goNextPage: PropTypes.func,
+    goPreviousPage: PropTypes.func
 };
 
 export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage})(CreateGroup);
