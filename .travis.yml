@@ -27,7 +27,7 @@ matrix:
       deploy:
         - provider: surge
           skip_cleanup: true
-          domain: schedule-me-up_dev.surge.sh
+          domain: schedule-me-up-dev.surge.sh
           project: ./client/web/build/
           on:
             branch: develop
