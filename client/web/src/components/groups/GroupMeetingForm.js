@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import { Form, Icon, Input } from 'antd';
-import "antd/dist/antd.css";
+import {connect} from 'react-redux';
 
-export default class GroupMeetingForm extends Component{
+class GroupMeetingForm extends Component{
     render(){
         return(
             <Form onSubmit={this.handleSubmit} className="login-form">
@@ -37,3 +37,5 @@ export default class GroupMeetingForm extends Component{
         );
     }
 }
+
+export default connect()(GroupMeetingForm);
