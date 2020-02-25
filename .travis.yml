@@ -12,11 +12,12 @@ matrix:
           - ./server/node_modules
       before_install:
         - (cd client/web && travis_wait docker-compose up -d)
-        - docker exec web /bin/sh -c "npm install"
       before_script:
         - (cd server && npm install)
+        - (cd client/mobile && npm install)
       script:
         - (cd server && npm test && npx eslint ./)
+        - (cd client/mobile && npm run test:ci && npm run lint)
         - docker exec web /bin/sh -c "eslint src"
         - docker exec web /bin/sh -c "npm run test:ci"
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi

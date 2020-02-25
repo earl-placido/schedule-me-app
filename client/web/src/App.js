@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './App.css';
 import { Layout, Menu } from 'antd';
-import CreateGroup from './components/screens/CreateGroup'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+
+import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import "antd/dist/antd.css";
 
 const { Header, Content, Footer } = Layout;
@@ -12,7 +13,7 @@ export default class App extends Component {
         const { headerStyle, contentStyle, containerStyle, footerStyle } = styles
 
         return (
-            <div className="App">
+            <Router>
                 <Layout>
                     <Header style={ headerStyle }>
                         <div className="logo" />
@@ -27,14 +28,18 @@ export default class App extends Component {
                     </Header>
 
                     <Content style={ contentStyle }>
+                        <Switch>
                         <div style={ containerStyle }>
-                            <CreateGroup/>
+                            <Route path='/createGroup'>
+                                    <CreateGroup/>
+                            </Route>
                         </div>
+                        </Switch>
                     </Content>
 
                     <Footer style={ footerStyle }>schedule-me-up</Footer>
                 </Layout>
-            </div>
+            </Router>
         )
     }
 }
