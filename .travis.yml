@@ -20,8 +20,8 @@ matrix:
         - (cd client/mobile && npm run test:ci && npm run lint)
         - docker exec web /bin/sh -c "eslint src"
         - docker exec web /bin/sh -c "npm run test:ci"
-        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod"; fi
-        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev"; fi
+        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod && mv build/index.html build/200.html"; fi
+        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev && mv build/index.html build/200.html"; fi
       after_script:
         - (cd client/web && travis_wait docker-compose down)      
       deploy:
