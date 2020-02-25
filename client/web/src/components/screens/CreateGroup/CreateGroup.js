@@ -56,6 +56,7 @@ class CreateGroup extends Component {
       }
 
     render() {
+        console.log(process.env);
         const { Step } = Steps;
         const { containerStyle, cardStyle, buttonContainerStyle } = styles;
     return (
