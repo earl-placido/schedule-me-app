@@ -8,6 +8,15 @@ import "../../css/app.css";
 const { TextArea } = Input;
 
 export default class GroupInfoForm extends Component{
+
+    handleGroupNameChange(text) {
+        this.props.handleGroupName(text.target.value);
+    }
+
+    handleGroupDescriptionChange(text) {
+        this.props.handleGroupDescription(text.target.value);
+    }
+
     render(){
 
         const { errorText } = styles;
@@ -19,7 +28,7 @@ export default class GroupInfoForm extends Component{
                                     <div>
                                         <Input
                                             id="groupNameInput"
-                                            onChange={ text => {this.props.handleGroupName(text.target.value)}}
+                                            onChange={this.handleGroupNameChange.bind(this)}
                                             prefix={<Icon type="usergroup-add" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                             placeholder={"Enter Group Name"}
                                             value={this.props.groupName}
@@ -32,7 +41,7 @@ export default class GroupInfoForm extends Component{
                             <Form.Item>
                                 {(<TextArea 
                                 id="groupDescriptionInput"
-                                onChange={text => {this.props.handleGroupDescription(text.target.value)}}
+                                onChange={this.handleGroupDescriptionChange.bind(this)}
                                 placeholder="Enter group description (Optional)" rows = {7}
                                 allowClear
                                 value={this.props.groupDescription}

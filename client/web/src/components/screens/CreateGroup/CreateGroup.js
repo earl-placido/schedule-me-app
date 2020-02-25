@@ -8,46 +8,62 @@ import GroupMeetingForm from '../../groups/GroupMeetingForm';
 import {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
 import "antd/dist/antd.css";
 
-
 class CreateGroup extends Component {
 
-    groupComponents() {
+    // we don't keep the component inside steps because everytime when input changes, the component has to get re-rendered with the
+    // redux properties but keeping component tinside steps will prevent the components to get re-rendered thus 
+    // making the component frozen
+    steps = [
+        {
+          title: 'Group',
+        },
+        {
+          title: 'Meeting',
+        },
+        {
+          title: 'Share',
+        },
+      ];
 
-        switch(this.props.currentPage) {
-            case(0): { // create group info
-                return (<GroupInfoForm 
-                    handleGroupName={this.props.updateGroupName} 
-                    handleGroupDescription={this.props.updateGroupDescription} 
-                    groupName={this.props.groupName}
-                    groupDescription={this.props.groupDescription}
-                    success={this.props.success}/>);
-            }
-            case(1): { // meeting
-                return <GroupMeetingForm/>
-            }
-            case(2): { // share
-                return null;
-            }
-            default: {
-                return null;
-            }
-        }
- 
-    }
+      stepsComponent() {
+          switch(this.props.currentPage){
+              case(0): {
+                  return (<GroupInfoForm 
+                  handleGroupName={this.props.updateGroupName} 
+                  handleGroupDescription={this.props.updateGroupDescription} 
+                  groupName={this.props.groupName}
+                  groupDescription={this.props.groupDescription}
+                  success={this.props.success}/>);
+              }
+              case(1): {
+                  return (<GroupMeetingForm />);
+              }
+              default:{
+                  return null;
+              }
+          }
+      }
+
+      goPreviousPage() {
+        this.props.goPreviousPage(this.props.currentPage);
+      }
+
+      goNextPage() {
+        this.props.goNextPage(this.props.groupName, this.props.currentPage);
+      }
 
     render() {
         const { Step } = Steps;
         const { containerStyle, cardStyle, buttonContainerStyle } = styles;
-
-        return (
+    return (
             <div >
             
                 <Row style={{ padding: 50 }}>
                     <Col span={16} offset={4}>
                         <Steps current={this.props.currentPage}>
-                            <Step title="Group" />
-                            <Step title="Meeting" />
-                            <Step title="Share" />
+                            {this.steps.map(item => (
+                                <Step key={item.title} title={item.title} />
+                            ))}
                         </Steps>
 
                     </Col>
@@ -58,7 +74,7 @@ class CreateGroup extends Component {
                     
                         <Row>
                             <Col span={20} offset={2}>
-                                {this.groupComponents()}
+                                {this.stepsComponent()}
                             </Col>
                         </Row>
 
@@ -67,14 +83,14 @@ class CreateGroup extends Component {
                                 <Button 
                                 id="previousButton"
                                 disabled={this.props.currentPage === 0} 
-                                onClick={() => {this.props.goPreviousPage(this.props.currentPage)}}> 
+                                onClick={this.goPreviousPage.bind(this)}> 
                                     <Icon type="left" />
                                     Previous
                                 </Button>
 
                                 <Button id="nextButton" 
                                 type="primary" 
-                                onClick={() => {this.props.goNextPage(this.props.groupName, this.props.currentPage)}}> 
+                                onClick={this.goNextPage.bind(this)}> 
                                     Continue
                                     <Icon type="right" />
                                 </Button>
