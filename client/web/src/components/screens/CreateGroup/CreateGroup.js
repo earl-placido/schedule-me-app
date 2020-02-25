@@ -13,17 +13,20 @@ class CreateGroup extends Component {
     // we don't keep the component inside steps because everytime when input changes, the component has to get re-rendered with the
     // redux properties but keeping component tinside steps will prevent the components to get re-rendered thus 
     // making the component frozen
-    steps = [
-        {
-          title: 'Group',
-        },
-        {
-          title: 'Meeting',
-        },
-        {
-          title: 'Share',
-        },
-      ];
+      constructor(props) {
+          super(props);
+          this.steps = [
+            {
+              title: 'Group',
+            },
+            {
+              title: 'Meeting',
+            },
+            {
+              title: 'Share',
+            },
+          ];
+      }
 
       stepsComponent() {
           switch(this.props.currentPage){
