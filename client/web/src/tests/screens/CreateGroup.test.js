@@ -33,7 +33,6 @@ describe('CreateGroup', () => {
 
   it('should run goNextPage in CreateGroup', () => {
     component.dive().find('#nextButton').simulate('click');
-    console.log(store.getActions()[0]);
     expect(store.getActions()[0].type).toEqual(GO_NEXT_PAGE);
   });
 
