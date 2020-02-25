@@ -38,3 +38,5 @@ Trello : <https://trello.com/b/ZWdpiKU1/4350-scheduler>
 ---
 
 ## Mobile
+
+- [How to setup](./client/mobile/README.md)
