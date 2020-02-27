@@ -11,8 +11,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
+    "native-base": "^2.13.8",
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-native": "0.61.5",
+    "react-native-progress-steps": "^1.2.8"
   },
   "devDependencies": {
     "@babel/core": "7.8.4",
