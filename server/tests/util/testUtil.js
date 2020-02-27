@@ -4,9 +4,7 @@ function insertUsersQuery(users) {
     return (
         `
             INSERT INTO schedulemeup.user (UserName) VALUES
-            ${users.map(user => mysql.format(`
-                (?) 
-            `, 
+            ${users.map(user => mysql.format(`(?)`, 
             [
                 user.userName
             ])).join(`, `)};
@@ -48,9 +46,7 @@ function insertGroupMembersQuery(groupMembers) {
     return (
         `
             INSERT INTO schedulemeup.groupmember (GroupId, UserId, MemberRole) VALUES
-            ${groupMembers.map(groupMember => mysql.format(`
-                (?, ?, ?)
-            `, 
+            ${groupMembers.map(groupMember => mysql.format(`(?, ?, ?)`, 
             [
                 groupMember.groupId,
                 groupMember.userId,
@@ -61,8 +57,24 @@ function insertGroupMembersQuery(groupMembers) {
     );
 }
 
+const resetUsersQuery = `
+    TRUNCATE TABLE schedulemeup.user;
+`;
+
+const resetGroupsQuery = `
+    TRUNCATE TABLE schedulemeup.group;
+    ALTER TABLE schedulemeup.group AUTO_INCREMENT = 1000000;
+`;
+
+const resetGroupMembersQuery = `
+    TRUNCATE TABLE schedulemeup.groupmember;
+`;
+
 module.exports = {
     insertUsersQuery,
     insertGroupsQuery,
-    insertGroupMembersQuery
+    insertGroupMembersQuery,
+    resetUsersQuery,
+    resetGroupsQuery,
+    resetGroupMembersQuery
 }

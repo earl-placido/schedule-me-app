@@ -9,7 +9,7 @@ const MYSQLDB = {
 };
 
 module.exports = {
-    newGroup(gOwnerId, gName, gDesc, mDuration, mFrequency, mLocation) {
+    newGroup(gName, gDesc, gOwnerId, mDuration, mFrequency, mLocation) {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
@@ -102,15 +102,34 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    INSERT INTO schedulemeup.groupmember
-                    (GroupId, UserId, MemberRole)
-                    VALUES
-                    (?, ?, ?)
+                    INSERT INTO schedulemeup.groupmember (GroupId, UserId, MemberRole) 
+                    SELECT ?, ?, ? FROM DUAL 
+                    WHERE NOT EXISTS (SELECT * FROM schedulemeup.groupmember
+                        WHERE GroupId = ? AND UserId = ? LIMIT 1)
                 `,
-                [groupId, userId, role]
+                [groupId, userId, role, groupId, userId]
             ).then(res => {
                 conn.end();
                 return res.insertId;
+            }).catch(err => {
+                conn.end();
+                return err;
+            });
+        });
+    },
+
+    getGroupMembers(groupId) {
+        return mysql.createConnection(MYSQLDB).then(conn => {
+            return conn.query(
+                `
+                    SELECT *
+                    FROM schedulemeup.groupmember
+                    WHERE GroupId = ?
+                `,
+                [groupId]
+            ).then(res => {
+                conn.end();
+                return res;
             }).catch(err => {
                 conn.end();
                 return err;

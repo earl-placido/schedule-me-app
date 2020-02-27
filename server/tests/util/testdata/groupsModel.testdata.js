@@ -1,14 +1,9 @@
-
-
 const users = [
     {
         userName: "User1"
     },
     {
         userName: "User2"
-    },
-    {
-        userName: "User3"
     }
 ];
 
@@ -33,9 +28,14 @@ const groups = [
 
 const groupMembers = [
     {
-        groupId: 1000001,
+        groupId: 1000000,
         userId: 1,
         memberRole: 'AD'   
+    },
+    {
+        groupId: 1000001,
+        userId: 1,
+        memberRole: ''   
     }
 ];
 
