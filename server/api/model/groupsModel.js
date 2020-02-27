@@ -13,13 +13,13 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    INSERT INTO schedulemeup.meeting
+                    INSERT INTO \`Meeting\`
                     (MeetingDuration,
                     MeetingFrequency, 
                     MeetingLocation)
                     VALUES (?, ?, ?);
                     
-                    INSERT INTO schedulemeup.group
+                    INSERT INTO \`Group\`
                     (GroupName,
                     GroupDescription,
                     GroupOwnerId,
@@ -42,7 +42,7 @@ module.exports = {
             return conn.query(
                 `
                     SELECT *
-                    FROM schedulemeup.group as G, schedulemeup.meeting as M, schedulemeup.groupmember as GM
+                    FROM \`Group\` as G, \`Meeting\` as M, \`GroupMember\` as GM
                     WHERE G.MeetingId = M.MeetingId AND GM.GroupId = G.GroupId AND GM.UserId = ?;
                 `,
                 [userId]
@@ -61,7 +61,7 @@ module.exports = {
             return conn.query(
                 `
                     SELECT *
-                    FROM schedulemeup.group as G, schedulemeup.meeting as M 
+                    FROM \`Group\` as G, \`Meeting\` as M 
                     WHERE G.MeetingId = M.MeetingId AND G.GroupId = ?;
                 `,
                 [groupId]
@@ -79,12 +79,12 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    SET @meetingId = (SELECT MeetingId FROM schedulemeup.group WHERE GroupId = ?);
+                    SET @meetingId = (SELECT MeetingId FROM \`Group\` WHERE GroupId = ?);
 
-                    DELETE FROM schedulemeup.group
+                    DELETE FROM \`Group\`
                     WHERE GroupId = ?;
 
-                    DELETE FROM schedulemeup.meeting
+                    DELETE FROM \`Meeting\`
                     WHERE MeetingId = @meetingId;
                 `,
                 [groupId, groupId]
@@ -102,9 +102,9 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    INSERT INTO schedulemeup.groupmember (GroupId, UserId, MemberRole) 
+                    INSERT INTO \`GroupMember\` (GroupId, UserId, MemberRole) 
                     SELECT ?, ?, ? FROM DUAL 
-                    WHERE NOT EXISTS (SELECT * FROM schedulemeup.groupmember
+                    WHERE NOT EXISTS (SELECT * FROM \`GroupMember\`
                         WHERE GroupId = ? AND UserId = ? LIMIT 1)
                 `,
                 [groupId, userId, role, groupId, userId]
@@ -123,7 +123,7 @@ module.exports = {
             return conn.query(
                 `
                     SELECT *
-                    FROM schedulemeup.groupmember
+                    FROM \`GroupMember\`
                     WHERE GroupId = ?
                 `,
                 [groupId]

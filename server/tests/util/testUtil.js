@@ -3,7 +3,7 @@ const mysql = require('promise-mysql');
 function insertUsersQuery(users) {
     return (
         `
-            INSERT INTO schedulemeup.user (UserName) VALUES
+            INSERT INTO \`User\` (UserName) VALUES
             ${users.map(user => mysql.format(`(?)`, 
             [
                 user.userName
@@ -17,13 +17,13 @@ function insertGroupsQuery(groups) {
     return (
         `
         ${groups.map(group => mysql.format(`
-            INSERT INTO schedulemeup.meeting
+            INSERT INTO \`Meeting\`
             (MeetingDuration,
             MeetingFrequency, 
             MeetingLocation)
             VALUES (?, ?, ?);
             
-            INSERT INTO schedulemeup.group
+            INSERT INTO \`Group\`
             (GroupName,
             GroupDescription,
             GroupOwnerId,
@@ -45,7 +45,7 @@ function insertGroupsQuery(groups) {
 function insertGroupMembersQuery(groupMembers) {
     return (
         `
-            INSERT INTO schedulemeup.groupmember (GroupId, UserId, MemberRole) VALUES
+            INSERT INTO \`GroupMember\` (GroupId, UserId, MemberRole) VALUES
             ${groupMembers.map(groupMember => mysql.format(`(?, ?, ?)`, 
             [
                 groupMember.groupId,
@@ -58,16 +58,16 @@ function insertGroupMembersQuery(groupMembers) {
 }
 
 const resetUsersQuery = `
-    TRUNCATE TABLE schedulemeup.user;
+    TRUNCATE TABLE \`User\`;
 `;
 
 const resetGroupsQuery = `
-    TRUNCATE TABLE schedulemeup.group;
-    ALTER TABLE schedulemeup.group AUTO_INCREMENT = 1000000;
+    TRUNCATE TABLE \`Group\`;
+    ALTER TABLE \`Group\` AUTO_INCREMENT = 1000000;
 `;
 
 const resetGroupMembersQuery = `
-    TRUNCATE TABLE schedulemeup.groupmember;
+    TRUNCATE TABLE \`GroupMember\`;
 `;
 
 module.exports = {
