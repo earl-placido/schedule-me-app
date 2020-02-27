@@ -83,13 +83,14 @@ class CreateGroup extends Component {
 
                         <Row>
                             <div style={ buttonContainerStyle }>
-                                <Button 
-                                id="previousButton"
-                                disabled={this.props.currentPage === 0} 
-                                onClick={this.goPreviousPage.bind(this)}> 
-                                    <Icon type="left" />
-                                    Previous
-                                </Button>
+                                {this.props.currentPage !== 2 &&(
+                                <Button id="previousButton"
+                                    disabled={this.props.currentPage === 0} 
+                                    onClick={this.goPreviousPage.bind(this)}> 
+                                        <Icon type="left" />
+                                        Previous
+                                    </Button>
+                                )}
 
                                 {this.props.currentPage !== 1 &&(
                                 <Button id="nextButton" 
