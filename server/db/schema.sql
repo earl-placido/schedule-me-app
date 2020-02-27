@@ -27,12 +27,13 @@ CREATE TABLE `Group`
   GroupDescription NVARCHAR(200) NULL,
   GroupOwnerId INT NOT NULL,
   LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  ShareableURL NVARCHAR(10) NOT NULL,
   MeetingId INT NOT NULL,
   PRIMARY KEY (GroupId, GroupOwnerId),
   CONSTRAINT FK_Group_UserId FOREIGN KEY (GroupOwnerId) REFERENCES `User`(UserId),
   CONSTRAINT FK_Group_MeetingId FOREIGN KEY (MeetingId) REFERENCES `Meeting`(MeetingId)
 );
+
+ALTER TABLE `Group` AUTO_INCREMENT = 1000000;
 
 DROP TABLE IF EXISTS `GroupMember`;
 CREATE TABLE `GroupMember`
@@ -42,8 +43,8 @@ CREATE TABLE `GroupMember`
   UserId INT NULL,
   MemberRole NVARCHAR(2) NULL,
   PRIMARY KEY (GroupMemberId),
-  CONSTRAINT FK_GroupMember_GroupId FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId),
-  CONSTRAINT FK_GroupMember_UserId FOREIGN KEY (UserId) REFERENCES `User`(UserId)
+  CONSTRAINT FK_GroupMember_GroupId FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId) ON DELETE CASCADE,
+  CONSTRAINT FK_GroupMember_UserId FOREIGN KEY (UserId) REFERENCES `User`(UserId) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS `Availability`;
@@ -81,3 +82,5 @@ CREATE TABLE `Meeting`
 );
 
 SET FOREIGN_KEY_CHECKS=1;
+
+INSERT INTO `User` (`UserName`) VALUES ('TestUser');

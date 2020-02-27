@@ -17,9 +17,7 @@ The server will handle all of the functionality that relates to persistence and 
 Tests for the database can be created within the **tests** folder. There should be **one test file per corresponding file in model**. 
 
 ## How to run
-1. Create an `.env` file inside `/server`:
-
-   - Example:
+1. Create an `.env` file inside `/server` which must include:
         ```
         NODE_ENV=development
         SERVER_PORT=8000
