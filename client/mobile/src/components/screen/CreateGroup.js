@@ -37,7 +37,7 @@ export default class CreateGroup extends Component {
           <ProgressStep
                 label="Group"
                 onNext={this.onNextStep}
-                previousBtnDisabled={true}
+                previousBtnDisabled
                 scrollViewProps={this.defaultScrollViewProps}
                 nextBtnTextStyle={buttonTextStyle}
                 previousBtnTextStyle={buttonTextStyle}
