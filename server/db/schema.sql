@@ -83,4 +83,4 @@ CREATE TABLE `Meeting`
 
 SET FOREIGN_KEY_CHECKS=1;
 
-INSERT INTO `User` (`UserName`) VALUES ('TestUser');
+INSERT INTO `User` (`UserName`, `UserEmail`) VALUES ('TestUser', 'TestEmail@schedulemeup.ca');

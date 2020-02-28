@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const tokenHelper = require('../util/tokenHelper');
 const userModel = require('../model/userModel');
+const responses = require('../util/responses');
 
 const router = express.Router();
 require('../util/passportInit')(passport);
@@ -9,12 +10,10 @@ require('../util/passportInit')(passport);
 router.route('/auth/google')
     .post(passport.authenticate('google-token', {session: false}), (req, res, next) => {
         if (!req.user) {
-            return res.send(401, 'User Not Authenticated');
+            return res.send(responses.UNAUTHORIZED, 'User Not Authenticated');
         }
-        console.log(`${req.user.displayName} ${req.user.emails[0].value}\n`);
 
         userModel.getUser(req.user.emails[0].value).then(user => {
-            console.log(user);
             if(user) {
                 userModel.newUser(req.user.displayName, req.user.emails[0].value);
             }

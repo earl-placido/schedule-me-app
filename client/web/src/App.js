@@ -1,41 +1,38 @@
 import React, { Component } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout } from 'antd';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createBrowserHistory } from 'history';
+import PropTypes from 'prop-types'; 
 
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+import { PrivateRoute } from './components/util/PrivateRoute';
+import NavigationBar from './components/layout/NavigationBar';
+import Login from './components/screens/Login/Login';
 import "antd/dist/antd.css";
 
-const { Header, Content, Footer } = Layout;
+const { Content, Footer } = Layout;
 
-export default class App extends Component {
+class App extends Component {
 
     render() {
-        const { headerStyle, contentStyle, containerStyle, footerStyle } = styles
+        const { contentStyle, containerStyle, footerStyle } = styles
 
         return (
-            <Router>
+            <Router history={createBrowserHistory()}>
                 <Layout>
-                    <Header style={ headerStyle }>
-                        <div className="logo" />
-                        <Menu
-                            theme="dark"
-                            mode="horizontal"
-                            defaultSelectedKeys={['1']}
-                            style={{ lineHeight: '64px' }}
-                        >   
-                        </Menu>
-                        
-                        <LoginGoogle/>
-                    </Header>
-
+                    <NavigationBar/>
                     <Content style={ contentStyle }>
-                        <Switch>
                         <div style={ containerStyle }>
-                            <Route path='/createGroup'>
-                                    <CreateGroup/>
-                            </Route>
+                            <Switch>
+                                <PrivateRoute 
+                                    exact path="/createGroup" 
+                                    component={CreateGroup} 
+                                    authorized={this.props.isAuthenticated} 
+                                />
+                                <Route exact path="/login" component={Login} />
+                            </Switch>
                         </div>
-                        </Switch>
                     </Content>
 
                     <Footer style={ footerStyle }>schedule-me-up</Footer>
@@ -46,12 +43,6 @@ export default class App extends Component {
 }
 
 const styles = {
-    headerStyle : {
-        position: 'fixed', 
-        zIndex: 1, 
-        width: '100%' 
-    },
-
     contentStyle : {
         padding: '0 50px', 
         marginTop: 64 
@@ -69,3 +60,13 @@ const styles = {
     }
 }
 
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+
+App.propTypes = {
+    isAuthenticated: PropTypes.any
+};
+
+export default connect(mapStateToProps, null)(App);
