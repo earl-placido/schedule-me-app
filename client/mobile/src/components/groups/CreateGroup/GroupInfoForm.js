@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import {TextInput, View } from 'react-native';
 import {Content} from 'native-base';
 import t from 'tcomb-form-native';
-import moment from 'moment';
 
 const Form = t.form.Form;
 
