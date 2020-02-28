@@ -1,27 +1,40 @@
 import React, { Component } from 'react';
 import {TextInput, View } from 'react-native';
 import {Content} from 'native-base';
+import t from 'tcomb-form-native';
+import moment from 'moment';
+
+const Form = t.form.Form;
+
+const groupOptions = {
+  fields: {
+    description: {
+      multiline: true,
+      stylesheet: {
+        ...Form.stylesheet,
+        textbox: {
+          ...Form.stylesheet.textbox,
+          normal: {
+            ...Form.stylesheet.textbox.normal,
+            height: 150,
+            textAlignVertical: 'top',
+          },
+        }
+      }
+    },
+  }
+}
+
+const Group = t.struct({
+  name: t.String,
+  description: t.maybe(t.String)
+});
 
 export default class GroupInfoForm extends Component {
   render() {
     return (
       <Content padder>
-        <View>
-          <View style={{padding: 10}}>
-            <TextInput
-              placeholder = "Enter Group Name"
-              style={{ borderRadius: 5, height: 40, borderColor: 'gray', borderWidth: 1 }}
-            />
-          </View>
-          <View style={{padding: 10}}>
-            <TextInput
-            placeholder = "Enter Group Description (Optional)"
-            textAlignVertical={'top'}
-            style={{ borderRadius: 5, height: 100, borderColor: 'gray', borderWidth: 1 }}
-            multiline = {true}
-            numberOfLines = {4}/>
-          </View>
-        </View>
+        <Form options={groupOptions} type = {Group}/>
       </Content>
     );
   }

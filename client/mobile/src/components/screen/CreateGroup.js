@@ -32,7 +32,7 @@ export default class CreateGroup extends Component {
 
   render() {
     return (
-      <View style={{ flex: 4}}>
+      <View style={{ flex: 10}}>
         <ProgressSteps {...progressStepsStyle}>
           <ProgressStep
                 label = "Group"
