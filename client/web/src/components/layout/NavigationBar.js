@@ -1,12 +1,14 @@
-
 import React, { Component } from 'react';
-import { Layout, Menu, Dropdown, Button, message } from 'antd';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import PropTypes from 'prop-types'; 
+import { GoogleLogin } from 'react-google-login';
 
-import { logoutGoogle } from '../../actions/components/screens/Auth.action';
+import { Layout, Menu, Dropdown, Button, Avatar, message } from 'antd';
+import { GoogleOutlined } from '@ant-design/icons';
+import PropTypes from 'prop-types';
+
+import { loginGoogle, logoutGoogle } from '../../actions/components/screens/Auth.action';
 
 const { Header } = Layout;
 
@@ -16,7 +18,11 @@ export class NavigationBar extends Component {
         super(props);
 
         this.logoutUser = this.logoutUser.bind(this);
-        this.handleLoginButton = this.handleLoginButton.bind(this);
+        this.loginUser = this.loginUser.bind(this);
+	}
+
+	loginUser(response) {
+		this.props.loginGoogle(response);
 	}
 
     logoutUser() {
@@ -24,24 +30,29 @@ export class NavigationBar extends Component {
         message.info('Logged out of account');
     }
 
-    handleLoginButton() {
-        const { history } = this.props;
-        history.push("/login");
-    }
-
     render() {
-        const menu = (
+        const userMenu = (
             <Menu>
-                <Menu.Item key="1" onClick={this.logoutUser}>Logout</Menu.Item>
+                <Menu.Item onClick={this.logoutUser}>Logout</Menu.Item>
             </Menu>
         );
 
-        const userDropdown = this.props.isAuthenticated ? (
-             <Dropdown.Button overlay={menu} >
+        const userNavigation = this.props.isAuthenticated ? (
+             <Dropdown.Button overlay={userMenu} icon={<Avatar size={16} icon={<img src={this.props.displayPicURL} alt=""/>}/>} >
                 {this.props.userName}
             </Dropdown.Button>
         ):
-        (<Button onClick={this.handleLoginButton}>Login</Button>);
+        (<div>
+            <GoogleLogin
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                render={renderProps => (
+                    <Button onClick={renderProps.onClick}><GoogleOutlined/> Sign in with Google</Button>
+                )}
+                buttonText="Sign in with Google"
+                onSuccess={this.loginUser}
+                onFailure={this.onFailure}
+            />
+        </div>);
 
         return (
             <Header style={ headerStyle }>
@@ -54,8 +65,8 @@ export class NavigationBar extends Component {
                 >
                 </Menu>
 
-                <div>
-                    {userDropdown}
+                <div className="masthead-user" style={{float: "right"}}>
+                    {userNavigation}
                 </div>
             </Header>
         )
@@ -75,13 +86,16 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-	logoutGoogle: () => dispatch(logoutGoogle())
+	logoutGoogle: () => dispatch(logoutGoogle()),
+    loginGoogle: response => dispatch(loginGoogle(response))
 });
 
 NavigationBar.propTypes = {
     history: PropTypes.any,
     userName: PropTypes.any,
+    displayPicURL: PropTypes.any,
     isAuthenticated: PropTypes.any,
+	loginGoogle: PropTypes.func,
 	logoutGoogle: PropTypes.func
 };
 

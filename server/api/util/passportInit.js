@@ -4,8 +4,7 @@ const passport = require('passport');
 
 const GOOGLE_CONFIG = {
   clientID: process.env.GOOGLE_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.CALLBACK_URL
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET
 }
 
 module.exports = () => {
