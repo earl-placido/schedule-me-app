@@ -64,7 +64,6 @@ const mapStateToProps = state => ({
     isAuthenticated: state.auth.isAuthenticated
 });
 
-
 App.propTypes = {
     isAuthenticated: PropTypes.any
 };

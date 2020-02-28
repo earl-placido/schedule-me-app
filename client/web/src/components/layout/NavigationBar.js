@@ -6,16 +6,16 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import PropTypes from 'prop-types'; 
 
-import { logoutGoogle } from '../../actions/components/screens/Login.action';
+import { logoutGoogle } from '../../actions/components/screens/Auth.action';
 
 const { Header } = Layout;
 
 export class NavigationBar extends Component {
     
 	constructor(props) {
-		super(props);
+        super(props);
 
-		this.logoutUser = this.logoutUser.bind(this);
+        this.logoutUser = this.logoutUser.bind(this);
         this.handleLoginButton = this.handleLoginButton.bind(this);
 	}
 
@@ -28,7 +28,6 @@ export class NavigationBar extends Component {
         const { history } = this.props;
         history.push("/login");
     }
-
 
     render() {
         const menu = (
@@ -78,7 +77,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
 	logoutGoogle: () => dispatch(logoutGoogle())
 });
-
 
 NavigationBar.propTypes = {
     history: PropTypes.any,

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
 import PropTypes from 'prop-types'; 
 
-import { loginGoogle } from '../../../actions/components/screens/Login.action';
+import { loginGoogle } from '../../../actions/components/screens/Auth.action';
 
 export class Login extends Component {
 	constructor(props) {
