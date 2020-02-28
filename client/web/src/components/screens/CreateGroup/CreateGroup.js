@@ -83,20 +83,32 @@ class CreateGroup extends Component {
 
                         <Row>
                             <div style={ buttonContainerStyle }>
-                                <Button 
-                                id="previousButton"
-                                disabled={this.props.currentPage === 0} 
-                                onClick={this.goPreviousPage.bind(this)}> 
-                                    <Icon type="left" />
-                                    Previous
-                                </Button>
+                                {this.props.currentPage !== 2 &&(
+                                <Button id="previousButton"
+                                    disabled={this.props.currentPage === 0} 
+                                    onClick={this.goPreviousPage.bind(this)}> 
+                                        <Icon type="left" />
+                                        Previous
+                                    </Button>
+                                )}
 
+                                {this.props.currentPage !== 1 &&(
                                 <Button id="nextButton" 
-                                type="primary" 
-                                onClick={this.goNextPage.bind(this)}> 
-                                    Continue
-                                    <Icon type="right" />
-                                </Button>
+                                    type="primary" 
+                                    onClick={this.goNextPage.bind(this)}> 
+                                        Continue
+                                        <Icon type="right" />
+                                    </Button>
+                                )}
+
+                                {this.props.currentPage === 1 &&(
+                                <Button id="nextButton" 
+                                    type="primary" 
+                                    onClick={this.goNextPage.bind(this)}> 
+                                        Done
+                                        <Icon type="right" />
+                                    </Button>
+                                )}
                             </div>
 
                         </Row>
