@@ -35,7 +35,7 @@ export default class CreateGroup extends Component {
       <View style={{ flex: 4}}>
         <ProgressSteps {...progressStepsStyle}>
           <ProgressStep
-                label="Group"
+                label = "Group"
                 onNext={this.onNextStep}
                 previousBtnDisabled
                 scrollViewProps={this.defaultScrollViewProps}
@@ -46,7 +46,7 @@ export default class CreateGroup extends Component {
           </ProgressStep>   
           
           <ProgressStep
-            label="Meeting"
+            label = "Meeting"
             onNext={this.onNextStep}
             onPrevious={this.onPrevStep}
             scrollViewProps={this.defaultScrollViewProps}
@@ -57,7 +57,8 @@ export default class CreateGroup extends Component {
           </ProgressStep>
 
           <ProgressStep
-            label="Share"
+            label = "Share"
+            finishBtnText = "Finish"
             onPrevious={this.onPrevStep}
             onSubmit={this.onSubmitSteps}
             scrollViewProps={this.defaultScrollViewProps}
