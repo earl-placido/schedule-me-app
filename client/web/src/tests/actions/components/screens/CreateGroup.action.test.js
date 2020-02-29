@@ -1,5 +1,7 @@
 import CreateGroupReducer, {updateGroupName, updateGroupDescription, goPreviousPage, goNextPage,
-GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME } from '../../../../actions/components/screens/CreateGroup.action';
+    updateMeetingLocation, updateMeetingDuration, updateMeetingFrequency,
+GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME,
+UPDATE_MEETING_DURATION, UPDATE_MEETING_FREQUENCY, UPDATE_MEETING_LOCATION, SUBMIT_GROUP_CREATION } from '../../../../actions/components/screens/CreateGroup.action';
 
 describe('CreateGroup action', () => {
     it('test update group name', () => {
@@ -15,20 +17,22 @@ describe('CreateGroup action', () => {
     });
 
     it('test go next page', () => {
+        const groupDescription = '';
+        const duration = '';
+        const frequency = '';
+        const location = '';
+
         // test empty groupname, success should be false
-        let goNextPageAction = goNextPage('', 0);
+        let goNextPageAction = goNextPage('', groupDescription, duration, frequency, location, 0);
         expect(goNextPageAction.type).toEqual(GO_NEXT_PAGE);
         expect(goNextPageAction.payload.success).toEqual(false);
 
         // test not empty groupname, success should be true
-        goNextPageAction = goNextPage('groupname', 0);
+        goNextPageAction = goNextPage('groupname', groupDescription, duration, frequency, location, 0);
         expect(goNextPageAction.type).toEqual(GO_NEXT_PAGE);
         expect(goNextPageAction.payload.success).toEqual(true);
         expect(goNextPageAction.payload.currentPage).toEqual(1);
 
-        // currentpage should not increase if at most right
-        goNextPageAction = goNextPage('groupname', 2);
-        expect(goNextPageAction.payload.currentPage).toEqual(2);
     });
 
     it('test go previous page', () => {
@@ -72,4 +76,44 @@ describe('test CreateGroup reducer', () => {
         const reducerItem = CreateGroupReducer(INITIAL_STATE, payload);
         expect(reducerItem.currentPage).toEqual(0);
     });
+});
+
+
+describe('CreateMeeting action', () => {
+    it('test update meeting duration', () => {
+        const meetingDuration = updateMeetingDuration('testduration');
+        expect(meetingDuration.type).toEqual(UPDATE_MEETING_DURATION);
+        expect(meetingDuration.payload).toEqual('testduration');
+    });
+
+    it('test update meeting frequency', () => {
+        const meetingFrequency = updateMeetingFrequency('testfrequency');
+        expect(meetingFrequency.type).toEqual(UPDATE_MEETING_FREQUENCY);
+        expect(meetingFrequency.payload).toEqual('testfrequency');
+    });
+
+    it('test update meeting location', () => {
+        const MeetingLocation = updateMeetingLocation('testlocation');
+        expect(MeetingLocation.type).toEqual(UPDATE_MEETING_LOCATION);
+        expect(MeetingLocation.payload).toEqual('testlocation');
+    });
+
+    it('test go previous page', () => {
+        const previousPage = goPreviousPage(1);
+        expect(previousPage.type).toEqual(GO_PREVIOUS_PAGE);
+        expect(previousPage.payload).toEqual(0);
+    });
+
+    it('test submit page', () => {
+        const groupName = 'aa';
+        const groupDescription = '';
+        const duration = 'aa';
+        const frequency = '';
+        const location = '';
+
+        const submission = goNextPage(groupName, groupDescription, duration, frequency, location, 1);
+        expect(submission.type).toEqual(SUBMIT_GROUP_CREATION);
+        expect(submission.payload).toEqual({success: true, currentPage: 2});
+    });
+    
 });

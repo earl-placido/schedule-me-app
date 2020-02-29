@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';  // to prevent eslint from showing errors th
 
 import GroupInfoForm from '../../groups/GroupInfoForm';
 import GroupMeetingForm from '../../groups/GroupMeetingForm';
-import {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
+import {updateGroupName, updateGroupDescription,
+    updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation, 
+    submitGroupCreation,
+    goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
 import "antd/dist/antd.css";
 
 class CreateGroup extends Component {
@@ -39,7 +42,15 @@ class CreateGroup extends Component {
                   success={this.props.success}/>);
               }
               case(1): {
-                  return (<GroupMeetingForm />);
+                  return (<GroupMeetingForm
+                  success={this.props.success}
+                  updateMeetingDuration={this.props.updateMeetingDuration}
+                  updateMeetingFrequency={this.props.updateMeetingFrequency}
+                  updateMeetingLocation={this.props.updateMeetingLocation}
+                  duration={this.props.duration}
+                  location={this.props.location}
+                  frequency={this.props.frequency}
+                   />);
               }
               default:{
                   return null;
@@ -52,7 +63,9 @@ class CreateGroup extends Component {
       }
 
       goNextPage() {
-        this.props.goNextPage(this.props.groupName, this.props.currentPage);
+        this.props.goNextPage(this.props.groupName, this.props.groupDescription,
+                            this.props.duration, this.props.frequency, this.props.location,
+                            this.props.currentPage);
       }
 
     render() {
@@ -137,8 +150,12 @@ const styles = {
 }
 
 const mapStateToProps = ({ CreateGroupReducer }) => {
-    const { groupName, groupDescription, success, currentPage } = CreateGroupReducer;
-    return {groupName, groupDescription, success, currentPage};
+    const { groupName, groupDescription, 
+        duration, frequency, location, 
+        success, currentPage } = CreateGroupReducer;
+    return {groupName, groupDescription, 
+        duration, frequency, location, 
+        success, currentPage};
 };
 
 // set this so eslint won't show error prop not found for redux
@@ -153,4 +170,7 @@ CreateGroup.propTypes = {
     goPreviousPage: PropTypes.func
 };
 
-export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage})(CreateGroup);
+export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, 
+    updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation,
+    submitGroupCreation,
+    goNextPage, goPreviousPage})(CreateGroup);
