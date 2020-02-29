@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View} from 'react-native';
+import { View } from 'react-native';
 
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm'
@@ -20,16 +20,19 @@ const buttonTextStyle = {
   fontWeight: 'bold'
 };
 
-export default class CreateGroup extends Component {
-  
-  defaultScrollViewProps = {
-    keyboardShouldPersistTaps: 'handled',
-    contentContainerStyle: {
-      flex: 1,
-      justifyContent: 'center'
-    },
-  };
+const hideButton = {
+  display: 'none'
+};
 
+const defaultScrollViewProps = {
+  keyboardShouldPersistTaps: 'handled',
+  contentContainerStyle: {
+    flex: 1,
+    justifyContent: 'center'
+  },
+};
+
+export default class CreateGroup extends Component {
   render() {
     return (
       <View style={{ flex: 10}}>
@@ -38,7 +41,7 @@ export default class CreateGroup extends Component {
                 label = "Group"
                 onNext={this.onNextStep}
                 previousBtnDisabled
-                scrollViewProps={this.defaultScrollViewProps}
+                scrollViewProps={defaultScrollViewProps}
                 nextBtnTextStyle={buttonTextStyle}
                 previousBtnTextStyle={buttonTextStyle}
               >
@@ -47,6 +50,7 @@ export default class CreateGroup extends Component {
           
           <ProgressStep
             label = "Meeting"
+            nextBtnText = "Done"
             onNext={this.onNextStep}
             onPrevious={this.onPrevStep}
             scrollViewProps={this.defaultScrollViewProps}
@@ -58,14 +62,12 @@ export default class CreateGroup extends Component {
 
           <ProgressStep
             label = "Share"
-            finishBtnText = "Finish"
-            onPrevious={this.onPrevStep}
+            finishBtnText = "Continue"
             onSubmit={this.onSubmitSteps}
             scrollViewProps={this.defaultScrollViewProps}
-            nextBtnTextStyle={buttonTextStyle}
-            previousBtnTextStyle={buttonTextStyle}
+            nextBtnStyle={hideButton}
+            previousBtnStyle={hideButton}
           >
-            
           </ProgressStep>
         </ProgressSteps>
       </View>
