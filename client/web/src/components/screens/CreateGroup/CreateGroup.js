@@ -162,10 +162,21 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
 CreateGroup.propTypes = {
     groupName: PropTypes.any,
     groupDescription: PropTypes.any,
+
+    duration: PropTypes.any,
+    frequency: PropTypes.any,
+    location: PropTypes.any,
+
     success: PropTypes.any,
     currentPage: PropTypes.any,
+
     updateGroupName: PropTypes.func,
     updateGroupDescription: PropTypes.func,
+
+    updateMeetingDuration: PropTypes.func,
+    updateMeetingFrequency: PropTypes.func,
+    updateMeetingLocation: PropTypes.func,
+
     goNextPage: PropTypes.func,
     goPreviousPage: PropTypes.func
 };

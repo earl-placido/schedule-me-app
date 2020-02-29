@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import { Form, Icon, Input, TimePicker } from 'antd';
+import PropTypes from 'prop-types';
+
 
 class GroupMeetingForm extends Component{
 
@@ -71,5 +73,16 @@ const styles = {
         marginLeft: 10
     }
 };
+
+GroupMeetingForm.propTypes = {
+    frequency: PropTypes.any,
+    duration: PropTypes.any,
+    location: PropTypes.any,
+    success: PropTypes.any,
+
+    updateMeetingDuration: PropTypes.func,
+    updateMeetingFrequency: PropTypes.func,
+    updateMeetingLocation: PropTypes.func
+}
 
 export default GroupMeetingForm;

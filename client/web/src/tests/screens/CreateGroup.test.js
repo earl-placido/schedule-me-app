@@ -3,7 +3,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import {shallow, configure} from 'enzyme';
 import configureStore from 'redux-mock-store';
 
-import { GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME, UPDATE_MEETING_FREQUENCY, UPDATE_MEETING_DURATION, UPDATE_MEETING_LOCATION } from '../../actions/components/screens/CreateGroup.action';
+import { GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, 
+  UPDATE_MEETING_DURATION, UPDATE_MEETING_LOCATION, UPDATE_MEETING_FREQUENCY, UPDATE_GROUP_NAME } from '../../actions/components/screens/CreateGroup.action';
 import CreateGroup from '../../components/screens/CreateGroup/CreateGroup';
 
 configure({adapter: new Adapter()});
@@ -75,14 +76,14 @@ describe('CreateGroup, test groupInfoForm', () => {
       expect(store.getActions()[0].type).toEqual(UPDATE_MEETING_DURATION);
     });
   
-    // it('should run udateMeetingFrequency in CreateGroup', () => {
-    //   component.dive().find('GroupMeetingForm').dive().find('#frequency').simulate('change', {target: {value: 'changed'}});
-    //   expect(store.getActions()[0].type).toEqual(UPDATE_MEETING_FREQUENCY);
-    // });
+    it('should run udateMeetingFrequency in CreateGroup', () => {
+      component.dive().find('GroupMeetingForm').dive().find('#frequency').simulate('change', {target: {value: 'changed'}});
+      expect(store.getActions()[0].type).toEqual(UPDATE_MEETING_FREQUENCY);
+    });
   
-    // it('should run updateMeetingLocation in CreateGroup', () => {
-    //   component.dive().find('GroupMeetingForm').dive().find('#location').simulate('change', {target: {value: 'changed'}});
-    //   expect(store.getActions()[0].type).toEqual(UPDATE_MEETING_LOCATION);
-    // });
+    it('should run updateMeetingLocation in CreateGroup', () => {
+      component.dive().find('GroupMeetingForm').dive().find('#location').simulate('change', {target: {value: 'changed'}});
+      expect(store.getActions()[0].type).toEqual(UPDATE_MEETING_LOCATION);
+    });
   });
 
