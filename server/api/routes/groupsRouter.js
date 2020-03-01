@@ -24,7 +24,6 @@ router.post('/', (req, res, next) => {
                 newGroup.meetingLocation)   // create new group
             .then((result) => {
                 let newGroupId = result;
-                console.log(newGroupId);
                 // add owner to the group with owner privileges
                 return groupsModel.newMember(newGroupId, groupOwnerId, 'AD')
                     .then(() => {
