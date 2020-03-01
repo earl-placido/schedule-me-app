@@ -1,13 +1,21 @@
 import React, { Component } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+import Login from './components/screens/Login/Login';
+import LoginModal from './components/login/LoginModal';
+import PropTypes from 'prop-types';
+
+import { toggleModal } from './actions/components/login/LoginModal.action'
+import { connect } from 'react-redux';
+
 import "antd/dist/antd.css";
 
 const { Header, Content, Footer } = Layout;
 
-export default class App extends Component {
+//THE CHANGES MADE TO THIS FILE ARE ONLY TEMPORARY. EVERYTHING WILL BE REVERTED ONCE EARL's PR IS MERGED WITH DEVELOP
+
+class App extends Component {
 
     render() {
         const { headerStyle, contentStyle, containerStyle, footerStyle } = styles
@@ -23,7 +31,9 @@ export default class App extends Component {
                             defaultSelectedKeys={['1']}
                             style={{ lineHeight: '64px' }}
                         >
-                            
+                            <Button type="primary" onClick={()=>{
+                                this.props.toggleModal(true)
+                            }}>Sign In</Button>
                         </Menu>
                     </Header>
 
@@ -33,9 +43,15 @@ export default class App extends Component {
                             <Route path='/createGroup'>
                                     <CreateGroup/>
                             </Route>
+
+                            <Route path='/login'>
+                                    <Login/>
+                            </Route>
                         </div>
                         </Switch>
                     </Content>
+
+                    <LoginModal/>
 
                     <Footer style={ footerStyle }>schedule-me-up</Footer>
                 </Layout>
@@ -67,4 +83,13 @@ const styles = {
         textAlign: 'center' 
     }
 }
+const mapStateToProps = ({ LoginModalReducer }) => {
+    const { modalVisible } = LoginModalReducer;
+    return { modalVisible };
+};
 
+App.propTypes = {
+    modalVisible: PropTypes.any
+};
+
+export default connect(mapStateToProps, {toggleModal})(App);
