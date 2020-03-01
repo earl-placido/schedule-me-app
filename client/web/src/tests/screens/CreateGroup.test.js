@@ -71,7 +71,6 @@ describe('CreateGroup, test groupInfoForm', () => {
     });
 
     it('should run updateMeetingDuration in CreateGroup', () => {
-      console.log(component.dive().debug());
       component.dive().find('GroupMeetingForm').dive().find('#duration').simulate('change', {target: {value: 'changed'}});
       expect(store.getActions()[0].type).toEqual(UPDATE_MEETING_DURATION);
     });

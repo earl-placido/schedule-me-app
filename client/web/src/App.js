@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import "antd/dist/antd.css";
+import './css/app.css';
 
 const { Header, Content, Footer } = Layout;
 

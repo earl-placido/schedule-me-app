@@ -9,6 +9,11 @@ const errorHandler = require('./api/util/errorHandler.js');
 const app = express();
 const port = process.env.SERVER_PORT || 8000;
 
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*"); // need to change * to match your domain ID, 
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json());
 

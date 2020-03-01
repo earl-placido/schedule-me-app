@@ -5,9 +5,9 @@ import PropTypes from 'prop-types';  // to prevent eslint from showing errors th
 
 import GroupInfoForm from '../../groups/GroupInfoForm';
 import GroupMeetingForm from '../../groups/GroupMeetingForm';
+import ShareLinkForm from '../../groups/ShareLinkForm';
 import {updateGroupName, updateGroupDescription,
     updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation, 
-    submitGroupCreation,
     goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
 import "antd/dist/antd.css";
 
@@ -52,6 +52,9 @@ class CreateGroup extends Component {
                   frequency={this.props.frequency}
                    />);
               }
+              case (2): {
+                  return (<ShareLinkForm link={this.props.link}/>);
+              }
               default:{
                   return null;
               }
@@ -95,34 +98,23 @@ class CreateGroup extends Component {
                         </Row>
 
                         <Row>
+                        {this.props.currentPage !== 2 &&(
                             <div style={ buttonContainerStyle }>
-                                {this.props.currentPage !== 2 &&(
                                 <Button id="previousButton"
                                     disabled={this.props.currentPage === 0} 
                                     onClick={this.goPreviousPage.bind(this)}> 
                                         <Icon type="left" />
                                         Previous
                                     </Button>
-                                )}
-
-                                {this.props.currentPage !== 1 &&(
+                                
                                 <Button id="nextButton" 
                                     type="primary" 
                                     onClick={this.goNextPage.bind(this)}> 
-                                        Continue
+                                        {this.props.currentPage !== 1 ? 'Continue' : 'Done'}
                                         <Icon type="right" />
                                     </Button>
-                                )}
-
-                                {this.props.currentPage === 1 &&(
-                                <Button id="nextButton" 
-                                    type="primary" 
-                                    onClick={this.goNextPage.bind(this)}> 
-                                        Done
-                                        <Icon type="right" />
-                                    </Button>
-                                )}
                             </div>
+                        )}
 
                         </Row>
 
@@ -152,9 +144,11 @@ const styles = {
 const mapStateToProps = ({ CreateGroupReducer }) => {
     const { groupName, groupDescription, 
         duration, frequency, location, 
+        link,
         success, currentPage } = CreateGroupReducer;
     return {groupName, groupDescription, 
-        duration, frequency, location, 
+        duration, frequency, location,
+        link, 
         success, currentPage};
 };
 
@@ -166,6 +160,8 @@ CreateGroup.propTypes = {
     duration: PropTypes.any,
     frequency: PropTypes.any,
     location: PropTypes.any,
+
+    link: PropTypes.any,
 
     success: PropTypes.any,
     currentPage: PropTypes.any,
@@ -183,5 +179,4 @@ CreateGroup.propTypes = {
 
 export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, 
     updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation,
-    submitGroupCreation,
     goNextPage, goPreviousPage})(CreateGroup);

@@ -1,3 +1,7 @@
+import axios from 'axios';
+import configureMockStore from 'redux-mock-store';
+import MockAdapter from 'axios-mock-adapter';
+
 import CreateGroupReducer, {updateGroupName, updateGroupDescription, goPreviousPage, goNextPage,
     updateMeetingLocation, updateMeetingDuration, updateMeetingFrequency,
 GO_NEXT_PAGE, GO_PREVIOUS_PAGE, UPDATE_GROUP_DESCRIPTION, UPDATE_GROUP_NAME,
@@ -104,16 +108,31 @@ describe('CreateMeeting action', () => {
         expect(previousPage.payload).toEqual(0);
     });
 
-    it('test submit page', () => {
-        const groupName = 'aa';
+    
+});
+
+
+describe('test creation group', () => {
+    let store, httpMock;
+    const flushAllPromises = () => new Promise(resolve => setImmediate(resolve));
+
+    beforeEach(() => {
+        httpMock = new MockAdapter(axios);
+        const mockStore = configureMockStore();
+        store = mockStore({});
+    });
+
+    it('test submit page', async() => {
+        const groupName = 'testsubmission';
         const groupDescription = '';
-        const duration = 'aa';
+        const duration = {toDate: () => new Date()};
         const frequency = '';
         const location = '';
 
-        const submission = goNextPage(groupName, groupDescription, duration, frequency, location, 1);
-        expect(submission.type).toEqual(SUBMIT_GROUP_CREATION);
-        expect(submission.payload).toEqual({success: true, currentPage: 2});
+        httpMock.onPost(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups`).reply(200);
+        goNextPage(groupName, groupDescription, duration, frequency, location, 1)(store.dispatch);
+        await flushAllPromises();
+        
+        expect(store.getActions()[0].type).toEqual(SUBMIT_GROUP_CREATION);
     });
-    
 });

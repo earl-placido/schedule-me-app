@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 // group
 export const UPDATE_GROUP_NAME = 'update_group_name';
 export const UPDATE_GROUP_DESCRIPTION = 'update_group_description';
@@ -66,13 +68,30 @@ const groupPageLogic = (groupName, currentPage) => {
 };
 
 /***** submit group/meeting form *****/
-export const submitGroupCreation = (groupName, groupDescription,
-    duration, frequency, location, currentPage) => {
+const submitGroupCreation = (groupName, groupDesc,
+    duration, meetingFrequency, meetingLocation, currentPage) => async(dispatch) => {
         if (duration === null)
-            return {type:SUBMIT_GROUP_CREATION  , payload: {success: false}};
+            return {type: SUBMIT_GROUP_CREATION, payload: {success: false}};
         
+        const dateDuration = duration.toDate(); // to format to 2 decimals
+        const hours = ('0' + dateDuration.getHours()).slice(-2);
+        const minutes = ('0' + dateDuration.getMinutes()).slice(-2);
+        const seconds = ('0' + dateDuration.getSeconds()).slice(-2);
+
+        const meetingDuration = hours+minutes+seconds;
+        const groupCreation = {groupName, groupDesc, meetingDuration, meetingFrequency, meetingLocation};
         // call backend to add group
-        return {type:SUBMIT_GROUP_CREATION  , payload: {success: true, currentPage: currentPage+1}}; 
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups`, groupCreation);
+        
+        //success
+        if (response.status === 201) {
+            const link = `${window.location.origin}/groups/${response.data.groupId}`;
+            dispatch({type: SUBMIT_GROUP_CREATION, payload: {success: true, link, currentPage: currentPage+1}});
+        }
+        else {
+            dispatch({type: SUBMIT_GROUP_CREATION, payload: {success: false, response, currentPage: currentPage+1}});
+            console.log('failure');
+        }
 };
 
 
@@ -89,6 +108,8 @@ export const goPreviousPage = (currentPage) => {
 
 const INITIAL_STATE = {groupName: '', groupDescription: '', 
                        duration: null, meetingFrequency: null, meetingLocation: null,
+                       link: '',
+                       response: null,
                        success: true, currentPage: 0};
 
 export default(state=INITIAL_STATE, action) => {
@@ -109,6 +130,7 @@ export default(state=INITIAL_STATE, action) => {
             return {...state, location: action.payload};
         }
         case (SUBMIT_GROUP_CREATION): {
+            console.log(action.payload);
             return {...state, ...action.payload};
         }
         case (GO_NEXT_PAGE): {
