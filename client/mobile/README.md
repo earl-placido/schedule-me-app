@@ -4,7 +4,7 @@
 2. `git clone https://github.com/Syndrical/scheduler-app.git`
 3. `cd scheduler-app/client/mobile`
 4. `npm install`
-5. `react-native run-android`
+5. `npx react-native run-android`
 
 ## To run on iOS:
 
