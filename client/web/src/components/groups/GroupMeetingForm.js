@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Form, Icon, Input } from 'antd';
+import { Form, Icon, Input, TimePicker } from 'antd';
 import {connect} from 'react-redux';
 
 class GroupMeetingForm extends Component{
@@ -8,10 +8,8 @@ class GroupMeetingForm extends Component{
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                     {(
-                        <Input
-                            prefix={<Icon type="clock-circle" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="Meeting Duration"
-                        />
+                        <TimePicker  format={'HH:mm'}
+                        placeholder="Duration"/>
                     )}
                 </Form.Item>
 

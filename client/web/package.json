@@ -24,7 +24,7 @@
     "test": "jest --config ./jest.config.json",
     "test:ci": "CI=true react-scripts test",
     "eject": "react-scripts eject",
-    "deploy_dev": "surge --domain schedule-me-up_dev.surge.sh build",
+    "deploy_dev": "surge --domain schedule-me-up-dev.surge.sh build",
     "scss": "node-sass --watch src/scss -o src/css",
     "precommit": "lint-staged"
   },

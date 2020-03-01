@@ -22,7 +22,7 @@ Trello : <https://trello.com/b/ZWdpiKU1/4350-scheduler>
 | Environment | URL                                 |
 | ----------- | ----------------------------------- |
 | Production  | [schedule-me-up.surge.sh/](http://schedule-me-up.surge.sh/)     |
-| Develop     | [schedule-me-up_dev.surge.sh/](http://schedule-me-up_dev.surge.sh/) |
+| Develop     | [schedule-me-up-dev.surge.sh/](http://schedule-me-up-dev.surge.sh/) |
 
 ---
 
