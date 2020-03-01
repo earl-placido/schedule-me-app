@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Input } from 'antd';
+import PropTypes from 'prop-types';
 
 
 class ShareLinkForm extends Component {
@@ -12,5 +13,9 @@ class ShareLinkForm extends Component {
         );
     }
 }
+
+ShareLinkForm.propTypes = {
+    link: PropTypes.any
+};
 
 export default ShareLinkForm;
