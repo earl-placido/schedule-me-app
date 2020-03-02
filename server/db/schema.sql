@@ -47,6 +47,18 @@ CREATE TABLE `GroupMember`
   CONSTRAINT FK_GroupMember_UserId FOREIGN KEY (UserId) REFERENCES `User`(UserId) ON DELETE CASCADE
 );
 
+DROP TABLE IF EXISTS `GroupMemberEvent`;
+CREATE TABLE `GroupMemberEvent`
+(
+  GroupMemberEventId INT NOT NULL AUTO_INCREMENT,
+  GroupMemberId INT NOT NULL,
+  EventName NVARCHAR(100) NOT NULL,
+  StartTime DATETIME NOT NULL,
+  EndTime DATETIME NOT NULL,
+  PRIMARY KEY (GroupMemberEventId),
+  CONSTRAINT FK_GroupMemberEvent_GroupMemberEventId FOREIGN KEY (GroupMemberId) REFERENCES `GroupMember` (GroupMemberId)
+);
+
 DROP TABLE IF EXISTS `Availability`;
 CREATE TABLE `Availability`
 (
