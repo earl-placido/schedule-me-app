@@ -30,4 +30,21 @@ npm run db:init
       Try connecting using node after you do so.
     
       If that doesn't work, try it without @'localhost' part.
-      ```
+    ```
+
+  - If the error shows up right after trying to initialize the database
+
+    ![image-20200229130205078](https://i.imgur.com/qtAV3WE.png)
+    
+    - Run: 
+      - `ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password'`
+      - Then run: `FLUSH PRIVILEGES`
+    
+  - If the error shows up right after creating the user
+  
+    ![image-20200229130449826](https://i.imgur.com/cymKi2o.png)
+  
+    - Run:
+      - `ALTER USER 'user'@'%' IDENTIFIED WITH mysql_native_password BY 'password'`
+  
+    

@@ -17,7 +17,12 @@ The server will handle all of the functionality that relates to persistence and 
 Tests for the database can be created within the **tests** folder. There should be **one test file per corresponding file in model**. 
 
 ## How to run
-1. Create an `.env` file inside `/server` which must include:
+1. Install MySQL: https://dev.mysql.com/downloads/installer/
+
+   - Can install the default options
+
+
+2. Create an `.env` file inside `/server` which must include:
       ```
       NODE_ENV=development
       SERVER_PORT=8000
@@ -42,5 +47,7 @@ Tests for the database can be created within the **tests** folder. There should 
 
 3. Initialize database
    - `npm run db:init`
-4. To runlocally:
+   - For troubleshooting, head to the [database README.md](./db/README.md)
+
+4. To run locally:
    - `npm run dev`
