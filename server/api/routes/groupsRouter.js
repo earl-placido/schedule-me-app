@@ -16,15 +16,14 @@ router.post('/', (req, res, next) => {
     else {
         return groupsModel
             .newGroup(
-                groupOwnerId,
                 newGroup.groupName, 
                 newGroup.groupDesc,
+                groupOwnerId,
                 newGroup.meetingDuration, 
                 newGroup.meetingFrequency, 
                 newGroup.meetingLocation)   // create new group
             .then((result) => {
                 let newGroupId = result;
-
                 // add owner to the group with owner privileges
                 return groupsModel.newMember(newGroupId, groupOwnerId, 'AD')
                     .then(() => {
