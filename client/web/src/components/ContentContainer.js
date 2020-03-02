@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 
+import LoginModal from './login/LoginModal';
+import PropTypes from 'prop-types';
+
+import { toggleModal } from './actions/components/login/LoginModal.action'
+import { connect } from 'react-redux';
 const { Header, Content } = Layout;
 
-export default class ContentContainer extends Component {
+class ContentContainer extends Component {
     render() {
         const { headerStyle, contentStyle, containerStyle } = styles
 
@@ -56,3 +61,14 @@ const styles = {
         textAlign: 'center' 
     }
 }
+
+const mapStateToProps = ({ LoginModalReducer }) => {
+    const { modalVisible } = LoginModalReducer;
+    return { modalVisible };
+};
+
+ContentContainer.propTypes = {
+    modalVisible: PropTypes.any
+};
+
+export default connect(mapStateToProps, {toggleModal})(ContentContainer);

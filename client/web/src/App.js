@@ -4,19 +4,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ContentContainer from './components/ContentContainer'
 import Home from './components/screens/Home/Home';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
-import Login from './components/screens/Login/Login';
-import LoginModal from './components/login/LoginModal';
-import PropTypes from 'prop-types';
 
-import { toggleModal } from './actions/components/login/LoginModal.action'
-import { connect } from 'react-redux';
 
 import "antd/dist/antd.css";
 
 const { Footer } = Layout;
 
 
-class App extends Component {
+export default class App extends Component {
 
     render() {
         const { footerStyle } = styles
@@ -47,13 +42,3 @@ const styles = {
         textAlign: 'center'
     }
 }
-const mapStateToProps = ({ LoginModalReducer }) => {
-    const { modalVisible } = LoginModalReducer;
-    return { modalVisible };
-};
-
-App.propTypes = {
-    modalVisible: PropTypes.any
-};
-
-export default connect(mapStateToProps, {toggleModal})(App);
