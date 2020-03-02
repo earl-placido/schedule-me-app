@@ -12,8 +12,11 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` 
 (
   UserId INT NOT NULL AUTO_INCREMENT,
-  UserName NVARCHAR(50) NOT NULL,
-  PRIMARY KEY (UserId)
+  UserName NVARCHAR(320) NOT NULL,
+  UserEmail NVARCHAR(320) NOT NULL,
+  PRIMARY KEY (UserId),
+  CONSTRAINT UQ_User_UserEmail UNIQUE (UserEmail)
+
 );
 
 DROP TABLE IF EXISTS `Group`;
@@ -80,4 +83,4 @@ CREATE TABLE `Meeting`
 
 SET FOREIGN_KEY_CHECKS=1;
 
-INSERT INTO `User` (`UserName`) VALUES ('TestUser');
+INSERT INTO `User` (`UserName`, `UserEmail`) VALUES ('TestUser', 'TestEmail@schedulemeup.ca');
