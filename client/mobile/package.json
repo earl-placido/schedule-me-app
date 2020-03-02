@@ -11,8 +11,12 @@
     "lint": "eslint src"
   },
   "dependencies": {
+    "moment": "^2.24.0",
+    "native-base": "^2.13.8",
     "react": "16.9.0",
-    "react-native": "0.61.5"
+    "react-native": "0.61.5",
+    "react-native-progress-steps": "^1.2.8",
+    "tcomb-form-native": "^0.6.20"
   },
   "devDependencies": {
     "@babel/core": "7.8.4",
@@ -26,6 +30,9 @@
     "react-test-renderer": "16.9.0"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!native-base)/"
+    ]
   }
 }
