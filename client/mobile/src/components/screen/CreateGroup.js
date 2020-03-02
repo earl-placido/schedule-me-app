@@ -6,7 +6,7 @@ import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm'
 import GroupMeetingForm from '../groups/CreateGroup/GroupMeetingForm'
 
 import PropTypes from 'prop-types';
-import {updateGroupName, updateGroupDescription} from '../../actions/components/screens/CreateGroup.action';
+import {updateGroupName, updateGroupDescription, updateGroupDuration, updateGroupFrequency, updateGroupLocation} from '../../actions/components/screens/CreateGroup.action';
 import {connect} from 'react-redux';
 
 const progressStepsStyle = {
@@ -63,11 +63,19 @@ class CreateGroup extends Component {
             nextBtnText = "Done"
             onNext={this.onNextStep}
             onPrevious={this.onPrevStep}
+            nextBtnDisabled={!this.props.groupDuration}
             scrollViewProps={this.defaultScrollViewProps}
             nextBtnTextStyle={buttonTextStyle}
             previousBtnTextStyle={buttonTextStyle}
           >
-            <GroupMeetingForm/>
+            <GroupMeetingForm
+              handleGroupDuration={this.props.updateGroupDuration} 
+              handleGroupFrequency={this.props.updateGroupFrequency} 
+              handleGroupLocation={this.props.updateGroupLocation}
+              groupDuration={this.props.groupDuration}
+              groupFrequency={this.props.groupFrequency}
+              groupLocation={this.props.groupLocation}
+            />
           </ProgressStep>
 
           <ProgressStep
@@ -86,15 +94,21 @@ class CreateGroup extends Component {
 }
 
 const mapStateToProps = ({ CreateGroupReducer }) => {
-  const { groupName, groupDescription } = CreateGroupReducer;
-  return {groupName, groupDescription};
+  const { groupName, groupDescription, groupDuration, groupFrequency, groupLocation } = CreateGroupReducer;
+  return {groupName, groupDescription, groupDuration, groupFrequency, groupLocation};
 };
 
 CreateGroup.propTypes = {
   groupName: PropTypes.any,
   groupDescription: PropTypes.any,
+  groupDuration: PropTypes.any,
+  groupFrequency: PropTypes.any,
+  groupLocation: PropTypes.any,
   updateGroupName: PropTypes.func,
   updateGroupDescription: PropTypes.func,
+  updateGroupDuration: PropTypes.func,
+  updateGroupFrequency: PropTypes.func,
+  updateGroupLocation: PropTypes.func,
 };
 
-export default connect(mapStateToProps, {updateGroupName, updateGroupDescription})(CreateGroup);
+export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, updateGroupDuration, updateGroupFrequency, updateGroupLocation})(CreateGroup);
