@@ -8,6 +8,7 @@ import { PrivateRoute } from './components/util/PrivateRoute';
 import NavigationBar from './components/layout/NavigationBar';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import "antd/dist/antd.css";
+import './css/app.css';
 
 const { Content, Footer } = Layout;
 
