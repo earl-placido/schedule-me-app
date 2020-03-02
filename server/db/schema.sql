@@ -12,8 +12,11 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` 
 (
   UserId INT NOT NULL AUTO_INCREMENT,
-  UserName NVARCHAR(50) NOT NULL,
-  PRIMARY KEY (UserId)
+  UserName NVARCHAR(320) NOT NULL,
+  UserEmail NVARCHAR(320) NOT NULL,
+  PRIMARY KEY (UserId),
+  CONSTRAINT UQ_User_UserEmail UNIQUE (UserEmail)
+
 );
 
 DROP TABLE IF EXISTS `Group`;
@@ -42,6 +45,18 @@ CREATE TABLE `GroupMember`
   PRIMARY KEY (GroupMemberId),
   CONSTRAINT FK_GroupMember_GroupId FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId) ON DELETE CASCADE,
   CONSTRAINT FK_GroupMember_UserId FOREIGN KEY (UserId) REFERENCES `User`(UserId) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS `GroupMemberEvent`;
+CREATE TABLE `GroupMemberEvent`
+(
+  GroupMemberEventId INT NOT NULL AUTO_INCREMENT,
+  GroupMemberId INT NOT NULL,
+  EventName NVARCHAR(100) NOT NULL,
+  StartTime DATETIME NOT NULL,
+  EndTime DATETIME NOT NULL,
+  PRIMARY KEY (GroupMemberEventId),
+  CONSTRAINT FK_GroupMemberEvent_GroupMemberEventId FOREIGN KEY (GroupMemberId) REFERENCES `GroupMember` (GroupMemberId)
 );
 
 DROP TABLE IF EXISTS `Availability`;
@@ -80,4 +95,4 @@ CREATE TABLE `Meeting`
 
 SET FOREIGN_KEY_CHECKS=1;
 
-INSERT INTO `User` (`UserName`) VALUES ('TestUser');
+INSERT INTO `User` (`UserName`, `UserEmail`) VALUES ('TestUser', 'TestEmail@schedulemeup.ca');
