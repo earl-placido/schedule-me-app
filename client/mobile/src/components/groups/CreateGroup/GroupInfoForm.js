@@ -58,3 +58,10 @@ export default class GroupInfoForm extends Component {
     );
   }
 }
+
+GroupInfoForm.propTypes = {
+  handleGroupName: PropTypes.func,
+  handleGroupDescription: PropTypes.func,
+  groupName: PropTypes.any,
+  groupDescription: PropTypes.any
+};
