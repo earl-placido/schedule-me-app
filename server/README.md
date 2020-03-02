@@ -18,24 +18,24 @@ Tests for the database can be created within the **tests** folder. There should 
 
 ## How to run
 1. Create an `.env` file inside `/server` which must include:
-        ```
-        NODE_ENV=development
-        SERVER_PORT=8000
-        
-        RDS_DB_NAME=schedulemeup
-        
-        ### hostname and port of your MySQL instance
-        RDS_HOSTNAME=localhost
-        RDS_PORT=3306
-        
-        ### Root credentials from your MySQL instance
-        RDS_USERNAME=root
-        RDS_PASSWORD=password
-        
-        ### can be anything, this user will be created during db initialization
-        DB_USER=user
-        DB_PASSWORD=password
-        ```
+      ```
+      NODE_ENV=development
+      SERVER_PORT=8000
+      
+      RDS_DB_NAME=schedulemeup
+      
+      ### hostname and port of your MySQL instance
+      RDS_HOSTNAME=localhost
+      RDS_PORT=3306
+      
+      ### Root credentials from your MySQL instance
+      RDS_USERNAME=root
+      RDS_PASSWORD=password
+      
+      ### can be anything, this user will be created during db initialization
+      DB_USER=user
+      DB_PASSWORD=password
+      ```
 
 2. Install all required dependencies:
    -  `npm install`
