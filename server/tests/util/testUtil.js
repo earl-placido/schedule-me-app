@@ -3,10 +3,11 @@ const mysql = require('promise-mysql');
 function insertUsersQuery(users) {
     return (
         `
-            INSERT INTO \`User\` (UserName) VALUES
-            ${users.map(user => mysql.format(`(?)`, 
+            INSERT INTO \`User\` (UserName, UserEmail) VALUES
+            ${users.map(user => mysql.format(`(?, ?)`, 
             [
-                user.userName
+                user.userName,
+                user.userEmail
             ])).join(`, `)};
         
         `

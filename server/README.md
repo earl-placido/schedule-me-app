@@ -40,6 +40,11 @@ Tests for the database can be created within the **tests** folder. There should 
       ### can be anything, this user will be created during db initialization
       DB_USER=user
       DB_PASSWORD=password
+      
+      ### Auth Config
+      GOOGLE_CLIENT_ID=<Client ID from Google API>
+      GOOGLE_CLIENT_SECRET=<Client SECRET from Google API>
+      SECRET_KEY=schedule-me-up-super-secret-key
       ```
 
 2. Install all required dependencies:
