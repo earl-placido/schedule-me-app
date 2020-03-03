@@ -1,15 +1,39 @@
 import React, {Component} from 'react';
 import { Form, Icon, Input, TimePicker } from 'antd';
-import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+
 
 class GroupMeetingForm extends Component{
+
+    changeDuration(duration) {
+        this.props.updateMeetingDuration(duration);
+    }
+
+    changeFrequency(frequency) {
+        this.props.updateMeetingFrequency(frequency.target.value);
+    }
+
+    changeLocation(location) {
+        this.props.updateMeetingLocation(location.target.value);
+    }
+
     render(){
+
+        const {errorText} = styles;
+
         return(
             <Form onSubmit={this.handleSubmit} className="login-form">
                 <Form.Item>
                     {(
-                        <TimePicker  format={'HH:mm'}
-                        placeholder="Duration"/>
+                        <div>
+                            <TimePicker  format={'HH:mm'}
+                            placeholder="Duration"
+                            value={this.props.duration}
+                            onChange={this.changeDuration.bind(this)}
+                            id='duration'
+                            />
+                            {!this.props.success && <h1 style={errorText}>Please input meeting duration.</h1>}
+                        </div>
                     )}
                 </Form.Item>
 
@@ -18,6 +42,9 @@ class GroupMeetingForm extends Component{
                         <Input
                             prefix={<Icon type="calendar" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             placeholder="Meeting Frequency (Optional)"
+                            value={this.props.frequency}
+                            onChange={this.changeFrequency.bind(this)}
+                            id='frequency'
                         />
                     )}
                 </Form.Item>
@@ -27,6 +54,9 @@ class GroupMeetingForm extends Component{
                         <Input
                             prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
                             placeholder="Meeting Location (Optional)"
+                            value={this.props.location}
+                            onChange={this.changeLocation.bind(this)}
+                            id='location'
                         />
                     )}
                 </Form.Item>
@@ -36,4 +66,23 @@ class GroupMeetingForm extends Component{
     }
 }
 
-export default connect()(GroupMeetingForm);
+const styles = {
+    errorText: {
+        fontSize: 12,
+        color: 'red',
+        marginLeft: 10
+    }
+};
+
+GroupMeetingForm.propTypes = {
+    frequency: PropTypes.any,
+    duration: PropTypes.any,
+    location: PropTypes.any,
+    success: PropTypes.any,
+
+    updateMeetingDuration: PropTypes.func,
+    updateMeetingFrequency: PropTypes.func,
+    updateMeetingLocation: PropTypes.func
+}
+
+export default GroupMeetingForm;
