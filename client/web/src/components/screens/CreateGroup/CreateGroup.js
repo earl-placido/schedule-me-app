@@ -5,7 +5,10 @@ import PropTypes from 'prop-types';  // to prevent eslint from showing errors th
 
 import GroupInfoForm from '../../groups/GroupInfoForm';
 import GroupMeetingForm from '../../groups/GroupMeetingForm';
-import {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
+import ShareLinkForm from '../../groups/ShareLinkForm';
+import {updateGroupName, updateGroupDescription,
+    updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation, 
+    goNextPage, goPreviousPage} from '../../../actions/components/screens/CreateGroup.action';
 import "antd/dist/antd.css";
 
 class CreateGroup extends Component {
@@ -39,7 +42,18 @@ class CreateGroup extends Component {
                   success={this.props.success}/>);
               }
               case(1): {
-                  return (<GroupMeetingForm />);
+                  return (<GroupMeetingForm
+                  success={this.props.success}
+                  updateMeetingDuration={this.props.updateMeetingDuration}
+                  updateMeetingFrequency={this.props.updateMeetingFrequency}
+                  updateMeetingLocation={this.props.updateMeetingLocation}
+                  duration={this.props.duration}
+                  location={this.props.location}
+                  frequency={this.props.frequency}
+                   />);
+              }
+              case (2): {
+                  return (<ShareLinkForm link={this.props.link}/>);
               }
               default:{
                   return null;
@@ -52,7 +66,9 @@ class CreateGroup extends Component {
       }
 
       goNextPage() {
-        this.props.goNextPage(this.props.groupName, this.props.currentPage);
+        this.props.goNextPage(this.props.groupName, this.props.groupDescription,
+                            this.props.duration, this.props.frequency, this.props.location,
+                            this.props.currentPage);
       }
 
     render() {
@@ -82,34 +98,23 @@ class CreateGroup extends Component {
                         </Row>
 
                         <Row>
+                        {this.props.currentPage !== 2 &&(
                             <div style={ buttonContainerStyle }>
-                                {this.props.currentPage !== 2 &&(
                                 <Button id="previousButton"
                                     disabled={this.props.currentPage === 0} 
                                     onClick={this.goPreviousPage.bind(this)}> 
                                         <Icon type="left" />
                                         Previous
                                     </Button>
-                                )}
-
-                                {this.props.currentPage !== 1 &&(
+                                
                                 <Button id="nextButton" 
                                     type="primary" 
                                     onClick={this.goNextPage.bind(this)}> 
-                                        Continue
+                                        {this.props.currentPage !== 1 ? 'Continue' : 'Done'}
                                         <Icon type="right" />
                                     </Button>
-                                )}
-
-                                {this.props.currentPage === 1 &&(
-                                <Button id="nextButton" 
-                                    type="primary" 
-                                    onClick={this.goNextPage.bind(this)}> 
-                                        Done
-                                        <Icon type="right" />
-                                    </Button>
-                                )}
                             </div>
+                        )}
 
                         </Row>
 
@@ -137,20 +142,41 @@ const styles = {
 }
 
 const mapStateToProps = ({ CreateGroupReducer }) => {
-    const { groupName, groupDescription, success, currentPage } = CreateGroupReducer;
-    return {groupName, groupDescription, success, currentPage};
+    const { groupName, groupDescription, 
+        duration, frequency, location, 
+        link,
+        success, currentPage } = CreateGroupReducer;
+    return {groupName, groupDescription, 
+        duration, frequency, location,
+        link, 
+        success, currentPage};
 };
 
 // set this so eslint won't show error prop not found for redux
 CreateGroup.propTypes = {
     groupName: PropTypes.any,
     groupDescription: PropTypes.any,
+
+    duration: PropTypes.any,
+    frequency: PropTypes.any,
+    location: PropTypes.any,
+
+    link: PropTypes.any,
+
     success: PropTypes.any,
     currentPage: PropTypes.any,
+
     updateGroupName: PropTypes.func,
     updateGroupDescription: PropTypes.func,
+
+    updateMeetingDuration: PropTypes.func,
+    updateMeetingFrequency: PropTypes.func,
+    updateMeetingLocation: PropTypes.func,
+
     goNextPage: PropTypes.func,
     goPreviousPage: PropTypes.func
 };
 
-export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, goNextPage, goPreviousPage})(CreateGroup);
+export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, 
+    updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation,
+    goNextPage, goPreviousPage})(CreateGroup);

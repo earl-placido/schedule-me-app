@@ -1,6 +1,7 @@
 const express = require('express');
 const responses = require('../util/responses');
 const router = express.Router();
+const { authenticateToken } = require('../util/tokenHelper');
 
 const exampleModel = require('../model/exampleModel');
 
@@ -12,7 +13,7 @@ router.get('/:id', (req, res, next) => {
         .catch(next);
 });
 
-router.post('/:id', (req, res, next) => {
+router.post('/:id', authenticateToken, (req, res, next) => {
     const { id } = req.params;
     const data = req.body.data;
     

@@ -12,15 +12,16 @@ const DB_VARIABLES = {
     password: process.env.DB_PASSWORD,
     database: process.env.RDS_DB_NAME,
     rootUser: process.env.RDS_USERNAME,
-    rootPassword: process.env.RDS_PASSWORD
+    rootPassword: process.env.RDS_PASSWORD,
 }
 
 console.log('Initializing Database');
+
 mysql.createConnection({
     host: DB_VARIABLES.host,
     port: DB_VARIABLES.port,
     user: DB_VARIABLES.rootUser,
-    password: DB_VARIABLES.rootPassword
+    password: DB_VARIABLES.rootPassword,
 }).then(conn => {
     console.log("Connected to MySQL");
     let response = conn.query(`CREATE DATABASE IF NOT EXISTS ??`, [DB_VARIABLES.database]);
@@ -34,7 +35,7 @@ mysql.createConnection({
         user: DB_VARIABLES.rootUser,
         password: DB_VARIABLES.rootPassword,
         database: DB_VARIABLES.database,
-        multipleStatements: true
+        multipleStatements: true,
     });
 }).then(conn => {
     console.log(`Connected to database ${DB_VARIABLES.database}`);
@@ -57,7 +58,7 @@ mysql.createConnection({
         user: DB_VARIABLES.user,
         password: DB_VARIABLES.password,
         database: DB_VARIABLES.database,
-        multipleStatements: true
+        multipleStatements: true,
     });
 }).then(conn => {
     console.log("Creating database schema");
