@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Modal } from 'antd';
+import { Modal, Button } from 'antd';
 import PropTypes from 'prop-types';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
@@ -8,10 +8,6 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../../actions/components/login/LoginModal.action'
 
 class LoginModal extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     state = { signUpSelected: false }
 
     close = () => {
@@ -34,18 +30,18 @@ class LoginModal extends Component {
                         <div>
                             <LoginForm />
                             <p>
-                                Don't have an account? <a onClick={() => {
+                                Don't have an account? <Button type="link" onClick={() => {
                                     this.setState({ signUpSelected: true })
-                                }}> Sign Up</a>
+                                }}> Sign Up</Button>
                             </p>
                         </div>
                     ) : (
                             <div>
                                 <SignupForm />
                                 <p>
-                                    Have an account? <a onClick={() => {
+                                    Have an account? <Button type="link" onClick={() => {
                                         this.setState({ signUpSelected: false })
-                                    }}> Log In</a>
+                                    }}> Log In</Button>
                                 </p>
                             </div>
                         )}

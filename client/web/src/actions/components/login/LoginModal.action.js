@@ -12,7 +12,7 @@ const INITIAL_STATE = { modalVisible: false }
 export default(state = INITIAL_STATE, action) => {
     switch(action.type){
         case(TOGGLE_MODAL) : {
-            return {... state, modalVisible: action.payload};
+            return {...state, modalVisible: action.payload};
         }
 
         default: {

@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 
 import LoginModal from './login/LoginModal';
 import PropTypes from 'prop-types';
 
-import { toggleModal } from './actions/components/login/LoginModal.action'
+import { toggleModal } from '../actions/components/login/LoginModal.action'
 import { connect } from 'react-redux';
+
 const { Header, Content } = Layout;
 
 class ContentContainer extends Component {
@@ -14,7 +15,7 @@ class ContentContainer extends Component {
 
         return (
             <div>
-                <Header style={ headerStyle }>
+                <Header style={headerStyle}>
                     <div className="logo" />
                     <Menu
                         theme="dark"
@@ -23,42 +24,45 @@ class ContentContainer extends Component {
                         style={{ lineHeight: '64px' }}
                     >
 
+                        <Button type="primary" onClick={() => {this.props.toggleModal(true)}} style={{float:"right", marginTop: 15}}>
+                            Sign In
+                        </Button>
                     </Menu>
                 </Header>
 
-                <Content style={ contentStyle }>
-                    <div style={ containerStyle }>
+                <Content style={contentStyle}>
+                    <div style={containerStyle}>
                         {this.props.children}
                     </div>
-
                 </Content>
-                
+
+                <LoginModal/>
             </div>
         );
     }
 }
 
 const styles = {
-    headerStyle : {
-        position: 'fixed', 
-        zIndex: 1, 
-        width: '100%' 
+    headerStyle: {
+        position: 'fixed',
+        zIndex: 1,
+        width: '100%'
     },
 
-    contentStyle : {
-        padding: '0 50px', 
-        marginTop: 90 
+    contentStyle: {
+        padding: '0 50px',
+        marginTop: 90
     },
 
-    containerStyle :{
-        background: '#fff', 
-        padding: 24, 
-        minHeight: 500, 
+    containerStyle: {
+        background: '#fff',
+        padding: 24,
+        minHeight: 500,
         marginTop: 20
     },
 
-    footerStyle : {
-        textAlign: 'center' 
+    footerStyle: {
+        textAlign: 'center'
     }
 }
 
@@ -71,4 +75,4 @@ ContentContainer.propTypes = {
     modalVisible: PropTypes.any
 };
 
-export default connect(mapStateToProps, {toggleModal})(ContentContainer);
+export default connect(mapStateToProps, { toggleModal })(ContentContainer);
