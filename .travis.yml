@@ -38,6 +38,7 @@ matrix:
           on:
             branch: master
         - provider: elasticbeanstalk
+          edge: true
           access_key_id:
             secure: $EBS_ACCESS_KEY
           secret_access_key:
