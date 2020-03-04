@@ -1,15 +1,16 @@
 import React, {Component} from 'react';
-import {Calendar, Modal, TimePicker, Button} from 'antd';
+import {Calendar, Modal, TimePicker, Button, Checkbox} from 'antd';
+import PropTypes from 'prop-types';
 
 const {RangePicker} = TimePicker;
 
 class Group extends Component {
 
-    state = {modalVisible: false, rangeHours: ['']};
+    state = {modalVisible: false, rangeHours: [''], selectedDate: ''};
 
     onSelect = (value) => {
-        console.log(value);
-        this.setState({modalVisible: true});
+        const selectedDate = value.format("YYYY-MM-DD");
+        this.setState({modalVisible: true, selectedDate});
     }
 
     handleOk = () => {
@@ -31,16 +32,31 @@ class Group extends Component {
         this.setState({rangeHours: [...this.state.rangeHours, '']});
     }
 
+    onChangeRange(index, value) {
+        let rangeHours = [...this.state.rangeHours];
+        rangeHours[index] = value;
+        this.setState({rangeHours});
+    }
+
     render() {
-        console.log(this.props.match.params.id);
         return (
             <div>
                 <Calendar onSelect={this.onSelect} />
 
                 <Modal visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                    <h2>{this.state.selectedDate}</h2>
                     <h3 className='modal-header'>Input availability time</h3>
-                    {this.state.rangeHours.map( () => <div className='range-picker'><RangePicker /></div>)}
+                    {this.state.rangeHours.map( (item, index) => {
+                        return (
+                        <div key={index} className='range-picker'>
+                            <RangePicker onChange={this.onChangeRange.bind(this, index)}/>
+                        </div>
+                        );
+                    })}
 
+                    <div className='checkbox-event'>
+                        <Checkbox checked disabled>Recurring event</Checkbox>
+                    </div>
                     <div className='button-container'>
                         <Button shape='round' className="delete-button" onClick={this.handleDelete}>Delete</Button>
                         <Button type='primary' shape='round' className="add-range-button" onClick={this.handleAdd}>Add</Button>
@@ -50,5 +66,9 @@ class Group extends Component {
         );
     }
 }
+
+Group.propTypes = {
+    match: PropTypes.any
+};
 
 export default Group;
