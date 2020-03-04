@@ -55,4 +55,22 @@ router.route('/signup')
         }).catch(next);
     }, tokenHelper.createToken, tokenHelper.sendToken);
 
+router.route('/login')
+    .post((req, res, next) => {
+        let user = req.body;
+
+        userModel.validateUser(user.email).then(result => {
+            if (!result.isValid) {
+                return res.status(responses.UNAUTHORIZED).json({
+                    status: responses.UNAUTHORIZED,
+                    err: result.msg
+                });
+            }
+            
+            req.auth = { id: result.userId };
+
+            next();
+        }).catch(next);
+    }, tokenHelper.createToken, tokenHelper.sendToken);
+
 module.exports = router;

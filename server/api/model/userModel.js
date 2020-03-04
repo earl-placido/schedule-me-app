@@ -16,7 +16,7 @@ module.exports = {
             return bcrypt.hash(userPassword, SALT_ROUNDS, (err, hash) => {
                 return conn.query(
                 `
-                    INSERT INTO schedulemeup.user
+                    INSERT INTO \`User\`
                     (UserEmail, UserPassword)
                     VALUES (?, ?)
                 `,
@@ -34,10 +34,9 @@ module.exports = {
 
     createGoogleUser(userName, userEmail, OAuthProvider, OAuthUID) {
         return mysql.createConnection(MYSQLDB).then(conn => {
-            console.log(`${userName} ${userEmail} ${OAuthProvider}`)
             return conn.query(
                 `
-                    INSERT INTO schedulemeup.user
+                    INSERT INTO \`User\`
                     (UserName,
                      UserEmail,
                      OAuthProvider,
@@ -59,7 +58,7 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    SELECT * FROM schedulemeup.user WHERE UserEmail = ?
+                    SELECT * FROM \`User\` WHERE UserEmail = ?
                 `, 
                 [userEmail]
             ).then(res => {
@@ -71,4 +70,34 @@ module.exports = {
             });
         });
     },
+
+    validateUser(userEmail, userPassword) {
+        return mysql
+            .createConnection(MYSQLDB)
+            .then(conn => {
+                const result = conn.query(
+                    `
+                        SELECT UserId, UserEmail, UserPassword
+                        FROM \`User\`   
+                        WHERE UserEmail = ?;
+                    `, [userEmail]);
+                conn.end();
+                return result;
+            }).then(user => {
+                if (user === undefined || user.length == 0) {
+                    return {
+                        isValid: false,
+                        msg: `Account with email ${userEmail} not found`
+                    };
+                }
+                const userData = user[0];
+                return bcrypt.compare(userPassword, userData.UserPassword).then(res => {
+                    return {
+                        userId: userData.userId,
+                        isValid: res,
+                        msg: res ? 'Login successful' : 'Incorrect password'
+                };
+            });
+        });
+    }
 }
