@@ -1,6 +1,10 @@
 import React, {Component} from 'react';
 import {Calendar, Modal, TimePicker, Button, Checkbox, Badge} from 'antd';
+import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+
+import {selectDate, showModal, cancelAvaiability, deleteAvailability,
+     handleAdd, onChangeRange, onMonthChange} from '../../../actions/components/screens/Group.action';
 
 const {RangePicker} = TimePicker;
 
@@ -9,50 +13,47 @@ class Group extends Component {
     state = {modalVisible: false, rangeHours: [''], selectedDate: ''};
 
     onSelect = (value) => {
-        const selectedDate = value.format("YYYY-MM-DD");
-        this.setState({selectedDate});
+
     }
 
     showModal = () => {
-        this.setState({modalVisible: true});
+        this.props.showModal();
     }
 
     handleOk = () => {
-    
-        this.setState({modalVisible: false});
+        // todo add avaiability
     }
 
     handleCancel = () => {
-        this.setState({modalVisible: false});
+        this.props.cancelAvaiability();
     }
 
     handleDelete = () => {
-        let rangeHours = [...this.state.rangeHours];
-        rangeHours.pop();
-
-        this.setState({rangeHours});
+        this.props.deleteAvailability(this.props.rangeHours);
     }
 
     handleAdd = () => {
-        this.setState({rangeHours: [...this.state.rangeHours, '']});
+        this.props.handleAdd(this.props.rangeHours);
     }
 
     onChangeRange(index, value) {
-        let rangeHours = [...this.state.rangeHours];
-        rangeHours[index] = value;
-        this.setState({rangeHours});
+        this.props.onChangeRange(index, value, this.props.rangeHours);
     }
+
+    onPanelChange = value => {
+        // check if month changed
+    };
 
     render() {
         return (
             <div>
                 <Button onClick={this.showModal} type="primary" >Add Availability</Button>
-                <Calendar onSelect={this.onSelect}/>
+                <Calendar onSelect={this.onSelect} onPanelChange={this.onPanelChange}/>
 
-                <Modal visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
-                    <h2>{this.state.selectedDate}</h2>
+                <Modal visible={this.props.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
+                    <h2>{this.props.selectedDate}</h2>
                     <h3 className='modal-header'>Input availability time</h3>
-                    {this.state.rangeHours.map( (item, index) => {
+                    {this.props.rangeHours.map( (item, index) => {
                         return (
                         <div key={index} className='range-picker'>
                             <RangePicker onChange={this.onChangeRange.bind(this, index)}/>
@@ -73,8 +74,15 @@ class Group extends Component {
     }
 }
 
+const mapStateToProps = ({ AddAvailabilityReducer }) => {
+    const {modalVisible, rangeHours, selectedDate} = AddAvailabilityReducer;
+    return {modalVisible, rangeHours, selectedDate};
+};
+
 Group.propTypes = {
     match: PropTypes.any
 };
 
-export default Group;
+export default connect(mapStateToProps, 
+    {selectDate, showModal, cancelAvaiability, deleteAvailability,
+        handleAdd, onChangeRange, onMonthChange})(Group);
