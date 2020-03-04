@@ -5,7 +5,8 @@ import { connect } from 'react-redux';
 import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { GoogleLogin } from 'react-google-login';
-import { withRouter } from 'react-router';
+import { withRouter, Redirect } from 'react-router';
+
 
 import PropTypes from 'prop-types';
 
@@ -18,14 +19,10 @@ class Login extends Component {
         this.loginUser = this.loginUser.bind(this);
     }
     
-    state = { signUpSelected: false }
+    state = { signUpSelected: false, redicrect : false }
 
     loginUser(response) {
         this.props.loginGoogle(response); 
-        
-        if(this.props.location.pathname === '/'){
-            this.props.history.push("/creategroup")
-        }
 	}
 
     renderGoogleButton = (text) => {
@@ -48,7 +45,9 @@ class Login extends Component {
     render() {
 
         return (
-            <div>                
+            <div>
+                {this.props.isAuthenticated && this.props.location.pathname ? (<Redirect to ='/creategroup'/>) : null}
+
                 {!this.state.signUpSelected ? (
                     <div>
                         <LoginForm />
@@ -76,8 +75,6 @@ class Login extends Component {
                             
                         </div>
                     )}
-
-                    
             </div>
         );
     }
@@ -95,6 +92,7 @@ Login.propTypes = {
     loginGoogle: PropTypes.func,
     history: PropTypes.any,
     location: PropTypes.any,
+    isAuthenticated: PropTypes.any,
 };
 
 export default compose(
