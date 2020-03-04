@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const responses = require('./responses');
 
 const SECRET_KEY = process.env.SECRET_KEY || 'supersecretkey';
-const TOKEN_EXPIRY = '2d';
+const TOKEN_EXPIRY = '1d';
 
 function createToken(req, res, next) {
     req.token = jwt.sign({id: req.auth.id }, SECRET_KEY, { expiresIn: TOKEN_EXPIRY });

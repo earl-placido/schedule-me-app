@@ -1,4 +1,5 @@
 const mysql = require("promise-mysql");
+const bcrypt = require('bcrypt');
 
 const MYSQLDB = {
   host: process.env.RDS_HOSTNAME,
@@ -7,23 +8,26 @@ const MYSQLDB = {
   database: process.env.RDS_DB_NAME
 };
 
+const SALT_ROUNDS = 12;
+
 module.exports = {
-    newUser(userName, userEmail) {
+    createUser(userEmail, userPassword) {
         return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(
+            return bcrypt.hash(userPassword, SALT_ROUNDS, (err, hash) => {
+                return conn.query(
                 `
                     INSERT INTO schedulemeup.user
-                    (UserName,
-                     UserEmail)
+                    (UserEmail, UserPassword)
                     VALUES (?, ?)
                 `,
-                [userName, userEmail]
-            ).then(res => {
-                conn.end();
-                return res.insertId;
-            }).catch(err => {
-                conn.end();
-                return err;
+                [userEmail, hash]
+                ).then(res => {
+                    conn.end();
+                    return res.insertId;
+                }).catch(err => {
+                    conn.end();
+                    return err;
+                });
             });
         });
     },
@@ -42,7 +46,6 @@ module.exports = {
                 `,
                 [userName, userEmail, OAuthProvider, OAuthUID]
             ).then(res => {
-                console.log(res);
                 conn.end();
                 return res.insertId;
             }).catch(err => {

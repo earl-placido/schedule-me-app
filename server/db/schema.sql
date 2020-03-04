@@ -16,7 +16,7 @@ CREATE TABLE `User`
   UserEmail NVARCHAR(320) NOT NULL,
   UserPassword NVARCHAR(320) NOT NULL DEFAULT '',
   OAuthProvider ENUM('none', 'google') DEFAULT 'none',
-  OAuthUID INT NULL,
+  OAuthUID NVARCHAR(64) NULL,
   PRIMARY KEY (UserId),
   CONSTRAINT UQ_User_UserEmail UNIQUE (UserEmail)
 );
