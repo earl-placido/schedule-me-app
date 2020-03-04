@@ -39,10 +39,8 @@ matrix:
             branch: master
         - provider: elasticbeanstalk
           edge: true
-          access_key_id:
-            secure: $EBS_ACCESS_KEY
-          secret_access_key:
-            secure: '$EBS_SECRET_KEY'
+          access_key_id: $EBS_ACCESS_KEY
+          secret_access_key: $EBS_SECRET_KEY
           region: "us-east-2"
           app: "schedule-me-up"
           env: "schedule-me-up-dev"
