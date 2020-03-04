@@ -28,7 +28,31 @@ module.exports = {
         });
     },
 
-    getUser(userEmail) {
+    createGoogleUser(userName, userEmail, OAuthProvider, OAuthUID) {
+        return mysql.createConnection(MYSQLDB).then(conn => {
+            console.log(`${userName} ${userEmail} ${OAuthProvider}`)
+            return conn.query(
+                `
+                    INSERT INTO schedulemeup.user
+                    (UserName,
+                     UserEmail,
+                     OAuthProvider,
+                     OAuthUID)
+                    VALUES (?, ?, ?, ?)
+                `,
+                [userName, userEmail, OAuthProvider, OAuthUID]
+            ).then(res => {
+                console.log(res);
+                conn.end();
+                return res.insertId;
+            }).catch(err => {
+                conn.end();
+                return err;
+            });
+        });
+    },
+
+    getUserByEmail(userEmail) {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
@@ -43,5 +67,5 @@ module.exports = {
                 return err;
             });
         });
-    }
+    },
 }

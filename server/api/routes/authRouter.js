@@ -13,9 +13,17 @@ router.route('/auth/google')
             return res.send(responses.UNAUTHORIZED, 'User Not Authenticated');
         }
 
-        userModel.getUser(req.user.emails[0].value).then(user => {
+        userModel.getUserByEmail(req.user.emails[0].value).then(user => {
             if(user) {
-                userModel.newUser(req.user.displayName, req.user.emails[0].value);
+            let userID;
+            // create new google login user
+            if(user === undefined || user.length == 0) {
+                console.log('it goes here');
+                userID = userModel.createGoogleUser(
+                    req.user.displayName, 
+                    req.user.emails[0].value,
+                    'google',
+                    req.user.id);
             }
 
             req.auth = {
