@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import ContentContainer from './components/ContentContainer'
 import Home from './components/screens/Home/Home';
 import { connect } from 'react-redux';
@@ -25,29 +25,32 @@ class App extends Component {
         const { footerStyle } = styles
 
         return (
-            <Router>
-                <Layout>
-                    <Switch>
-                        <PrivateRoute 
-                            exact path="/createGroup" 
-                            component={() => {
-                                return(
-                                    <ContentContainer>
-                                        <CreateGroup />
-                                    </ContentContainer>
-                                );
-                            }} 
-                            authorized={this.props.isAuthenticated} 
-                        />
-                    
-                        <Route path='/'>
-                            <Home/>
-                        </Route>
-                    </Switch>
+            <div className="app">
+                <Router>
+                    <Layout>
+                        <Switch>
+                            
+                            <PrivateRoute 
+                                exact path="/createGroup" 
+                                component={() => {
+                                    return(
+                                        <ContentContainer>
+                                            <CreateGroup />
+                                        </ContentContainer>
+                                    );
+                                }} 
+                                authorized={this.props.isAuthenticated} 
+                            />
+                        
+                            <Route path='/'>
+                                <Home/>
+                            </Route>
+                        </Switch>
 
-                    <Footer style={ footerStyle }>schedule-me-up</Footer>
-                </Layout>
-            </Router>
+                        <Footer style={ footerStyle }>schedule-me-up</Footer>
+                    </Layout>
+                </Router>
+            </div>
         )
     }
 }
