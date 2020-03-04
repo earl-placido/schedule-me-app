@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Calendar, Modal, TimePicker, Button, Checkbox} from 'antd';
+import {Calendar, Modal, TimePicker, Button, Checkbox, Badge} from 'antd';
 import PropTypes from 'prop-types';
 
 const {RangePicker} = TimePicker;
@@ -10,11 +10,16 @@ class Group extends Component {
 
     onSelect = (value) => {
         const selectedDate = value.format("YYYY-MM-DD");
-        this.setState({modalVisible: true, selectedDate});
+        this.setState({selectedDate});
+    }
+
+    showModal = () => {
+        this.setState({modalVisible: true});
     }
 
     handleOk = () => {
-
+    
+        this.setState({modalVisible: false});
     }
 
     handleCancel = () => {
@@ -41,7 +46,8 @@ class Group extends Component {
     render() {
         return (
             <div>
-                <Calendar onSelect={this.onSelect} />
+                <Button onClick={this.showModal} type="primary" >Add Availability</Button>
+                <Calendar onSelect={this.onSelect}/>
 
                 <Modal visible={this.state.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
                     <h2>{this.state.selectedDate}</h2>
@@ -55,7 +61,7 @@ class Group extends Component {
                     })}
 
                     <div className='checkbox-event'>
-                        <Checkbox checked disabled>Recurring event</Checkbox>
+                        <Checkbox checked disabled>Repeat weekly</Checkbox>
                     </div>
                     <div className='button-container'>
                         <Button shape='round' className="delete-button" onClick={this.handleDelete}>Delete</Button>
