@@ -3,13 +3,23 @@ import { Layout } from 'antd';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import ContentContainer from './components/ContentContainer'
 import Home from './components/screens/Home/Home';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { PrivateRoute } from './components/util/PrivateRoute';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+
 import "antd/dist/antd.css";
+import './css/app.css';
+
 
 const { Footer } = Layout;
 
 
-export default class App extends Component {
+class App extends Component {
+    createGroupComponent(){
+        
+    }
 
     render() {
         const { footerStyle } = styles
@@ -18,11 +28,20 @@ export default class App extends Component {
             <Router>
                 <Layout>
                     <Switch>
-                        <Route path='/createGroup'>
-                            <ContentContainer>
-                                <CreateGroup />
-                            </ContentContainer>
-                        </Route>
+                        {/* Private Route are the routes that can ony be accessed when someone is logged in */}
+
+                        <PrivateRoute 
+                            exact path="/createGroup" 
+                            component={() => {
+                                return(
+                                    <ContentContainer>
+                                        <CreateGroup />
+                                    </ContentContainer>
+                                );
+                            }} 
+                            authorized={this.props.isAuthenticated} 
+                        />
+                    
                         <Route path='/'>
                             <Home/>
                         </Route>
@@ -36,7 +55,29 @@ export default class App extends Component {
 }
 
 const styles = {
-    footerStyle: {
-        textAlign: 'center'
+    contentStyle : {
+        padding: '0 50px', 
+        marginTop: 64 
+    },
+
+    containerStyle :{
+        background: '#fff', 
+        padding: 24, 
+        minHeight: 500, 
+        marginTop: 20
+    },
+
+    footerStyle : {
+        textAlign: 'center' 
     }
 }
+
+const mapStateToProps = state => ({
+    isAuthenticated: state.auth.isAuthenticated
+});
+
+App.propTypes = {
+    isAuthenticated: PropTypes.any
+};
+
+export default connect(mapStateToProps, null)(App);

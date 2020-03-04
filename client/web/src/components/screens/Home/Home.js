@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Layout, Button } from 'antd';
+import { Layout, Button, Divider } from 'antd';
 import Login from '../../login/Login';
 const { Content } = Layout;
 
@@ -21,6 +21,7 @@ export default class Home extends Component {
                             Continue as Guest
                         </Button>
 
+                        <Divider orientation="center" style={{marginBottom: 30}}>or</Divider>
 
                         <Login />
                 </div>
@@ -43,7 +44,7 @@ const styles = {
     contentStyle: {
         padding: '0 50px',
         width: "50%",
-        marginTop: 60,
+        marginTop: 20,
         alignSelf: "center"
     },
 
@@ -55,6 +56,6 @@ const styles = {
 
     buttonStyle: {
         width: "100%", 
-        marginBottom: 40
+        marginBottom: 20
     }
 }

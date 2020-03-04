@@ -1,34 +1,21 @@
 import React, { Component } from 'react';
-import { Layout, Menu, Button } from 'antd';
+import { Layout } from 'antd';
 
 import LoginModal from './login/LoginModal';
 import PropTypes from 'prop-types';
-
+import NavigationBar from './layout/NavigationBar'
 import { toggleModal } from '../actions/components/login/LoginModal.action'
 import { connect } from 'react-redux';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 class ContentContainer extends Component {
     render() {
-        const { headerStyle, contentStyle, containerStyle } = styles
+        const { contentStyle, containerStyle } = styles
 
         return (
             <div>
-                <Header style={headerStyle}>
-                    <div className="logo" />
-                    <Menu
-                        theme="dark"
-                        mode="horizontal"
-                        defaultSelectedKeys={['1']}
-                        style={{ lineHeight: '64px' }}
-                    >
-
-                        <Button type="primary" onClick={() => {this.props.toggleModal(true)}} style={{float:"right", marginTop: 15}}>
-                            Sign In
-                        </Button>
-                    </Menu>
-                </Header>
+                <NavigationBar/>
 
                 <Content style={contentStyle}>
                     <div style={containerStyle}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Input, Button, Icon } from 'antd';
+import { Form, Input, Button, Icon, notification } from 'antd';
 
 const SignupForm = () => {
     const onFinish = values => {
@@ -8,6 +8,14 @@ const SignupForm = () => {
 
     const onFinishFailed = errorinfo => {
         console.log('Failed', errorinfo)
+    }
+
+    const openNotification = () => {
+        notification.info({
+            message : 'Unavailable Action',
+            description: 'Sign Up and with Username is unavailable at the moment. Use Google to proceed.',
+            duration: 5
+        });
     }
 
     return (
@@ -85,7 +93,7 @@ const SignupForm = () => {
             </Form.Item>
 
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>
+                <Button onClick={openNotification} type="primary" htmlType="submit" className="login-form-button" style={{ width: '100%' }}>
                     Sign Up
                 </Button>
             </Form.Item>

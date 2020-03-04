@@ -1,50 +1,25 @@
 import React, { Component } from 'react';
-import { Modal, Button } from 'antd';
+import { Modal } from 'antd';
 import PropTypes from 'prop-types';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
-
+import Login from './Login';
 import { connect } from 'react-redux';
 import { toggleModal } from '../../actions/components/login/LoginModal.action'
 
 class LoginModal extends Component {
     state = { signUpSelected: false }
 
-    close = () => {
-        this.props.toggleModal(false)
-    };
-
     render() {
         return (
             <div>
                 <Modal
-                    title={this.state.signUpSelected ? ("Sign Up") : ("Log In")}
+                    title={"Login"}
                     visible={this.props.modalVisible}
                     onCancel={() => {
                         this.props.toggleModal(false)
                     }}
                     footer={null}
                 >
-
-                    {!this.state.signUpSelected ? (
-                        <div>
-                            <LoginForm />
-                            <p>
-                                Don't have an account? <Button type="link" onClick={() => {
-                                    this.setState({ signUpSelected: true })
-                                }}> Sign Up</Button>
-                            </p>
-                        </div>
-                    ) : (
-                            <div>
-                                <SignupForm />
-                                <p>
-                                    Have an account? <Button type="link" onClick={() => {
-                                        this.setState({ signUpSelected: false })
-                                    }}> Log In</Button>
-                                </p>
-                            </div>
-                        )}
+                    <Login/>
                 </Modal>
             </div>
         );
