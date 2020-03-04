@@ -1,3 +1,21 @@
+.modal-header {
+  margin-bottom: 35px; }
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5vh; }
+
+.delete-button {
+  margin-right: 1vh; }
+
+.range-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2vh; }
+
 .error-input {
   border-color: red; }
 

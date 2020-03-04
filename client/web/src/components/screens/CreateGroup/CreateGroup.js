@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Steps, Row, Col, Card, Button, Icon } from 'antd';
+import { Steps, Row, Col, Card, Button } from 'antd';
+import Icon from '@ant-design/icons';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';  // to prevent eslint from showing errors that props not found
 
