@@ -69,9 +69,9 @@ class CreateGroup extends Component {
             previousBtnTextStyle={buttonTextStyle}
           >
             <GroupMeetingForm
-              handleGroupDuration={this.props.updateMeetingDuration} 
-              handleGroupFrequency={this.props.updateMeetingFrequency} 
-              handleGroupLocation={this.props.updateMeetingLocation}
+              handleMeetingDuration={this.props.updateMeetingDuration} 
+              handleMeetingFrequency={this.props.updateMeetingFrequency} 
+              handleMeetingLocation={this.props.updateMeetingLocation}
               meetingDuration={this.props.meetingDuration}
               meetingFrequency={this.props.meetingFrequency}
               meetingLocation={this.props.meetingLocation}
