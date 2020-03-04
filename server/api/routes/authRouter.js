@@ -19,7 +19,7 @@ router.route('/google')
             let userID;
             // create new google login user
             if(user === undefined || user.length == 0) {
-                userModel.createGoogleUser(googleUser.displayName, googleUser.emails[0].value, 'google', googleUser.id)
+                return userModel.createGoogleUser(googleUser.displayName, googleUser.emails[0].value, 'google', googleUser.id)
                     .then(id => userID = id)
                     .catch(next);
             }
@@ -38,11 +38,15 @@ router.route('/signup')
         let newUser = req.body;
 
         userModel.getUserByEmail(newUser.email).then(user => {
-            
+            // console.log(newUser);
             // create new user
             if (user === undefined || user.length == 0) {
-                userModel.createUser(newUser.email, newUser.password)
-                    .then(userID => req.auth = { id: userID })
+                console.log('1');
+                return userModel.createUser(newUser.email, newUser.password)
+                    .then(userID => {
+                        req.auth = { id: userID };
+                        next();
+                    })
                     .catch(next);
             } 
             else {
@@ -51,7 +55,6 @@ router.route('/signup')
                     err: 'Email address entered is taken.'
                 });
             }
-            next();
         }).catch(next);
     }, tokenHelper.createToken, tokenHelper.sendToken);
 

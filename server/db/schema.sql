@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` 
 (
   UserId INT NOT NULL AUTO_INCREMENT,
-  UserName NVARCHAR(320) NOT NULL,
+  UserName NVARCHAR(320) NOT NULL DEFAULT '',
   UserEmail NVARCHAR(320) NOT NULL,
   UserPassword NVARCHAR(320) NOT NULL DEFAULT '',
   OAuthProvider ENUM('none', 'google') DEFAULT 'none',

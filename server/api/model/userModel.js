@@ -13,14 +13,15 @@ const SALT_ROUNDS = 12;
 module.exports = {
     createUser(userEmail, userPassword) {
         return mysql.createConnection(MYSQLDB).then(conn => {
-            return bcrypt.hash(userPassword, SALT_ROUNDS, (err, hash) => {
+            return bcrypt.hash(userPassword, SALT_ROUNDS).then(hash => {
+                console.log(`${userEmail} ${userPassword} ${hash}`);
                 return conn.query(
-                `
-                    INSERT INTO \`User\`
-                    (UserEmail, UserPassword)
-                    VALUES (?, ?)
-                `,
-                [userEmail, hash]
+                    `
+                        INSERT INTO \`User\`
+                        (UserEmail, UserPassword)
+                        VALUES (?, ?)
+                    `, 
+                    [userEmail, hash]
                 ).then(res => {
                     conn.end();
                     return res.insertId;
