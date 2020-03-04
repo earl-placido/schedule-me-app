@@ -13,23 +13,23 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    INSERT INTO \`Meeting\`
-                    (MeetingDuration,
-                    MeetingFrequency, 
-                    MeetingLocation)
-                    VALUES (?, ?, ?);
-                    
                     INSERT INTO \`Group\`
                     (GroupName,
                     GroupDescription,
-                    GroupOwnerId,
-                    MeetingId)
-                    VALUES (?, ?, ?, LAST_INSERT_ID());
+                    GroupOwnerId)
+                    VALUES (?, ?, ?);
+                    
+                    INSERT INTO \`Meeting\`
+                    (MeetingDuration,
+                    MeetingFrequency, 
+                    MeetingLocation,
+                    GroupId)
+                    VALUES (?, ?, ?,  LAST_INSERT_ID());
                 `,
-                [mDuration, mFrequency, mLocation, gName, gDesc, gOwnerId]
+                [gName, gDesc, gOwnerId, mDuration, mFrequency, mLocation]
             ).then(res => {
                 conn.end();
-                return res[1].insertId;
+                return res[0].insertId;
             }).catch(err => {
                 conn.end();
                 return err;
@@ -43,7 +43,7 @@ module.exports = {
                 `
                     SELECT *
                     FROM \`Group\` as G, \`Meeting\` as M, \`GroupMember\` as GM
-                    WHERE G.MeetingId = M.MeetingId AND GM.GroupId = G.GroupId AND GM.UserId = ?;
+                    WHERE G.GroupId = M.GroupId AND GM.GroupId = G.GroupId AND GM.UserId = ?;
                 `,
                 [userId]
             ).then(res => {
@@ -62,7 +62,7 @@ module.exports = {
                 `
                     SELECT *
                     FROM \`Group\` as G, \`Meeting\` as M 
-                    WHERE G.MeetingId = M.MeetingId AND G.GroupId = ?;
+                    WHERE G.GroupId = M.GroupId AND G.GroupId = ?;
                 `,
                 [groupId]
             ).then(res => {
@@ -79,15 +79,10 @@ module.exports = {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return conn.query(
                 `
-                    SET @meetingId = (SELECT MeetingId FROM \`Group\` WHERE GroupId = ?);
-
                     DELETE FROM \`Group\`
                     WHERE GroupId = ?;
-
-                    DELETE FROM \`Meeting\`
-                    WHERE MeetingId = @meetingId;
                 `,
-                [groupId, groupId]
+                [groupId]
             ).then(res => {
                 conn.end();
                 return res;
