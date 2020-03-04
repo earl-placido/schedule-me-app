@@ -17,7 +17,7 @@ const meetingOptions = {
           return moment(date).format("HH:mm") ;
         },
       },
-      error: 'Please input group duration'
+      error: 'Please input meeting duration'
     },
   }
 };
@@ -32,11 +32,11 @@ export default class GroupMeetingForm extends Component {
   handleGroupMeetingChange = () => {
     const value = this.form.getValue();
 
-    this.props.handleGroupDuration(value ? value.duration : '');
+    this.props.handleMeetingDuration(value ? value.duration : '');
 
     if (value) {
-      this.props.handleGroupFrequency(value.frequency);
-      this.props.handleGroupLocation(value.location);
+      this.props.handleMeetingFrequency(value.frequency);
+      this.props.handleMeetingLocation(value.location);
     }
   }
   
@@ -48,7 +48,7 @@ export default class GroupMeetingForm extends Component {
           options={meetingOptions}
           type={Meeting}
           onChange={this.handleGroupMeetingChange}
-          value={{duration: this.props.groupDuration, frequency: this.props.groupFrequency, location: this.props.groupLocation}}
+          value={{duration: this.props.meetingDuration, frequency: this.props.meetingFrequency, location: this.props.meetingLocation}}
         />
       </Content>
     );
@@ -56,10 +56,10 @@ export default class GroupMeetingForm extends Component {
 }
 
 GroupMeetingForm.propTypes = {
-  handleGroupDuration: PropTypes.func,
-  handleGroupFrequency: PropTypes.func,
-  handleGroupLocation: PropTypes.func,
-  groupDuration: PropTypes.any,
-  groupFrequency: PropTypes.any,
-  groupLocation: PropTypes.any,
+  handleMeetingDuration: PropTypes.func,
+  handleMeetingFrequency: PropTypes.func,
+  handleMeetingLocation: PropTypes.func,
+  meetingDuration: PropTypes.any,
+  meetingFrequency: PropTypes.any,
+  meetingLocation: PropTypes.any,
 };

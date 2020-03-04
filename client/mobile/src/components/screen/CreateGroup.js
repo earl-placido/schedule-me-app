@@ -6,7 +6,7 @@ import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm'
 import GroupMeetingForm from '../groups/CreateGroup/GroupMeetingForm'
 
 import PropTypes from 'prop-types';
-import {updateGroupName, updateGroupDescription, updateGroupDuration, updateGroupFrequency, updateGroupLocation} from '../../actions/components/screens/CreateGroup.action';
+import {updateGroupName, updateGroupDescription, updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation} from '../../actions/components/screens/CreateGroup.action';
 import {connect} from 'react-redux';
 
 const progressStepsStyle = {
@@ -63,18 +63,18 @@ class CreateGroup extends Component {
             nextBtnText = "Done"
             onNext={this.onNextStep}
             onPrevious={this.onPrevStep}
-            nextBtnDisabled={!this.props.groupDuration}
+            nextBtnDisabled={!this.props.meetingDuration}
             scrollViewProps={this.defaultScrollViewProps}
             nextBtnTextStyle={buttonTextStyle}
             previousBtnTextStyle={buttonTextStyle}
           >
             <GroupMeetingForm
-              handleGroupDuration={this.props.updateGroupDuration} 
-              handleGroupFrequency={this.props.updateGroupFrequency} 
-              handleGroupLocation={this.props.updateGroupLocation}
-              groupDuration={this.props.groupDuration}
-              groupFrequency={this.props.groupFrequency}
-              groupLocation={this.props.groupLocation}
+              handleGroupDuration={this.props.updateMeetingDuration} 
+              handleGroupFrequency={this.props.updateMeetingFrequency} 
+              handleGroupLocation={this.props.updateMeetingLocation}
+              meetingDuration={this.props.meetingDuration}
+              meetingFrequency={this.props.meetingFrequency}
+              meetingLocation={this.props.meetingLocation}
             />
           </ProgressStep>
 
@@ -94,21 +94,21 @@ class CreateGroup extends Component {
 }
 
 const mapStateToProps = ({ CreateGroupReducer }) => {
-  const { groupName, groupDescription, groupDuration, groupFrequency, groupLocation } = CreateGroupReducer;
-  return {groupName, groupDescription, groupDuration, groupFrequency, groupLocation};
+  const { groupName, groupDescription, meetingDuration, meetingFrequency, meetingLocation } = CreateGroupReducer;
+  return {groupName, groupDescription, meetingDuration, meetingFrequency, meetingLocation};
 };
 
 CreateGroup.propTypes = {
   groupName: PropTypes.any,
   groupDescription: PropTypes.any,
-  groupDuration: PropTypes.any,
-  groupFrequency: PropTypes.any,
-  groupLocation: PropTypes.any,
+  meetingDuration: PropTypes.any,
+  meetingFrequency: PropTypes.any,
+  meetingLocation: PropTypes.any,
   updateGroupName: PropTypes.func,
   updateGroupDescription: PropTypes.func,
-  updateGroupDuration: PropTypes.func,
-  updateGroupFrequency: PropTypes.func,
-  updateGroupLocation: PropTypes.func,
+  updateMeetingDuration: PropTypes.func,
+  updateMeetingFrequency: PropTypes.func,
+  updateMeetingLocation: PropTypes.func,
 };
 
-export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, updateGroupDuration, updateGroupFrequency, updateGroupLocation})(CreateGroup);
+export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, updateMeetingDuration, updateMeetingFrequency, updateMeetingLocation})(CreateGroup);
