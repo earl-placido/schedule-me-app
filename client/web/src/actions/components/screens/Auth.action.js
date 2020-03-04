@@ -50,7 +50,7 @@ export const loginGoogle = (response) => {
             mode: 'cors',
             cache: 'default'
         };
-        fetch(`${process.env.REACT_APP_SERVER_ENDPOINT}/api/v1/auth/google`, options).then(res => {
+        fetch(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`, options).then(res => {
             if (res.status === responses.SUCCESS) {
                 const token = res.headers.get('x-auth-token');
                 res.json().then(user => {

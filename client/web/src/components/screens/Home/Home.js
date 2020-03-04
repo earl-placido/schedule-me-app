@@ -13,7 +13,7 @@ export default class Home extends Component {
         return (
             <Content style={contentStyle}>
                 <div style={containerStyle}>
-
+                    
                     {/* LOGO HERE  */}
                     <h1 style={logoStyle}>Schedule Me Up</h1>
 

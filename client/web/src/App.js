@@ -28,8 +28,6 @@ class App extends Component {
             <Router>
                 <Layout>
                     <Switch>
-                        {/* Private Route are the routes that can ony be accessed when someone is logged in */}
-
                         <PrivateRoute 
                             exact path="/createGroup" 
                             component={() => {

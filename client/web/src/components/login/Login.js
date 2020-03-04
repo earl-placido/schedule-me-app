@@ -6,6 +6,7 @@ import LoginForm from './LoginForm';
 import SignupForm from './SignupForm';
 import { GoogleLogin } from 'react-google-login';
 import { withRouter } from 'react-router';
+
 import PropTypes from 'prop-types';
 
 import { loginGoogle } from '../../actions/components/screens/Auth.action';
@@ -20,8 +21,11 @@ class Login extends Component {
     state = { signUpSelected: false }
 
     loginUser(response) {
-        this.props.loginGoogle(response);
-        this.props.history.push("/creategroup");
+        this.props.loginGoogle(response); 
+        
+        if(this.props.location.pathname === '/'){
+            this.props.history.push("/creategroup")
+        }
 	}
 
     renderGoogleButton = (text) => {
@@ -42,8 +46,9 @@ class Login extends Component {
     }
 
     render() {
+
         return (
-            <div>
+            <div>                
                 {!this.state.signUpSelected ? (
                     <div>
                         <LoginForm />
@@ -89,6 +94,7 @@ const mapDispatchToProps = dispatch => ({
 Login.propTypes = {
     loginGoogle: PropTypes.func,
     history: PropTypes.any,
+    location: PropTypes.any,
 };
 
 export default compose(

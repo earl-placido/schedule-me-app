@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { GoogleLogin } from 'react-google-login';
-import { Layout, Menu, Dropdown, Button, Avatar, message, Icon } from 'antd';
+import { Layout, Menu, Dropdown, Button, Avatar, message } from 'antd';
 import PropTypes from 'prop-types';
 import { toggleModal } from '../../actions/components/login/LoginModal.action'
 import { loginGoogle, logoutGoogle } from '../../actions/components/screens/Auth.action';
@@ -14,7 +13,7 @@ export class NavigationBar extends Component {
     
 	constructor(props) {
         super(props);
-
+    
         this.logoutUser = this.logoutUser.bind(this);
         this.loginUser = this.loginUser.bind(this);
 	}
@@ -42,8 +41,10 @@ export class NavigationBar extends Component {
         ):
         (<div>
             <Button onClick={()=>{
-                this.props.toggleModal(true)
-            }}>Login</Button>
+                    this.props.toggleModal(true)
+                }}>
+                    Login
+            </Button>
         </div>);
 
         return (
@@ -74,12 +75,15 @@ const headerStyle = {
 const mapStateToProps = state => ({
 	isAuthenticated: state.auth.isAuthenticated,
     userName: state.auth.userName,
-    displayPicURL: state.auth.displayPicURL
+    displayPicURL: state.auth.displayPicURL,
+    modalVisible: state.modalVisible
 });
+
 
 const mapDispatchToProps = dispatch => ({
 	logoutGoogle: () => dispatch(logoutGoogle()),
-    loginGoogle: response => dispatch(loginGoogle(response))
+    loginGoogle: response => dispatch(loginGoogle(response)),
+    toggleModal: (value) => dispatch(toggleModal(value))
 });
 
 NavigationBar.propTypes = {
@@ -88,10 +92,11 @@ NavigationBar.propTypes = {
     displayPicURL: PropTypes.any,
     isAuthenticated: PropTypes.any,
 	loginGoogle: PropTypes.func,
-	logoutGoogle: PropTypes.func
+    logoutGoogle: PropTypes.func,
+    modalVisible: PropTypes.any
 };
 
 export default compose(
     withRouter,
-    connect(mapStateToProps,{toggleModal}, mapDispatchToProps)
+    connect(mapStateToProps, mapDispatchToProps)
 )(NavigationBar);
