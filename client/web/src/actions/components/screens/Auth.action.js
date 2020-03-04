@@ -56,6 +56,7 @@ export const loginGoogle = (response) => {
                 res.json().then(user => {
                     localStorage.setItem('token', token);
                     localStorage.setItem('userName', user.displayName);
+                    localStorage.setItem('userId', user.id);
                     localStorage.setItem('displayPicURL', user._json.picture);
 
                     dispatch(loginSuccess(user.displayName, user._json.picture, token));

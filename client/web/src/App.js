@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { PrivateRoute } from './components/util/PrivateRoute';
 import NavigationBar from './components/layout/NavigationBar';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+import Group from './components/screens/Group/Group';
 import "antd/dist/antd.css";
 import './css/app.css';
 
@@ -29,6 +30,12 @@ class App extends Component {
                                         exact path="/createGroup" 
                                         component={CreateGroup} 
                                         authorized={this.props.isAuthenticated} 
+                                    />
+
+                                    <PrivateRoute 
+                                        path="/groups/:id"
+                                        component={Group}
+                                        authorized={this.props.isAuthenticated}
                                     />
                                 </Switch>
                             </div>
