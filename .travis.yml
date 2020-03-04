@@ -47,7 +47,7 @@ matrix:
           bucket_name: $EBS_BUCKET_NAME
           skip_cleanup: true
           on:
-            branch: aws-hotfix
+            branch: develop
         - provider: elasticbeanstalk
           edge: true
           access_key_id: $EBS_ACCESS_KEY
