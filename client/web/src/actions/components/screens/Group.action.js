@@ -7,15 +7,15 @@ export const ADD_RANGE = 'add_range';
 export const CHANGE_RANGE = 'change_range';
 
 
-const numberToDay = {
-    1: "Monday",
-    2: "Tuesday",
-    3: "Wednesday",
-    4: "Thursday",
-    5: "Friday",
-    6: "Saturday",
-    7: "Sunday"
-};
+// const numberToDay = {
+//     1: "Monday",
+//     2: "Tuesday",
+//     3: "Wednesday",
+//     4: "Thursday",
+//     5: "Friday",
+//     6: "Saturday",
+//     7: "Sunday"
+// };
 
 export const selectDate = (date) => {
     return {
@@ -32,7 +32,7 @@ export const showModal = () => {
 };
 
 
-export const cancelAvaiability = () => {
+export const cancelAvailability = () => {
     return {
         type: SHOW_MODAL, 
         payload: false
@@ -57,7 +57,7 @@ export const handleAdd = (rangeHours) => {
 };
 
 export const onChangeRange = (index, value, rangeHours) => {
-    let newRangeHours = [...this.state.rangeHours];
+    let newRangeHours = [...rangeHours];
     newRangeHours[index] = value;
     return {
         type: CHANGE_RANGE,
@@ -65,11 +65,11 @@ export const onChangeRange = (index, value, rangeHours) => {
     };
 };
 
-export const onMonthChange = value => {
-    // check if month changed
-};
+// export const onMonthChange = value => {
+//     // check if month changed
+// };
 
-INITIAL_STATE = {modalVisible: false, rangeHours: [''], selectedDate: ''};
+const INITIAL_STATE = {modalVisible: false, rangeHours: [''], selectedDate: ''};
 
 export default(state=INITIAL_STATE, action) => {
     switch(action.type) {

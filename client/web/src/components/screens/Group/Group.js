@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Calendar, Modal, TimePicker, Button, Checkbox, Badge} from 'antd';
+import {Calendar, Modal, TimePicker, Button, Checkbox} from 'antd';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {selectDate, showModal, cancelAvaiability, deleteAvailability,
+import {selectDate, showModal, cancelAvailability, deleteAvailability,
      handleAdd, onChangeRange, onMonthChange} from '../../../actions/components/screens/Group.action';
 
 const {RangePicker} = TimePicker;
@@ -13,7 +13,7 @@ class Group extends Component {
     state = {modalVisible: false, rangeHours: [''], selectedDate: ''};
 
     onSelect = (value) => {
-
+        this.props.selectDate(value);
     }
 
     showModal = () => {
@@ -25,7 +25,7 @@ class Group extends Component {
     }
 
     handleCancel = () => {
-        this.props.cancelAvaiability();
+        this.props.cancelAvailability();
     }
 
     handleDelete = () => {
@@ -40,9 +40,9 @@ class Group extends Component {
         this.props.onChangeRange(index, value, this.props.rangeHours);
     }
 
-    onPanelChange = value => {
-        // check if month changed
-    };
+    // onPanelChange = value => {
+    //     // check if month changed
+    // };
 
     render() {
         return (
@@ -80,9 +80,20 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
 };
 
 Group.propTypes = {
-    match: PropTypes.any
+    match: PropTypes.any,
+    showModal: PropTypes.any,
+    cancelAvailability: PropTypes.any,
+    deleteAvailability: PropTypes.any,
+    rangeHours: PropTypes.any,
+    modalVisible: PropTypes.any,
+    selectedDate: PropTypes.any,
+    
+    
+    handleAdd: PropTypes.func,
+    selectDate: PropTypes.func,
+    onChangeRange: PropTypes.func,
 };
 
 export default connect(mapStateToProps, 
-    {selectDate, showModal, cancelAvaiability, deleteAvailability,
+    {selectDate, showModal, cancelAvailability, deleteAvailability,
         handleAdd, onChangeRange, onMonthChange})(Group);
