@@ -6,7 +6,10 @@ import { connect } from 'react-redux';
 import { toggleModal } from '../../actions/components/login/LoginModal.action'
 
 class LoginModal extends Component {
-    state = { signUpSelected: false }
+    constructor(props) {
+        super(props);
+        this.state = { signUpSelected: false }
+	}
 
     render() {
         return (
@@ -33,7 +36,8 @@ const mapStateToProps = ({ LoginModalReducer }) => {
 };
 
 LoginModal.propTypes = {
-    modalVisible: PropTypes.any
+    modalVisible: PropTypes.any,
+    toggleModal: PropTypes.func
 };
 
 export default connect(mapStateToProps, {toggleModal})(LoginModal);

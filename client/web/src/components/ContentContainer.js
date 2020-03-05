@@ -59,7 +59,8 @@ const mapStateToProps = ({ LoginModalReducer }) => {
 };
 
 ContentContainer.propTypes = {
-    modalVisible: PropTypes.any
+    modalVisible: PropTypes.any,
+    children: PropTypes.any
 };
 
 export default connect(mapStateToProps, { toggleModal })(ContentContainer);

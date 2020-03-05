@@ -93,7 +93,8 @@ NavigationBar.propTypes = {
     isAuthenticated: PropTypes.any,
 	loginGoogle: PropTypes.func,
     logoutGoogle: PropTypes.func,
-    modalVisible: PropTypes.any
+    modalVisible: PropTypes.any,
+    toggleModal: PropTypes.func
 };
 
 export default compose(

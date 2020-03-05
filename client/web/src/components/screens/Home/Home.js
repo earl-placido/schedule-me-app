@@ -4,9 +4,11 @@ import Login from '../../login/Login';
 const { Content } = Layout;
 
 export default class Home extends Component {
-    state = {
-        toggleForms: false
+    constructor(props) {
+        super(props);
+        this.state = { toggleForms: false } 
     }
+    
     render() {
         const { containerStyle, contentStyle, logoStyle, buttonStyle } = styles
 

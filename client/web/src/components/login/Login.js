@@ -17,15 +17,14 @@ class Login extends Component {
     constructor(props) {
         super(props);
         this.loginUser = this.loginUser.bind(this);
+        this.state = { signUpSelected: false }
     }
     
-    state = { signUpSelected: false, redicrect : false }
-
     loginUser(response) {
         this.props.loginGoogle(response); 
 	}
 
-    renderGoogleButton = (text) => {
+    renderGoogleButton(text){
         return(
             <GoogleLogin
             clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
@@ -52,9 +51,10 @@ class Login extends Component {
                     <div>
                         <LoginForm />
                         {this.renderGoogleButton("Login with Google")}
-
+                        
                         <p>
-                            Don't have an account? <Button type="link" onClick={() => {
+                            Don&lsquo;t have an account? 
+                            <Button type="link" onClick={() => {
                                 this.setState({ signUpSelected: true })
                             }}> Sign Up</Button>
                         </p>
