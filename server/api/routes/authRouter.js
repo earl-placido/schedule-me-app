@@ -37,11 +37,18 @@ router.route('/signup')
     .post((req, res, next) => {
         let newUser = req.body;
 
+        if(!validateEmailFormat(newUser.email)) {
+            return res.status(responses.UNAUTHORIZED).json({err: 'Email format invalid' });  
+        }
+
+        if(!validatePasswordFormat(newUser.password)) {
+            return res.status(responses.UNAUTHORIZED).json({err: 'Password format invalid. Length must be between 8 and 100 characters.' });  
+        }
+
         userModel.getUserByEmail(newUser.email).then(user => {
-            // console.log(newUser);
+            
             // create new user
             if (user === undefined || user.length == 0) {
-                console.log('1');
                 return userModel.createUser(newUser.email, newUser.password)
                     .then(userID => {
                         req.auth = { id: userID };
@@ -50,10 +57,7 @@ router.route('/signup')
                     .catch(next);
             } 
             else {
-                return res.status(responses.UNAUTHORIZED).json({
-                    status: responses.UNAUTHORIZED,
-                    err: 'Email address entered is taken.'
-                });
+                return res.status(responses.UNAUTHORIZED).json({err: 'Email address entered is taken.'});
             }
         }).catch(next);
     }, tokenHelper.createToken, tokenHelper.sendToken);
@@ -62,12 +66,17 @@ router.route('/login')
     .post((req, res, next) => {
         let user = req.body;
 
-        userModel.validateUser(user.email).then(result => {
+        if(!validateEmailFormat(user.email)) {
+            return res.status(responses.UNAUTHORIZED).json({err: 'Email format invalid' });  
+        }
+
+        if(!validatePasswordFormat(user.password)) {
+            return res.status(responses.UNAUTHORIZED).json({err: 'Password format invalid. Length must be between 8 and 100 characters.' });  
+        }
+
+        userModel.validateUser(user.email, user.password).then(result => {
             if (!result.isValid) {
-                return res.status(responses.UNAUTHORIZED).json({
-                    status: responses.UNAUTHORIZED,
-                    err: result.msg
-                });
+                return res.status(responses.UNAUTHORIZED).json({err: result.msg});
             }
             
             req.auth = { id: result.userId };
@@ -75,5 +84,16 @@ router.route('/login')
             next();
         }).catch(next);
     }, tokenHelper.createToken, tokenHelper.sendToken);
+
+
+function validateEmailFormat(email) {
+    let validFormat = /\S+@\S+\.\S+/.test(String(email).toLowerCase());
+    return validFormat;
+}
+
+function validatePasswordFormat(password) {
+    let validFormat = password.length >= 8 && password.length <= 100;
+    return validFormat;
+}
 
 module.exports = router;

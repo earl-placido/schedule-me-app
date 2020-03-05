@@ -20,7 +20,7 @@ function authenticateToken(req, res, next) {
     if (authHeader) {
         const token = authHeader.split(' ')[1];
 
-        jwt.verify(token, SECRET_KEY, (err, user) => {
+        jwt.verify(token ? token : authHeader, SECRET_KEY, (err, user) => {
             if (err) {
                 return res.sendStatus(responses.FORBIDDEN);
             }

@@ -14,7 +14,6 @@ module.exports = {
     createUser(userEmail, userPassword) {
         return mysql.createConnection(MYSQLDB).then(conn => {
             return bcrypt.hash(userPassword, SALT_ROUNDS).then(hash => {
-                console.log(`${userEmail} ${userPassword} ${hash}`);
                 return conn.query(
                     `
                         INSERT INTO \`User\`
@@ -78,27 +77,52 @@ module.exports = {
             .then(conn => {
                 const result = conn.query(
                     `
-                        SELECT UserId, UserEmail, UserPassword
+                        SELECT UserId, UserEmail, UserPassword, OAuthProvider
                         FROM \`User\`   
                         WHERE UserEmail = ?;
                     `, [userEmail]);
                 conn.end();
                 return result;
-            }).then(user => {
-                if (user === undefined || user.length == 0) {
-                    return {
+            }).then( async (user) => {
+                let returnObject = {};
+
+                const userData = user[0];
+                if (userData === undefined || userData.length == 0) {
+                    returnObject = {
                         isValid: false,
                         msg: `Account with email ${userEmail} not found`
                     };
                 }
-                const userData = user[0];
-                return bcrypt.compare(userPassword, userData.UserPassword).then(res => {
-                    return {
-                        userId: userData.userId,
+                else if (userData.OAuthProvider != 'none') {
+                    returnObject = {
+                        isValid: false,
+                        msg: `User is a ${userData.OAuthProvider} user. Please login through ${userData.OAuthProvider}`
+                    }
+                }
+                else {
+                    let res = await comparePasswordAsync(userPassword, userData.UserPassword);
+
+                    returnObject = {
+                        userId: userData.UserId,
                         isValid: res,
                         msg: res ? 'Login successful' : 'Incorrect password'
-                };
-            });
+                    };
+                }
+
+                return returnObject;
         });
     }
+}
+
+async function comparePasswordAsync(userPassword, saltedPassword) {
+    return new Promise(function(resolve, reject) {
+        bcrypt.compare(userPassword, saltedPassword, function(err, res) {
+            if (err) {
+                reject(err);
+            } 
+            else {
+                resolve(res);
+            }
+        });
+    });
 }

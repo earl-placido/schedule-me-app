@@ -10,6 +10,13 @@
       "http",
       "https"
     ],
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
     "paths": {
       "/example/{id}": {
         "get": {
@@ -49,6 +56,11 @@
           "produces": [
             "application/json"
           ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
           "parameters": [
             {
               "name": "id",
@@ -69,6 +81,76 @@
           "responses": {
             "405": {
               "description": "Invalid input"
+            }
+          }
+        }
+      },
+      "/auth/signup": {
+        "post": {
+          "tags":[
+            "Authentication"
+          ],
+          "summary": "Signup a user",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "formData",
+              "type":"string",
+              "description": "email address",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "in": "formData",
+              "description": "password"
+            }
+          ],
+          "responses": {
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags":[
+            "Authentication"
+          ],
+          "summary": "Login as a user",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "formData",
+              "type":"string",
+              "description": "email address",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "in": "formData",
+              "description": "password"
+            }
+          ],
+          "responses": {
+            "401": {
+              "description": "Unauthorized"
             }
           }
         }
