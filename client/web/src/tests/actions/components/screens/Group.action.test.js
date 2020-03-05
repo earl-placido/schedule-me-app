@@ -1,8 +1,8 @@
 import moment from 'moment';
 
 import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability,
-handleAdd, onChangeRange,
-SELECT_DATE, SHOW_MODAL, HANDLE_OK, CANCEL_AVAILABILITY, DELETE_AVAILABILITY,
+handleAdd, onChangeRange, convertDatesToDay,
+SELECT_DATE, SHOW_MODAL, DELETE_AVAILABILITY,
 ADD_AVAILABILITY, ADD_RANGE, CHANGE_RANGE} from '../../../../actions/components/screens/Group.action';
 
 describe('test group actions', () => {
@@ -45,6 +45,33 @@ describe('test group actions', () => {
         expect(value.payload.modalVisible).toEqual(false);
         expect(value.payload.availableDays[day]).toEqual(rangeHours);
         expect(value.payload.rangeHours).toEqual(['']);
+    });
+
+    it ('test handleadd action', () => {
+        const rangeHours = [''];
+        const newRangeHours = handleAdd(rangeHours);
+
+        expect(newRangeHours.type).toEqual(ADD_RANGE);
+        expect(newRangeHours.payload.length).toEqual(2);
+        expect(newRangeHours.payload[1]).toEqual('');
+    });
+
+    it ('test onChangeRange action', () => {
+        const date = moment();
+        const date2 = moment();
+        const rangeHours = [date, date2];
+        const newRangeHours = onChangeRange(0, moment("12-25-1995", 'MM-DD-YYYY'), rangeHours);
+        expect(newRangeHours.type).toEqual(CHANGE_RANGE);
+        expect(newRangeHours.payload[0].year()).toEqual(1995);
+        expect(newRangeHours.payload[0].month()).toEqual(11);
+    });
+
+    it ('test convertDatesToDay action', () => {
+        const currentDate = moment();
+
+        const datesToDay = convertDatesToDay(currentDate.year(), currentDate.month());
+        
+        expect(datesToDay[currentDate.date()]).toEqual(currentDate.day());
     });
     
 });

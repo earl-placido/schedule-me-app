@@ -1,8 +1,5 @@
-import moment from 'moment';
-
 export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
-export const HANDLE_OK = 'handle_ok';
 export const CANCEL_AVAILABILITY = 'cancel_availability';
 export const DELETE_AVAILABILITY = 'delete_availability';
 export const ADD_AVAILABILITY = 'add_availability';
@@ -27,10 +24,12 @@ export const selectDate = (date) => {
     }
 };
 
-export const showModal = () => {
+export const showModal = (selectedDate, availableDays) => {
+    const day = selectedDate.day();
+    const rangeHours = availableDays[day] || [''];
     return {
         type: SHOW_MODAL, 
-        payload: true
+        payload: {modalVisible: true, rangeHours}
     };
 };
 
@@ -38,7 +37,7 @@ export const showModal = () => {
 export const cancelAvailability = () => {
     return {
         type: SHOW_MODAL, 
-        payload: false
+        payload: {modalVisible: false}
     };
 };
 
@@ -78,9 +77,11 @@ export const onChangeRange = (index, value, rangeHours) => {
     };
 };
 
-const convertDatesToDay = (currentYear, currentMonth) => {
+export const convertDatesToDay = (currentYear, currentMonth) => {
     const firstDateOfMonth = new Date(currentYear, currentMonth, 1);
-    const lastDateOfMonth = new Date(currentYear, currentMonth+1, 0);
+    const lastDateOfMonth = new Date(currentYear, (currentMonth+1) % 11, 0);
+    const firstDayOfMonth = firstDateOfMonth.getDay();
+    const lastDayOfMonth = lastDateOfMonth.getDay();
 
     let datesToDay = {}
 
@@ -90,20 +91,20 @@ const convertDatesToDay = (currentYear, currentMonth) => {
         firstDateOfMonth.getDay();
 
         let currentDate = dayIndex;
-        datesToDay[currentDate] = (firstDateOfMonth.getDay() + (dayIndex-1)) % 6; // convert date to day
+        datesToDay[currentDate] = (firstDayOfMonth + (dayIndex-1)) % 6; // convert date to day
+        
+        // get the same day of the following weeks
         currentDate += 7;
-        while (currentDate <= lastDateOfMonth) 
-            datesToDay[currentDate] = (firstDateOfMonth.getDay() + (dayIndex-1)) % 6;
+        while (currentDate <= lastDayOfMonth) {
+            datesToDay[currentDate] = (firstDayOfMonth + (dayIndex-1)) % 6;
+            currentDate += 7;
+        }
     }
 
     return datesToDay;
 
 };
 
-export const onPanelChange = (value, availableDays) => {
-    // check if month changed
-
-};
 
 const INITIAL_STATE = {modalVisible: false, rangeHours: [''], selectedDate: '', availableDays: {}};
 
@@ -113,7 +114,7 @@ export default(state=INITIAL_STATE, action) => {
             return {...state, selectedDate: action.payload};
         }
         case(SHOW_MODAL): {
-            return {...state, modalVisible: action.payload};
+            return {...state, ...action.payload};
         }
         case(CANCEL_AVAILABILITY): {
             return {...state, modalVisible: action.payload};

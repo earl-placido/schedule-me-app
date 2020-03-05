@@ -16,7 +16,7 @@ class Group extends Component {
     }
 
     showModal = () => {
-        this.props.showModal();
+        this.props.showModal(this.props.selectedDate, this.props.availableDays);
     }
 
     handleOk = () => {
@@ -52,10 +52,6 @@ class Group extends Component {
               ))}
             </ul>
           );
-    };
-
-    onPanelChange = value => {
-        // check if month changed
     };
 
     render() {
