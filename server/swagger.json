@@ -206,12 +206,14 @@
             "name": "groupID",
             "type": "integer",
             "format": "int64",
-            "in": "formData"
+            "in": "formData",
+            "required": true
           },
           {
             "name": "userEmail",
             "type": "string",
-            "int": "formData"
+            "int": "formData",
+            "required": true
           }
         ],
         "produces": [
@@ -235,7 +237,8 @@
               "in": "path",
               "description": "the ID of group member",
               "type": "integer",
-              "format": "int64"
+              "format": "int64",
+              "required": true
             }
           ],
           "description": "Get availability from groupMemberId",
