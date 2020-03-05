@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 
 import { PrivateRoute } from './components/util/PrivateRoute';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
-
 import "antd/dist/antd.css";
 import './css/app.css';
 
