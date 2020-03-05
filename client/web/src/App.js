@@ -12,7 +12,12 @@ import "antd/dist/antd.css";
 import './css/app.css';
 
 const { Content, Footer } = Layout;
-
+//TODO: add check for clashing range time
+//TODO: add model that gets groupmemberid from userid and groupid
+//TODO: query for groupmemberId in input InputAvailability
+//TODO: add model that lets you input availability 
+//TODO: create route that connects with the model
+//TODO: when calendar loads, query for the user availbility through groupmemberid
 class App extends Component {
 
     render() {
