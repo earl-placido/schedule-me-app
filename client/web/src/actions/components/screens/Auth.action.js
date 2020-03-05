@@ -58,7 +58,7 @@ export const loginGoogle = (response) => {
                     localStorage.setItem('userName', user.displayName);
                     localStorage.setItem('userId', user.id);
                     localStorage.setItem('displayPicURL', user._json.picture);
-
+                    localStorage.setItem('userEmail', user.emails[0].value);
                     dispatch(loginSuccess(user.displayName, user._json.picture, token));
                 });
             }
