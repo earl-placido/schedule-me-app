@@ -9,7 +9,11 @@ class LoginModal extends Component {
     constructor(props) {
         super(props);
         this.state = { signUpSelected: false }
-	}
+    }
+    
+    close(){
+        this.props.toggleModal(false);
+    }
 
     render() {
         return (
@@ -17,9 +21,7 @@ class LoginModal extends Component {
                 <Modal
                     title={"Login"}
                     visible={this.props.modalVisible}
-                    onCancel={() => {
-                        this.props.toggleModal(false)
-                    }}
+                    onCancel={this.close}
                     footer={null}
                 >
                     <Login/>
