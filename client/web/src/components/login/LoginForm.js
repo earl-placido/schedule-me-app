@@ -30,8 +30,8 @@ const LoginForm = () => {
                 rules={[{ required: true, message: 'Please input your username!' }]}
             >
                 <Input
-                    placeholder={"Enter your username"}
-                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder={"Enter your Email"}
+                    prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
                 />
             </Form.Item>
 
