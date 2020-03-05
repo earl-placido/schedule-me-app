@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import moment from 'moment';
 import {Calendar, Modal, TimePicker, Button, Checkbox, Badge} from 'antd';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
@@ -56,6 +57,7 @@ class Group extends Component {
 
     componentDidMount() {
         this.props.getGroupInformation(this.props.match.params.id);
+        this.props.selectDate(moment()); // otherwise addAvailability button would show that date is undefined
     }
 
     render() {
