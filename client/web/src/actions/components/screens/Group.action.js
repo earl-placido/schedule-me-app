@@ -10,16 +10,6 @@ export const ADD_RANGE = 'add_range';
 export const CHANGE_RANGE = 'change_range';
 
 
-// const numberToDay = {
-//     1: "Monday",
-//     2: "Tuesday",
-//     3: "Wednesday",
-//     4: "Thursday",
-//     5: "Friday",
-//     6: "Saturday",
-//     0: "Sunday"
-// };
-
 export const getGroupInformation = (id) => async(dispatch) => {
     const groupInformation = await axios.get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${id}`);
     dispatch({

@@ -63,7 +63,7 @@ class Group extends Component {
             <div>
                 <h2>{this.props.groupInformation && this.props.groupInformation.GroupName}</h2>
                 <p>{this.props.groupInformation && this.props.groupInformation.GroupDescription}</p>
-                <Button onClick={this.showModal} type="primary" >Add Availability</Button>
+                <Button id='show-modal-button' onClick={this.showModal} type="primary" >Add Availability</Button>
                 <Calendar onSelect={this.onSelect} mode='month' dateCellRender={this.dateCellRender} onPanelChange={this.onPanelChange}/>
 
                 <Modal visible={this.props.modalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
