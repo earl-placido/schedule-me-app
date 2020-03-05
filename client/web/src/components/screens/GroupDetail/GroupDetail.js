@@ -42,7 +42,7 @@ export default class GroupDetail extends Component {
                             <List.Item>
                                 <List.Item.Meta
                                 avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={<a href="https://ant.design">{item.name}</a>}
+                                title={item.name}
                                 description={item.role}
                                 />
                             </List.Item>
@@ -50,7 +50,7 @@ export default class GroupDetail extends Component {
                         />
                     </Row>
                     <Divider orientation="center" style={{ dividerStyle }}/>
-                    <Row justify="center">
+                    <Row>
                         <Col span={12}>
                             <Button type="primary">Input Your Availability</Button>
                         </Col>

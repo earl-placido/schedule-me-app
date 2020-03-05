@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { PrivateRoute } from './components/util/PrivateRoute';
+import GroupDetail from './components/screens/GroupDetail/GroupDetail';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import "antd/dist/antd.css";
 import './css/app.css';
@@ -28,7 +29,6 @@ class App extends Component {
                 <Router>
                     <Layout>
                         <Switch>
-                            
                             <PrivateRoute 
                                 exact path="/createGroup" 
                                 component={() => {
@@ -40,12 +40,21 @@ class App extends Component {
                                 }} 
                                 authorized={this.props.isAuthenticated} 
                             />
-                        
+                            <PrivateRoute 
+                                path="/group" 
+                                component={() => {
+                                    return(
+                                        <ContentContainer>
+                                            <GroupDetail />
+                                        </ContentContainer>
+                                    );
+                                }} 
+                                authorized={this.props.isAuthenticated} 
+                            />
                             <Route path='/'>
                                 <Home/>
                             </Route>
                         </Switch>
-
                         <Footer style={ footerStyle }>schedule-me-up</Footer>
                     </Layout>
                 </Router>
