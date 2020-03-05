@@ -1,38 +1,51 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import ContentContainer from './components/ContentContainer'
+import Home from './components/screens/Home/Home';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { PrivateRoute } from './components/util/PrivateRoute';
-import NavigationBar from './components/layout/NavigationBar';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+
 import "antd/dist/antd.css";
 import './css/app.css';
 
-const { Content, Footer } = Layout;
+
+const { Footer } = Layout;
+
 
 class App extends Component {
+    createGroupComponent(){
+        
+    }
 
     render() {
-        const { contentStyle, containerStyle, footerStyle } = styles
+        const { footerStyle } = styles
 
         return (
             <div className="app">
                 <Router>
                     <Layout>
-                        <NavigationBar/>
-                        <Content style={ contentStyle }>
-                            <div style={ containerStyle }>
-                                <Switch>
-                                    <PrivateRoute 
-                                        exact path="/createGroup" 
-                                        component={CreateGroup} 
-                                        authorized={this.props.isAuthenticated} 
-                                    />
-                                </Switch>
-                            </div>
-                        </Content>
+                        <Switch>
+                            
+                            <PrivateRoute 
+                                exact path="/createGroup" 
+                                component={() => {
+                                    return(
+                                        <ContentContainer>
+                                            <CreateGroup />
+                                        </ContentContainer>
+                                    );
+                                }} 
+                                authorized={this.props.isAuthenticated} 
+                            />
+                        
+                            <Route path='/'>
+                                <Home/>
+                            </Route>
+                        </Switch>
 
                         <Footer style={ footerStyle }>schedule-me-up</Footer>
                     </Layout>
