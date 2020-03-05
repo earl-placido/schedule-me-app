@@ -5,7 +5,7 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import moment from 'moment';
 
-import Group from '../../components/screens/Group/Group';
+import Group from '../../components/screens/Group/InputAvailability';
 import {SHOW_MODAL, SELECT_DATE, CHANGE_RANGE, ADD_AVAILABILITY, ADD_RANGE,
      DELETE_AVAILABILITY} from '../../actions/components/screens/Group.action';
 
