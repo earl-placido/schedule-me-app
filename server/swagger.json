@@ -194,7 +194,36 @@
           }
         }
       },
-      "/available/{groupMemberId}/": {
+      "/groupMember/": {
+        "post": {
+          "tags": [
+            "GroupMember"
+          ]
+        },
+        "summary": "Get group member ID by posting userID and GroupID",
+        "parameters": [
+          {
+            "name": "groupID",
+            "type": "integer",
+            "format": "int64",
+            "in": "formData"
+          },
+          {
+            "name": "userEmail",
+            "type": "string",
+            "int": "formData"
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Returns the group member id"
+          }
+        }
+      },
+      "/availability/{groupMemberId}/": {
         "get": {
           "tags": [
             "Availability"
