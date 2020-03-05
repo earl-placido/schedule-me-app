@@ -3,7 +3,7 @@ import {Calendar, Modal, TimePicker, Button, Checkbox, Badge} from 'antd';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability,
+import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
      handleAdd, onChangeRange} from '../../../actions/components/screens/Group.action';
 
 const {RangePicker} = TimePicker;
@@ -54,9 +54,15 @@ class Group extends Component {
           );
     };
 
+    componentDidMount() {
+        this.props.getGroupInformation(this.props.match.params.id);
+    }
+
     render() {
         return (
             <div>
+                <h2>{this.props.groupInformation && this.props.groupInformation.GroupName}</h2>
+                <p>{this.props.groupInformation && this.props.groupInformation.GroupDescription}</p>
                 <Button onClick={this.showModal} type="primary" >Add Availability</Button>
                 <Calendar onSelect={this.onSelect} mode='month' dateCellRender={this.dateCellRender} onPanelChange={this.onPanelChange}/>
 
@@ -85,8 +91,8 @@ class Group extends Component {
 }
 
 const mapStateToProps = ({ AddAvailabilityReducer }) => {
-    const {modalVisible, rangeHours, selectedDate, availableDays} = AddAvailabilityReducer;
-    return {modalVisible, rangeHours, selectedDate, availableDays};
+    const {modalVisible, rangeHours, selectedDate, availableDays, groupInformation} = AddAvailabilityReducer;
+    return {modalVisible, rangeHours, selectedDate, availableDays, groupInformation};
 };
 
 Group.propTypes = {
@@ -106,5 +112,5 @@ Group.propTypes = {
 };
 
 export default connect(mapStateToProps, 
-    {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability,
+    {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
         handleAdd, onChangeRange})(Group);

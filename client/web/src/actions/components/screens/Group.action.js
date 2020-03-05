@@ -1,3 +1,6 @@
+import axios from 'axios';
+
+export const GROUP_INFORMATION = 'group_information';
 export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
 export const CANCEL_AVAILABILITY = 'cancel_availability';
@@ -16,6 +19,14 @@ export const CHANGE_RANGE = 'change_range';
 //     6: "Saturday",
 //     0: "Sunday"
 // };
+
+export const getGroupInformation = (id) => async(dispatch) => {
+    const groupInformation = await axios.get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${id}`);
+    dispatch({
+        type: GROUP_INFORMATION,
+        payload: groupInformation.data
+    });
+};
 
 export const selectDate = (date) => {
     return {
@@ -110,6 +121,9 @@ const INITIAL_STATE = {modalVisible: false, rangeHours: [''], selectedDate: '', 
 
 export default(state=INITIAL_STATE, action) => {
     switch(action.type) {
+        case (GROUP_INFORMATION): {
+            return {...state, groupInformation: action.payload}
+        }
         case(SELECT_DATE): {
             return {...state, selectedDate: action.payload};
         }

@@ -1,8 +1,11 @@
+import axios from 'axios';
 import moment from 'moment';
+import configureMockStore from 'redux-mock-store';
+import MockAdapter from 'axios-mock-adapter';
 
-import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability,
+import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
 handleAdd, onChangeRange, convertDatesToDay,
-SELECT_DATE, SHOW_MODAL, DELETE_AVAILABILITY,
+SELECT_DATE, SHOW_MODAL, DELETE_AVAILABILITY, GROUP_INFORMATION,
 ADD_AVAILABILITY, ADD_RANGE, CHANGE_RANGE} from '../../../../actions/components/screens/Group.action';
 
 describe('test group actions', () => {
@@ -15,15 +18,17 @@ describe('test group actions', () => {
     });
 
     it ('test showmodal action', () => {
-        const value = showModal();
+        const currentDate = moment();
+        const availableDays = {};
+        const value = showModal(currentDate, availableDays);
         expect(value.type).toEqual(SHOW_MODAL);
-        expect(value.payload).toEqual(true);
+        expect(value.payload.modalVisible).toEqual(true);
     });
 
     it ('test cancel availability action', () => {
         const value = cancelAvailability();
         expect(value.type).toEqual(SHOW_MODAL);
-        expect(value.payload).toEqual(false);
+        expect(value.payload.modalVisible).toEqual(false);
     });
 
     it ('test delete availability action', () => {
@@ -68,10 +73,34 @@ describe('test group actions', () => {
 
     it ('test convertDatesToDay action', () => {
         const currentDate = moment();
-
         const datesToDay = convertDatesToDay(currentDate.year(), currentDate.month());
-        
         expect(datesToDay[currentDate.date()]).toEqual(currentDate.day());
     });
     
+});
+
+describe('test contacting server from group', () => {
+    let store, httpMock;
+    const flushAllPromises = () => new Promise(resolve => setImmediate(resolve));
+
+    beforeEach(() => {
+        httpMock = new MockAdapter(axios);
+        const mockStore = configureMockStore();
+        store = mockStore({});
+    });
+
+    it('test obtaining group information', async() => {
+        httpMock.onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/1000000`).reply(200, {
+            data: {
+                GroupId: 1,
+                GroupName: 'we'
+            }
+        });
+
+        getGroupInformation(1000000)(store.dispatch);
+        await flushAllPromises();
+        expect(store.getActions()[0].type).toEqual(GROUP_INFORMATION);
+        expect(store.getActions()[0].payload).toEqual({data: {GroupId: 1, GroupName: 'we'}});
+
+    });
 });
