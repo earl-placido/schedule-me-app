@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
-import {Calendar, Modal, TimePicker, Button, Checkbox, Badge} from 'antd';
-import {connect} from 'react-redux';
+import { Calendar, Modal, TimePicker, Button, Checkbox, Badge } from 'antd';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
