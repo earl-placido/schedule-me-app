@@ -8,16 +8,20 @@ export default class GroupDetail extends Component {
         const { containerStyle, cardStyle, dividerStyle, titleStyle } = styles;
         const userList = [
             {
-              name: 'Ant Design Title 1 (Admin)',
+              name: 'Renz Cabusas',
+              role: 'Administrator'
             },
             {
-              name: 'Ant Design Title 2',
+              name: 'Brenna Epp',
+              role: 'Member'
             },
             {
-              name: 'Ant Design Title 3',
+              name: 'Bonnie Tang',
+              role: 'Member'
             },
             {
-              name: 'Ant Design Title 4',
+              name: 'Daryl Fung',
+              role: 'Member'
             },
           ];
         return (
@@ -30,7 +34,7 @@ export default class GroupDetail extends Component {
                         <Title level={4}>Optimal Time: 12pm - 2pm on October 26, 1985</Title>
                     </Row>
                     <Divider orientation="center" style={{ dividerStyle }}/>
-                    <Row type="flex">
+                    <Row>
                         <List
                             itemLayout="horizontal"
                             dataSource={userList}
@@ -39,6 +43,7 @@ export default class GroupDetail extends Component {
                                 <List.Item.Meta
                                 avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
                                 title={<a href="https://ant.design">{item.name}</a>}
+                                description={item.role}
                                 />
                             </List.Item>
                             )}
