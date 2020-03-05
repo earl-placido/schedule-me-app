@@ -104,11 +104,14 @@ Group.propTypes = {
     modalVisible: PropTypes.any,
     selectedDate: PropTypes.any,
     availableDays: PropTypes.any,
+    groupInformation: PropTypes.any,
     
     
     handleAdd: PropTypes.func,
     selectDate: PropTypes.func,
     onChangeRange: PropTypes.func,
+    addAvailability: PropTypes.func,
+    getGroupInformation: PropTypes.func
 };
 
 export default connect(mapStateToProps, 
