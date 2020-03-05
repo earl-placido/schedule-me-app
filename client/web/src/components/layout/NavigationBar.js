@@ -2,12 +2,9 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { GoogleLogin } from 'react-google-login';
-
 import { Layout, Menu, Dropdown, Button, Avatar, message } from 'antd';
-import { GoogleOutlined } from '@ant-design/icons';
 import PropTypes from 'prop-types';
-
+import { toggleModal } from '../../actions/components/login/LoginModal.action'
 import { loginGoogle, logoutGoogle } from '../../actions/components/screens/Auth.action';
 
 const { Header } = Layout;
@@ -16,7 +13,7 @@ export class NavigationBar extends Component {
     
 	constructor(props) {
         super(props);
-
+    
         this.logoutUser = this.logoutUser.bind(this);
         this.loginUser = this.loginUser.bind(this);
 	}
@@ -43,15 +40,11 @@ export class NavigationBar extends Component {
             </Dropdown.Button>
         ):
         (<div>
-            <GoogleLogin
-                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                render={renderProps => (
-                    <Button onClick={renderProps.onClick}><GoogleOutlined/> Sign in with Google</Button>
-                )}
-                buttonText="Sign in with Google"
-                onSuccess={this.loginUser}
-                onFailure={this.onFailure}
-            />
+            <Button onClick={()=>{
+                    this.props.toggleModal(true)
+                }}>
+                    Login
+            </Button>
         </div>);
 
         return (
@@ -82,12 +75,15 @@ const headerStyle = {
 const mapStateToProps = state => ({
 	isAuthenticated: state.auth.isAuthenticated,
     userName: state.auth.userName,
-    displayPicURL: state.auth.displayPicURL
+    displayPicURL: state.auth.displayPicURL,
+    modalVisible: state.modalVisible
 });
+
 
 const mapDispatchToProps = dispatch => ({
 	logoutGoogle: () => dispatch(logoutGoogle()),
-    loginGoogle: response => dispatch(loginGoogle(response))
+    loginGoogle: response => dispatch(loginGoogle(response)),
+    toggleModal: (value) => dispatch(toggleModal(value))
 });
 
 NavigationBar.propTypes = {
@@ -96,7 +92,9 @@ NavigationBar.propTypes = {
     displayPicURL: PropTypes.any,
     isAuthenticated: PropTypes.any,
 	loginGoogle: PropTypes.func,
-	logoutGoogle: PropTypes.func
+    logoutGoogle: PropTypes.func,
+    modalVisible: PropTypes.any,
+    toggleModal: PropTypes.func
 };
 
 export default compose(
