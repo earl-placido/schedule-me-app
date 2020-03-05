@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
-     handleAdd, onChangeRange} from '../../../actions/components/screens/Group.action';
+     handleAdd, onChangeRange} from '../../../actions/components/screens/InputAvailability.action';
 
 const {RangePicker} = TimePicker;
 
@@ -57,7 +57,9 @@ class Group extends Component {
 
     componentDidMount() {
         this.props.getGroupInformation(this.props.match.params.id);
-        this.props.selectDate(moment()); // otherwise addAvailability button would show that date is undefined
+        // otherwise addAvailability button would show that date is undefined
+        if (!this.props.selectedDate)
+            this.props.selectDate(moment()); 
     }
 
     render() {
@@ -74,7 +76,7 @@ class Group extends Component {
                     {this.props.rangeHours.map( (item, index) => {
                         return (
                         <div key={index} className='range-picker'>
-                            <RangePicker value={this.props.rangeHours[index]} onChange={this.onChangeRange.bind(this, index)}/>
+                            <RangePicker value={item} onChange={this.onChangeRange.bind(this, index)}/>
                         </div>
                         );
                     })}

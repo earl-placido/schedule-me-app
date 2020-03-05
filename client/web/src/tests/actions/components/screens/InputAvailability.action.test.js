@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter';
 import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
 handleAdd, onChangeRange, convertDatesToDay,
 SELECT_DATE, SHOW_MODAL, DELETE_AVAILABILITY, GROUP_INFORMATION,
-ADD_AVAILABILITY, ADD_RANGE, CHANGE_RANGE} from '../../../../actions/components/screens/Group.action';
+ADD_AVAILABILITY, ADD_RANGE, CHANGE_RANGE} from '../../../../actions/components/screens/InputAvailability.action';
 
 describe('test group actions', () => {
 

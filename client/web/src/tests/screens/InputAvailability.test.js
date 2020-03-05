@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import Group from '../../components/screens/Group/InputAvailability';
 import {SHOW_MODAL, SELECT_DATE, CHANGE_RANGE, ADD_AVAILABILITY, ADD_RANGE,
-     DELETE_AVAILABILITY} from '../../actions/components/screens/Group.action';
+     DELETE_AVAILABILITY} from '../../actions/components/screens/InputAvailability.action';
 
 configure({adapter: new Adapter()});
 
@@ -43,11 +43,13 @@ describe('test group', () => {
     });
 
     it('test if click cancel on modal disable modal visible', () => {
+        console.log(store.getActions());
         component.dive().instance().handleCancel();
         expect(store.getActions()[0].type).toEqual(SHOW_MODAL);
     });
 
     it('test click ok on modal', () => {
+        console.log(store.getActions());
         component.dive().instance().handleOk();
         expect(store.getActions()[0].type).toEqual(ADD_AVAILABILITY);
     });
