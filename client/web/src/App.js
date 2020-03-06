@@ -36,7 +36,7 @@ class App extends Component {
         );
     }
 
-    inputAvailabilityComponent(component) {
+    inputAvailabilityComponent = () => {
         return (
             <ContentContainer>
                 <InputAvailability />
