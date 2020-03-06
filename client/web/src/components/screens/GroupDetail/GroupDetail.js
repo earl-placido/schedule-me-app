@@ -34,7 +34,7 @@ export default class GroupDetail extends Component {
                         <Title level={4}>Optimal Time: 12pm - 2pm on October 26, 1985</Title>
                     </Row>
                     <Divider orientation="center" style={{ dividerStyle }}/>
-                    <Row style={{ listStyle }}>
+                    <Row>
                         <List
                             itemLayout="horizontal"
                             dataSource={userList}
@@ -79,8 +79,4 @@ const styles = {
     titleStyle : {
         textAlign: 'center',
     },
-
-    listStyle : {
-        overflow: 'scroll'
-    }
 }
