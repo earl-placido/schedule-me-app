@@ -6,10 +6,10 @@ import Home from "./components/screens/Home/Home";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { PrivateRoute } from './components/util/PrivateRoute';
-import GroupDetail from './components/screens/GroupDetail/GroupDetail';
-import GroupList from './components/screens/GroupList/GroupList';
-import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+import { PrivateRoute } from "./components/util/PrivateRoute";
+import GroupDetail from "./components/screens/GroupDetail/GroupDetail";
+import GroupList from "./components/screens/GroupList/GroupList";
+import CreateGroup from "./components/screens/CreateGroup/CreateGroup";
 
 import "antd/dist/antd.css";
 import "./css/app.css";
@@ -21,54 +21,56 @@ class App extends Component {
 
   render() {
     const { footerStyle } = styles;
-        return (
-            <div className="app">
-                <Router>
-                    <Layout>
-                        <Switch>
-                            <PrivateRoute 
-                                exact path="/createGroup" 
-                                component={() => {
-                                    return(
-                                        <ContentContainer>
-                                            <CreateGroup />
-                                        </ContentContainer>
-                                    );
-                                }} 
-                                authorized={this.props.isAuthenticated} 
-                            />
-                            <PrivateRoute 
-                                path="/group" 
-                                component={() => {
-                                    return(
-                                        <ContentContainer>
-                                            <GroupDetail />
-                                        </ContentContainer>
-                                    );
-                                }} 
-                                authorized={this.props.isAuthenticated} 
-                            />
-                            <PrivateRoute 
-                                exact path="/groupList" 
-                                component={() => {
-                                    return(
-                                        <ContentContainer>
-                                            <GroupList />
-                                        </ContentContainer>
-                                    );
-                                }} 
-                                authorized={this.props.isAuthenticated} 
-                            />
-                            <Route path='/'>
-                                <Home/>
-                            </Route>
-                        </Switch>
-                        <Footer style={ footerStyle }>schedule-me-up</Footer>
-                    </Layout>
-                </Router>
-            </div>
-        )
-    }
+    return (
+      <div className="app">
+        <Router>
+          <Layout>
+            <Switch>
+              <PrivateRoute
+                exact
+                path="/createGroup"
+                component={() => {
+                  return (
+                    <ContentContainer>
+                      <CreateGroup />
+                    </ContentContainer>
+                  );
+                }}
+                authorized={this.props.isAuthenticated}
+              />
+              <PrivateRoute
+                path="/group"
+                component={() => {
+                  return (
+                    <ContentContainer>
+                      <GroupDetail />
+                    </ContentContainer>
+                  );
+                }}
+                authorized={this.props.isAuthenticated}
+              />
+              <PrivateRoute
+                exact
+                path="/groupList"
+                component={() => {
+                  return (
+                    <ContentContainer>
+                      <GroupList />
+                    </ContentContainer>
+                  );
+                }}
+                authorized={this.props.isAuthenticated}
+              />
+              <Route path="/">
+                <Home />
+              </Route>
+            </Switch>
+            <Footer style={footerStyle}>schedule-me-up</Footer>
+          </Layout>
+        </Router>
+      </div>
+    );
+  }
 }
 
 const styles = {
