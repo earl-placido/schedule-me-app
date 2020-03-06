@@ -39,7 +39,7 @@ export default class GroupList extends Component {
                         <Title level={4}>Your Groups</Title>
                     </Row>
                     <Divider orientation="center" style={{ dividerStyle }}/>
-                    <Row style={{ listStyle }}>
+                    <Row>
                         <List
                             itemLayout="horizontal"
                             dataSource={groupList}
