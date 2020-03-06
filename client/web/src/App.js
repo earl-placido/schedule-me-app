@@ -23,7 +23,6 @@ class App extends Component {
 
   render() {
     const { footerStyle } = styles;
-
         return (
             <div className="app">
                 <Router>
