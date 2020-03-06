@@ -13,7 +13,6 @@ import "antd/dist/antd.css";
 import './css/app.css';
 
 const { Footer } = Layout;
-//TODO: add model that gets groupmemberid from userid and groupid
 //TODO: query for groupmemberId in input InputAvailability
 //TODO: add model that lets you input availability 
 //TODO: create route that connects with the model

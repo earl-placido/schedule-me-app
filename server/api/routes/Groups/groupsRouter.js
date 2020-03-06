@@ -1,9 +1,9 @@
 const express = require('express');
-const responses = require('../util/responses');
+const responses = require('../../util/responses');
 const router = express.Router();
 
-const groupsModel = require('../model/groupsModel');
-const groupMemberModel = require('../model/groupMemberModel');
+const groupsModel = require('../../model/groupsModel');
+const groupMemberModel = require('../../model/groupMemberModel');
 
 // Create a new group
 router.post('/', (req, res, next) => {
@@ -105,5 +105,10 @@ router.get('/:groupId/members/:userId', (req, res, next) => {
         }).catch(next);
     }
 });
+
+// add group member router
+require('./groupMemberRouter')(router);
+require('./AvailabilityRouter')(router);
+
 
 module.exports = router;
