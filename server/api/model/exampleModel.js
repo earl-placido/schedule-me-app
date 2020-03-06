@@ -4,41 +4,40 @@ const MYSQLDB = {
   host: process.env.RDS_HOSTNAME || process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME || process.env.DB_NAME,
+  database: process.env.RDS_DB_NAME || process.env.DB_NAME
 };
 
 function insertData(id, data) {
-    return mysql.createConnection(MYSQLDB).then(conn => {
-        const result = conn.query(
-            `
+  return mysql.createConnection(MYSQLDB).then(conn => {
+    const result = conn.query(
+      `
                 INSERT INTO Example (ExampleID, ExampleData)
                 VALUES (?, ?) 
                 ON DUPLICATE KEY UPDATE ExampleData = ?;
             `,
-            [id, data, data]
-        );
-        conn.end();
-        return result;
-    });
+      [id, data, data]
+    );
+    conn.end();
+    return result;
+  });
 }
 
 function getData(id) {
-    return mysql.createConnection(MYSQLDB).then(conn => {
-        const data = conn.query(
-            `
+  return mysql.createConnection(MYSQLDB).then(conn => {
+    const data = conn.query(
+      `
                 SELECT ExampleData
                 FROM Example
                 WHERE ExampleID = ?
             `,
-            [id]
-        );
-        conn.end();
-        return data;
-    });
+      [id]
+    );
+    conn.end();
+    return data;
+  });
 }
-
 
 module.exports = {
-   insertData,
-   getData
-}
+  insertData,
+  getData
+};
