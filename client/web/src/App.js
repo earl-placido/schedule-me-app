@@ -6,7 +6,7 @@ import Home from './components/screens/Home/Home';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { PrivateRoute } from './components/util/PrivateRoute';
+import {PrivateRoute} from './components/util/PrivateRoute';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import InputAvailability from './components/screens/Group/InputAvailability';
 import "antd/dist/antd.css";
@@ -59,7 +59,7 @@ class App extends Component {
                                     />
 
                                     <PrivateRoute 
-                                        path="/groups/:id/input"
+                                        exact path="/groups/:id/input"
                                         component={this.inputAvailabilityComponent}
                                         authorized={this.props.isAuthenticated}
                                     />

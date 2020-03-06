@@ -56,13 +56,15 @@ class Group extends Component {
     };
 
     componentDidMount() {
-        this.props.getGroupInformation(this.props.match.params.id);
+        const groupId = parseInt(window.location.pathname.split('/')[2]);
+        this.props.getGroupInformation(groupId);
         // otherwise addAvailability button would show that date is undefined
         if (!this.props.selectedDate)
             this.props.selectDate(moment()); 
     }
 
     render() {
+
         return (
             <div>
                 <h2>{this.props.groupInformation && this.props.groupInformation.GroupName}</h2>

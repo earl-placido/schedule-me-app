@@ -12,7 +12,6 @@ const { Content } = Layout;
 class ContentContainer extends Component {
     render() {
         const { contentStyle, containerStyle } = styles
-
         return (
             <div>
                 <NavigationBar/>
