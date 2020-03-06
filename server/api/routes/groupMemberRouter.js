@@ -7,7 +7,6 @@ const groupMemberModel = require('../model/groupMemberModel');
 router.post('/', (req, res, next) => {
     const groupMemberInformation = req.body;
     const { groupId, userId } = groupMemberInformation;
-    console.log(groupMemberInformation);
     if (!groupId) {
         res.status(responses.NOT_FOUND);
         res.send({error: "groupId is required!"});
