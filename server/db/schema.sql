@@ -12,7 +12,8 @@ DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` 
 (
   UserId INT NOT NULL AUTO_INCREMENT,
-  UserName NVARCHAR(320) NOT NULL DEFAULT '',
+  UserFName NVARCHAR(100) NOT NULL,
+  UserLName NVARCHAR(100) NOT NULL,
   UserEmail NVARCHAR(320) NOT NULL,
   UserPassword NVARCHAR(320) NOT NULL DEFAULT '',
   OAuthProvider ENUM('none', 'google') DEFAULT 'none',
@@ -96,5 +97,3 @@ CREATE TABLE `Meeting`
 );
 
 SET FOREIGN_KEY_CHECKS=1;
-
-INSERT INTO `User` (`UserName`, `UserEmail`) VALUES ('TestUser', 'TestEmail@schedulemeup.ca');

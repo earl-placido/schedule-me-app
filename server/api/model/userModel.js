@@ -1,5 +1,5 @@
 const mysql = require("promise-mysql");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 const MYSQLDB = {
   host: process.env.RDS_HOSTNAME,
@@ -11,118 +11,142 @@ const MYSQLDB = {
 const SALT_ROUNDS = 12;
 
 module.exports = {
-    createUser(userEmail, userPassword) {
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return bcrypt.hash(userPassword, SALT_ROUNDS).then(hash => {
-                return conn.query(
-                    `
-                        INSERT INTO \`User\`
-                        (UserEmail, UserPassword)
-                        VALUES (?, ?)
-                    `, 
-                    [userEmail, hash]
-                ).then(res => {
-                    conn.end();
-                    return res.insertId;
-                }).catch(err => {
-                    conn.end();
-                    return err;
-                });
-            });
-        });
-    },
+  createUser(email, password, firstName, lastName) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return bcrypt.hash(password, SALT_ROUNDS).then(hash => {
+        return conn
+          .query(
+            `
+              INSERT INTO \`User\`
+              (UserEmail, 
+                UserPassword,
+                UserFName,
+                UserLName)
+              VALUES (?, ?, ?, ?)
+            `,
+            [email, hash, firstName, lastName]
+          )
+          .then(res => {
+            conn.end();
+            return res.insertId;
+          })
+          .catch(err => {
+            conn.end();
+            return { error: err };
+          });
+      });
+    });
+  },
 
-    createGoogleUser(userName, userEmail, OAuthProvider, OAuthUID) {
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(
-                `
-                    INSERT INTO \`User\`
-                    (UserName,
-                     UserEmail,
-                     OAuthProvider,
-                     OAuthUID)
-                    VALUES (?, ?, ?, ?)
-                `,
-                [userName, userEmail, OAuthProvider, OAuthUID]
-            ).then(res => {
-                conn.end();
-                return res.insertId;
-            }).catch(err => {
-                conn.end();
-                return err;
-            });
-        });
-    },
-
-    getUserByEmail(userEmail) {
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(
-                `
-                    SELECT * FROM \`User\` WHERE UserEmail = ?
-                `, 
-                [userEmail]
-            ).then(res => {
-                conn.end();
-                return res;
-            }).catch(err => {
-                conn.end();
-                return err;
-            });
-        });
-    },
-
-    validateUser(userEmail, userPassword) {
-        return mysql
-            .createConnection(MYSQLDB)
-            .then(conn => {
-                const result = conn.query(
-                    `
-                        SELECT UserId, UserEmail, UserPassword, OAuthProvider
-                        FROM \`User\`   
-                        WHERE UserEmail = ?;
-                    `, [userEmail]);
-                conn.end();
-                return result;
-            }).then( async (user) => {
-                let returnObject = {};
-
-                const userData = user[0];
-                if (userData === undefined || userData.length == 0) {
-                    returnObject = {
-                        isValid: false,
-                        msg: `Account with email ${userEmail} not found`
-                    };
-                }
-                else if (userData.OAuthProvider != 'none') {
-                    returnObject = {
-                        isValid: false,
-                        msg: `User is a ${userData.OAuthProvider} user. Please login through ${userData.OAuthProvider}`
-                    }
-                }
-                else {
-                    let res = await comparePasswordAsync(userPassword, userData.UserPassword);
-
-                    returnObject = {
-                        userId: userData.UserId,
-                        isValid: res,
-                        msg: res ? 'Login successful' : 'Incorrect password'
-                    };
-                }
-
-                return returnObject;
-        });
-    }
-}
-
-async function comparePasswordAsync(userPassword, saltedPassword) {
-    return new Promise(function(resolve, reject) {
-        bcrypt.compare(userPassword, saltedPassword, function(err, res) {
-            if (err) {
-                reject(err);
-            } 
-            else {
-                resolve(res);
-            }
+  createGoogleUser(userEmail, firstName, lastName, OAuthProvider, OAuthUID) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
+            INSERT INTO \`User\`
+            (UserEmail,
+              UserFName,
+              UserLName,
+              OAuthProvider,
+              OAuthUID)
+            VALUES (?, ?, ?, ?, ?)
+          `,
+          [userEmail, firstName, lastName, OAuthProvider, OAuthUID]
+        )
+        .then(res => {
+          conn.end();
+          return res.insertId;
+        })
+        .catch(err => {
+          conn.end();
+          return { error: err };
         });
     });
+  },
+
+  getUserByEmail(email) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
+            SELECT * FROM \`User\` WHERE UserEmail = ?
+          `,
+          [email]
+        )
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return { error: err };
+        });
+    });
+  },
+
+  validateUser(email, password) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
+            SELECT UserId, UserEmail, UserPassword, OAuthProvider
+            FROM \`User\`   
+            WHERE UserEmail = ?;
+          `,
+          [email]
+        )
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .then(async user => {
+          let response = {};
+
+          const userData = user[0];
+
+          // check if there is a user with specified email exists
+          if (userData === undefined || userData.length == 0) {
+            response = {
+              isValid: false,
+              msg: `Account with email ${email} not found`
+            };
+          } //check if email is attached to a social login user
+          else if (userData.OAuthProvider != "none") {
+            response = {
+              isValid: false,
+              msg: `${email} is attached to a ${userData.OAuthProvider} user. Please login through ${userData.OAuthProvider}`
+            };
+          } else {
+            let isPasswordValid = await comparePasswordAsync(
+              password,
+              userData.UserPassword
+            );
+
+            response = {
+              userId: userData.UserId,
+              isValid: isPasswordValid,
+              msg: isPasswordValid ? "Login successful" : "Incorrect password"
+            };
+          }
+
+          return response;
+        })
+        .catch(err => {
+          conn.end();
+          return { error: err };
+        });
+    });
+  }
+};
+
+async function comparePasswordAsync(password, saltedPassword) {
+  return new Promise(function(resolve, reject) {
+    bcrypt.compare(password, saltedPassword, function(err, res) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(res);
+      }
+    });
+  });
 }

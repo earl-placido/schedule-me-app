@@ -111,6 +111,18 @@
               "type": "string",
               "in": "formData",
               "description": "password"
+            },
+            {
+              "name": "firstName",
+              "type": "string",
+              "in": "formData",
+              "description": "firstName"
+            },
+            {
+              "name": "lastName",
+              "type": "string",
+              "in": "formData",
+              "description": "lastName"
             }
           ],
           "responses": {
