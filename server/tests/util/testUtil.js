@@ -1,23 +1,36 @@
-const mysql = require('promise-mysql');
+const mysql = require("promise-mysql");
 
 function insertUsersQuery(users) {
-    return (
-        `
-            INSERT INTO \`User\` (UserName, UserEmail) VALUES
-            ${users.map(user => mysql.format(`(?, ?)`, 
-            [
-                user.userName,
-                user.userEmail
-            ])).join(`, `)};
-        
-        `
-    );
+  return `
+    INSERT INTO \`User\`
+    (UserEmail,
+      UserPassword,
+      UserFName,
+      UserLName,
+      OAuthProvider,
+      OAuthUID)
+    VALUES 
+    ${users
+      .map(user =>
+        mysql.format(`(?, ?, ?, ?, ?, ?)`, [
+          user.email,
+          user.password,
+          user.firstName,
+          user.lastName,
+          user.oAuthProvider,
+          user.oAuthUID
+        ])
+      )
+      .join(`, `)}; 
+  `;
 }
 
 function insertGroupsQuery(groups) {
-    return (
-        `
-        ${groups.map(group => mysql.format(`
+  return `
+    ${groups
+      .map(group =>
+        mysql.format(
+          `
             INSERT INTO \`Meeting\`
             (MeetingDuration,
             MeetingFrequency, 
@@ -30,52 +43,54 @@ function insertGroupsQuery(groups) {
             GroupOwnerId,
             MeetingId)
             VALUES (?, ?, ?, LAST_INSERT_ID());
-        `,
-        [
+          `,
+          [
             group.meetingDuration,
             group.meetingFrequency,
             group.meetingLocation,
             group.groupName,
             group.groupDescription,
             group.groupOwnerId
-        ])).join(`\n`)}
-        `
-    );
+          ]
+        )
+      )
+      .join(`\n`)}
+  `;
 }
 
 function insertGroupMembersQuery(groupMembers) {
-    return (
-        `
-            INSERT INTO \`GroupMember\` (GroupId, UserId, MemberRole) VALUES
-            ${groupMembers.map(groupMember => mysql.format(`(?, ?, ?)`, 
-            [
-                groupMember.groupId,
-                groupMember.userId,
-                groupMember.memberRole
-            ])).join(`, `)};
-        
-        `
-    );
+  return `
+    INSERT INTO \`GroupMember\` (GroupId, UserId, MemberRole) VALUES
+    ${groupMembers
+      .map(groupMember =>
+        mysql.format(`(?, ?, ?)`, [
+          groupMember.groupId,
+          groupMember.userId,
+          groupMember.memberRole
+        ])
+      )
+      .join(`, `)};
+  `;
 }
 
 const resetUsersQuery = `
-    TRUNCATE TABLE \`User\`;
+  TRUNCATE TABLE \`User\`;
 `;
 
 const resetGroupsQuery = `
-    TRUNCATE TABLE \`Group\`;
-    ALTER TABLE \`Group\` AUTO_INCREMENT = 1000000;
+  TRUNCATE TABLE \`Group\`;
+  ALTER TABLE \`Group\` AUTO_INCREMENT = 1000000;
 `;
 
 const resetGroupMembersQuery = `
-    TRUNCATE TABLE \`GroupMember\`;
+  TRUNCATE TABLE \`GroupMember\`;
 `;
 
 module.exports = {
-    insertUsersQuery,
-    insertGroupsQuery,
-    insertGroupMembersQuery,
-    resetUsersQuery,
-    resetGroupsQuery,
-    resetGroupMembersQuery
-}
+  insertUsersQuery,
+  insertGroupsQuery,
+  insertGroupMembersQuery,
+  resetUsersQuery,
+  resetGroupsQuery,
+  resetGroupMembersQuery
+};
