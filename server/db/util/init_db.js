@@ -1,8 +1,8 @@
 //load environment variables
-require("dotenv").config()
-require("require-sql")
+require("dotenv").config();
+require("require-sql");
 
-const mysql = require("promise-mysql")
+const mysql = require("promise-mysql");
 const schemaFile = require("../schema.sql");
 
 const DB_VARIABLES = {
