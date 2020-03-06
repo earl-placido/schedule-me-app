@@ -8,7 +8,18 @@
     "start": "react-native start",
     "test": "jest",
     "test:ci": "set CI=true && jest",
-    "lint": "eslint src"
+    "lint": "eslint --fix src",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,json,scss}": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "moment": "^2.24.0",
@@ -28,8 +39,13 @@
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
     "eslint": "6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-json": "^2.1.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
+    "husky": "^4.2.3",
     "jest": "24.9.0",
+    "lint-staged": "^10.0.8",
     "metro-react-native-babel-preset": "0.56.4",
     "react-test-renderer": "16.9.0",
     "typescript": "^3.8.3"
