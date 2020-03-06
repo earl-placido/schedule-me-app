@@ -5,7 +5,7 @@ import "antd/dist/antd.css";
 export default class GroupList extends Component { 
     render() {
         const { Title } = Typography;
-        const { containerStyle, cardStyle, dividerStyle, titleStyle, listStyle } = styles;
+        const { containerStyle, cardStyle, dividerStyle, titleStyle } = styles;
         const groupList = [
             {
                 groupId: '1',
