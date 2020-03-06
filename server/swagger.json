@@ -10,6 +10,13 @@
       "http",
       "https"
     ],
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
     "paths": {
       "/example/{id}": {
         "get": {
@@ -49,6 +56,11 @@
           "produces": [
             "application/json"
           ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
           "parameters": [
             {
               "name": "id",
@@ -73,10 +85,101 @@
           }
         }
       },
+      "/auth/signup": {
+        "post": {
+          "tags":[
+            "Authentication"
+          ],
+          "summary": "Signup a user",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "formData",
+              "type":"string",
+              "description": "email address",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "in": "formData",
+              "description": "password",
+              "required": true
+            },
+            {
+              "name": "firstName",
+              "type": "string",
+              "in": "formData",
+              "description": "firstName",
+              "required": true
+            },
+            {
+              "name": "lastName",
+              "type": "string",
+              "in": "formData",
+              "description": "lastName",
+              "required": true
+            }
+          ],
+          "responses": {
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags":[
+            "Authentication"
+          ],
+          "summary": "Login as a user",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "formData",
+              "type":"string",
+              "description": "email address",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "in": "formData",
+              "description": "password",
+              "required": true
+            }
+          ],
+          "responses": {
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
       "/groups/": {
         "get": {
           "tags": [
             "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "summary": "Get all groups",
           "description": "Get all groups from userId",
@@ -97,6 +200,11 @@
           "description": "",
           "produces": [
             "application/json"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "parameters": [
             {
@@ -176,6 +284,11 @@
           ],
           "produces": [
             "application/json"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "parameters": [
             {
