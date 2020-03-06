@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { StyleSheet} from 'react-native';
+import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
 import {Container, Header, Content, Footer, Title} from 'native-base';
 import CreateGroup from './components/screen/CreateGroup';
 
@@ -13,15 +13,13 @@ export default class App extends Component {
     return (
       <Provider store={createStore(Reducers, {}, applyMiddleware(thunk))}>
         <Container>
-          
-          <Header/>
-          <CreateGroup/>
+          <Header />
+          <CreateGroup />
 
-          <Content>
-          </Content>
+          <Content />
 
-          <Footer style = {styles.footerStyle}>
-              <Title>schedule-me-up</Title>
+          <Footer style={styles.footerStyle}>
+            <Title>schedule-me-up</Title>
           </Footer>
         </Container>
       </Provider>
@@ -31,6 +29,6 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   footerStyle: {
-    padding: 10
-  }
+    padding: 10,
+  },
 });

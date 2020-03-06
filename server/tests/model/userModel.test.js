@@ -57,11 +57,9 @@ describe(`createUser tests`, () => {
     let newPassword = "password";
     let newFName = "john";
 
-    return userModel
-      .createUser(newEmail, newPassword, newFName)
-      .then(err => {
-        expect(err).toHaveProperty("error");
-      });
+    return userModel.createUser(newEmail, newPassword, newFName).then(err => {
+      expect(err).toHaveProperty("error");
+    });
   });
 });
 
@@ -76,7 +74,13 @@ describe(`createGoogleUser tests`, () => {
     numOfUsersAdded++;
     const expectedID = data.users.length + numOfUsersAdded;
     return userModel
-      .createGoogleUser(newEmail, newFName, newLName, newOAuthProvider, newOAuthUID)
+      .createGoogleUser(
+        newEmail,
+        newFName,
+        newLName,
+        newOAuthProvider,
+        newOAuthUID
+      )
       .then(generatedUserId => {
         expect(generatedUserId).toBe(expectedID);
       });
@@ -99,65 +103,57 @@ describe(`createGoogleUser tests`, () => {
 describe(`getUserByEmail tests`, () => {
   it(`Returns the correct user`, () => {
     let user = data.users[0];
-    return userModel
-      .getUserByEmail(user.email)
-      .then(receivedUser => {
-        expect(receivedUser[0].UserFName).toBe(user.firstName);
-        expect(receivedUser[0].UserLName).toBe(user.lastName);
-        expect(receivedUser[0].UserEmail).toBe(user.email);
-        expect(receivedUser[0].UserPassword).toBe(user.password);
-        expect(receivedUser[0].OAuthProvider).toBe(user.oAuthProvider);
-      });
+    return userModel.getUserByEmail(user.email).then(receivedUser => {
+      expect(receivedUser[0].UserFName).toBe(user.firstName);
+      expect(receivedUser[0].UserLName).toBe(user.lastName);
+      expect(receivedUser[0].UserEmail).toBe(user.email);
+      expect(receivedUser[0].UserPassword).toBe(user.password);
+      expect(receivedUser[0].OAuthProvider).toBe(user.oAuthProvider);
+    });
   });
 });
 
 describe(`validateUser tests`, () => {
   it(`Returns email not found`, () => {
-    let email = 'notFound@email.com';
-    let password = 'password';
+    let email = "notFound@email.com";
+    let password = "password";
 
-    return userModel
-      .validateUser(email, password)
-      .then(response => {
-        expect(response.isValid).toBe(false);
-        expect(response.msg).toBe(`Account with email ${email} not found`);
-      });
+    return userModel.validateUser(email, password).then(response => {
+      expect(response.isValid).toBe(false);
+      expect(response.msg).toBe(`Account with email ${email} not found`);
+    });
   });
 
   it(`Returns account attached to oAuth provider`, () => {
     let email = data.users[1].email;
-    let password = '';
+    let password = "";
     let expectedOAuthProvider = data.users[1].oAuthProvider;
 
-    return userModel
-      .validateUser(email, password)
-      .then(response => {
-        expect(response.isValid).toBe(false);
-        expect(response.msg).toBe(`${email} is attached to a ${expectedOAuthProvider} user. Please login through ${expectedOAuthProvider}`);
-      });
+    return userModel.validateUser(email, password).then(response => {
+      expect(response.isValid).toBe(false);
+      expect(response.msg).toBe(
+        `${email} is attached to a ${expectedOAuthProvider} user. Please login through ${expectedOAuthProvider}`
+      );
+    });
   });
 
   it(`Returns incorrect password`, () => {
     let email = data.users[0].email;
-    let password = 'incorrectpassword';
+    let password = "incorrectpassword";
 
-    return userModel
-      .validateUser(email, password)
-      .then(response => {
-        expect(response.isValid).toBe(false);
-        expect(response.msg).toBe(`Incorrect password`);
-      });
+    return userModel.validateUser(email, password).then(response => {
+      expect(response.isValid).toBe(false);
+      expect(response.msg).toBe(`Incorrect password`);
+    });
   });
 
   it(`Returns login successful`, () => {
     let email = data.users[0].email;
-    let password = 'password';
+    let password = "password";
 
-    return userModel
-      .validateUser(email, password)
-      .then(response => {
-        expect(response.isValid).toBe(true);
-        expect(response.msg).toBe(`Login successful`);
-      });
+    return userModel.validateUser(email, password).then(response => {
+      expect(response.isValid).toBe(true);
+      expect(response.msg).toBe(`Login successful`);
+    });
   });
 });

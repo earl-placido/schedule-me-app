@@ -52,7 +52,7 @@ router.route("/google").post(
           firstName: userFirstName,
           lastName: userLastName,
           displayPicURL: userDisplayPicURL
-        }
+        };
 
         next();
       })
