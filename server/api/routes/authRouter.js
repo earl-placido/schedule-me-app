@@ -104,7 +104,7 @@ router.post(
               req.auth = { id: userID };
               req.user = {
                 email: newUser.email,
-                firstName: newUser.password,
+                firstName: newUser.firstName,
                 lastName: newUser.lastName,
                 displayPicURL: null
               };
