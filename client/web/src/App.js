@@ -21,25 +21,6 @@ class App extends Component {
 
   render() {
     const { footerStyle } = styles;
-
-    return (
-      <div className="app">
-        <Router>
-          <Layout>
-            <Switch>
-              <PrivateRoute
-                exact
-                path="/createGroup"
-                component={() => {
-                  return (
-                    <ContentContainer>
-                      <CreateGroup />
-                    </ContentContainer>
-                  );
-                }}
-                authorized={this.props.isAuthenticated}
-              />
-
         return (
             <div className="app">
                 <Router>
