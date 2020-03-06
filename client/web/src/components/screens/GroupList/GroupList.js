@@ -78,8 +78,4 @@ const styles = {
     titleStyle : {
         textAlign: 'center',
     },
-
-    listStyle : {
-        overflow: 'scroll'
-    }
 }
