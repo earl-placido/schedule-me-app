@@ -12,7 +12,7 @@ import {NativeRouter} from 'react-router-native';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import { logoutGoogle } from './actions/components/screens/Auth.action';
+import {logoutGoogle} from './actions/components/screens/Auth.action';
 
 const Stack = createStackNavigator();
 
@@ -23,16 +23,20 @@ class App extends Component {
         <Container>
           <Header>
             {this.props.isAuthenticated ? (
-                <Button onPress={this.props.logoutGoogle}>
-                  <Text>{this.props.userName}</Text>
-                </Button>
-             ) : (<></>) }
+              <Button onPress={this.props.logoutGoogle}>
+                <Text>{this.props.userName}</Text>
+              </Button>
+            ) : (
+              <></>
+            )}
           </Header>
 
           <NavigationContainer>
             <Stack.Navigator
               screenOptions={{headerShown: false}}
-              initialRouteName={!this.props.isAuthenticated ? 'Main' : 'CreateGroup'}>
+              initialRouteName={
+                !this.props.isAuthenticated ? 'Main' : 'CreateGroup'
+              }>
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="CreateGroup" component={CreateGroup} />
             </Stack.Navigator>

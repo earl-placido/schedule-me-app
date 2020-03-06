@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated,
 });
 
 Main.propTypes = {
   navigation: PropTypes.any,
   navigate: PropTypes.func,
-  isAuthenticated: PropTypes.any
+  isAuthenticated: PropTypes.any,
 };
 
 export default connect(mapStateToProps, {})(Main);

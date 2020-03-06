@@ -10,29 +10,35 @@ import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import Reducers from './src/Reducers';
-import { persistStore, persistReducer } from 'redux-persist';
+import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
-import { PersistGate } from 'redux-persist/integration/react';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const config = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['auth'],
-}
-const store = createStore(persistReducer(config, Reducers), {}, applyMiddleware(thunk));
+};
+const store = createStore(
+  persistReducer(config, Reducers),
+  {},
+  applyMiddleware(thunk),
+);
 const persistor = persistStore(store, async () => {
-  const isAuthenticated = await AsyncStorage.getItem('isAuthenticated') ? true : false;
+  const isAuthenticated = (await AsyncStorage.getItem('isAuthenticated'))
+    ? true
+    : false;
   const token = await AsyncStorage.getItem('token');
   const userName = await AsyncStorage.getItem('userName');
   const displayPicURL = await AsyncStorage.getItem('displayPicURL');
 
-  this.setState({ 
+  this.setState({
     isAuthenticated: isAuthenticated,
     token: token,
     userName: userName,
     displayPicURL: displayPicURL,
-   })
-})
+  });
+});
 
 export default class Root extends Component {
   render() {

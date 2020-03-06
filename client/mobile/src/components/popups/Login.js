@@ -4,7 +4,7 @@ import {View, Button, Text, Card} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
-import Config from "react-native-config";
+import Config from 'react-native-config';
 
 import {
   GoogleSignin,
@@ -13,7 +13,7 @@ import {
 import {loginGoogle} from '../../actions/components/screens/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
-import { withRouter } from 'react-router';
+import {withRouter} from 'react-router';
 
 GoogleSignin.configure({
   webClientId: Config.REACT_APP_GOOGLE_CLIENT_ID,
@@ -134,5 +134,5 @@ Login.propTypes = {
 
 export default compose(
   withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(mapStateToProps, mapDispatchToProps),
 )(Login);
