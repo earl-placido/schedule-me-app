@@ -4,13 +4,28 @@ import {View, Button, Text, Card} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
+import Config from "react-native-config";
+
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+} from '@react-native-community/google-signin';
+import {loginGoogle} from '../../actions/components/screens/Auth.action';
+import {compose} from 'redux';
+import {connect} from 'react-redux';
+import { withRouter } from 'react-router';
+
+GoogleSignin.configure({
+  webClientId: Config.REACT_APP_GOOGLE_CLIENT_ID,
+  offlineAccess: true,
+});
 
 const Form = t.form.Form;
 
 const userOptions = {
   fields: {
-    username: {
-      error: 'Please input username',
+    email: {
+      error: 'Please input email',
     },
     password: {
       error: 'Please input password',
@@ -19,11 +34,11 @@ const userOptions = {
 };
 
 const user = t.struct({
-  username: t.String,
+  email: t.String,
   password: t.String,
 });
 
-export default class Login extends Component {
+class Login extends Component {
   state = {
     isLoginVisible: false,
   };
@@ -32,27 +47,44 @@ export default class Login extends Component {
     this.setState({isLoginVisible: !this.state.isLoginVisible});
   };
 
+  googleLogin = () => {
+    GoogleSignin.signIn().then(() => {
+      GoogleSignin.getTokens().then(response => {
+        this.props.loginGoogle(response);
+      });
+    });
+  };
+
   render() {
     return (
       <View>
         <Button large style={styles.buttonStyle} onPress={this.toggleLogin}>
           <Text>Log in</Text>
         </Button>
-        
+
         <Modal
           isVisible={this.state.isLoginVisible}
           onBackdropPress={this.toggleLogin}>
           <Card style={styles.modalStyle}>
-            <Button style={styles.buttonStyle}>
-              <Text>Google Sign In</Text>
-            </Button>
+            <View style={styles.googleButtonStyle}>
+              <GoogleSigninButton
+                style={styles.googleButtonStyle}
+                size={GoogleSigninButton.Size.Standard}
+                onPress={() => {
+                  this.googleLogin();
+                  this.props.navigation.navigate('CreateGroup');
+                  this.toggleLogin();
+                }}
+              />
+              <Text>or</Text>
+            </View>
 
             <Form
               ref={_form => (this.form = _form)}
               options={userOptions}
               type={user}
             />
-            
+
             <Button
               transparent
               onPress={() => {
@@ -77,9 +109,30 @@ const styles = StyleSheet.create({
     marginVertical: 25,
     marginHorizontal: 50,
   },
+  googleButtonStyle: {
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+});
+
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  userName: state.auth.userName,
+});
+
+const mapDispatchToProps = dispatch => ({
+  loginGoogle: response => dispatch(loginGoogle(response)),
 });
 
 Login.propTypes = {
   navigation: PropTypes.any,
   navigate: PropTypes.func,
+  userName: PropTypes.any,
+  isAuthenticated: PropTypes.any,
+  loginGoogle: PropTypes.func,
 };
+
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Login);

@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 import {View, Button, Text} from 'native-base';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 import Login from '../popups/Login';
 import CreateAccount from '../popups/CreateAccount';
 
-export default class Main extends Component {
+class Main extends Component {
   render() {
     return (
       <View>
@@ -36,7 +37,14 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
 Main.propTypes = {
   navigation: PropTypes.any,
   navigate: PropTypes.func,
+  isAuthenticated: PropTypes.any
 };
+
+export default connect(mapStateToProps, {})(Main);
