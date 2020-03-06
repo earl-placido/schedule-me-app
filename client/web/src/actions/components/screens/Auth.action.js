@@ -54,8 +54,7 @@ export const loginGoogle = response => {
         if (res.status === responses.SUCCESS) {
           const token = res.headers["x-auth-token"];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
-
-          setUserData(token, userName, res.data.displayPicURL, res.data.emails[0]);
+          setUserData(token, userName, res.data.displayPicURL, res.data.email);
 
           dispatch(loginSuccess(userName, res.data.displayPicURL, token));
         } else {
