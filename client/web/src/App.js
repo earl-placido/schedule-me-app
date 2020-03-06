@@ -63,7 +63,7 @@ class App extends Component {
                                         component={this.inputAvailabilityComponent}
                                         authorized={this.props.isAuthenticated}
                                     />
-                                    <Route path='/'>
+                                    <Route exact path='/'>
                                         <Home/>
                                     </Route>
                                 </Switch>
