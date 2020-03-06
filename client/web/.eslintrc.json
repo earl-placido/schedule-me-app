@@ -1,9 +1,9 @@
 {
     "env": {
-	"browser": true,
+	    "browser": true,
         "node": true,
         "es6": true,
-	"jest": true
+	    "jest": true
     },
     "extends": [
         "eslint:recommended",
@@ -23,7 +23,6 @@
         "ecmaVersion": 2018,
         "sourceType": "module"
     },
-    
     "plugins": [
         "react",
         "prettier"
@@ -34,8 +33,8 @@
         }
     },
     "rules": {
-	"react/jsx-uses-react": "error",
-	"react/jsx-uses-vars": "error",
-    "prettier/prettier": "error"
+        "react/jsx-uses-react": "error",
+        "react/jsx-uses-vars": "error",
+        "prettier/prettier": "error"
     }
 }
