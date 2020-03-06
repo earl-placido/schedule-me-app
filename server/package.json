@@ -5,16 +5,21 @@
     "dev": "nodemon server.js",
     "test": "node db/util/init_db.js & jest -i",
     "db:init": "node db/util/init_db.js",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "lint": "eslint --fix ."
   },
   "description": "",
   "main": "server.js",
   "author": "Group 2",
   "lint-staged": {
     "**/*.{js,jsx,json,scss}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -33,7 +38,10 @@
   },
   "devDependencies": {
     "eslint": "^6.8.0",
-    "lint-staged": "^10.0.7",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-json": "^2.1.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "lint-staged": "^10.0.8",
     "nodemon": "^2.0.2",
     "prettier": "^1.19.1"
   }
