@@ -8,40 +8,46 @@ const MYSQLDB = {
 };
 
 module.exports = {
-    newUser(userName, userEmail) {
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(
-                `
+  newUser(userName, userEmail) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
                     INSERT INTO schedulemeup.user
                     (UserName,
                      UserEmail)
                     VALUES (?, ?)
                 `,
-                [userName, userEmail]
-            ).then(res => {
-                conn.end();
-                return res.insertId;
-            }).catch(err => {
-                conn.end();
-                return err;
-            });
+          [userName, userEmail]
+        )
+        .then(res => {
+          conn.end();
+          return res.insertId;
+        })
+        .catch(err => {
+          conn.end();
+          return err;
         });
-    },
+    });
+  },
 
-    getUser(userEmail) {
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(
-                `
+  getUser(userEmail) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
                     SELECT * FROM schedulemeup.user WHERE UserEmail = ?
-                `, 
-                [userEmail]
-            ).then(res => {
-                conn.end();
-                return res;
-            }).catch(err => {
-                conn.end();
-                return err;
-            });
+                `,
+          [userEmail]
+        )
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return err;
         });
-    }
-}
+    });
+  }
+};
