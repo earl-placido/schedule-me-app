@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Button, Icon } from 'antd';
+import { Button } from 'antd';
+import Icon from '@ant-design/icons';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import LoginForm from './LoginForm';

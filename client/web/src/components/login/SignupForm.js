@@ -1,5 +1,6 @@
 import React from 'react'
-import { Form, Input, Button, Icon, notification } from 'antd';
+import { Form, Input, Button, notification } from 'antd';
+import Icon from '@ant-design/icons';
 
 const SignupForm = () => {
     const onFinish = values => {

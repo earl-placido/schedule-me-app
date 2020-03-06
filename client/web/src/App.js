@@ -8,12 +8,11 @@ import PropTypes from 'prop-types';
 
 import { PrivateRoute } from './components/util/PrivateRoute';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
-<<<<<<< HEAD
 import InputAvailability from './components/screens/Group/InputAvailability';
 import "antd/dist/antd.css";
 import './css/app.css';
 
-const { Content, Footer } = Layout;
+const { Footer } = Layout;
 //TODO: add model that gets groupmemberid from userid and groupid
 //TODO: query for groupmemberId in input InputAvailability
 //TODO: add model that lets you input availability 
@@ -29,10 +28,18 @@ class App extends Component {
         
     }
 
-    containComponent(component) {
+    createGroupComponent = () => {
         return (
             <ContentContainer>
-                {component}
+                <CreateGroup />
+            </ContentContainer>
+        );
+    }
+
+    inputAvailabilityComponent(component) {
+        return (
+            <ContentContainer>
+                <InputAvailability />
             </ContentContainer>
         );
     }
@@ -44,27 +51,22 @@ class App extends Component {
             <div className="app">
                 <Router>
                     <Layout>
-                        <NavigationBar/>
-                        <Content style={ contentStyle }>
-                            <div style={ containerStyle }>
                                 <Switch>
                                     <PrivateRoute 
                                         exact path="/createGroup" 
-                                        component={this.containComponent(CreateGroup)} 
+                                        component={this.createGroupComponent} 
                                         authorized={this.props.isAuthenticated} 
                                     />
 
                                     <PrivateRoute 
                                         path="/groups/:id/input"
-                                        component={InputAvailability}
+                                        component={this.inputAvailabilityComponent}
                                         authorized={this.props.isAuthenticated}
                                     />
                                     <Route path='/'>
                                         <Home/>
                                     </Route>
                                 </Switch>
-                            </div>
-                        </Content>
 
                         <Footer style={ footerStyle }>schedule-me-up</Footer>
                     </Layout>
@@ -75,18 +77,6 @@ class App extends Component {
 }
 
 const styles = {
-    contentStyle : {
-        padding: '0 50px', 
-        marginTop: 64 
-    },
-
-    containerStyle :{
-        background: '#fff', 
-        padding: 24, 
-        minHeight: 500, 
-        marginTop: 20
-    },
-
     footerStyle : {
         textAlign: 'center' 
     }
