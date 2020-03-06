@@ -1,11 +1,19 @@
 const users = [
   {
-    userName: "User1",
-    userEmail: "test@email.com"
+    email: "catto@email.com",
+    password: "$2b$12$t9A5pwXCGRAk7mMxlkKZuuePuBNDrh75knRUPliFyWUdL1.Q4cyPW",
+    firstName: "John",
+    lastName: "Doe",
+    oAuthProvider: "none",
+    oAuthUID: null
   },
   {
-    userName: "User2",
-    userEmail: "test2@email.com"
+    email: "doggo@gmail.com",
+    password: "$2b$12$t9A5pwXCGRAk7mMxlkKZuuePuBNDrh75knRUPliFyWUdL1.Q4cyPW",
+    firstName: "NotJohn",
+    lastName: "NotDoe",
+    oAuthProvider: "google",
+    oAuthUID: 109614695133908857889
   }
 ];
 

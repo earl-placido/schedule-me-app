@@ -9,6 +9,6 @@ const groups = require("./routes/groupsRouter");
 // Attach routes
 router.use("/example", example);
 router.use("/groups", groups);
-router.use("/", authRouter);
+router.use("/auth", authRouter);
 
 module.exports = router;
