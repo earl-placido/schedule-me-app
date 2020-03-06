@@ -110,19 +110,22 @@
               "name": "password",
               "type": "string",
               "in": "formData",
-              "description": "password"
+              "description": "password",
+              "required": true
             },
             {
               "name": "firstName",
               "type": "string",
               "in": "formData",
-              "description": "firstName"
+              "description": "firstName",
+              "required": true
             },
             {
               "name": "lastName",
               "type": "string",
               "in": "formData",
-              "description": "lastName"
+              "description": "lastName",
+              "required": true
             }
           ],
           "responses": {
@@ -157,7 +160,8 @@
               "name": "password",
               "type": "string",
               "in": "formData",
-              "description": "password"
+              "description": "password",
+              "required": true
             }
           ],
           "responses": {
@@ -171,6 +175,11 @@
         "get": {
           "tags": [
             "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "summary": "Get all groups",
           "description": "Get all groups from userId",
@@ -191,6 +200,11 @@
           "description": "",
           "produces": [
             "application/json"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "parameters": [
             {
@@ -270,6 +284,11 @@
           ],
           "produces": [
             "application/json"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "parameters": [
             {

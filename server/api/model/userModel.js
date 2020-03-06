@@ -89,7 +89,7 @@ module.exports = {
       return conn
         .query(
           `
-            SELECT UserId, UserEmail, UserPassword, OAuthProvider
+            SELECT *
             FROM \`User\`   
             WHERE UserEmail = ?;
           `,
@@ -124,6 +124,9 @@ module.exports = {
 
             response = {
               userId: userData.UserId,
+              email: userData.UserEmail,
+              firstName: userData.UserFName,
+              lastName: userData.UserLName,
               isValid: isPasswordValid,
               msg: isPasswordValid ? "Login successful" : "Incorrect password"
             };

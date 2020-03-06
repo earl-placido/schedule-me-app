@@ -16,21 +16,28 @@ router.route("/google").post(
       return res.send(responses.UNAUTHORIZED, "User Not Authenticated");
     }
 
-    let googleUser = req.user;
+    console.log(req);
+
+    // get user info from the google user object
+    let userEmail = req.user.emails[0].value;
+    let userFirstName = req.user.name.givenName;
+    let userLastName = req.user.name.familyName;
+    let userGoogleUID = req.user.id;
+    let userDisplayPicURL = req.user._json.picture;
 
     userModel
-      .getUserByEmail(googleUser.emails[0].value)
+      .getUserByEmail(userEmail)
       .then(user => {
         let userID;
         // create new google login user
         if (user === undefined || user.length == 0) {
           return userModel
             .createGoogleUser(
-              googleUser.emails[0].value,
-              googleUser.name.givenName,
-              googleUser.name.familyName,
+              userEmail,
+              userFirstName,
+              userLastName,
               "google",
-              googleUser.id
+              userGoogleUID
             )
             .then(id => (userID = id))
             .catch(next);
@@ -38,7 +45,14 @@ router.route("/google").post(
           userID = user[0].UserId;
         }
 
+        // transform auth & user objects for tokenHelper
         req.auth = { id: userID };
+        req.user = {
+          email: userEmail,
+          firstName: userFirstName,
+          lastName: userLastName,
+          displayPicURL: userDisplayPicURL
+        }
 
         next();
       })
@@ -86,7 +100,14 @@ router.post(
               newUser.lastName
             )
             .then(userID => {
+              // transform auth & user objects for tokenHelper
               req.auth = { id: userID };
+              req.user = {
+                email: newUser.email,
+                firstName: newUser.password,
+                lastName: newUser.lastName,
+                displayPicURL: null
+              };
               next();
             })
             .catch(next);
@@ -129,6 +150,15 @@ router.post(
         }
 
         req.auth = { id: result.userId };
+
+        // transform auth & user objects for tokenHelper
+        req.auth = { id: result.userId };
+        req.user = {
+          email: result.email,
+          firstName: result.firstName,
+          lastName: result.lastName,
+          displayPicURL: null
+        };
 
         next();
       })

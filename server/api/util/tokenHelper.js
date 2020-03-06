@@ -5,7 +5,7 @@ const SECRET_KEY = process.env.SECRET_KEY || 'supersecretkey';
 const TOKEN_EXPIRY = '1d';
 
 function createToken(req, res, next) {
-    req.token = jwt.sign({id: req.auth.id }, SECRET_KEY, { expiresIn: TOKEN_EXPIRY });
+    req.token = jwt.sign({userID: req.auth.id }, SECRET_KEY, { expiresIn: TOKEN_EXPIRY });
     return next();
 }
 
