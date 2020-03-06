@@ -194,10 +194,10 @@
           }
         }
       },
-      "/groupMember/": {
-        "post": {
+      "/groups/{groupId}/members/{userId}": {
+        "get": {
           "tags":[
-            "GroupMember"
+            "Groups"
           ],
           "summary": "Get group member Id",
           "description": "",
@@ -207,7 +207,7 @@
           "parameters": [
             {
               "name": "groupId",
-              "in": "formData",
+              "in": "path",
               "type":"integer",
               "format": "int64",
               "required": true
@@ -216,7 +216,7 @@
               "name": "userId",
               "type": "integer",
               "format": "int64",
-              "in": "formData",
+              "in": "path",
               "required": true
             }
           ],
