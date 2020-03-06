@@ -1,3 +1,4 @@
+import axios from "axios";
 import responses from "../../util/responses";
 
 export const LOGIN_REQUEST = "login_request";
@@ -43,27 +44,20 @@ const logoutSuccess = () => {
 export const loginGoogle = response => {
   return dispatch => {
     dispatch(loginRequest());
-    const tokenBlob = new Blob(
-      [JSON.stringify({ access_token: response.accessToken }, null, 2)],
-      { type: "application/json" }
-    );
     const options = {
+      url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`,
       method: "POST",
-      body: tokenBlob,
-      mode: "cors",
-      cache: "default"
+      data: { access_token: response.accessToken }
     };
-    fetch(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`, options)
+    axios(options)
       .then(res => {
         if (res.status === responses.SUCCESS) {
-          const token = res.headers.get("x-auth-token");
-          res.json().then(user => {
-            localStorage.setItem("token", token);
-            localStorage.setItem("userName", user.displayName);
-            localStorage.setItem("displayPicURL", user._json.picture);
+          const token = res.headers["x-auth-token"];
+          let userName = `${res.data.firstName} ${res.data.lastName}`;
 
-            dispatch(loginSuccess(user.displayName, user._json.picture, token));
-          });
+          setUserData(token, userName, res.data.displayPicURL);
+
+          dispatch(loginSuccess(userName, res.data.displayPicURL, token));
         } else {
           throw new Error(res.err);
         }
@@ -75,9 +69,19 @@ export const loginGoogle = response => {
 export const logoutGoogle = () => {
   return dispatch => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("displayPicURL");
     dispatch(logoutSuccess());
   };
 };
+
+function setUserData(token, userName, displayPicURL = null) {
+  localStorage.setItem("token", token);
+  localStorage.setItem("userName", userName);
+  localStorage.setItem("displayPicURL", displayPicURL);
+
+  axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

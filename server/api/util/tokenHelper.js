@@ -2,10 +2,10 @@ const jwt = require("jsonwebtoken");
 const responses = require("./responses");
 
 const SECRET_KEY = process.env.SECRET_KEY || "supersecretkey";
-const TOKEN_EXPIRY = "2d";
+const TOKEN_EXPIRY = "1d";
 
 function createToken(req, res, next) {
-  req.token = jwt.sign({ id: req.auth.id }, SECRET_KEY, {
+  req.token = jwt.sign({ userID: req.auth.id }, SECRET_KEY, {
     expiresIn: TOKEN_EXPIRY
   });
   return next();
@@ -22,7 +22,7 @@ function authenticateToken(req, res, next) {
   if (authHeader) {
     const token = authHeader.split(" ")[1];
 
-    jwt.verify(token, SECRET_KEY, (err, user) => {
+    jwt.verify(token ? token : authHeader, SECRET_KEY, (err, user) => {
       if (err) {
         return res.sendStatus(responses.FORBIDDEN);
       }
