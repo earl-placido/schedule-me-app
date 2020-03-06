@@ -1,59 +1,58 @@
 import React, { Component } from 'react';
-import { Row, Col, Card, Button, List, Avatar, Divider, Typography } from 'antd';
+import { Row, Card, List, Icon, Avatar, Divider, Typography } from 'antd';
 import "antd/dist/antd.css";
 
-export default class GroupDetail extends Component { 
+export default class GroupList extends Component { 
     render() {
         const { Title } = Typography;
         const { containerStyle, cardStyle, dividerStyle, titleStyle, listStyle } = styles;
-        const userList = [
+        const groupList = [
             {
-              name: 'Renz Cabusas',
-              role: 'Administrator'
+                groupId: '1',
+                groupName: 'Equilibrium',
+                groupDescription: 'For everyone, everything, equally',
+                groupOwnerId: '277',
             },
             {
-              name: 'Brenna Epp',
-              role: 'Member'
+                groupId: '2',
+                groupName: 'Schedule McScheduleFace',
+                groupDescription: 'A rip off of Boaty McBoatFace',
+                groupOwnerId: '278',
             },
             {
-              name: 'Bonnie Tang',
-              role: 'Member'
+                groupId: '3',
+                groupName: 'Anti-Hate Club',
+                groupDescription: 'All things about hating hate',
+                groupOwnerId: '279',
             },
             {
-              name: 'Daryl Fung',
-              role: 'Member'
+                groupId: '4',
+                groupName: 'Im With Stupid ^',
+                groupDescription: 'Im With Stupid ^',
+                groupOwnerId: '210',
             },
           ];
         return (
             <div style={ containerStyle }>
                 <Card style={ cardStyle }>
                     <Row style= { titleStyle }>
-                        <Title level={3}>Group: Equilibrium</Title>
-                    </Row>
-                    <Row style= { titleStyle }>
-                        <Title level={4}>Optimal Time: 12pm - 2pm on October 26, 1985</Title>
+                        <Title level={4}>Your Groups</Title>
                     </Row>
                     <Divider orientation="center" style={{ dividerStyle }}/>
                     <Row style={{ listStyle }}>
                         <List
                             itemLayout="horizontal"
-                            dataSource={userList}
+                            dataSource={groupList}
                             renderItem={item => (
                             <List.Item>
                                 <List.Item.Meta
-                                avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                title={item.name}
-                                description={item.role}
+                                avatar={<Avatar size={50} icon={<Icon type="play-circle-o"/>} />}
+                                title={<a href="/group">{item.groupName}</a>}
+                                description={item.groupDescription}
                                 />
                             </List.Item>
                             )}
                         />
-                    </Row>
-                    <Divider orientation="center" style={{ dividerStyle }}/>
-                    <Row>
-                        <Col span={12}>
-                            <Button type="primary">Input Your Availability</Button>
-                        </Col>
                     </Row>
                 </Card>
             </div>
