@@ -1,103 +1,114 @@
-import React, { Component } from 'react';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router';
-import { Layout, Menu, Dropdown, Button, Avatar, message } from 'antd';
-import PropTypes from 'prop-types';
-import { toggleModal } from '../../actions/components/login/LoginModal.action'
-import { loginGoogle, logoutGoogle } from '../../actions/components/screens/Auth.action';
+import React, { Component } from "react";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
+import { Layout, Menu, Dropdown, Button, Avatar, message } from "antd";
+import PropTypes from "prop-types";
+import { toggleModal } from "../../actions/components/login/LoginModal.action";
+import {
+  loginGoogle,
+  logoutGoogle
+} from "../../actions/components/screens/Auth.action";
 
 const { Header } = Layout;
 
 export class NavigationBar extends Component {
-    
-	constructor(props) {
-        super(props);
-    
-        this.logoutUser = this.logoutUser.bind(this);
-        this.loginUser = this.loginUser.bind(this);
-	}
+  constructor(props) {
+    super(props);
 
-	loginUser(response) {
-		this.props.loginGoogle(response);
-	}
+    this.logoutUser = this.logoutUser.bind(this);
+    this.loginUser = this.loginUser.bind(this);
+  }
 
-    logoutUser() {
-        this.props.logoutGoogle();
-        message.info('Logged out of account');
-    }
+  loginUser(response) {
+    this.props.loginGoogle(response);
+  }
 
-    render() {
-        const userMenu = (
-            <Menu>
-                <Menu.Item onClick={this.logoutUser}>Logout</Menu.Item>
-            </Menu>
-        );
+  logoutUser() {
+    this.props.logoutGoogle();
+    message.info("Logged out of account");
+  }
 
-        const userNavigation = this.props.isAuthenticated ? (
-             <Dropdown.Button overlay={userMenu} icon={<Avatar size={16} icon={<img src={this.props.displayPicURL} alt=""/>}/>} >
-                {this.props.userName}
-            </Dropdown.Button>
-        ):
-        (<div>
-            <Button onClick={()=>{
-                    this.props.toggleModal(true)
-                }}>
-                    Login
-            </Button>
-        </div>);
+  render() {
+    const userMenu = (
+      <Menu>
+        <Menu.Item onClick={this.logoutUser}>Logout</Menu.Item>
+      </Menu>
+    );
 
-        return (
-            <Header style={ headerStyle }>
-                <div className="logo" />
-                <Menu
-                    theme="dark"
-                    mode="horizontal"
-                    defaultSelectedKeys={['1']}
-                    style={{ lineHeight: '64px' }}
-                >
-                </Menu>
+    const userNavigation = this.props.isAuthenticated ? (
+      <Dropdown.Button
+        overlay={userMenu}
+        icon={
+          <Avatar
+            size={16}
+            icon={<img src={this.props.displayPicURL} alt="" />}
+          />
+        }
+      >
+        {this.props.userName}
+      </Dropdown.Button>
+    ) : (
+      <div>
+        <Button
+          onClick={() => {
+            this.props.toggleModal(true);
+          }}
+        >
+          Login
+        </Button>
+      </div>
+    );
 
-                <div className="masthead-user" style={{float: "right"}}>
-                    {userNavigation}
-                </div>
-            </Header>
-        )
-    }
+    return (
+      <Header style={headerStyle}>
+        <div className="logo" />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={["1"]}
+          style={{ lineHeight: "64px" }}
+        ></Menu>
+
+        <div className="masthead-user" style={{ float: "right" }}>
+          {userNavigation}
+        </div>
+      </Header>
+    );
+  }
 }
 
 const headerStyle = {
-    position: 'fixed', 
-    zIndex: 1, 
-    width: '100%'
-}
+  position: "fixed",
+  zIndex: 1,
+  width: "100%"
+};
 
 const mapStateToProps = state => ({
-	isAuthenticated: state.auth.isAuthenticated,
-    userName: state.auth.userName,
-    displayPicURL: state.auth.displayPicURL,
-    modalVisible: state.modalVisible
+  isAuthenticated: state.auth.isAuthenticated,
+  userName: state.auth.userName,
+  displayPicURL: state.auth.displayPicURL,
+  modalVisible: state.modalVisible
 });
 
-
 const mapDispatchToProps = dispatch => ({
-	logoutGoogle: () => dispatch(logoutGoogle()),
-    loginGoogle: response => dispatch(loginGoogle(response)),
-    toggleModal: (value) => dispatch(toggleModal(value))
+  logoutGoogle: () => dispatch(logoutGoogle()),
+  loginGoogle: response => dispatch(loginGoogle(response)),
+  toggleModal: value => dispatch(toggleModal(value))
 });
 
 NavigationBar.propTypes = {
-    history: PropTypes.any,
-    userName: PropTypes.any,
-    displayPicURL: PropTypes.any,
-    isAuthenticated: PropTypes.any,
-	loginGoogle: PropTypes.func,
-    logoutGoogle: PropTypes.func,
-    modalVisible: PropTypes.any,
-    toggleModal: PropTypes.func
+  history: PropTypes.any,
+  userName: PropTypes.any,
+  displayPicURL: PropTypes.any,
+  isAuthenticated: PropTypes.any,
+  loginGoogle: PropTypes.func,
+  logoutGoogle: PropTypes.func,
+  modalVisible: PropTypes.any,
+  toggleModal: PropTypes.func
 };
 
 export default compose(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps)
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
 )(NavigationBar);

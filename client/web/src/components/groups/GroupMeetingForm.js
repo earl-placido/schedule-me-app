@@ -1,90 +1,91 @@
-import React, {Component} from 'react';
-import { Form, Input, TimePicker } from 'antd';
+import React, { Component } from "react";
+import { Form, Input, TimePicker } from "antd";
 import Icon from '@ant-design/icons';
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
+class GroupMeetingForm extends Component {
+  changeDuration(duration) {
+    this.props.updateMeetingDuration(duration);
+  }
 
-class GroupMeetingForm extends Component{
+  changeFrequency(frequency) {
+    this.props.updateMeetingFrequency(frequency.target.value);
+  }
 
-    changeDuration(duration) {
-        this.props.updateMeetingDuration(duration);
-    }
+  changeLocation(location) {
+    this.props.updateMeetingLocation(location.target.value);
+  }
 
-    changeFrequency(frequency) {
-        this.props.updateMeetingFrequency(frequency.target.value);
-    }
+  render() {
+    const { errorText } = styles;
 
-    changeLocation(location) {
-        this.props.updateMeetingLocation(location.target.value);
-    }
+    return (
+      <Form onSubmit={this.handleSubmit} className="login-form">
+        <Form.Item>
+          {
+            <div>
+              <TimePicker
+                format={"HH:mm"}
+                placeholder="Duration"
+                value={this.props.duration}
+                onChange={this.changeDuration.bind(this)}
+                id="duration"
+              />
+              {!this.props.success && (
+                <h1 style={errorText}>Please input meeting duration.</h1>
+              )}
+            </div>
+          }
+        </Form.Item>
 
-    render(){
+        <Form.Item>
+          {
+            <Input
+              prefix={
+                <Icon type="calendar" style={{ color: "rgba(0,0,0,.25)" }} />
+              }
+              placeholder="Meeting Frequency (Optional)"
+              value={this.props.frequency}
+              onChange={this.changeFrequency.bind(this)}
+              id="frequency"
+            />
+          }
+        </Form.Item>
 
-        const {errorText} = styles;
-
-        return(
-            <Form onSubmit={this.handleSubmit} className="login-form">
-                <Form.Item>
-                    {(
-                        <div>
-                            <TimePicker  format={'HH:mm'}
-                            placeholder="Duration"
-                            value={this.props.duration}
-                            onChange={this.changeDuration.bind(this)}
-                            id='duration'
-                            />
-                            {!this.props.success && <h1 style={errorText}>Please input meeting duration.</h1>}
-                        </div>
-                    )}
-                </Form.Item>
-
-                <Form.Item>
-                    {(
-                        <Input
-                            prefix={<Icon type="calendar" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="Meeting Frequency (Optional)"
-                            value={this.props.frequency}
-                            onChange={this.changeFrequency.bind(this)}
-                            id='frequency'
-                        />
-                    )}
-                </Form.Item>
-
-                <Form.Item>
-                    {(
-                        <Input
-                            prefix={<Icon type="home" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                            placeholder="Meeting Location (Optional)"
-                            value={this.props.location}
-                            onChange={this.changeLocation.bind(this)}
-                            id='location'
-                        />
-                    )}
-                </Form.Item>
-
-            </Form>
-        );
-    }
+        <Form.Item>
+          {
+            <Input
+              prefix={<Icon type="home" style={{ color: "rgba(0,0,0,.25)" }} />}
+              placeholder="Meeting Location (Optional)"
+              value={this.props.location}
+              onChange={this.changeLocation.bind(this)}
+              id="location"
+            />
+          }
+        </Form.Item>
+      </Form>
+    );
+  }
 }
 
 const styles = {
-    errorText: {
-        fontSize: 12,
-        color: 'red',
-        marginLeft: 10
-    }
+  errorText: {
+    fontSize: 12,
+    color: "red",
+    marginLeft: 10
+  }
 };
 
 GroupMeetingForm.propTypes = {
-    frequency: PropTypes.any,
-    duration: PropTypes.any,
-    location: PropTypes.any,
-    success: PropTypes.any,
+  frequency: PropTypes.any,
+  duration: PropTypes.any,
+  location: PropTypes.any,
+  success: PropTypes.any,
 
-    updateMeetingDuration: PropTypes.func,
-    updateMeetingFrequency: PropTypes.func,
-    updateMeetingLocation: PropTypes.func
-}
+  updateMeetingDuration: PropTypes.func,
+  updateMeetingFrequency: PropTypes.func,
+  updateMeetingLocation: PropTypes.func
+};
 
 export default GroupMeetingForm;

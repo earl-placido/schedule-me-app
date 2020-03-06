@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import { Layout } from 'antd';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import ContentContainer from './components/ContentContainer'
-import Home from './components/screens/Home/Home';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import { Layout } from "antd";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ContentContainer from "./components/ContentContainer";
+import Home from "./components/screens/Home/Home";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import {PrivateRoute} from './components/util/PrivateRoute';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
@@ -23,9 +23,6 @@ const { Footer } = Layout;
 //TODO: add check for clashing range time 
 
 class App extends Component {
-    createGroupComponent(){
-        
-    }
 
     createGroupComponent = () => {
         return (
@@ -44,49 +41,61 @@ class App extends Component {
     }
 
     render() {
-        const { footerStyle } = styles
+      const { footerStyle } = styles
 
-        return (
-            <div className="app">
-                <Router>
-                    <Layout>
-                                <Switch>
-                                    <PrivateRoute 
-                                        exact path="/createGroup" 
-                                        component={this.createGroupComponent} 
-                                        authorized={this.props.isAuthenticated} 
-                                    />
+      return (
+        <div className="app">
+          <Router>
+            <Layout>
+              <Switch>
+                <PrivateRoute 
+                        exact path="/createGroup" 
+                        component={this.createGroupComponent} 
+                        authorized={this.props.isAuthenticated} 
+                    />
 
-                                    <PrivateRoute 
-                                        exact path="/groups/:id/input"
-                                        component={this.inputAvailabilityComponent}
-                                        authorized={this.props.isAuthenticated}
-                                    />
-                                    <Route exact path='/'>
-                                        <Home/>
-                                    </Route>
-                                </Switch>
+                <PrivateRoute 
+                    exact path="/groups/:id/input"
+                    component={this.inputAvailabilityComponent}
+                    authorized={this.props.isAuthenticated}
+                />
+                <Route exact path='/'>
+                    <Home/>
+                </Route>
+              </Switch>
 
-                        <Footer style={ footerStyle }>schedule-me-up</Footer>
-                    </Layout>
-                </Router>
-            </div>
-        )
+              <Footer style={footerStyle}>schedule-me-up</Footer>
+            </Layout>
+          </Router>
+        </div>
+      );
     }
 }
 
 const styles = {
-    footerStyle : {
-        textAlign: 'center' 
-    }
-}
+  contentStyle: {
+    padding: "0 50px",
+    marginTop: 64
+  },
+
+  containerStyle: {
+    background: "#fff",
+    padding: 24,
+    minHeight: 500,
+    marginTop: 20
+  },
+
+  footerStyle: {
+    textAlign: "center"
+  }
+};
 
 const mapStateToProps = state => ({
-    isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.auth.isAuthenticated
 });
 
 App.propTypes = {
-    isAuthenticated: PropTypes.any
+  isAuthenticated: PropTypes.any
 };
 
 export default connect(mapStateToProps, null)(App);

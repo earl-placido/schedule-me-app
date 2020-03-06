@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 import App from './App';
 
-configure({adapter: new Adapter()});
+configure({ adapter: new Adapter() });
 
 describe('test app', () => {
 

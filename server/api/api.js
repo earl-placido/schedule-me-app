@@ -1,6 +1,5 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-
 
 // API endpoints
 const example = require('./routes/exampleRouter');  
