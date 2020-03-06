@@ -196,32 +196,34 @@
       },
       "/groupMember/": {
         "post": {
-          "tags": [
+          "tags":[
             "GroupMember"
-          ]
-        },
-        "summary": "Get group member ID by posting userID and GroupID",
-        "parameters": [
-          {
-            "name": "groupID",
-            "type": "integer",
-            "format": "int64",
-            "in": "formData",
-            "required": true
-          },
-          {
-            "name": "userEmail",
-            "type": "string",
-            "int": "formData",
-            "required": true
-          }
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "responses": {
-          "201": {
-            "description": "Returns the group member id"
+          ],
+          "summary": "Get group member Id",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "formData",
+              "type":"integer",
+              "format": "int64",
+              "required": true
+            },
+            {
+              "name": "userId",
+              "type": "integer",
+              "format": "int64",
+              "in": "formData",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the group member id"
+            }
           }
         }
       },
