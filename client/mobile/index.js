@@ -12,7 +12,6 @@ import thunk from 'redux-thunk';
 import Reducers from './src/Reducers';
 import {persistStore, persistReducer} from 'redux-persist';
 import AsyncStorage from '@react-native-community/async-storage';
-import {PersistGate} from 'redux-persist/integration/react';
 
 const config = {
   key: 'root',
@@ -24,7 +23,7 @@ const store = createStore(
   {},
   applyMiddleware(thunk),
 );
-const persistor = persistStore(store, async () => {
+persistStore(store, async () => {
   const isAuthenticated = (await AsyncStorage.getItem('isAuthenticated'))
     ? true
     : false;
@@ -44,9 +43,7 @@ export default class Root extends Component {
   render() {
     return (
       <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
+        <App />
       </Provider>
     );
   }

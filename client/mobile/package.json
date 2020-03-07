@@ -67,6 +67,9 @@
   },
   "jest": {
     "preset": "react-native",
+    "transform": {
+      "^.+\\.(js)$": "./node_modules/react-native/jest/preprocessor.js"
+    },
     "transformIgnorePatterns": [
       "/node_modules/(?!native-base)/"
     ],
