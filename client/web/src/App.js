@@ -42,7 +42,6 @@ class App extends Component {
 
     render() {
       const { footerStyle } = styles
-      console.log(this.props.isAuthenticated);
       return (
         <div className="app">
           <Router>

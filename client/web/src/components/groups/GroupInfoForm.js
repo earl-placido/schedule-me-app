@@ -35,7 +35,7 @@ export default class GroupInfoForm extends Component {
                     style={{ color: "rgba(0,0,0,.25)" }}
                   />
                 }
-                placeholder={"Enter Group Name"}
+                placeholder={"Enter Group Names"}
                 value={this.props.groupName}
               />
               {!this.props.success && (

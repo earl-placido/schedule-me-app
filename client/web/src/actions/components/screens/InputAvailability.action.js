@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+import {getMemberIdWithEmail} from '../generalQueries/groupMember.action';
+
 export const GROUP_INFORMATION = 'group_information';
 export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
@@ -12,9 +14,12 @@ export const CHANGE_RANGE = 'change_range';
 
 export const getGroupInformation = (id) => async(dispatch) => {
     const groupInformation = await axios.get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${id}`);
+    const groupId = groupInformation.data.GroupId;
+    const memberId = await getMemberIdWithEmail(groupId, localStorage.getItem("userEmail"));
+    
     dispatch({
         type: GROUP_INFORMATION,
-        payload: groupInformation.data
+        payload: {groupInformation: groupInformation.data, memberId}
     });
 };
 
@@ -107,12 +112,12 @@ export const convertDatesToDay = (currentYear, currentMonth) => {
 };
 
 
-const INITIAL_STATE = {modalVisible: false, rangeHours: [''], selectedDate: '', availableDays: {}};
+const INITIAL_STATE = {modalVisible: false, rangeHours: [''], selectedDate: '', availableDays: {}, groupInformation: '', memberId: ''};
 
 export default(state=INITIAL_STATE, action) => {
     switch(action.type) {
         case (GROUP_INFORMATION): {
-            return {...state, groupInformation: action.payload}
+            return {...state, ...action.payload}
         }
         case(SELECT_DATE): {
             return {...state, selectedDate: action.payload};
