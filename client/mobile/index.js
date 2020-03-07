@@ -32,6 +32,8 @@ const persistor = persistStore(store, async () => {
   const userName = await AsyncStorage.getItem('userName');
   const displayPicURL = await AsyncStorage.getItem('displayPicURL');
 
+  console.disableYellowBox = true;
+
   this.setState({
     isAuthenticated: isAuthenticated,
     token: token,
