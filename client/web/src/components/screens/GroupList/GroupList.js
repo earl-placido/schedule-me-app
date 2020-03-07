@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 
 import { Row, Card, List, Icon, Avatar, Divider, Typography } from "antd";
-import { getGroupList } from '../../../actions/components/screens/GroupList.action';
+import { getGroupList } from "../../../actions/components/screens/GroupList.action";
 import "antd/dist/antd.css";
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 class GroupList extends Component {
   render() {
@@ -92,13 +92,13 @@ const styles = {
 };
 
 const mapStateToProps = ({ GroupListReducer }) => {
-  const {groupList} = GroupListReducer;
-  return {groupList};
+  const { groupList } = GroupListReducer;
+  return { groupList };
 };
 
 GroupList.propTypes = {
   groupList: PropTypes.any,
+  getGroupList: PropTypes.func
 };
 
-export default connect(mapStateToProps, 
-  {getGroupList})(GroupList); 
+export default connect(mapStateToProps, { getGroupList })(GroupList);
