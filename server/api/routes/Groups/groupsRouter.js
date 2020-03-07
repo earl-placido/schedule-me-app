@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const groupsModel = require("../model/groupsModel");
+const groupsModel = require("../../model/groupsModel");
 const groupMemberModel = require('../../model/groupMemberModel');
-const { authenticateToken } = require("../util/tokenHelper");
-const responses = require("../util/responses");
+const { authenticateToken } = require("../../util/tokenHelper");
+const responses = require("../../util/responses");
 
 // Create a new group
 router.post("/", authenticateToken, (req, res, next) => {
