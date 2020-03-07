@@ -92,12 +92,12 @@ const styles = {
 };
 
 const mapStateToProps = ({ GroupListReducer }) => {
-  const {groupListInformation} = GroupListReducer;
-  return {groupListInformation};
+  const {groupList} = GroupListReducer;
+  return {groupList};
 };
 
 GroupList.propTypes = {
-  getGroupList: PropTypes.any,
+  groupList: PropTypes.any,
 };
 
 export default connect(mapStateToProps, 
