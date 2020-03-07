@@ -2,9 +2,10 @@ const express = require("express");
 const responses = require("../util/responses");
 const router = express.Router();
 const groupsModel = require("../model/groupsModel");
+const { authenticateToken } = require("../util/tokenHelper");
 
 // Get all group members in a group
-router.get("/:groupId", (req, res, next) => {
+router.get("/:groupId", authenticateToken, (req, res, next) => {
   const groupId = req.params.groupId;
 
   if (!groupId) {
