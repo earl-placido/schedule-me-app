@@ -39,6 +39,8 @@ persistStore(store, async () => {
   });
 });
 
+console.disableYellowBox = true;
+
 export default class Root extends Component {
   render() {
     return (
