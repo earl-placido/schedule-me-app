@@ -4,7 +4,7 @@ import { Calendar, Modal, TimePicker, Button, Checkbox, Badge } from 'antd';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
+import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getInformation,
      handleAdd, onChangeRange} from '../../../actions/components/screens/InputAvailability.action';
 
 const {RangePicker} = TimePicker;
@@ -21,7 +21,9 @@ class Group extends Component {
     }
 
     handleOk = () => {
-        this.props.addAvailability(this.props.selectedDate, this.props.rangeHours, this.props.availableDays);
+        // this.props.rangeHours contain [[availabilityId, [start, end]],...]
+        this.props.addAvailability(this.props.memberId, this.props.selectedDate, this.props.rangeHours,
+            this.props.availableDays);
     }
 
     handleCancel = () => {
@@ -37,6 +39,13 @@ class Group extends Component {
     }
 
     onChangeRange(index, value) {
+        const month = this.props.selectedDate.month();
+        const date = this.props.selectedDate.date();
+
+        // change date/month to selected date/month
+        value[0].set({month, date});
+        value[1].set({month, date});
+
         this.props.onChangeRange(index, value, this.props.rangeHours);
     }
 
@@ -48,7 +57,7 @@ class Group extends Component {
             <ul className="events">
               {availability.map((item, index) => (
                 <li key={index}>
-                  <Badge status={'success'} text={item[0].format('HH:mm') + '-' + item[1].format('HH:mm')} />
+                  <Badge status={'success'} text={item[1][0].format('HH:mm') + '-' + item[1][1].format('HH:mm')} />
                 </li>
               ))}
             </ul>
@@ -63,12 +72,11 @@ class Group extends Component {
             this.props.selectDate(moment()); 
         
         if (!this.props.groupInformation)
-            this.props.getGroupInformation(groupId);
+            this.props.getInformation(groupId);
         
     }
 
     render() {
-
         return (
             <div>
                 <h2>{this.props.groupInformation && this.props.groupInformation.GroupName}</h2>
@@ -82,7 +90,7 @@ class Group extends Component {
                     {this.props.rangeHours.map( (item, index) => {
                         return (
                         <div key={index} className='range-picker'>
-                            <RangePicker value={item} onChange={this.onChangeRange.bind(this, index)}/>
+                            <RangePicker value={item[1]} onChange={this.onChangeRange.bind(this, index)}/>
                         </div>
                         );
                     })}
@@ -125,5 +133,5 @@ Group.propTypes = {
 };
 
 export default connect(mapStateToProps, 
-    {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
+    {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getInformation,
         handleAdd, onChangeRange})(Group);

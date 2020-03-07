@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 import {getMemberIdWithEmail} from '../generalQueries/groupMember.action';
+import {addAvailabilityQuery} from '../generalQueries/Availability.action';
 
 export const GROUP_INFORMATION = 'group_information';
 export const SELECT_DATE = 'select_date';
@@ -12,9 +13,8 @@ export const ADD_RANGE = 'add_range';
 export const CHANGE_RANGE = 'change_range';
 
 
-export const getGroupInformation = (id) => async(dispatch) => {
-    const groupInformation = await axios.get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${id}`);
-    const groupId = groupInformation.data.GroupId;
+export const getInformation = (groupId) => async(dispatch) => {
+    const groupInformation = await axios.get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`);
     const memberId = await getMemberIdWithEmail(groupId, localStorage.getItem("userEmail"));
     
     dispatch({
@@ -57,10 +57,18 @@ export const deleteAvailability = (rangeHours) => {
     };
 };
 
-export const addAvailability = (selectedDate, rangeHours, availableDays) => {
+// rangehours contain [[id, [start, end]], [id, [start, end]], ...]
+export const addAvailability = (memberId, selectedDate, rangeHours, availableDays) => {
     //currently doesn't check for clashing of time
     const day = selectedDate.day();
     availableDays[day] = rangeHours;
+
+    const availabilityIds = rangeHours.map(item => item[0]);
+    const startTimes = rangeHours.map(item => item[1][0].format("YYYY-MM-DD HH:mm:ss"));
+    const endTimes = rangeHours.map(item => item[1][1].format("YYYY-MM-DD HH:mm:ss"));
+
+    addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes);
+
     return {
         type: ADD_AVAILABILITY, 
         payload: {availableDays, modalVisible: false, rangeHours: ['']}
@@ -74,9 +82,10 @@ export const handleAdd = (rangeHours) => {
     };
 };
 
+// rangehours contain [[id, [start, end]], [id, [start, end]], ...]
 export const onChangeRange = (index, value, rangeHours) => {
     let newRangeHours = [...rangeHours];
-    newRangeHours[index] = value;
+    newRangeHours[index] = [-1, value];
     return {
         type: CHANGE_RANGE,
         payload: newRangeHours

@@ -3,7 +3,7 @@ const responses = require('../../util/responses');
 const AvailabilityModel = require('../../model/AvailabilityModel');
 
 module.exports = (router) => {
-    router.get('/:groupMemberId/availability', (req, res, next) => {
+    router.get('/members/:groupMemberId/availability', (req, res, next) => {
         const { groupMemberId } = req.params;
         if (!groupMemberId) {
             res.status(responses.NOT_FOUND);
@@ -14,14 +14,14 @@ module.exports = (router) => {
                     res.status(responses.SUCCESS).json(result[0]);
                 } else {
                     res.status(responses.NOT_FOUND);
-                    res.send({error: `could not find availbility with ${groupMemberId} as group member id`});
+                    res.send({error: `could not find availability with ${groupMemberId} as group member id`});
                 }
             }).catch(next);
 
         }
     });
 
-    router.post('/availability', (req, res, next) => {
+    router.post('/members/availability', (req, res, next) => {
         const { groupMemberId, availabilityIds, startTimes, endTimes} = req.body;
 
         if (availabilityIds.length === 0) {
@@ -38,9 +38,8 @@ module.exports = (router) => {
             res.send({ error: "avilabilityIds and startTime and endTime lengths are not the same" });
         } else {
             return AvailabilityModel.addAvailability(groupMemberId, availabilityIds, startTimes, endTimes).then(result => {
-                console.log(result);
                 if (result.errno) {
-                    res.status(responses.NOT_FOUND);
+                    res.status(responses.SERVER_ERROR);
                     res.send({error: `could not add availability: ${result.sqlMessage}`});
                 } else {
                     res.status(responses.SUCCESS).json({'error': false, 'success': true});

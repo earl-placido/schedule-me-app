@@ -41,6 +41,7 @@ module.exports = {
                 return res;
             }).catch(err => {
                 conn.end();
+                console.log(err);
                 return err;
             });
         });
