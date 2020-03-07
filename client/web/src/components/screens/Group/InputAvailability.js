@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
      handleAdd, onChangeRange} from '../../../actions/components/screens/InputAvailability.action';
+import {getUserByEmail} from '../../../actions/components/generalQueries/user.action';
 
 const {RangePicker} = TimePicker;
 
@@ -57,6 +58,8 @@ class Group extends Component {
 
     componentDidMount() {
         const groupId = parseInt(window.location.pathname.split('/')[2]);
+        
+        this.props.getUserByEmail(localStorage.getItem('userEmail'));
         this.props.getGroupInformation(groupId);
         // otherwise addAvailability button would show that date is undefined
         if (!this.props.selectedDate)
@@ -96,9 +99,12 @@ class Group extends Component {
     }
 }
 
-const mapStateToProps = ({ AddAvailabilityReducer }) => {
+const mapStateToProps = ({ AddAvailabilityReducer, UserReducer }) => {
     const {modalVisible, rangeHours, selectedDate, availableDays, groupInformation} = AddAvailabilityReducer;
-    return {modalVisible, rangeHours, selectedDate, availableDays, groupInformation};
+    const {userId} = UserReducer;
+
+    console.log(UserReducer);
+    return {modalVisible, rangeHours, selectedDate, availableDays, groupInformation, userId};
 };
 
 Group.propTypes = {
@@ -122,4 +128,4 @@ Group.propTypes = {
 
 export default connect(mapStateToProps, 
     {selectDate, showModal, cancelAvailability, deleteAvailability, addAvailability, getGroupInformation,
-        handleAdd, onChangeRange})(Group);
+        handleAdd, onChangeRange, getUserByEmail})(Group);
