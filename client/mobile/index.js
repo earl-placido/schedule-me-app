@@ -32,8 +32,6 @@ const persistor = persistStore(store, async () => {
   const userName = await AsyncStorage.getItem('userName');
   const displayPicURL = await AsyncStorage.getItem('displayPicURL');
 
-  console.disableYellowBox = true;
-
   this.setState({
     isAuthenticated: isAuthenticated,
     token: token,
@@ -41,6 +39,8 @@ const persistor = persistStore(store, async () => {
     displayPicURL: displayPicURL,
   });
 });
+
+console.disableYellowBox = true;
 
 export default class Root extends Component {
   render() {
