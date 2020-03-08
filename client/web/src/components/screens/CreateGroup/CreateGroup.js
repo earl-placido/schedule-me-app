@@ -178,7 +178,6 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
   };
 };
 
-// set this so eslint won't show error prop not found for redux
 CreateGroup.propTypes = {
   groupName: PropTypes.any,
   groupDescription: PropTypes.any,
