@@ -61,4 +61,4 @@ ContentContainer.propTypes = {
   children: PropTypes.any
 };
 
-export default connect(mapStateToProps, { toggleModal })(ContentContainer); 
+export default connect(mapStateToProps, { toggleModal })(ContentContainer);

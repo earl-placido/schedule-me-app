@@ -1,13 +1,12 @@
-import React, { Component } from 'react';
-import { Button } from 'antd';
-import Icon from '@ant-design/icons';
-import { compose } from 'redux';
-import { connect } from 'react-redux';
-import LoginForm from './LoginForm';
-import SignupForm from './SignupForm';
-import { GoogleLogin } from 'react-google-login';
-import { withRouter, Redirect } from 'react-router';
-
+import React, { Component } from "react";
+import { Button } from "antd";
+import Icon from "@ant-design/icons";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
+import { GoogleLogin } from "react-google-login";
+import { withRouter, Redirect } from "react-router";
 
 import PropTypes from "prop-types";
 

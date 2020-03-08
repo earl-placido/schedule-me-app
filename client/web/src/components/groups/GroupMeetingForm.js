@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Form, Input, TimePicker } from "antd";
-import Icon from '@ant-design/icons';
+import Icon from "@ant-design/icons";
 
 import PropTypes from "prop-types";
 

@@ -1,6 +1,6 @@
-import React from 'react'
-import { Form, Input, Button, Checkbox, notification } from 'antd';
-import Icon from '@ant-design/icons';
+import React from "react";
+import { Form, Input, Button, Checkbox, notification } from "antd";
+import Icon from "@ant-design/icons";
 
 const LoginForm = () => {
   const onFinish = values => {
