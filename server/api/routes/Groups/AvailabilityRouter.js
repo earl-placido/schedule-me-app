@@ -11,7 +11,7 @@ module.exports = (router) => {
         } else {
             return AvailabilityModel.getAvailability(groupMemberId).then(result => {
                 if (result.length > 0) {
-                    res.status(responses.SUCCESS).json(result[0]);
+                    res.status(responses.SUCCESS).json(result);
                 } else {
                     res.status(responses.NOT_FOUND);
                     res.send({error: `could not find availability with ${groupMemberId} as group member id`});

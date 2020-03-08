@@ -1,18 +1,20 @@
 import axios from "axios";
+import moment from "moment";
 
 import { getMemberIdWithEmail } from "../generalQueries/groupMember.action";
-import { addAvailabilityQuery } from "../generalQueries/Availability.action";
+import { getAvailabilityQuery, addAvailabilityQuery } from "../generalQueries/Availability.action";
 
 export const GROUP_INFORMATION = "group_information";
 export const SELECT_DATE = "select_date";
 export const SHOW_MODAL = "show_modal";
+export const GET_AVAILABILITY = "get_availability";
 export const CANCEL_AVAILABILITY = "cancel_availability";
 export const DELETE_AVAILABILITY = "delete_availability";
 export const ADD_AVAILABILITY = "add_availability";
 export const ADD_RANGE = "add_range";
 export const CHANGE_RANGE = "change_range";
 
-export const getInformation = groupId => async dispatch => {
+export const getInformation = (groupId, availableDays) => async dispatch => {
   const groupInformation = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`
   );
@@ -22,9 +24,28 @@ export const getInformation = groupId => async dispatch => {
     localStorage.getItem("userEmail")
   );
 
+  const availabilityInfos = await getAvailabilityQuery(memberId);
+  if (availabilityInfos.error) {
+    dispatch({ type: GET_AVAILABILITY, payload: {availableDays: {}}});
+  }
+  console.log(availabilityInfos);
+
+  let newAvailableDays = {...availableDays};
+  // convert date to days
+  for (const availabilityInfo of availabilityInfos) {
+    const {AvailabilityId, StartTime, EndTime} = availabilityInfo;
+    const momentStartTime = moment(StartTime);
+    const momentEndTime = moment(EndTime);
+    const currentDay = momentStartTime.day();
+    if (!newAvailableDays[currentDay])
+      newAvailableDays[currentDay] = [[AvailabilityId, [momentStartTime, momentEndTime]]];
+    else
+      newAvailableDays[currentDay] = [...newAvailableDays[currentDay], [AvailabilityId, [momentStartTime, momentEndTime]]];
+  }
+
   dispatch({
     type: GROUP_INFORMATION,
-    payload: { groupInformation: groupInformation.data, memberId }
+    payload: { groupInformation: groupInformation.data, memberId, availableDays: newAvailableDays }
   });
 };
 
