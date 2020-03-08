@@ -9,40 +9,47 @@ const MYSQLDB = {
 };
 
 module.exports = {
-    getAvailability(groupMemberId) {
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(
-                `
+  getAvailability(groupMemberId) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
                     SELECT AvailabilityId, StartTime, EndTime FROM 
                     \`Availability\` WHERE GroupMemberId = ?;
-                `, 
-                [groupMemberId]
-            ).then(res => {
-                conn.end();
-                return res;
-            }).catch(err => {
-                conn.end();
-                return err;
-            });
+                `,
+          [groupMemberId]
+        )
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return err;
         });
-    },
-    addAvailability(groupMemberId, availabilityIds, startTimes, endTimes) {
-        let query = '';
-        // check is made in router to ensure they are all same length
-        for (let index = 0; index < availabilityIds.length; index ++) {
-            query += (availabilityIds[index] === -1) ? 
-            `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (${groupMemberId}, '${startTimes[index]}', '${endTimes[index]}');` :
-            `UPDATE \`Availability\` SET StartTime='${startTimes[index]}', EndTime='${endTimes[index]}' WHERE AvailabilityId=${availabilityIds[index]};`;
-        }
-        console.log(query);
-        return mysql.createConnection(MYSQLDB).then(conn => {
-            return conn.query(query).then(res => {
-                conn.end();
-                return res;
-            }).catch(err => {
-                conn.end();
-                return err;
-            });
-        });
+    });
+  },
+  addAvailability(groupMemberId, availabilityIds, startTimes, endTimes) {
+    let query = "";
+    // check is made in router to ensure they are all same length
+    for (let index = 0; index < availabilityIds.length; index++) {
+      query +=
+        availabilityIds[index] === -1
+          ? `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (${groupMemberId}, '${startTimes[index]}', '${endTimes[index]}');`
+          : `UPDATE \`Availability\` SET StartTime='${startTimes[index]}', EndTime='${endTimes[index]}' WHERE AvailabilityId=${availabilityIds[index]};`;
     }
+    console.log(query);
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(query)
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return err;
+        });
+    });
+  }
 };

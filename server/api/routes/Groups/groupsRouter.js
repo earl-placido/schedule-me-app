@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const groupsModel = require("../../model/groupsModel");
-const groupMemberModel = require('../../model/groupMemberModel');
+const groupMemberModel = require("../../model/groupMemberModel");
 const { authenticateToken } = require("../../util/tokenHelper");
 const responses = require("../../util/responses");
 
@@ -93,33 +93,34 @@ router.delete("/:groupId", authenticateToken, (req, res, next) => {
 
 //TODO add authentication token
 // get group member id
-router.get('/:groupId/members/:userId', (req, res, next) => {
-    const { groupId, userId } = req.params;
-    if (!groupId) {
-        res.status(responses.NOT_FOUND);
-        res.send({error: "groupId is required!"});
-    } else if (!userId) {
-        res.status(responses.NOT_FOUND);
-        res.send({error: "userId is required!"});
-    } else {
-        return groupMemberModel.getGroupMemberId(
-            groupId,
-            userId
-        ).then(result => {
-            if (result.length > 0) {
-                res.status(responses.SUCCESS).json(result[0]);
-            } else {
-                res.status(responses.NOT_FOUND);
-                res.send({error: `could not find groupMemberId with ${groupId} and ${userId}`});
-            }
-        }).catch(next);
-    }
+router.get("/:groupId/members/:userId", (req, res, next) => {
+  const { groupId, userId } = req.params;
+  if (!groupId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: "groupId is required!" });
+  } else if (!userId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: "userId is required!" });
+  } else {
+    return groupMemberModel
+      .getGroupMemberId(groupId, userId)
+      .then(result => {
+        if (result.length > 0) {
+          res.status(responses.SUCCESS).json(result[0]);
+        } else {
+          res.status(responses.NOT_FOUND);
+          res.send({
+            error: `could not find groupMemberId with ${groupId} and ${userId}`
+          });
+        }
+      })
+      .catch(next);
+  }
 });
 
 // add group member router
-require('./groupMemberRouter')(router);
+require("./groupMemberRouter")(router);
 // add availability router
-require('./AvailabilityRouter')(router);
-
+require("./AvailabilityRouter")(router);
 
 module.exports = router;
