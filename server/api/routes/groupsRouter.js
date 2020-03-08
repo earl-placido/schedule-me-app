@@ -66,7 +66,24 @@ router.get("/:groupId", (req, res, next) => {
     .catch(next);
 });
 
-// Get group information from groupId
+// Get group members from groupId
+router.get("/:groupId/members", authenticateToken, (req, res, next) => {
+  const groupId = req.params.groupId;
+
+  if (!groupId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: `groupId is required.` });
+  } else {
+    return groupsModel
+      .getGroupMembers(groupId)
+      .then(result =>
+        res.status(responses.SUCCESS).json({ groupMembers: result })
+      )
+      .catch(next);
+  }
+});
+
+// Delete group
 router.delete("/:groupId", authenticateToken, (req, res, next) => {
   const { groupId } = req.params;
   const userID = req.user.userID;
