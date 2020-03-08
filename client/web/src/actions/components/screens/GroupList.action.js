@@ -4,7 +4,7 @@ export const GROUP_LIST = "group_list";
 
 export const getGroupList = () => async dispatch => {
   const authToken = localStorage.getItem("token");
-  const groupInformation = await axios.get(
+  const response = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/`,
     {
       headers: {
@@ -15,11 +15,11 @@ export const getGroupList = () => async dispatch => {
   );
   dispatch({
     type: GROUP_LIST,
-    payload: groupInformation
+    payload: response.data.groups
   });
 };
 
-const INITIAL_STATE = { groupList: {} };
+const INITIAL_STATE = { groupList: [] };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
