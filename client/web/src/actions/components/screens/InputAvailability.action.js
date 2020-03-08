@@ -13,11 +13,10 @@ export const ADD_RANGE = "add_range";
 export const CHANGE_RANGE = "change_range";
 
 export const getInformation = groupId => async dispatch => {
-  
   const groupInformation = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`
   );
-  
+
   const memberId = await getMemberIdWithEmail(
     groupId,
     localStorage.getItem("userEmail")
@@ -68,14 +67,14 @@ export const addAvailability = (
   selectedDate,
   rangeHours,
   availableDays
-) => async(dispatch) => {
+) => async dispatch => {
   //currently doesn't check for clashing of time
 
   // if empty we just close the modal and reset rangeHours
   if (rangeHours[0].length === 0) {
     dispatch({
       type: ADD_AVAILABILITY,
-      payload: {modalVisible: false, rangeHours: ['']}
+      payload: { modalVisible: false, rangeHours: [""] }
     });
   }
 
@@ -125,7 +124,6 @@ export const convertDatesToDay = (currentYear, currentMonth) => {
   // calculate all the dates for a given day (index refers to day: monday, tuesday, ...)
   // {Monday: [1,8,15,22,29], Tuesday: [2,9,16,23,30], ...}
   for (let dayIndex = 1; dayIndex < 8; dayIndex++) {
-
     let currentDate = dayIndex;
     datesToDay[currentDate] = (firstDayOfMonth + (dayIndex - 1)) % 7; // convert date to day
 

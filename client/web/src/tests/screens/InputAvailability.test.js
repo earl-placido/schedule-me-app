@@ -10,7 +10,6 @@ import {
   SHOW_MODAL,
   SELECT_DATE,
   CHANGE_RANGE,
-  ADD_AVAILABILITY,
   ADD_RANGE,
   DELETE_AVAILABILITY
 } from "../../actions/components/screens/InputAvailability.action";
@@ -19,7 +18,6 @@ configure({ adapter: new Adapter() });
 
 describe("test group", () => {
   let store, component;
-  const flushAllPromises = () => new Promise(resolve => setImmediate(resolve));
 
   beforeEach(() => {
     const mockStore = configureStore([thunk]);

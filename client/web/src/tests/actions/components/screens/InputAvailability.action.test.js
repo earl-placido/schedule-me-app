@@ -94,27 +94,32 @@ describe("test contacting server from group", () => {
     store = mockStore({});
   });
 
-  it("test add availability action", async() => {
+  it("test add availability action", async () => {
     const selectedDate = moment();
     const day = selectedDate.day();
     const rangeHours = [[-1, [selectedDate, selectedDate]]];
     let availableDays = {};
 
-    httpMock.onPost(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`).reply(200, {
-      data: {success: true, error: false}
-    });
+    httpMock
+      .onPost(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`
+      )
+      .reply(200, {
+        data: { success: true, error: false }
+      });
     addAvailability(1, selectedDate, rangeHours, availableDays)(store.dispatch);
     await flushAllPromises();
 
     expect(store.getActions()[0].type).toEqual(ADD_AVAILABILITY);
     // close modal, add rangeHours to availableDays, reset rangeHours to empty
     expect(store.getActions()[0].payload.modalVisible).toEqual(false);
-    expect(store.getActions()[0].payload.availableDays[day]).toEqual(rangeHours);
+    expect(store.getActions()[0].payload.availableDays[day]).toEqual(
+      rangeHours
+    );
     expect(store.getActions()[0].payload.rangeHours).toEqual([""]);
   });
 
   it("test obtaining group information", async () => {
-
     httpMock
       .onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/1000000`)
       .reply(200, {
@@ -124,11 +129,17 @@ describe("test contacting server from group", () => {
         }
       });
 
-      httpMock.onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/users/null`).reply(200, {
+    httpMock
+      .onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/users/null`)
+      .reply(200, {
         userId: 1
       });
 
-      httpMock.onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/1000000/members/1`).reply(200, {
+    httpMock
+      .onGet(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/1000000/members/1`
+      )
+      .reply(200, {
         GroupMemberId: 1
       });
 
