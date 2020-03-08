@@ -6,7 +6,7 @@ const { Content } = Layout;
 export default class Home extends Component {
     constructor(props) {
         super(props);
-        this.state = { toggleForms: false, secondsLeft: 5 };
+        this.state = { toggleForms: false };
     }
 
     openRedirectMessage() {
@@ -25,7 +25,7 @@ export default class Home extends Component {
     }
 
     render() {
-        this.handleHttps()
+        this.handleHttps();
 
         const { containerStyle, contentStyle, logoStyle, buttonStyle } = styles;
 
