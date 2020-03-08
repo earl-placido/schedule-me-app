@@ -14,7 +14,6 @@ class GroupList extends Component {
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, dividerStyle, titleStyle } = styles;
-
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
@@ -32,7 +31,9 @@ class GroupList extends Component {
                     avatar={
                       <Avatar size={50} icon={<Icon type="play-circle-o" />} />
                     }
-                    title={<a href="/group">{item.GroupName}</a>}
+                    title={
+                      <a href={"/group/" + item.GroupId}>{item.GroupName}</a>
+                    }
                     description={item.GroupDescription}
                   />
                 </List.Item>

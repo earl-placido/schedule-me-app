@@ -39,7 +39,7 @@ class App extends Component {
                 authorized={this.props.isAuthenticated}
               />
               <PrivateRoute
-                path="/group"
+                path="/group/:id"
                 component={() => {
                   return (
                     <ContentContainer>

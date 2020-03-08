@@ -9,30 +9,20 @@ import {
   Divider,
   Typography
 } from "antd";
+import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
-export default class GroupDetail extends Component {
+class GroupDetail extends Component {
+  componentDidMount() {
+    this.props.getGroupMembers(this.props.match.params.id);
+  }
+
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, dividerStyle, titleStyle } = styles;
-    const userList = [
-      {
-        name: "Renz Cabusas",
-        role: "Administrator"
-      },
-      {
-        name: "Brenna Epp",
-        role: "Member"
-      },
-      {
-        name: "Bonnie Tang",
-        role: "Member"
-      },
-      {
-        name: "Daryl Fung",
-        role: "Member"
-      }
-    ];
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
@@ -48,15 +38,15 @@ export default class GroupDetail extends Component {
           <Row>
             <List
               itemLayout="horizontal"
-              dataSource={userList}
+              dataSource={this.props.groupMembers}
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
                     avatar={
                       <Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />
                     }
-                    title={item.name}
-                    description={item.role}
+                    title={item.UserId}
+                    description={item.MemberRole}
                   />
                 </List.Item>
               )}
@@ -93,3 +83,18 @@ const styles = {
     textAlign: "center"
   }
 };
+
+const mapStateToProps = ({ GroupDetailReducer }) => {
+  const { groupMembers } = GroupDetailReducer;
+  return { groupMembers };
+};
+
+GroupDetail.propTypes = {
+  match: PropTypes.any,
+  groupMembers: PropTypes.any,
+  getGroupMembers: PropTypes.func
+};
+
+export default withRouter(
+  connect(mapStateToProps, { getGroupMembers })(GroupDetail)
+);

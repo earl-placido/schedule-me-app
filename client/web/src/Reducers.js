@@ -4,10 +4,12 @@ import CreateGroupReducer from "./actions/components/screens/CreateGroup.action"
 import LoginModalReducer from "./actions/components/login/LoginModal.action";
 import AuthReducer from "./actions/components/screens/Auth.action";
 import GroupListReducer from "./actions/components/screens/GroupList.action";
+import GroupDetailReducer from "./actions/components/screens/GroupDetail.action";
 
 export default combineReducers({
   CreateGroupReducer,
   LoginModalReducer,
   auth: AuthReducer,
-  GroupListReducer
+  GroupListReducer,
+  GroupDetailReducer
 });
