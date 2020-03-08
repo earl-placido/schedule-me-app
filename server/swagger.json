@@ -340,7 +340,7 @@
           }
         }
       },
-      "/groups/{groupMemberId}/availability": {
+      "/groups/members/{groupMemberId}/availability": {
         "get": {
           "tags": [
             "Availability"
@@ -367,7 +367,7 @@
           }
         }
       },
-      "/groups/availability": {
+      "/groups/members/availability": {
         "post": {
           "tags": [
             "Availability"
