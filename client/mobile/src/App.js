@@ -1,26 +1,24 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {Container, Header, Content, Footer, Title} from 'native-base';
-import CreateGroup from './components/screen/CreateGroup';
+import {Container, Header, Content, Title} from 'native-base';
 
 import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 import Reducers from './Reducers';
+import GroupDetail from './components/screen/GroupDetail';
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={createStore(Reducers, {}, applyMiddleware(thunk))}>
         <Container>
-          <Header />
-          <CreateGroup />
+          <Header style={styles.headerStyle}>
+            <Title>schedule-me-up</Title>
+          </Header>
+          <GroupDetail />
 
           <Content />
-
-          <Footer style={styles.footerStyle}>
-            <Title>schedule-me-up</Title>
-          </Footer>
         </Container>
       </Provider>
     );
@@ -28,7 +26,7 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  footerStyle: {
-    padding: 10,
+  headerStyle: {
+    padding: 0,
   },
 });
