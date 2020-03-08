@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Row,
-  Col,
-  Card,
-  Button,
-  List,
-  Divider,
-  Typography
-} from "antd";
+import { Row, Col, Card, Button, List, Divider, Typography } from "antd";
 import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
