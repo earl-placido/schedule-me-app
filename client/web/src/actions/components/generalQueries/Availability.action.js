@@ -19,8 +19,7 @@ export const addAvailabilityQuery = async (
   return addedAvailability;
 };
 
-export const getAvailabilityQuery = async (groupMemberId) => {
-
+export const getAvailabilityQuery = async groupMemberId => {
   const availabilitiesInfo = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/${groupMemberId}/availability`
   );
@@ -29,4 +28,4 @@ export const getAvailabilityQuery = async (groupMemberId) => {
     return false;
   }
   return availabilitiesInfo.data;
-}
+};

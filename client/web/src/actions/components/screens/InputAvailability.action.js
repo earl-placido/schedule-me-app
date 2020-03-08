@@ -2,7 +2,10 @@ import axios from "axios";
 import moment from "moment";
 
 import { getMemberIdWithEmail } from "../generalQueries/groupMember.action";
-import { getAvailabilityQuery, addAvailabilityQuery } from "../generalQueries/Availability.action";
+import {
+  getAvailabilityQuery,
+  addAvailabilityQuery
+} from "../generalQueries/Availability.action";
 
 export const GROUP_INFORMATION = "group_information";
 export const SELECT_DATE = "select_date";
@@ -26,24 +29,33 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
 
   const availabilityInfos = await getAvailabilityQuery(memberId);
   if (availabilityInfos.error) {
-    dispatch({ type: GET_AVAILABILITY, payload: {availableDays: {}}});
+    dispatch({ type: GET_AVAILABILITY, payload: { availableDays: {} } });
   }
 
-  let newAvailableDays = {...availableDays};
+  let newAvailableDays = { ...availableDays };
   // convert date to days
   for (const availabilityInfo of availabilityInfos) {
-    const {AvailabilityId, StartTime, EndTime} = availabilityInfo;
+    const { AvailabilityId, StartTime, EndTime } = availabilityInfo;
     const momentStartTime = moment(StartTime);
     const momentEndTime = moment(EndTime);
     const currentDay = momentStartTime.day();
     if (!newAvailableDays[currentDay])
-      newAvailableDays[currentDay] = [[AvailabilityId, [momentStartTime, momentEndTime]]];
+      newAvailableDays[currentDay] = [
+        [AvailabilityId, [momentStartTime, momentEndTime]]
+      ];
     else
-      newAvailableDays[currentDay] = [...newAvailableDays[currentDay], [AvailabilityId, [momentStartTime, momentEndTime]]];
+      newAvailableDays[currentDay] = [
+        ...newAvailableDays[currentDay],
+        [AvailabilityId, [momentStartTime, momentEndTime]]
+      ];
   }
   dispatch({
     type: GROUP_INFORMATION,
-    payload: { groupInformation: groupInformation.data, memberId, availableDays: newAvailableDays }
+    payload: {
+      groupInformation: groupInformation.data,
+      memberId,
+      availableDays: newAvailableDays
+    }
   });
 };
 

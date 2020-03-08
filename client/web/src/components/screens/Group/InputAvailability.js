@@ -84,7 +84,8 @@ class Group extends Component {
 
     // otherwise addAvailability button would show that date is undefined
     if (!this.props.selectedDate) this.props.selectDate(moment());
-    if (!this.props.groupInformation) this.props.getInformation(groupId, this.props.availableDays);
+    if (!this.props.groupInformation)
+      this.props.getInformation(groupId, this.props.availableDays);
   }
 
   render() {
