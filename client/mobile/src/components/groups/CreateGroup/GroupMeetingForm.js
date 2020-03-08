@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Content} from 'native-base';
 import t from 'tcomb-form-native';
 import moment from 'moment';
@@ -14,19 +14,19 @@ const meetingOptions = {
       config: {
         defaultValueText: 'Tap here to select a time',
         format: date => {
-          return moment(date).format("HH:mm") ;
+          return moment(date).format('HH:mm');
         },
       },
-      error: 'Please input meeting duration'
+      error: 'Please input meeting duration',
     },
-  }
+  },
 };
 
 const Meeting = t.struct({
   duration: t.Date,
   frequency: t.maybe(t.String),
-  location: t.maybe(t.String)
-})
+  location: t.maybe(t.String),
+});
 
 export default class GroupMeetingForm extends Component {
   handleGroupMeetingChange = () => {
@@ -38,17 +38,21 @@ export default class GroupMeetingForm extends Component {
       this.props.handleMeetingFrequency(value.frequency);
       this.props.handleMeetingLocation(value.location);
     }
-  }
-  
+  };
+
   render() {
     return (
       <Content padder>
-        <Form 
-          ref={_form => this.form = _form}
+        <Form
+          ref={_form => (this.form = _form)}
           options={meetingOptions}
           type={Meeting}
           onChange={this.handleGroupMeetingChange}
-          value={{duration: this.props.meetingDuration, frequency: this.props.meetingFrequency, location: this.props.meetingLocation}}
+          value={{
+            duration: this.props.meetingDuration,
+            frequency: this.props.meetingFrequency,
+            location: this.props.meetingLocation,
+          }}
         />
       </Content>
     );

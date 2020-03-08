@@ -31,7 +31,7 @@ export default class CreateAccount extends Component {
   state = {
     isCreateVisible: false,
   };
-  
+
   toggleCreate = () => {
     this.setState({isCreateVisible: !this.state.isCreateVisible});
   };
