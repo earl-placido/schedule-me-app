@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Steps, Row, Col, Card, Button, Icon } from "antd";
 import { connect } from "react-redux";
-import PropTypes from "prop-types"; // to prevent eslint from showing errors that props not found
+import PropTypes from "prop-types";
 
 import GroupInfoForm from "../../groups/GroupInfoForm";
 import GroupMeetingForm from "../../groups/GroupMeetingForm";
