@@ -18,6 +18,7 @@ const config = {
   key: 'root',
   storage: AsyncStorage,
   whitelist: ['auth'],
+  blacklist: ['CreateGroup'],
 };
 const store = createStore(
   persistReducer(config, Reducers),

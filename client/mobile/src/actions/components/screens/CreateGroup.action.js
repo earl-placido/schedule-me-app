@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const UPDATE_GROUP_NAME = 'update_group_name';
 export const UPDATE_GROUP_DESCRIPTION = 'update_group_description';
@@ -67,17 +68,24 @@ export const submitMeetingCreation = (
     meetingFrequency,
     meetingLocation,
   };
+  const token = await AsyncStorage.getItem('token');
+
+  const options = {
+    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups`,
+    method: 'POST',
+    data: groupCreation,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
 
   // call backend to add group
   try {
-    const response = await axios.post(
-      `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups`,
-      groupCreation,
-    );
+    const response = await axios(options);
     const code = response.data.groupId.toString();
     dispatch({type: SUBMIT_MEETING_CREATION, payload: {code}});
   } catch (err) {
-    console.log('failure');
+    console.log(err);
   }
 };
 
