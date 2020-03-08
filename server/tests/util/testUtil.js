@@ -27,35 +27,35 @@ function insertUsersQuery(users) {
 
 function insertGroupsQuery(groups) {
   return `
-    ${groups
-      .map(group =>
-        mysql.format(
-          `
-            INSERT INTO \`Meeting\`
-            (MeetingDuration,
-            MeetingFrequency, 
-            MeetingLocation)
-            VALUES (?, ?, ?);
-            
+        ${groups
+          .map(group =>
+            mysql.format(
+              `
             INSERT INTO \`Group\`
             (GroupName,
             GroupDescription,
-            GroupOwnerId,
-            MeetingId)
-            VALUES (?, ?, ?, LAST_INSERT_ID());
-          `,
-          [
-            group.meetingDuration,
-            group.meetingFrequency,
-            group.meetingLocation,
-            group.groupName,
-            group.groupDescription,
-            group.groupOwnerId
-          ]
-        )
-      )
-      .join(`\n`)}
-  `;
+            GroupOwnerId)
+            VALUES (?, ?, ?);
+            
+            INSERT INTO \`Meeting\`
+            (MeetingDuration,
+            MeetingFrequency, 
+            MeetingLocation,
+            GroupId)
+            VALUES (?, ?, ?,  LAST_INSERT_ID());
+        `,
+              [
+                group.groupName,
+                group.groupDescription,
+                group.groupOwnerId,
+                group.meetingDuration,
+                group.meetingFrequency,
+                group.meetingLocation
+              ]
+            )
+          )
+          .join(`\n`)}
+        `;
 }
 
 function insertGroupMembersQuery(groupMembers) {
