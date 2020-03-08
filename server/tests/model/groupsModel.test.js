@@ -177,4 +177,25 @@ describe(`newMember tests `, () => {
           .then(groupMembers => expect(groupMembers).toHaveLength(2));
       });
   });
+
+  describe(`getGroupMembersFromGroupId tests `, () => {
+    const currGroupId = 1000001;
+
+    it(`Returns the correct groupMembers from group`, () => {
+      return groupsModel.getGroupMembers(currGroupId).then(groupMembers => {
+        groupMembers.forEach(groupMember => {
+          expect(groupMember.GroupId).toBe(currGroupId);
+        });
+      });
+    });
+
+    it(`Returns nothing when group does not exist`, () => {
+      const nonexistantGroupId = 1234567;
+      return groupsModel
+        .getGroupMembers(nonexistantGroupId)
+        .then(groupMembers => {
+          expect(groupMembers.length).toBe(0);
+        });
+    });
+  });
 });

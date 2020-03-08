@@ -424,6 +424,38 @@
             }
           }
         }
+      },
+      "/groups/{groupId}/members": {
+        "get": {
+          "tags": [
+            "GroupMembers"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "description": "groupId of groupMembers",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "summary": "Get all groupMembers from a group",
+          "description": "Get all groupMembers from groupId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
       }
     }
   }
