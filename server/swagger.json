@@ -307,7 +307,7 @@
           }
         }
       },
-      "/groupMembers/{groupId}": {
+      "/groups/{groupId}/members": {
         "get": {
           "tags": [
             "GroupMembers"
