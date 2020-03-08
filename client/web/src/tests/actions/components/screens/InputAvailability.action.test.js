@@ -142,10 +142,17 @@ describe("test contacting server from group", () => {
       .reply(200, {
         GroupMemberId: 1
       });
+    
+    httpMock.onGet(
+      `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/1/availability`
+    ).reply(200, [
+      {AvailabilityId: 1, StartTime: moment().format("YYYY-MM-DD HH:mm:ss"), EndTime: moment().format("YYYY-MM-DD HH:mm:ss")}
+    ]);
 
     getInformation(1000000)(store.dispatch);
     await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GROUP_INFORMATION);
     expect(store.getActions()[0].payload.memberId).toEqual(1);
+    expect(Object.keys(store.getActions()[0].payload.availableDays).length).toEqual(1);
   });
 });

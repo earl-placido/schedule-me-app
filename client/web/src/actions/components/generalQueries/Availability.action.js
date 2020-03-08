@@ -28,6 +28,5 @@ export const getAvailabilityQuery = async (groupMemberId) => {
   if (availabilitiesInfo.data.error) {
     return false;
   }
-
   return availabilitiesInfo.data;
 }

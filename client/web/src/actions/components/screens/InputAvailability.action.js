@@ -28,7 +28,6 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
   if (availabilityInfos.error) {
     dispatch({ type: GET_AVAILABILITY, payload: {availableDays: {}}});
   }
-  console.log(availabilityInfos);
 
   let newAvailableDays = {...availableDays};
   // convert date to days
@@ -42,7 +41,6 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     else
       newAvailableDays[currentDay] = [...newAvailableDays[currentDay], [AvailabilityId, [momentStartTime, momentEndTime]]];
   }
-
   dispatch({
     type: GROUP_INFORMATION,
     payload: { groupInformation: groupInformation.data, memberId, availableDays: newAvailableDays }
