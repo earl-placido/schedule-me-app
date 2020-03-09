@@ -32,6 +32,8 @@ const userOptions = {
     },
     password: {
       error: 'Please input password',
+      password: true,
+      secureTextEntry: true,
     },
   },
 };
