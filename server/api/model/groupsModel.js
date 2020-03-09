@@ -14,24 +14,24 @@ module.exports = {
       return conn
         .query(
           `
-                    INSERT INTO \`Meeting\`
-                    (MeetingDuration,
-                    MeetingFrequency, 
-                    MeetingLocation)
-                    VALUES (?, ?, ?);
-                    
-                    INSERT INTO \`Group\`
-                    (GroupName,
-                    GroupDescription,
-                    GroupOwnerId,
-                    MeetingId)
-                    VALUES (?, ?, ?, LAST_INSERT_ID());
-                `,
-          [mDuration, mFrequency, mLocation, gName, gDesc, gOwnerId]
+                INSERT INTO \`Group\`
+                (GroupName,
+                GroupDescription,
+                GroupOwnerId)
+                VALUES (?, ?, ?);
+                
+                INSERT INTO \`Meeting\`
+                (MeetingDuration,
+                MeetingFrequency, 
+                MeetingLocation,
+                GroupId)
+                VALUES (?, ?, ?,  LAST_INSERT_ID());
+            `,
+          [gName, gDesc, gOwnerId, mDuration, mFrequency, mLocation]
         )
         .then(res => {
           conn.end();
-          return res[1].insertId;
+          return res[0].insertId;
         })
         .catch(err => {
           conn.end();
@@ -47,7 +47,7 @@ module.exports = {
           `
                     SELECT *
                     FROM \`Group\` as G, \`Meeting\` as M, \`GroupMember\` as GM
-                    WHERE G.MeetingId = M.MeetingId AND GM.GroupId = G.GroupId AND GM.UserId = ?;
+                    WHERE G.GroupId = M.GroupId AND GM.GroupId = G.GroupId AND GM.UserId = ?;
                 `,
           [userId]
         )
@@ -69,7 +69,7 @@ module.exports = {
           `
                     SELECT *
                     FROM \`Group\` as G, \`Meeting\` as M 
-                    WHERE G.MeetingId = M.MeetingId AND G.GroupId = ?;
+                    WHERE G.GroupId = M.GroupId AND G.GroupId = ?;
                 `,
           [groupId]
         )
@@ -89,15 +89,10 @@ module.exports = {
       return conn
         .query(
           `
-                    SET @meetingId = (SELECT MeetingId FROM \`Group\` WHERE GroupId = ?);
-
-                    DELETE FROM \`Group\`
-                    WHERE GroupId = ?;
-
-                    DELETE FROM \`Meeting\`
-                    WHERE MeetingId = @meetingId;
-                `,
-          [groupId, groupId]
+                DELETE FROM \`Group\`
+                WHERE GroupId = ?;
+            `,
+          [groupId]
         )
         .then(res => {
           conn.end();
@@ -138,9 +133,10 @@ module.exports = {
       return conn
         .query(
           `
-                    SELECT *
-                    FROM \`GroupMember\`
-                    WHERE GroupId = ?
+            SELECT G.GroupId, G.GroupMemberId, U.UserFName, U.UserLName, U.UserEmail
+            FROM \`User\` as U RIGHT JOIN \`GroupMember\` as G
+            ON G.UserId = U.UserId
+            WHERE G.GroupId = ? 
                 `,
           [groupId]
         )
