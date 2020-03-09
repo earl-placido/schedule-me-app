@@ -38,7 +38,6 @@ module.exports = {
           ? `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (${groupMemberId}, '${startTimes[index]}', '${endTimes[index]}');`
           : `UPDATE \`Availability\` SET StartTime='${startTimes[index]}', EndTime='${endTimes[index]}' WHERE AvailabilityId=${availabilityIds[index]};`;
     }
-    console.log(query);
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn
         .query(query)
