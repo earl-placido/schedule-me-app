@@ -33,8 +33,21 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     return;
   }
 
+  const newAvailableDays = convertAvailabilityInfoFormat(availableDays, availabilityInfos);
+  
+  dispatch({
+    type: GROUP_INFORMATION,
+    payload: {
+      groupInformation: groupInformation.data,
+      memberId,
+      availableDays: newAvailableDays
+    }
+  });
+};
+
+const convertAvailabilityInfoFormat = (availableDays, availabilityInfos) => {
   let newAvailableDays = { ...availableDays };
-  // convert date to days
+  // convert database availability format into ui format
   for (const availabilityInfo of availabilityInfos) {
     const { AvailabilityId, StartTime, EndTime } = availabilityInfo;
     const momentStartTime = moment(StartTime);
@@ -50,14 +63,7 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
         [AvailabilityId, [momentStartTime, momentEndTime]]
       ];
   }
-  dispatch({
-    type: GROUP_INFORMATION,
-    payload: {
-      groupInformation: groupInformation.data,
-      memberId,
-      availableDays: newAvailableDays
-    }
-  });
+  return newAvailableDays;
 };
 
 export const selectDate = date => {
