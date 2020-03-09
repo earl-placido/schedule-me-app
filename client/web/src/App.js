@@ -13,14 +13,6 @@ import "antd/dist/antd.css";
 import "./css/app.css";
 
 const { Footer } = Layout;
-//TODO: query for groupmemberId in input InputAvailability
-//TODO: add model that lets you input availability
-//TODO: create route that connects with the model
-//TODO: when calendar loads, query for the user availbility through groupmemberid
-//TODO: remove commented auth api in server
-
-//move
-//TODO: add check for clashing range time
 
 class App extends Component {
   createGroupComponent = () => {

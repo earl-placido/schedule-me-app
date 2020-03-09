@@ -108,7 +108,6 @@ router.delete("/:groupId", authenticateToken, (req, res, next) => {
     .catch(next);
 });
 
-//TODO add authentication token
 // get group member id
 router.get("/:groupId/members/:userId", (req, res, next) => {
   const { groupId, userId } = req.params;
