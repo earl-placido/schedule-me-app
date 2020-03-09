@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Steps, Row, Col, Card, Button, Icon } from "antd";
 import { connect } from "react-redux";
-import PropTypes from "prop-types"; // to prevent eslint from showing errors that props not found
+import PropTypes from "prop-types";
 
 import GroupInfoForm from "../../groups/GroupInfoForm";
 import GroupMeetingForm from "../../groups/GroupMeetingForm";
@@ -18,9 +18,9 @@ import {
 import "antd/dist/antd.css";
 
 class CreateGroup extends Component {
-  // we don't keep the component inside steps because everytime when input changes, the component has to get re-rendered with the
-  // redux properties but keeping component tinside steps will prevent the components to get re-rendered thus
-  // making the component frozen
+  // keeping component inside steps prevents the component being re-rendered
+  // the component must be re-rendered with new redux properties every time input changes
+  // thus, we don't keep the component inside steps so the component doesn't appear frozen when input changes
   constructor(props) {
     super(props);
     this.steps = [
@@ -178,7 +178,6 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
   };
 };
 
-// set this so eslint won't show error prop not found for redux
 CreateGroup.propTypes = {
   groupName: PropTypes.any,
   groupDescription: PropTypes.any,
