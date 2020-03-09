@@ -53,13 +53,15 @@ class CreateAccount extends Component {
 
   userSignup = () => {
     const value = this.form.getValue();
-    this.props.signupUser(
-      value.firstName,
-      value.lastName,
-      value.email,
-      value.password,
-      value.confirmPassword,
-    );
+    if (value) {
+      this.props.signupUser(
+        value.firstName,
+        value.lastName,
+        value.email,
+        value.password,
+        value.confirmPassword,
+      );
+    }
   };
 
   render() {

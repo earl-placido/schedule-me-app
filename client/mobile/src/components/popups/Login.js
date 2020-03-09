@@ -62,7 +62,9 @@ class Login extends Component {
 
   userLogin = () => {
     const value = this.form.getValue();
-    this.props.loginUser(value.email, value.password);
+    if (value) {
+      this.props.loginUser(value.email, value.password);
+    }
   };
 
   render() {
