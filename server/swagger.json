@@ -171,6 +171,38 @@
           }
         }
       },
+      "/users/{userId}": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Get user information from a user",
+          "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+          ],
+          "description": "Get user information from userId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
       "/groups/": {
         "get": {
           "tags": [
@@ -303,6 +335,38 @@
           "responses": {
             "200": {
               "description": "Group deleted"
+            }
+          }
+        }
+      },
+      "/groups/{groupId}/members": {
+        "get": {
+          "tags": [
+            "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "description": "groupId of groupMembers",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "summary": "Get all groupMembers from a group",
+          "description": "Get all groupMembers from groupId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
             }
           }
         }

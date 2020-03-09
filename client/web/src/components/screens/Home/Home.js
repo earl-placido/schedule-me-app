@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Layout, Button, Divider } from "antd";
+import { Layout, Button, Divider, notification } from "antd";
 import Login from "../../login/Login";
 const { Content } = Layout;
 
@@ -9,7 +9,30 @@ export default class Home extends Component {
     this.state = { toggleForms: false };
   }
 
+  openRedirectMessage() {
+    notification.info({
+      message: "Redirecting to HTTP",
+      description: "You will be redirected to HTTP in 5 seconds!",
+      duration: 5
+    });
+  }
+
+  handleHttps() {
+    if (window.location.protocol === "https:") {
+      this.openRedirectMessage();
+      setInterval(() => {
+        window.location.replace(
+          `http:${window.location.href.substring(
+            window.location.protocol.length
+          )}`
+        );
+      }, 6000);
+    }
+  }
+
   render() {
+    this.handleHttps();
+
     const { containerStyle, contentStyle, logoStyle, buttonStyle } = styles;
 
     return (

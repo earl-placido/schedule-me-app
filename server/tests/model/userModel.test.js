@@ -113,6 +113,24 @@ describe(`getUserByEmail tests`, () => {
   });
 });
 
+describe(`getUserByUserId tests`, () => {
+  it(`Returns the correct user information`, () => {
+    let user = data.users[0];
+    return userModel.getUserByUserId(user.userId).then(receivedUser => {
+      expect(receivedUser[0].UserFName).toBe(user.firstName);
+      expect(receivedUser[0].UserLName).toBe(user.lastName);
+      expect(receivedUser[0].UserEmail).toBe(user.email);
+    });
+  });
+
+  it(`Returns nothing when userId does not exist`, () => {
+    let nonExistantUserId = -1;
+    return userModel.getUserByUserId(nonExistantUserId).then(receivedUser => {
+      expect(receivedUser.length).toBe(0);
+    });
+  });
+});
+
 describe(`validateUser tests`, () => {
   it(`Returns email not found`, () => {
     let email = "notFound@email.com";
