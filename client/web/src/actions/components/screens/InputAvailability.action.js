@@ -29,7 +29,8 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
 
   const availabilityInfos = await getAvailabilityQuery(memberId);
   if (availabilityInfos.error) {
-    dispatch({ type: GET_AVAILABILITY, payload: { availableDays: {} } });
+    dispatch({ type: GROUP_INFORMATION, payload: { memberId, groupInformation: groupInformation.data, availableDays: {} } });
+    return;
   }
 
   let newAvailableDays = { ...availableDays };

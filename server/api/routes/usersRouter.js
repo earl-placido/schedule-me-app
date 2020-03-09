@@ -21,7 +21,7 @@ router.get("/:userId", authenticateToken, (req, res, next) => {
     .catch(next);
 });
 
-router.get("/:userEmail", (req, res, next) => {
+router.get("/email/:userEmail", (req, res, next) => {
   const { userEmail } = req.params;
   return userModel
     .getUserByEmail(userEmail)

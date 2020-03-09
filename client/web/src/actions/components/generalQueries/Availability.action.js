@@ -23,9 +23,5 @@ export const getAvailabilityQuery = async groupMemberId => {
   const availabilitiesInfo = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/${groupMemberId}/availability`
   );
-
-  if (availabilitiesInfo.data.error) {
-    return false;
-  }
   return availabilitiesInfo.data;
 };
