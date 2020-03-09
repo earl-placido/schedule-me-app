@@ -26,6 +26,9 @@
   justify-content: center;
   margin-bottom: 2vh; }
 
+.ant-picker-calendar-mode-switch {
+  display: none; }
+
 .error-input {
   border-color: red; }
 
