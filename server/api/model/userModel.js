@@ -84,6 +84,26 @@ module.exports = {
     });
   },
 
+  getUserByUserId(userId) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
+            SELECT UserFName, UserLName, UserEmail FROM \`User\` WHERE UserId = ?
+          `,
+          [userId]
+        )
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return { error: err };
+        });
+    });
+  },
+
   validateUser(email, password) {
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn
