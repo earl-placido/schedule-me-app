@@ -12,7 +12,7 @@ import {NativeRouter} from 'react-router-native';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutGoogle} from './actions/components/screens/Auth.action';
+import {logoutUser} from './actions/components/screens/Auth.action';
 
 const Stack = createStackNavigator();
 
@@ -23,7 +23,7 @@ class App extends Component {
         <Container>
           <Header>
             {this.props.isAuthenticated ? (
-              <Button onPress={this.props.logoutGoogle}>
+              <Button onPress={this.props.logoutUser}>
                 <Text>{this.props.userName}</Text>
               </Button>
             ) : (
@@ -62,7 +62,7 @@ App.propTypes = {
   navigate: PropTypes.func,
   isAuthenticated: PropTypes.any,
   userName: PropTypes.any,
-  logoutGoogle: PropTypes.func,
+  logoutUser: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -71,7 +71,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  logoutGoogle: () => dispatch(logoutGoogle()),
+  logoutUser: () => dispatch(logoutUser()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -10,7 +10,10 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import {loginGoogle} from '../../actions/components/screens/Auth.action';
+import {
+  loginGoogle,
+  loginUser,
+} from '../../actions/components/screens/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
@@ -55,6 +58,11 @@ class Login extends Component {
     });
   };
 
+  userLogin = () => {
+    const value = this.form.getValue();
+    this.props.loginUser(value.email, value.password);
+  };
+
   render() {
     return (
       <View>
@@ -88,6 +96,7 @@ class Login extends Component {
             <Button
               transparent
               onPress={() => {
+                this.userLogin();
                 this.props.navigation.navigate('CreateGroup');
                 this.toggleLogin();
               }}>
@@ -122,14 +131,14 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   loginGoogle: response => dispatch(loginGoogle(response)),
+  loginUser: (email, password) => dispatch(loginUser(email, password)),
 });
 
 Login.propTypes = {
   navigation: PropTypes.any,
   navigate: PropTypes.func,
-  userName: PropTypes.any,
-  isAuthenticated: PropTypes.any,
   loginGoogle: PropTypes.func,
+  loginUser: PropTypes.func,
 };
 
 export default compose(
