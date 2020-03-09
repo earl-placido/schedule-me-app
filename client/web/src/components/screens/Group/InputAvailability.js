@@ -118,7 +118,7 @@ class Group extends Component {
           </h2>
           <h3 className="modal-header">Input availability time</h3>
           {this.props.rangeHours.map((item, index) => {
-            const value = item[1] || '';
+            const value = item[1] || "";
             return (
               <div key={index} className="range-picker">
                 <RangePicker

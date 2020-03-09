@@ -25,9 +25,10 @@ import {
 describe("test group actions", () => {
   it("test selectdate action", () => {
     const date = moment();
-    const value = selectDate(date);
+    const value = selectDate(date, {});
     expect(value.type).toEqual(SELECT_DATE);
-    expect(value.payload).toEqual(date);
+    expect(value.payload.selectedDate).toEqual(date);
+    expect(value.payload.rangeHours).toEqual([""]);
   });
 
   it("test showmodal action", () => {

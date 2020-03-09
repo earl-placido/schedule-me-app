@@ -78,14 +78,13 @@ const convertAvailabilityInfoFormat = (availableDays, availabilityInfos) => {
 
 export const selectDate = (selectedDate, availableDays) => {
   const day = selectedDate.day();
-  
+
   let rangeHours = [""];
-  if (availableDays !== undefined)
-    rangeHours = availableDays[day] || [""];
+  if (availableDays !== undefined) rangeHours = availableDays[day] || [""];
 
   return {
     type: SELECT_DATE,
-    payload: {selectedDate, rangeHours}
+    payload: { selectedDate, rangeHours }
   };
 };
 
