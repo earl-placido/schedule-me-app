@@ -2,9 +2,10 @@ import axios from "axios";
 
 export const getMemberIdWithEmail = async (groupId, userEmail) => {
   const userInformation = await axios.get(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`, {
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`,
+    {
       headers: {
-        authorization: `Basic ${localStorage.getItem('token')}`
+        authorization: `Basic ${localStorage.getItem("token")}`
       }
     }
   );

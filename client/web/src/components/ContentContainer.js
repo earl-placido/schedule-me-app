@@ -11,7 +11,7 @@ const { Content } = Layout;
 
 class ContentContainer extends Component {
   render() {
-    const { navStyle, contentStyle, containerStyle } = styles;
+    const { contentStyle, containerStyle } = styles;
 
     return (
       <div>

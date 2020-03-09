@@ -29,12 +29,22 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
 
   const availabilityInfos = await getAvailabilityQuery(memberId);
   if (availabilityInfos.error) {
-    dispatch({ type: GROUP_INFORMATION, payload: { memberId, groupInformation: groupInformation.data, availableDays: {} } });
+    dispatch({
+      type: GROUP_INFORMATION,
+      payload: {
+        memberId,
+        groupInformation: groupInformation.data,
+        availableDays: {}
+      }
+    });
     return;
   }
 
-  const newAvailableDays = convertAvailabilityInfoFormat(availableDays, availabilityInfos);
-  
+  const newAvailableDays = convertAvailabilityInfoFormat(
+    availableDays,
+    availabilityInfos
+  );
+
   dispatch({
     type: GROUP_INFORMATION,
     payload: {
@@ -66,26 +76,30 @@ const convertAvailabilityInfoFormat = (availableDays, availabilityInfos) => {
   return newAvailableDays;
 };
 
-export const selectDate = date => {
+export const selectDate = (selectedDate, availableDays) => {
+  const day = selectedDate.day();
+  
+  let rangeHours = [""];
+  if (availableDays !== undefined)
+    rangeHours = availableDays[day] || [""];
+
   return {
     type: SELECT_DATE,
-    payload: date
+    payload: {selectedDate, rangeHours}
   };
 };
 
-export const showModal = (selectedDate, availableDays) => {
-  const day = selectedDate.day();
-  const rangeHours = availableDays[day] || [""];
+export const showModal = () => {
   return {
     type: SHOW_MODAL,
-    payload: { modalVisible: true, rangeHours }
+    payload: { modalVisible: true }
   };
 };
 
 export const cancelAvailability = () => {
   return {
     type: SHOW_MODAL,
-    payload: { modalVisible: false }
+    payload: { modalVisible: false, rangeHours: [""] }
   };
 };
 
@@ -109,11 +123,12 @@ export const addAvailability = (
   //currently doesn't check for clashing of time
 
   // if empty we just close the modal and reset rangeHours
-  if (rangeHours[0].length === 0) {
+  if (rangeHours.length === 0 || rangeHours[0].length === 0) {
     dispatch({
       type: ADD_AVAILABILITY,
       payload: { modalVisible: false, rangeHours: [""] }
     });
+    return;
   }
 
   const day = selectedDate.day();
@@ -191,7 +206,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...action.payload };
     }
     case SELECT_DATE: {
-      return { ...state, selectedDate: action.payload };
+      return { ...state, ...action.payload };
     }
     case SHOW_MODAL: {
       return { ...state, ...action.payload };

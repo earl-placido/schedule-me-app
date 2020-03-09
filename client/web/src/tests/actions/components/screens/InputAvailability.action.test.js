@@ -130,7 +130,7 @@ describe("test contacting server from group", () => {
       });
 
     httpMock
-      .onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/users/null`)
+      .onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/null`)
       .reply(200, {
         userId: 1
       });

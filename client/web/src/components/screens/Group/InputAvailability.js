@@ -19,7 +19,7 @@ const { RangePicker } = TimePicker;
 
 class Group extends Component {
   onSelect = value => {
-    this.props.selectDate(value);
+    this.props.selectDate(value, this.props.availableDays);
   };
 
   showModal = () => {
@@ -62,7 +62,6 @@ class Group extends Component {
   dateCellRender = value => {
     const availability = this.props.availableDays[value.day()];
     if (availability === undefined) return;
-
     return (
       <ul className="events">
         {availability.map((item, index) => (
@@ -119,10 +118,11 @@ class Group extends Component {
           </h2>
           <h3 className="modal-header">Input availability time</h3>
           {this.props.rangeHours.map((item, index) => {
+            const value = item[1] || '';
             return (
               <div key={index} className="range-picker">
                 <RangePicker
-                  value={item[1]}
+                  value={value}
                   onChange={this.onChangeRange.bind(this, index)}
                 />
               </div>
