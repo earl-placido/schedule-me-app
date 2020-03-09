@@ -133,9 +133,10 @@ module.exports = {
       return conn
         .query(
           `
-                    SELECT *
-                    FROM \`GroupMember\`
-                    WHERE GroupId = ?
+            SELECT G.GroupId, G.GroupMemberId, U.UserFName, U.UserLName, U.UserEmail
+            FROM \`User\` as U RIGHT JOIN \`GroupMember\` as G
+            ON G.UserId = U.UserId
+            WHERE G.GroupId = ? 
                 `,
           [groupId]
         )
