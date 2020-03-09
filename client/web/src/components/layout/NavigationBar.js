@@ -80,7 +80,7 @@ export class NavigationBar extends Component {
 
 const headerStyle = {
   position: "fixed",
-  zIndex: 1,
+  zIndex: 3,
   width: "100%"
 };
 
