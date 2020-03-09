@@ -171,6 +171,38 @@
           }
         }
       },
+      "/users/{userId}": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Get user information from a user",
+          "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+          ],
+          "description": "Get user information from userId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
       "/groups/": {
         "get": {
           "tags": [
@@ -428,7 +460,7 @@
       "/groups/{groupId}/members": {
         "get": {
           "tags": [
-            "GroupMembers"
+            "Groups"
           ],
           "security": [
             {

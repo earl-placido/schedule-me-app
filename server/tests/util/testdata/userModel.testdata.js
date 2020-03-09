@@ -1,5 +1,6 @@
 const users = [
   {
+    userId: 1,
     email: "catto@email.com",
     password: "$2b$12$t9A5pwXCGRAk7mMxlkKZuuePuBNDrh75knRUPliFyWUdL1.Q4cyPW",
     firstName: "John",
@@ -8,6 +9,7 @@ const users = [
     oAuthUID: null
   },
   {
+    userId: 2,
     email: "doggo@gmail.com",
     password: "",
     firstName: "NotJohn",
