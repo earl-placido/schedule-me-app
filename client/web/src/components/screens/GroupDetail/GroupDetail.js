@@ -19,9 +19,9 @@ class GroupDetail extends Component {
         <Card style={cardStyle}>
           <Row style={titleStyle}>
             <Title level={2}>Group: Equilibrium</Title>
-            <h3>Sharable Link:</h3>
+            <h3>Sharable Code</h3>
             <Input
-              value={`${window.location.origin}${this.props.location.pathname}`}
+              value={this.props.match.params.id}
             />
           </Row>
           <Divider orientation="center" />
