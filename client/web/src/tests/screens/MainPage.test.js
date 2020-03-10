@@ -1,15 +1,15 @@
 import React from "react";
 
-import GroupList from "../../components/screens/GroupList/GroupList";
+import MainPage from "../../components/screens/MainPage/MainPage";
 import configureStore from "redux-mock-store";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
 
 configure({ adapter: new Adapter() });
 
-describe("CreateGroup, test groupInfoForm", () => {
+describe("MainPage, test groupInfoForm", () => {
   const initialState = {
-    GroupListReducer: {
+    MainPageReducer: {
       groupList: "groupList"
     }
   };
@@ -18,7 +18,7 @@ describe("CreateGroup, test groupInfoForm", () => {
 
   beforeEach(() => {
     store = mockStore(initialState);
-    component = shallow(<GroupList store={store} />).dive();
+    component = shallow(<MainPage store={store} />).dive();
   });
 
   it("should render GroupList", () => {

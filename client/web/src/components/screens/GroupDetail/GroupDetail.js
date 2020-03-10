@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Button, List, Divider, Typography } from "antd";
+import { Row, Col, Card, Button, List, Divider, Typography, Input } from "antd";
 import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -13,37 +13,38 @@ class GroupDetail extends Component {
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, dividerStyle, titleStyle } = styles;
+    const { containerStyle, cardStyle, titleStyle, buttonStyle } = styles;
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
           <Row style={titleStyle}>
-            <Title level={3}>Group: Equilibrium</Title>
+            <Title level={2}>Group: Equilibrium</Title>
+            <h3>Sharable Link:</h3>
+            <Input
+              value={`${window.location.origin}${this.props.location.pathname}`}
+            />
           </Row>
-          <Row style={titleStyle}>
-            <Title level={4}>
-              Optimal Time: 12pm - 2pm on October 26, 1985
-            </Title>
-          </Row>
-          <Divider orientation="center" style={{ dividerStyle }} />
+          <Divider orientation="center" />
           <Row>
+            <Title level={3}>Group Members</Title>
             <List
               itemLayout="horizontal"
               dataSource={this.props.groupMembers}
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
-                    title={item.UserId}
-                    description={item.MemberRole}
+                    title={item.UserFName + " " + item.UserLName}
                   />
                 </List.Item>
               )}
             />
           </Row>
-          <Divider orientation="center" style={{ dividerStyle }} />
+          <Divider orientation="center" />
           <Row>
-            <Col span={12}>
-              <Button type="primary">Input Your Availability</Button>
+            <Col>
+              <Button type="primary" style={buttonStyle}>
+                Input Your Availability
+              </Button>
             </Col>
           </Row>
         </Card>
@@ -62,13 +63,12 @@ const styles = {
     width: 800
   },
 
-  dividerStyle: {
-    color: "#333",
-    fontWeight: "normal"
-  },
-
   titleStyle: {
     textAlign: "center"
+  },
+
+  buttonStyle: {
+    float: "right"
   }
 };
 
@@ -78,6 +78,7 @@ const mapStateToProps = ({ GroupDetailReducer }) => {
 };
 
 GroupDetail.propTypes = {
+  location: PropTypes.any,
   match: PropTypes.any,
   groupMembers: PropTypes.any,
   getGroupMembers: PropTypes.func

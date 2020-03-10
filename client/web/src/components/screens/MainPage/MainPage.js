@@ -1,26 +1,47 @@
 import React, { Component } from "react";
 
-import { Row, Card, List, Icon, Avatar, Divider, Typography } from "antd";
-import { getGroupList } from "../../../actions/components/screens/GroupList.action";
+import {
+  Row,
+  Card,
+  List,
+  Icon,
+  Avatar,
+  Divider,
+  Typography,
+  Col,
+  Button
+} from "antd";
+import { getGroupList } from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-class GroupList extends Component {
+class MainPage extends Component {
   componentDidMount() {
     this.props.getGroupList();
   }
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, dividerStyle, titleStyle } = styles;
+    const { containerStyle, cardStyle, titleStyle } = styles;
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
+          <Row>
+            <Col span={12} offset={4}>
+              <Button type="primary">Join A Group</Button>
+            </Col>
+            <Col offset={4}>
+              <Button type="primary" href="/createGroup">
+                Create A Group
+              </Button>
+            </Col>
+          </Row>
+          <Divider orientation="center" />
           <Row style={titleStyle}>
             <Title level={4}>Your Groups</Title>
           </Row>
-          <Divider orientation="center" style={{ dividerStyle }} />
+          <Divider orientation="center" />
           <Row>
             <List
               itemLayout="horizontal"
@@ -32,7 +53,7 @@ class GroupList extends Component {
                       <Avatar size={50} icon={<Icon type="play-circle-o" />} />
                     }
                     title={
-                      <a href={"/group/" + item.GroupId}>{item.GroupName}</a>
+                      <a href={"/groups/" + item.GroupId}>{item.GroupName}</a>
                     }
                     description={item.GroupDescription}
                   />
@@ -56,24 +77,19 @@ const styles = {
     width: 800
   },
 
-  dividerStyle: {
-    color: "#333",
-    fontWeight: "normal"
-  },
-
   titleStyle: {
     textAlign: "center"
   }
 };
 
-const mapStateToProps = ({ GroupListReducer }) => {
-  const { groupList } = GroupListReducer;
+const mapStateToProps = ({ MainPageReducer }) => {
+  const { groupList } = MainPageReducer;
   return { groupList };
 };
 
-GroupList.propTypes = {
+MainPage.propTypes = {
   groupList: PropTypes.any,
   getGroupList: PropTypes.func
 };
 
-export default connect(mapStateToProps, { getGroupList })(GroupList);
+export default connect(mapStateToProps, { getGroupList })(MainPage);

@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 
 import { PrivateRoute } from "./components/util/PrivateRoute";
 import GroupDetail from "./components/screens/GroupDetail/GroupDetail";
-import GroupList from "./components/screens/GroupList/GroupList";
+import MainPage from "./components/screens/MainPage/MainPage";
 import CreateGroup from "./components/screens/CreateGroup/CreateGroup";
 
 import "antd/dist/antd.css";
@@ -39,7 +39,7 @@ class App extends Component {
                 authorized={this.props.isAuthenticated}
               />
               <PrivateRoute
-                path="/group/:id"
+                path="/groups/:id"
                 component={() => {
                   return (
                     <ContentContainer>
@@ -51,11 +51,11 @@ class App extends Component {
               />
               <PrivateRoute
                 exact
-                path="/groupList"
+                path="/main"
                 component={() => {
                   return (
                     <ContentContainer>
-                      <GroupList />
+                      <MainPage />
                     </ContentContainer>
                   );
                 }}
