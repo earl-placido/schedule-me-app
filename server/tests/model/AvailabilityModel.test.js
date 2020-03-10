@@ -44,10 +44,10 @@ describe("test availability model", () => {
     const groupMemberId = 1;
     const data = await availabilityModel.getAvailability(groupMemberId);
     expect(data[0].AvailabilityId).toEqual(1);
-    expect(data[0].StartTime).toEqual(new Date("2020-03-09T21:53:14.000Z"));
+    expect(data[0].StartTime.toString()).toEqual("Mon Mar 09 2020 16:53:14 GMT-0500 (Central Daylight Time)");
 
     expect(data[1].AvailabilityId).toEqual(2);
-    expect(data[1].EndTime).toEqual(new Date("2020-03-09T21:53:14.000Z"));
+    expect(data[1].EndTime.toString()).toEqual("Mon Mar 09 2020 16:53:14 GMT-0500 (Central Daylight Time)");
   });
 
   it("add availabilities", async () => {
