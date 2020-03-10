@@ -1,10 +1,10 @@
 import moment from "moment";
 
-export const convertAvailabilityToDays = (availableDays, availabilityInfos) => {
+export const convertAvailabilityToDays = (availableDays, availabilities) => {
   let newAvailableDays = { ...availableDays };
   // convert database availability format into ui format
-  for (const availabilityInfo of availabilityInfos) {
-    const { AvailabilityId, StartTime, EndTime } = availabilityInfo;
+  for (const availability of availabilities) {
+    const { AvailabilityId, StartTime, EndTime } = availability;
     const momentStartTime = moment(StartTime);
     const momentEndTime = moment(EndTime);
     const currentDay = momentStartTime.day();
