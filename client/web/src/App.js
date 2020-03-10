@@ -17,7 +17,21 @@ import "./css/app.css";
 const { Footer } = Layout;
 
 class App extends Component {
-  createGroupComponent() {}
+  createGroupDetailComponent = () => {
+    return (
+      <ContentContainer>
+        <GroupDetail />
+      </ContentContainer>
+    );
+  };
+
+  createMainComponent = () => {
+    return (
+      <ContentContainer>
+        <MainPage />
+      </ContentContainer>
+    );
+  };
 
   render() {
     const { footerStyle } = styles;
@@ -40,25 +54,13 @@ class App extends Component {
               />
               <PrivateRoute
                 path="/groups/:id"
-                component={() => {
-                  return (
-                    <ContentContainer>
-                      <GroupDetail />
-                    </ContentContainer>
-                  );
-                }}
+                component={this.createGroupDetailComponent}
                 authorized={this.props.isAuthenticated}
               />
               <PrivateRoute
                 exact
                 path="/main"
-                component={() => {
-                  return (
-                    <ContentContainer>
-                      <MainPage />
-                    </ContentContainer>
-                  );
-                }}
+                component={this.createMainComponent}
                 authorized={this.props.isAuthenticated}
               />
               <Route path="/">
