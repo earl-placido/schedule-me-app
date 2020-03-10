@@ -20,9 +20,7 @@ class GroupDetail extends Component {
           <Row style={titleStyle}>
             <Title level={2}>Group: Equilibrium</Title>
             <h3>Sharable Code</h3>
-            <Input
-              value={this.props.match.params.id}
-            />
+            <Input value={this.props.match.params.id} />
           </Row>
           <Divider orientation="center" />
           <Row>
