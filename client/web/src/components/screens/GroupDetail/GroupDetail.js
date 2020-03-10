@@ -15,7 +15,7 @@ class GroupDetail extends Component {
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, titleStyle, buttonStyle } = styles;
-    const inputAvailabilityLink = `${this.props.location.pathname}input`;
+    const inputAvailabilityLink = `${this.props.location.pathname}input/`;
 
     return (
       <div style={containerStyle}>
