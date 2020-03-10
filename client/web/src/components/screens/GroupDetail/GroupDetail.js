@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Button, List, Divider, Typography, Input } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Button,
+  List,
+  Divider,
+  Typography,
+  Input,
+  Avatar,
+  Icon
+} from "antd";
 import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -31,6 +42,7 @@ class GroupDetail extends Component {
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
+                    avatar={<Avatar size={25} icon={<Icon type="user" />} />}
                     title={item.UserFName + " " + item.UserLName}
                   />
                 </List.Item>
