@@ -48,7 +48,7 @@ class Login extends Component {
     return (
       <div>
         {this.props.isAuthenticated && this.props.location.pathname ? (
-          <Redirect to="/creategroup" />
+          <Redirect to="/main" />
         ) : null}
 
         {!this.state.signUpSelected ? (
