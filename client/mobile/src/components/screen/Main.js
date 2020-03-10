@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, ToastAndroid} from 'react-native';
 import {View, Button, Text} from 'native-base';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -18,7 +18,7 @@ class Main extends Component {
         <Button
           large
           style={styles.buttonStyle}
-          onPress={() => this.props.navigation.navigate('CreateGroup')}>
+          onPress={() => ToastAndroid.show('This is not yet available', ToastAndroid.SHORT)}>
           <Text>Continue as Guest</Text>
         </Button>
       </View>
