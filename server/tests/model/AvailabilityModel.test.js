@@ -42,15 +42,16 @@ describe("test availability model", () => {
 
   it("returns the correct availabilityId", async () => {
     const groupMemberId = 1;
+    const date = new Date("2020-03-09 16:53:14");
     const data = await availabilityModel.getAvailability(groupMemberId);
     expect(data[0].AvailabilityId).toEqual(1);
     expect(data[0].StartTime.toString()).toEqual(
-      "Mon Mar 09 2020 16:53:14 GMT-0500 (Central Daylight Time)"
+      date.toString()
     );
 
     expect(data[1].AvailabilityId).toEqual(2);
     expect(data[1].EndTime.toString()).toEqual(
-      "Mon Mar 09 2020 16:53:14 GMT-0500 (Central Daylight Time)"
+      date.toString()
     );
   });
 
