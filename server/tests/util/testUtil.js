@@ -76,9 +76,15 @@ function insertGroupMembersQuery(groupMembers) {
 function insertAvailabilityQuery(availabilities) {
   return `
   INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES 
-  ${availabilities.map(availability => 
-    mysql.format(`(?, ?, ?)`, [availability[0], availability[1][0], availability[1][1]])
-  ).join(`, `)};
+  ${availabilities
+    .map(availability =>
+      mysql.format(`(?, ?, ?)`, [
+        availability[0],
+        availability[1][0],
+        availability[1][1]
+      ])
+    )
+    .join(`, `)};
   `;
 }
 

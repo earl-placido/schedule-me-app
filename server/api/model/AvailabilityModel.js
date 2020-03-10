@@ -56,18 +56,19 @@ module.exports = {
     let query = "";
     // check is made in router to ensure they are all same length
     for (let index = 0; index < availabilityIds.length; index++) {
-      query +=`DELETE FROM \`Availability\` WHERE AvailabilityId=${availabilityIds[index]};`;
+      query += `DELETE FROM \`Availability\` WHERE AvailabilityId=${availabilityIds[index]};`;
     }
     return mysql.createConnection(MYSQLDB).then(conn => {
-      conn.query(
-        query
-      ).then(res => {
-        conn.end();
-        return res;
-      });
-    }).catch(err => {
-      conn.end();
-      return err;
+      conn
+        .query(query)
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return err;
+        });
     });
   }
 };
