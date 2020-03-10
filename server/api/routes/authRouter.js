@@ -16,7 +16,6 @@ router.route("/google").post(
       return res.send(responses.UNAUTHORIZED, "User Not Authenticated");
     }
 
-    console.log(req);
 
     // get user info from the google user object
     let userEmail = req.user.emails[0].value;

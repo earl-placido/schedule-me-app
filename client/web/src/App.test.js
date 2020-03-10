@@ -25,7 +25,6 @@ describe("test app", () => {
       auth: {}
     });
     const wrapper = shallow(<App store={store} />).dive();
-    console.log(wrapper.debug());
     expect(wrapper.dive().find(".app")).toHaveLength(1);
   });
 });
