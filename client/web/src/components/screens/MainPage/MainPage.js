@@ -4,13 +4,13 @@ import {
   Row,
   Card,
   List,
-  Icon,
   Avatar,
   Divider,
   Typography,
   Col,
   Button
 } from "antd";
+import Icon from "@ant-design/icons";
 import { getGroupList } from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";

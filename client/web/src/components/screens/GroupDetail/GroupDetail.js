@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Row, Col, Card, Button, List, Divider, Typography, Input } from "antd";
+import { Link } from "react-router-dom";
 import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -14,6 +15,8 @@ class GroupDetail extends Component {
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, titleStyle, buttonStyle } = styles;
+    const inputAvailabilityLink = `${this.props.location.pathname}input`;
+
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
@@ -40,9 +43,11 @@ class GroupDetail extends Component {
           <Divider orientation="center" />
           <Row>
             <Col>
-              <Button type="primary" style={buttonStyle}>
-                Input Your Availability
-              </Button>
+              <Link to={inputAvailabilityLink}>
+                <Button type="primary" style={buttonStyle}>
+                  Input Your Availability
+                </Button>
+              </Link>
             </Col>
           </Row>
         </Card>

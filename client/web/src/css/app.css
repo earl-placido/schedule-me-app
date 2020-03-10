@@ -1,3 +1,34 @@
+.modal-header {
+  margin-bottom: 35px; }
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3vh; }
+
+.checkbox-event {
+  margin-top: 3vh; }
+
+.delete-button {
+  margin-right: 1vh; }
+
+.events {
+  list-style-type: none; }
+  .events li span {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap; }
+
+.range-picker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2vh; }
+
+.ant-picker-calendar-mode-switch {
+  display: none; }
+
 .error-input {
   border-color: red; }
 
