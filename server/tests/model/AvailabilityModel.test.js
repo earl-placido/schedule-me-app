@@ -45,14 +45,10 @@ describe("test availability model", () => {
     const date = new Date("2020-03-09 16:53:14");
     const data = await availabilityModel.getAvailability(groupMemberId);
     expect(data[0].AvailabilityId).toEqual(1);
-    expect(data[0].StartTime.toString()).toEqual(
-      date.toString()
-    );
+    expect(data[0].StartTime.toString()).toEqual(date.toString());
 
     expect(data[1].AvailabilityId).toEqual(2);
-    expect(data[1].EndTime.toString()).toEqual(
-      date.toString()
-    );
+    expect(data[1].EndTime.toString()).toEqual(date.toString());
   });
 
   it("add availabilities", async () => {
