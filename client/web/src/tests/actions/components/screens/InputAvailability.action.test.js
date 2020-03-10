@@ -12,7 +12,6 @@ import {
   getInformation,
   handleAdd,
   onChangeRange,
-  convertDatesToDay,
   SELECT_DATE,
   SHOW_MODAL,
   DELETE_AVAILABILITY,
@@ -73,15 +72,6 @@ describe("test group actions", () => {
     expect(newRangeHours.type).toEqual(CHANGE_RANGE);
     expect(newRangeHours.payload[0][1][0].year()).toEqual(1995);
     expect(newRangeHours.payload[0][1][0].month()).toEqual(11);
-  });
-
-  it("test convertDatesToDay action", () => {
-    const currentDate = moment();
-    const datesToDay = convertDatesToDay(
-      currentDate.year(),
-      currentDate.month()
-    );
-    expect(datesToDay[currentDate.date()]).toEqual(currentDate.day());
   });
 });
 
