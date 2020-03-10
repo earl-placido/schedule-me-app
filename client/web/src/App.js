@@ -7,6 +7,8 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { PrivateRoute } from "./components/util/PrivateRoute";
+import GroupDetail from "./components/screens/GroupDetail/GroupDetail";
+import MainPage from "./components/screens/MainPage/MainPage";
 import CreateGroup from "./components/screens/CreateGroup/CreateGroup";
 import InputAvailability from "./components/screens/Group/InputAvailability";
 import "antd/dist/antd.css";
@@ -23,10 +25,25 @@ class App extends Component {
     );
   };
 
+  createGroupDetailComponent = () => {
+    return (
+      <ContentContainer>
+        <GroupDetail />
+      </ContentContainer>
+    );
+  };
+
   inputAvailabilityComponent = () => {
     return (
       <ContentContainer>
         <InputAvailability />
+      </ContentContainer>
+    );
+  };
+  createMainComponent = () => {
+    return (
+      <ContentContainer>
+        <MainPage />
       </ContentContainer>
     );
   };
@@ -44,18 +61,27 @@ class App extends Component {
                 component={this.createGroupComponent}
                 authorized={this.props.isAuthenticated}
               />
-
               <PrivateRoute
                 exact
                 path="/groups/:id/input"
                 component={this.inputAvailabilityComponent}
                 authorized={this.props.isAuthenticated}
               />
+              <PrivateRoute
+                path="/groups/:id"
+                component={this.createGroupDetailComponent}
+                authorized={this.props.isAuthenticated}
+              />
+              <PrivateRoute
+                exact
+                path="/main"
+                component={this.createMainComponent}
+                authorized={this.props.isAuthenticated}
+              />
               <Route exact path="/">
                 <Home />
               </Route>
             </Switch>
-
             <Footer style={footerStyle}>schedule-me-up</Footer>
           </Layout>
         </Router>
