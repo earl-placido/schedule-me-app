@@ -11,9 +11,9 @@ import {
   message,
   Col,
   Row,
-  Icon,
   List
 } from "antd";
+import Icon from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { toggleModal } from "../../actions/components/login/LoginModal.action";
 import {
