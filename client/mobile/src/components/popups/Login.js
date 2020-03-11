@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, ToastAndroid} from 'react-native';
-import {View, Button, Text, Card} from 'native-base';
+import {View, Button, Text, Card, Spinner} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
@@ -46,17 +46,23 @@ const user = t.struct({
 class Login extends Component {
   state = {
     isLoginVisible: false,
-    loginAttempt: false,
+    isSpinnerVisible: false,
   };
 
   toggleLogin = () => {
     this.setState({isLoginVisible: !this.state.isLoginVisible});
   };
 
+  toggleSpinner = () => {
+    this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
+  }
+
   googleLogin = () => {
     GoogleSignin.signIn().then(() => {
       GoogleSignin.getTokens().then(response => {
         this.props.loginGoogle(response);
+        this.props.navigation.navigate('CreateGroup');
+        this.toggleLogin();
       });
     });
   };
@@ -67,7 +73,9 @@ class Login extends Component {
       this.props.loginUser(value.email, value.password);
       setTimeout(() => {
         this.attemptLogin();
+        this.toggleSpinner();
       }, 1000);
+      this.toggleSpinner();
     }
   };
 
@@ -126,6 +134,7 @@ class Login extends Component {
                 this.userLogin();
               }}>
               <Text>Submit</Text>
+              {this.state.isSpinnerVisible && <Spinner color='blue' />}
             </Button>
           </Card>
         </Modal>
