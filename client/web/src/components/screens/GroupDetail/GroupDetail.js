@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Row, Col, Card, Button, List, Divider, Typography, Input } from "antd";
+import {
+  Row,
+  Col,
+  Card,
+  Button,
+  List,
+  Divider,
+  Typography,
+  Input,
+  Avatar
+} from "antd";
+import Icon from "@ant-design/icons";
 import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -14,6 +25,8 @@ class GroupDetail extends Component {
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, titleStyle, buttonStyle } = styles;
+    const inputAvailabilityLink = `${this.props.location.pathname}input/`;
+
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
@@ -31,6 +44,7 @@ class GroupDetail extends Component {
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
+                    avatar={<Avatar size={25} icon={<Icon type="user" />} />}
                     title={item.UserFName + " " + item.UserLName}
                   />
                 </List.Item>
@@ -40,7 +54,11 @@ class GroupDetail extends Component {
           <Divider orientation="center" />
           <Row>
             <Col>
-              <Button type="primary" style={buttonStyle}>
+              <Button
+                type="primary"
+                style={buttonStyle}
+                href={inputAvailabilityLink}
+              >
                 Input Your Availability
               </Button>
             </Col>

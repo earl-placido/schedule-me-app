@@ -10,13 +10,21 @@ import { PrivateRoute } from "./components/util/PrivateRoute";
 import GroupDetail from "./components/screens/GroupDetail/GroupDetail";
 import MainPage from "./components/screens/MainPage/MainPage";
 import CreateGroup from "./components/screens/CreateGroup/CreateGroup";
-
+import InputAvailability from "./components/screens/Group/InputAvailability";
 import "antd/dist/antd.css";
 import "./css/app.css";
 
 const { Footer } = Layout;
 
 class App extends Component {
+  createGroupComponent = () => {
+    return (
+      <ContentContainer>
+        <CreateGroup />
+      </ContentContainer>
+    );
+  };
+
   createGroupDetailComponent = () => {
     return (
       <ContentContainer>
@@ -25,6 +33,13 @@ class App extends Component {
     );
   };
 
+  inputAvailabilityComponent = () => {
+    return (
+      <ContentContainer>
+        <InputAvailability />
+      </ContentContainer>
+    );
+  };
   createMainComponent = () => {
     return (
       <ContentContainer>
@@ -43,13 +58,13 @@ class App extends Component {
               <PrivateRoute
                 exact
                 path="/createGroup"
-                component={() => {
-                  return (
-                    <ContentContainer>
-                      <CreateGroup />
-                    </ContentContainer>
-                  );
-                }}
+                component={this.createGroupComponent}
+                authorized={this.props.isAuthenticated}
+              />
+              <PrivateRoute
+                exact
+                path="/groups/:id/input"
+                component={this.inputAvailabilityComponent}
                 authorized={this.props.isAuthenticated}
               />
               <PrivateRoute
@@ -63,7 +78,7 @@ class App extends Component {
                 component={this.createMainComponent}
                 authorized={this.props.isAuthenticated}
               />
-              <Route path="/">
+              <Route exact path="/">
                 <Home />
               </Route>
             </Switch>

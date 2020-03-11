@@ -54,8 +54,7 @@ export const loginGoogle = response => {
         if (res.status === responses.SUCCESS) {
           const token = res.headers["x-auth-token"];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
-
-          setUserData(token, userName, res.data.displayPicURL);
+          setUserData(token, userName, res.data.displayPicURL, res.data.email);
 
           dispatch(loginSuccess(userName, res.data.displayPicURL, token));
         } else {
@@ -75,10 +74,11 @@ export const logoutGoogle = () => {
   };
 };
 
-function setUserData(token, userName, displayPicURL = null) {
+function setUserData(token, userName, displayPicURL = null, userEmail) {
   localStorage.setItem("token", token);
   localStorage.setItem("userName", userName);
   localStorage.setItem("displayPicURL", displayPicURL);
+  localStorage.setItem("userEmail", userEmail);
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
