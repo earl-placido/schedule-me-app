@@ -73,6 +73,21 @@ function insertGroupMembersQuery(groupMembers) {
   `;
 }
 
+function insertAvailabilityQuery(availabilities) {
+  return `
+  INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES 
+  ${availabilities
+    .map(availability =>
+      mysql.format(`(?, ?, ?)`, [
+        availability[0],
+        availability[1][0],
+        availability[1][1]
+      ])
+    )
+    .join(`, `)};
+  `;
+}
+
 const resetUsersQuery = `
   TRUNCATE TABLE \`User\`;
 `;
@@ -86,11 +101,17 @@ const resetGroupMembersQuery = `
   TRUNCATE TABLE \`GroupMember\`;
 `;
 
+const resetAvailabilityQuery = `
+  TRUNCATE TABLE \`Availability\`;
+`;
+
 module.exports = {
   insertUsersQuery,
   insertGroupsQuery,
   insertGroupMembersQuery,
+  insertAvailabilityQuery,
   resetUsersQuery,
   resetGroupsQuery,
-  resetGroupMembersQuery
+  resetGroupMembersQuery,
+  resetAvailabilityQuery
 };

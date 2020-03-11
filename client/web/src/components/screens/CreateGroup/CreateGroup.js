@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Steps, Row, Col, Card, Button, Icon } from "antd";
+import { Steps, Row, Col, Card, Button } from "antd";
+import Icon from "@ant-design/icons";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -151,7 +152,8 @@ const styles = {
 
   buttonContainerStyle: {
     display: "flex",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    width: "100%"
   }
 };
 

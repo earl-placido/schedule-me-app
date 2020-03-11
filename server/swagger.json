@@ -339,6 +339,124 @@
           }
         }
       },
+      "/groups/{groupId}/members/{userId}": {
+        "get": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Get group member Id",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "type":"integer",
+              "format": "int64",
+              "required": true
+            },
+            {
+              "name": "userId",
+              "type": "integer",
+              "format": "int64",
+              "in": "path",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the group member id"
+            }
+          }
+        }
+      },
+      "/groups/members/{groupMemberId}/availability": {
+        "get": {
+          "tags": [
+            "Availability"
+          ],
+          "summary": "Get availability information from groupMemberId",
+          "parameters": [
+            {
+              "name": "groupMemberId",
+              "in": "path",
+              "description": "the ID of group member",
+              "type": "integer",
+              "format": "int64",
+              "required": true
+            }
+          ],
+          "description": "Get availability from groupMemberId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/groups/members/availability": {
+        "post": {
+          "tags": [
+            "Availability"
+          ],
+          "summary": "Update availability information of current group member",
+          "parameters": [
+            {
+              "name": "groupMemberId",
+              "in": "formData",
+              "description": "the id of group member",
+              "type": "integer",
+              "format": "int64",
+              "required": true
+            },
+            {
+              "name": "availabilityIds",
+              "in": "formData",
+              "description": "the ID of availability",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "required": true
+            },
+            {
+              "name": "startTimes",
+              "in": "formData",
+              "description": "the datetime of startTimes",
+              "type": "array",
+              "items": {
+                "type": "date-time"
+              },
+              "required": true
+            },
+            {
+              "name": "endTimes",
+              "in": "formData",
+              "description": "the datetime of endTimes",
+              "type": "array",
+              "items": {
+                "type": "date-time"
+              },
+              "required": true
+            }
+          ],
+          "description": "update availability information of group member",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
       "/groups/{groupId}/members": {
         "get": {
           "tags": [

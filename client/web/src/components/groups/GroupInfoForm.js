@@ -1,5 +1,7 @@
 import React, { Component } from "react";
-import { Form, Icon, Input } from "antd";
+import { Form, Input } from "antd";
+import Icon from "@ant-design/icons";
+
 import PropTypes from "prop-types";
 
 import "antd/dist/antd.css";
@@ -33,7 +35,7 @@ export default class GroupInfoForm extends Component {
                     style={{ color: "rgba(0,0,0,.25)" }}
                   />
                 }
-                placeholder={"Enter Group Name"}
+                placeholder={"Enter Group Names"}
                 value={this.props.groupName}
               />
               {!this.props.success && (
