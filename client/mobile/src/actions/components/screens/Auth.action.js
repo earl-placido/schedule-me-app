@@ -79,8 +79,14 @@ const logoutSuccess = () => {
 };
 
 export const loginGoogle = response => {
+
+  var loginFields = {
+    email: '',
+    password: '',
+  }
+
   return dispatch => {
-    dispatch(loginRequest());
+    dispatch(loginRequest(loginFields));
     const options = {
       url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`,
       method: 'POST',
@@ -88,6 +94,7 @@ export const loginGoogle = response => {
     };
     axios(options)
       .then(res => {
+        console.log(res);
         if (res.status === responses.SUCCESS) {
           const token = res.headers['x-auth-token'];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
@@ -99,7 +106,9 @@ export const loginGoogle = response => {
           throw new Error(res.err);
         }
       })
-      .catch(err => dispatch(loginError(err.message)));
+      .catch(err => {
+        dispatch(loginError(err.message));
+      });
   };
 };
 

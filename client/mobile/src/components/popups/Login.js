@@ -61,8 +61,16 @@ class Login extends Component {
     GoogleSignin.signIn().then(() => {
       GoogleSignin.getTokens().then(response => {
         this.props.loginGoogle(response);
-        this.props.navigation.navigate('CreateGroup');
-        this.toggleLogin();
+        setTimeout(() => {
+          if (this.props.isAuthenticated)
+          {
+            ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
+            this.props.navigation.navigate('CreateGroup');
+            this.toggleSpinner();
+            this.toggleLogin();
+          }
+        }, 2000);
+        this.toggleSpinner();
       });
     });
   };
