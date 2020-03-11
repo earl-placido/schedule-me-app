@@ -15,6 +15,8 @@ const INITIAL_STATE = {
   isAuthenticated: false,
   token: '',
   userName: '',
+  email: '',
+  password: '',
   displayPicURL: '',
   message: '',
   errored: false,
@@ -33,10 +35,10 @@ const loginSuccess = (userName, token) => {
   };
 };
 
-const loginError = error => {
+const loginError = (error, email, password) => {
   return {
     type: LOGIN_ERROR,
-    payload: error,
+    payload: {error, email, password},
   };
 };
 
@@ -150,12 +152,12 @@ export const loginUser = (email, password) => {
 
           setUserData(token, userName);
 
-          dispatch(signupSuccess(userName, token));
+          dispatch(loginSuccess(userName, token));
         } else {
           throw new Error(res.err);
         }
       })
-      .catch(err => dispatch(loginError(err.message)));
+      .catch(err => dispatch(loginError(err.response.data, email, password)));
   };
 };
 
@@ -195,6 +197,8 @@ export default (state = INITIAL_STATE, action) => {
         message: 'Login is successful',
         token: action.payload.token,
         userName: action.payload.userName,
+        email: '',
+        password: '',
         displayPicURL: action.payload.displayPicURL,
       };
 
@@ -203,7 +207,9 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: false,
         errored: true,
-        message: action.payload,
+        message: action.payload.error,
+        email: action.payload.email,
+        password: action.payload.password
       };
 
     case SIGNUP_REQUEST:
