@@ -7,7 +7,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "antd": "^3.26.8",
+    "antd": "^4.0.1",
     "axios": "^0.19.2",
     "axios-mock-adapter": "^1.17.0",
     "node-sass": "^4.13.1",
@@ -30,16 +30,21 @@
     "eject": "react-scripts eject",
     "deploy_dev": "surge --domain schedule-me-up-dev.surge.sh build",
     "scss": "node-sass --watch src/scss -o src/css",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "lint": "eslint --fix ."
   },
   "eslintConfig": {
     "extends": "react-app"
   },
   "lint-staged": {
     "**/*.{js,jsx,json,scss}": [
-      "eslint --fix",
-      "prettier --write"
+      "eslint --fix"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "browserslist": {
     "production": [
@@ -58,11 +63,16 @@
     "@babel/preset-env": "^7.8.4",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
-    "eslint": "^6.8.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.10.0",
     "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-json": "^2.1.0",
     "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-react": "^7.18.3",
+    "husky": "^4.2.1",
     "jest": "^24.9.0",
+    "lint-staged": "^10.0.8",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.12.0",
     "redux-mock-store": "^1.5.4"
