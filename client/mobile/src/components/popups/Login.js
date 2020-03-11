@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
-import {View, Button, Text, Card} from 'native-base';
+import {StyleSheet, ToastAndroid} from 'react-native';
+import {View, Button, Text, Card, Spinner} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
@@ -46,6 +46,7 @@ const user = t.struct({
 class Login extends Component {
   state = {
     isLoginVisible: false,
+    loginAttempt: false,
   };
 
   toggleLogin = () => {
@@ -64,8 +65,19 @@ class Login extends Component {
     const value = this.form.getValue();
     if (value) {
       this.props.loginUser(value.email, value.password);
-    }
+    } 
   };
+
+  attemptLogin = () => {
+    if (this.props.isAuthenticated)
+    {
+      ToastAndroid.show("Login Successul", ToastAndroid.SHORT)
+      this.props.navigation.navigate('CreateGroup');
+      this.toggleLogin();
+    } else {
+      ToastAndroid.show("Login Failed", ToastAndroid.SHORT)
+    }
+  }
 
   render() {
     return (
@@ -84,8 +96,9 @@ class Login extends Component {
                 size={GoogleSigninButton.Size.Standard}
                 onPress={() => {
                   this.googleLogin();
-                  this.props.navigation.navigate('CreateGroup');
-                  this.toggleLogin();
+                  setTimeout(() => {
+                    this.attemptLogin();
+                  }, 3000);
                 }}
               />
               <Text>or</Text>
@@ -101,8 +114,9 @@ class Login extends Component {
               transparent
               onPress={() => {
                 this.userLogin();
-                this.props.navigation.navigate('CreateGroup');
-                this.toggleLogin();
+                setTimeout(() => {
+                  this.attemptLogin();
+                }, 1000);
               }}>
               <Text>Submit</Text>
             </Button>
