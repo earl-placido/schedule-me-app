@@ -16,7 +16,6 @@ import {
 } from "antd";
 import PropTypes from "prop-types";
 import { toggleModal } from "../../actions/components/login/LoginModal.action";
-import { getGroupList } from "../../actions/components/screens/MainPage.action";
 import {
   loginGoogle,
   logoutGoogle
@@ -152,8 +151,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   logoutGoogle: () => dispatch(logoutGoogle()),
   loginGoogle: response => dispatch(loginGoogle(response)),
-  toggleModal: value => dispatch(toggleModal(value)),
-  getGroupList: () => dispatch(getGroupList())
+  toggleModal: value => dispatch(toggleModal(value))
 });
 
 NavigationBar.propTypes = {
@@ -165,8 +163,7 @@ NavigationBar.propTypes = {
   modalVisible: PropTypes.any,
   loginGoogle: PropTypes.func,
   logoutGoogle: PropTypes.func,
-  toggleModal: PropTypes.func,
-  getGroupList: PropTypes.func
+  toggleModal: PropTypes.func
 };
 
 export default compose(
