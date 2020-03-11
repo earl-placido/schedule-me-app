@@ -17,7 +17,6 @@ const INITIAL_STATE = {
   userName: '',
   email: '',
   password: '',
-  displayPicURL: '',
   message: '',
   errored: false,
   signupFields: {
@@ -91,9 +90,9 @@ export const loginGoogle = response => {
           const token = res.headers['x-auth-token'];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
 
-          setUserData(token, userName, res.data.displayPicURL);
+          setUserData(token, userName);
 
-          dispatch(loginSuccess(userName, res.data.displayPicURL, token));
+          dispatch(loginSuccess(userName, token));
         } else {
           throw new Error(res.err);
         }
@@ -184,19 +183,13 @@ export const logoutUser = () => {
   return async dispatch => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('userName');
-    await AsyncStorage.removeItem('displayPicURL');
     dispatch(logoutSuccess());
   };
 };
 
-async function setUserData(token, userName, displayPicURL = null) {
+async function setUserData(token, userName) {
   await AsyncStorage.setItem('token', token);
   await AsyncStorage.setItem('userName', userName);
-
-  if (displayPicURL) {
-    await AsyncStorage.setItem('displayPicURL', displayPicURL);
-  }
-
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
@@ -220,7 +213,6 @@ export default (state = INITIAL_STATE, action) => {
         userName: action.payload.userName,
         email: '',
         password: '',
-        displayPicURL: action.payload.displayPicURL,
       };
 
     case LOGIN_ERROR:
@@ -254,7 +246,6 @@ export default (state = INITIAL_STATE, action) => {
         message: 'Signup is successful',
         token: action.payload.token,
         userName: action.payload.userName,
-        displayPicURL: action.payload.displayPicURL,
         signupFields: {
           firstName: '',
           lastName: '',
@@ -283,9 +274,8 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        token: null,
-        userName: null,
-        displayPicURL: null,
+        token: '',
+        userName: '',
       };
 
     default:

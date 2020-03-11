@@ -31,13 +31,11 @@ const persistor = persistStore(store, async () => {
     : false;
   const token = await AsyncStorage.getItem('token');
   const userName = await AsyncStorage.getItem('userName');
-  const displayPicURL = await AsyncStorage.getItem('displayPicURL');
 
   this.setState({
     isAuthenticated: isAuthenticated,
     token: token,
     userName: userName,
-    displayPicURL: displayPicURL,
   });
 });
 
