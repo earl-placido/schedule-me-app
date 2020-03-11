@@ -42,7 +42,6 @@ export class NavigationBar extends Component {
   }
 
   render() {
-    console.log(this);
     const { headerStyle, listStyle } = styles;
     const groupMenu = (
       <List
