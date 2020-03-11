@@ -55,7 +55,7 @@ class Login extends Component {
 
   toggleSpinner = () => {
     this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
-  }
+  };
 
   googleLogin = () => {
     GoogleSignin.signIn().then(() => {
@@ -134,7 +134,7 @@ class Login extends Component {
                 this.userLogin();
               }}>
               <Text>Submit</Text>
-              {this.state.isSpinnerVisible && <Spinner color='blue' />}
+              {this.state.isSpinnerVisible && <Spinner color="blue" />}
             </Button>
           </Card>
         </Modal>

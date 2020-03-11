@@ -25,7 +25,7 @@ const INITIAL_STATE = {
 const loginRequest = (email, password) => {
   return {
     type: LOGIN_REQUEST,
-    payload: {email, password}
+    payload: {email, password},
   };
 };
 
@@ -190,7 +190,7 @@ export default (state = INITIAL_STATE, action) => {
         isAuthenticated: false,
         message: 'Logging in',
         email: action.payload.email,
-        password: action.payload.password
+        password: action.payload.password,
       };
 
     case LOGIN_SUCCESS:
@@ -212,7 +212,7 @@ export default (state = INITIAL_STATE, action) => {
         errored: true,
         message: action.payload.error,
         email: action.payload.email,
-        password: action.payload.password
+        password: action.payload.password,
       };
 
     case SIGNUP_REQUEST:
