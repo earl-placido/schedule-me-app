@@ -11,6 +11,6 @@ const users = require("./routes/usersRouter");
 router.use("/example", example);
 router.use("/users", users);
 router.use("/groups", groups);
-router.use("/", authRouter);
+router.use("/auth", authRouter);
 
 module.exports = router;
