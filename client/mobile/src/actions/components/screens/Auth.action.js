@@ -15,8 +15,6 @@ const INITIAL_STATE = {
   isAuthenticated: false,
   token: '',
   userName: '',
-  email: '',
-  password: '',
   message: '',
   errored: false,
   signupFields: {
@@ -24,14 +22,18 @@ const INITIAL_STATE = {
     lastName: '',
     email: '',
     password: '',
-    confirmPassword: ''
-  }
+    confirmPassword: '',
+  },
+  loginFields: {
+    email: '',
+    password: '',
+  },
 };
 
-const loginRequest = (email, password) => {
+const loginRequest = loginFields => {
   return {
     type: LOGIN_REQUEST,
-    payload: {email, password},
+    payload: loginFields,
   };
 };
 
@@ -42,17 +44,17 @@ const loginSuccess = (userName, token) => {
   };
 };
 
-const loginError = (error, email, password) => {
+const loginError = (error, loginFields) => {
   return {
     type: LOGIN_ERROR,
-    payload: {error, email, password},
+    payload: {error, loginFields},
   };
 };
 
-const signupRequest = (signupFields) => {
+const signupRequest = signupFields => {
   return {
     type: SIGNUP_REQUEST,
-    payload: signupFields
+    payload: signupFields,
   };
 };
 
@@ -108,14 +110,13 @@ export const signupUser = (
   password,
   confirmPassword,
 ) => {
-
   var signupFields = {
     firstName: firstName,
     lastName: lastName,
     email: email,
     password: password,
-    confirmPassword: confirmPassword
-  }
+    confirmPassword: confirmPassword,
+  };
 
   return dispatch => {
     dispatch(signupRequest(signupFields));
@@ -145,15 +146,20 @@ export const signupUser = (
         })
         .catch(err => dispatch(signupError(err.response.data, signupFields)));
     } else {
-      console.log("HI");
+      console.log('HI');
       dispatch(signupError('Password mismatch', signupFields));
     }
   };
 };
 
 export const loginUser = (email, password) => {
+  var loginFields = {
+    email: email,
+    password: password,
+  };
+
   return dispatch => {
-    dispatch(loginRequest(email, password));
+    dispatch(loginRequest(loginFields));
     const options = {
       url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/auth/login`,
       method: 'POST',
@@ -175,7 +181,7 @@ export const loginUser = (email, password) => {
           throw new Error(res.err);
         }
       })
-      .catch(err => dispatch(loginError(err.response.data, email, password)));
+      .catch(err => dispatch(loginError(err.response.data, loginFields)));
   };
 };
 
@@ -200,8 +206,10 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: false,
         message: 'Logging in',
-        email: action.payload.email,
-        password: action.payload.password,
+        loginFields: {
+          email: action.payload.email,
+          password: action.payload.password,
+        },
       };
 
     case LOGIN_SUCCESS:
@@ -211,8 +219,10 @@ export default (state = INITIAL_STATE, action) => {
         message: 'Login is successful',
         token: action.payload.token,
         userName: action.payload.userName,
-        email: '',
-        password: '',
+        loginFields: {
+          email: '',
+          password: '',
+        },
       };
 
     case LOGIN_ERROR:
@@ -221,8 +231,10 @@ export default (state = INITIAL_STATE, action) => {
         isAuthenticated: false,
         errored: true,
         message: action.payload.error,
-        email: action.payload.email,
-        password: action.payload.password,
+        loginFields: {
+          email: action.payload.loginFields.email,
+          password: action.payload.loginFields.password,
+        },
       };
 
     case SIGNUP_REQUEST:
@@ -235,8 +247,8 @@ export default (state = INITIAL_STATE, action) => {
           lastName: action.payload.lastName,
           email: action.payload.email,
           password: action.payload.password,
-          confirmPassword: action.payload.confirmPassword
-        }
+          confirmPassword: action.payload.confirmPassword,
+        },
       };
 
     case SIGNUP_SUCCESS:
@@ -251,8 +263,8 @@ export default (state = INITIAL_STATE, action) => {
           lastName: '',
           email: '',
           password: '',
-          confirmPassword: ''
-        }
+          confirmPassword: '',
+        },
       };
 
     case SIGNUP_ERROR:
@@ -266,8 +278,8 @@ export default (state = INITIAL_STATE, action) => {
           lastName: action.payload.signupFields.lastName,
           email: action.payload.signupFields.email,
           password: action.payload.signupFields.password,
-          confirmPassword: action.payload.signupFields.confirmPassword
-        }
+          confirmPassword: action.payload.signupFields.confirmPassword,
+        },
       };
 
     case LOGOUT_SUCCESS:

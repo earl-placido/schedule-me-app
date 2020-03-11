@@ -110,9 +110,6 @@ class Login extends Component {
                 size={GoogleSigninButton.Size.Standard}
                 onPress={() => {
                   this.googleLogin();
-                  setTimeout(() => {
-                    this.attemptLogin();
-                  }, 3000);
                 }}
               />
               <Text>or</Text>
@@ -123,8 +120,8 @@ class Login extends Component {
               options={userOptions}
               type={user}
               value={{
-                email: this.props.email,
-                password: this.props.password,
+                email: this.props.loginFields.email,
+                password: this.props.loginFields.password,
               }}
             />
 
@@ -162,8 +159,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   userName: state.auth.userName,
   message: state.auth.message,
-  email: state.auth.email,
-  password: state.auth.password,
+  loginFields: state.auth.loginFields,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -178,8 +174,7 @@ Login.propTypes = {
   loginUser: PropTypes.func,
   isAuthenticated: PropTypes.any,
   message: PropTypes.any,
-  email: PropTypes.any,
-  password: PropTypes.any,
+  loginFields: PropTypes.any,
 };
 
 export default compose(

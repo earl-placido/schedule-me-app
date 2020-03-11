@@ -82,8 +82,7 @@ class CreateAccount extends Component {
     } else {
       if (this.props.message.errors) {
         ToastAndroid.show(this.props.message.errors[0].msg, ToastAndroid.SHORT);
-      } else if (this.props.message.err)
-      {
+      } else if (this.props.message.err) {
         ToastAndroid.show(this.props.message.err, ToastAndroid.SHORT);
       } else if (this.props.message) {
         ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
@@ -111,7 +110,7 @@ class CreateAccount extends Component {
                 lastName: this.props.signupFields.lastName,
                 email: this.props.signupFields.email,
                 password: this.props.signupFields.password,
-                confirmPassword: this.props.signupFields.confirmPassword
+                confirmPassword: this.props.signupFields.confirmPassword,
               }}
             />
             <Button
@@ -144,7 +143,7 @@ const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   userName: state.auth.userName,
   message: state.auth.message,
-  signupFields: state.auth.signupFields
+  signupFields: state.auth.signupFields,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -158,7 +157,7 @@ CreateAccount.propTypes = {
   signupUser: PropTypes.func,
   message: PropTypes.any,
   isAuthenticated: PropTypes.any,
-  signupFields: PropTypes.any
+  signupFields: PropTypes.any,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);
