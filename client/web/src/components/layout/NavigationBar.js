@@ -101,20 +101,20 @@ export class NavigationBar extends Component {
           style={{ lineHeight: "64px" }}
         ></Menu>
 
-        <Row>
-          <Col span={2}>
+        <Row gutter={3}>
+          <Col className="gutter-row" span={3}>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
               <Button>
                 Groups <Icon type="down" />
               </Button>
             </Dropdown>
           </Col>
-          <Col span={2}>
+          <Col className="gutter-row" span={4}>
             <Button type="primary" href="/createGroup">
               Create A Group
             </Button>
           </Col>
-          <Col span={2}>
+          <Col span={4}>
             <Button type="primary">Join A Group</Button>
           </Col>
           <Col>
