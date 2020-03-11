@@ -22,9 +22,10 @@ const INITIAL_STATE = {
   errored: false,
 };
 
-const loginRequest = () => {
+const loginRequest = (email, password) => {
   return {
     type: LOGIN_REQUEST,
+    payload: {email, password}
   };
 };
 
@@ -135,7 +136,7 @@ export const signupUser = (
 
 export const loginUser = (email, password) => {
   return dispatch => {
-    dispatch(signupRequest());
+    dispatch(loginRequest(email, password));
     const options = {
       url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/auth/login`,
       method: 'POST',
@@ -188,6 +189,8 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: false,
         message: 'Logging in',
+        email: action.payload.email,
+        password: action.payload.password
       };
 
     case LOGIN_SUCCESS:
