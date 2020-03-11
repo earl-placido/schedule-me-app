@@ -68,7 +68,6 @@ class Login extends Component {
       });
     });
     this.toggleSpinner();
-
   };
 
   userLogin = () => {

@@ -79,11 +79,10 @@ const logoutSuccess = () => {
 };
 
 export const loginGoogle = response => {
-
   var loginFields = {
     email: '',
     password: '',
-  }
+  };
 
   return dispatch => {
     dispatch(loginRequest(loginFields));
