@@ -1,15 +1,6 @@
 import React, { Component } from "react";
 
-import {
-  Row,
-  Card,
-  List,
-  Avatar,
-  Divider,
-  Typography,
-  Col,
-  Button
-} from "antd";
+import { Row, Card, List, Avatar, Divider, Typography } from "antd";
 import Icon from "@ant-design/icons";
 import { getGroupList } from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
@@ -27,17 +18,6 @@ class MainPage extends Component {
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
-          <Row>
-            <Col span={12} offset={4}>
-              <Button type="primary">Join A Group</Button>
-            </Col>
-            <Col offset={4}>
-              <Button type="primary" href="/createGroup">
-                Create A Group
-              </Button>
-            </Col>
-          </Row>
-          <Divider orientation="center" />
           <Row style={titleStyle}>
             <Title level={4}>Your Groups</Title>
           </Row>
@@ -50,7 +30,7 @@ class MainPage extends Component {
                 <List.Item>
                   <List.Item.Meta
                     avatar={
-                      <Avatar size={50} icon={<Icon type="play-circle-o" />} />
+                      <Avatar size={50} icon={<Icon type="usergroup-add" />} />
                     }
                     title={
                       <a href={"/groups/" + item.GroupId + "/"}>
