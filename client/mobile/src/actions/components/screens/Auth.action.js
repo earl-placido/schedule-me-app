@@ -113,7 +113,6 @@ export const signupUser = (
       };
       axios(options)
         .then(res => {
-          console.log(res);
           if (res.status === responses.SUCCESS) {
             const token = res.headers['x-auth-token'];
             let userName = `${res.data.firstName} ${res.data.lastName}`;
@@ -166,6 +165,7 @@ export const logoutUser = () => {
     await AsyncStorage.removeItem('userName');
     await AsyncStorage.removeItem('displayPicURL');
     dispatch(logoutSuccess());
+    
   };
 };
 
