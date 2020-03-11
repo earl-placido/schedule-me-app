@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
-import {View, Button, Text, Card} from 'native-base';
+import {StyleSheet, ToastAndroid} from 'react-native';
+import {View, Button, Text, Card, Spinner} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
@@ -45,10 +45,15 @@ const user = t.struct({
 class CreateAccount extends Component {
   state = {
     isCreateVisible: false,
+    isSpinnerVisible: false,
   };
 
   toggleCreate = () => {
     this.setState({isCreateVisible: !this.state.isCreateVisible});
+  };
+
+  toggleSpinner = () => {
+    this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
   };
 
   userSignup = () => {
@@ -61,6 +66,28 @@ class CreateAccount extends Component {
         value.password,
         value.confirmPassword,
       );
+      setTimeout(() => {
+        this.attemptSignup();
+        this.toggleSpinner();
+      }, 1000);
+      this.toggleSpinner();
+    }
+  };
+
+  attemptSignup = () => {
+    if (this.props.isAuthenticated) {
+      ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
+      this.props.navigation.navigate('CreateGroup');
+      this.toggleCreate();
+    } else {
+      if (this.props.message.errors) {
+        ToastAndroid.show(this.props.message.errors[0].msg, ToastAndroid.SHORT);
+      } else if (this.props.message.err)
+      {
+        ToastAndroid.show(this.props.message.err, ToastAndroid.SHORT);
+      } else if (this.props.message) {
+        ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
+      }
     }
   };
 
@@ -79,15 +106,21 @@ class CreateAccount extends Component {
               ref={_form => (this.form = _form)}
               options={userOptions}
               type={user}
+              value={{
+                firstName: this.props.signupFields.firstName,
+                lastName: this.props.signupFields.lastName,
+                email: this.props.signupFields.email,
+                password: this.props.signupFields.password,
+                confirmPassword: this.props.signupFields.confirmPassword
+              }}
             />
             <Button
               transparent
               onPress={() => {
                 this.userSignup();
-                this.props.navigation.navigate('CreateGroup');
-                this.toggleCreate();
               }}>
               <Text>Submit</Text>
+              {this.state.isSpinnerVisible && <Spinner color="blue" />}
             </Button>
           </Card>
         </Modal>
@@ -110,6 +143,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   userName: state.auth.userName,
+  message: state.auth.message,
+  signupFields: state.auth.signupFields
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -121,6 +156,9 @@ CreateAccount.propTypes = {
   navigation: PropTypes.any,
   navigate: PropTypes.func,
   signupUser: PropTypes.func,
+  message: PropTypes.any,
+  isAuthenticated: PropTypes.any,
+  signupFields: PropTypes.any
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateAccount);

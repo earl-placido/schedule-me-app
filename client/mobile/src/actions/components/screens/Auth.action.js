@@ -20,6 +20,13 @@ const INITIAL_STATE = {
   displayPicURL: '',
   message: '',
   errored: false,
+  signupFields: {
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  }
 };
 
 const loginRequest = (email, password) => {
@@ -43,9 +50,10 @@ const loginError = (error, email, password) => {
   };
 };
 
-const signupRequest = () => {
+const signupRequest = (signupFields) => {
   return {
     type: SIGNUP_REQUEST,
+    payload: signupFields
   };
 };
 
@@ -56,10 +64,10 @@ const signupSuccess = (userName, token) => {
   };
 };
 
-const signupError = error => {
+const signupError = (error, signupFields) => {
   return {
     type: SIGNUP_ERROR,
-    payload: error,
+    payload: {error, signupFields},
   };
 };
 
@@ -101,8 +109,17 @@ export const signupUser = (
   password,
   confirmPassword,
 ) => {
+
+  var signupFields = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    password: password,
+    confirmPassword: confirmPassword
+  }
+
   return dispatch => {
-    dispatch(signupRequest());
+    dispatch(signupRequest(signupFields));
     if (password == confirmPassword) {
       const options = {
         url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/auth/signup`,
@@ -127,9 +144,10 @@ export const signupUser = (
             throw new Error(res.err);
           }
         })
-        .catch(err => dispatch(signupError(err.message)));
+        .catch(err => dispatch(signupError(err.response.data, signupFields)));
     } else {
-      dispatch(signupError('Password mismatch'));
+      console.log("HI");
+      dispatch(signupError('Password mismatch', signupFields));
     }
   };
 };
@@ -220,6 +238,13 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: false,
         message: 'Signing in',
+        signupFields: {
+          firstName: action.payload.firstName,
+          lastName: action.payload.lastName,
+          email: action.payload.email,
+          password: action.payload.password,
+          confirmPassword: action.payload.confirmPassword
+        }
       };
 
     case SIGNUP_SUCCESS:
@@ -230,6 +255,13 @@ export default (state = INITIAL_STATE, action) => {
         token: action.payload.token,
         userName: action.payload.userName,
         displayPicURL: action.payload.displayPicURL,
+        signupFields: {
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          confirmPassword: ''
+        }
       };
 
     case SIGNUP_ERROR:
@@ -237,7 +269,14 @@ export default (state = INITIAL_STATE, action) => {
         ...state,
         isAuthenticated: false,
         errored: true,
-        message: action.payload,
+        message: action.payload.error,
+        signupFields: {
+          firstName: action.payload.signupFields.firstName,
+          lastName: action.payload.signupFields.lastName,
+          email: action.payload.signupFields.email,
+          password: action.payload.signupFields.password,
+          confirmPassword: action.payload.signupFields.confirmPassword
+        }
       };
 
     case LOGOUT_SUCCESS:
