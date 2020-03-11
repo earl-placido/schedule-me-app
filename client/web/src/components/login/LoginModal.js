@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import PropTypes from "prop-types";
 import Login from "./Login";
 import { connect } from "react-redux";
-import { toggleModal } from "../../actions/components/login/LoginModal.action";
+import { toggleModal } from "../../actions/components/login/Login.action";
 
 class LoginModal extends Component {
   constructor(props) {
@@ -31,8 +31,8 @@ class LoginModal extends Component {
   }
 }
 
-const mapStateToProps = ({ LoginModalReducer }) => {
-  const { modalVisible } = LoginModalReducer;
+const mapStateToProps = ({ LoginReducer }) => {
+  const { modalVisible } = LoginReducer;
   return { modalVisible };
 };
 
