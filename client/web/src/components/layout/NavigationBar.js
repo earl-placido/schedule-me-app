@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Layout, Menu, Dropdown, Button, Avatar, message } from "antd";
 import PropTypes from "prop-types";
-import { toggleModal } from "../../actions/components/login/LoginModal.action";
+import { toggleModal } from "../../actions/components/login/Login.action";
 import {
   loginGoogle,
   logoutGoogle
