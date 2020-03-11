@@ -94,7 +94,6 @@ export const loginGoogle = response => {
     };
     axios(options)
       .then(res => {
-        console.log(res);
         if (res.status === responses.SUCCESS) {
           const token = res.headers['x-auth-token'];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
@@ -155,7 +154,6 @@ export const signupUser = (
         })
         .catch(err => dispatch(signupError(err.response.data, signupFields)));
     } else {
-      console.log('HI');
       dispatch(signupError('Password mismatch', signupFields));
     }
   };
