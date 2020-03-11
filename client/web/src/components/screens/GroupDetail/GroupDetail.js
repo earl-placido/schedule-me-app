@@ -8,9 +8,9 @@ import {
   Divider,
   Typography,
   Input,
-  Avatar,
-  Icon
+  Avatar
 } from "antd";
+import Icon from "@ant-design/icons";
 import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -54,11 +54,13 @@ class GroupDetail extends Component {
           <Divider orientation="center" />
           <Row>
             <Col>
-              <Link to={inputAvailabilityLink}>
-                <Button type="primary" style={buttonStyle}>
-                  Input Your Availability
-                </Button>
-              </Link>
+              <Button
+                type="primary"
+                style={buttonStyle}
+                href={inputAvailabilityLink}
+              >
+                Input Your Availability
+              </Button>
             </Col>
           </Row>
         </Card>
