@@ -14,6 +14,8 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutUser} from './actions/components/screens/Auth.action';
 
+import {GoogleSignin} from '@react-native-community/google-signin';
+
 const Stack = createStackNavigator();
 
 class App extends Component {
@@ -33,6 +35,8 @@ class App extends Component {
                       {this.props.isAuthenticated ? (
                         <Button
                           onPress={() => {
+                            GoogleSignin.revokeAccess();
+                            GoogleSignin.signOut();
                             this.props.logoutUser();
                             props.navigation.navigate('Main');
                           }}>

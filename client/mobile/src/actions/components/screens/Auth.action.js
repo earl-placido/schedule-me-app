@@ -117,9 +117,9 @@ export const signupUser = (
             const token = res.headers['x-auth-token'];
             let userName = `${res.data.firstName} ${res.data.lastName}`;
 
-            setUserData(token, userName, res.data.displayPicURL);
+            setUserData(token, userName);
 
-            dispatch(signupSuccess(userName, res.data.displayPicURL, token));
+            dispatch(signupSuccess(userName, token));
           } else {
             throw new Error(res.err);
           }
@@ -148,9 +148,9 @@ export const loginUser = (email, password) => {
           const token = res.headers['x-auth-token'];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
 
-          setUserData(token, userName, res.data.displayPicURL);
+          setUserData(token, userName);
 
-          dispatch(signupSuccess(userName, res.data.displayPicURL, token));
+          dispatch(signupSuccess(userName, token));
         } else {
           throw new Error(res.err);
         }
@@ -165,14 +165,16 @@ export const logoutUser = () => {
     await AsyncStorage.removeItem('userName');
     await AsyncStorage.removeItem('displayPicURL');
     dispatch(logoutSuccess());
-    
   };
 };
 
 async function setUserData(token, userName, displayPicURL = null) {
   await AsyncStorage.setItem('token', token);
   await AsyncStorage.setItem('userName', userName);
-  await AsyncStorage.setItem('displayPicURL', displayPicURL);
+
+  if (displayPicURL) {
+    await AsyncStorage.setItem('displayPicURL', displayPicURL);
+  }
 
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
