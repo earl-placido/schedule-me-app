@@ -108,12 +108,19 @@ const submitGroupCreation = (
     meetingFrequency,
     meetingLocation
   };
+  const authToken = localStorage.getItem("token");
+
   // call backend to add group
   const response = await axios.post(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups`,
-    groupCreation
+    groupCreation,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
   );
-
   //success
   if (response.status === 201) {
     const link = `${window.location.origin}/groups/${response.data.groupId}`;

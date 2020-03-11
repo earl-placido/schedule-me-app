@@ -4,13 +4,13 @@ import {
   Row,
   Card,
   List,
-  Icon,
   Avatar,
   Divider,
   Typography,
   Col,
   Button
 } from "antd";
+import Icon from "@ant-design/icons";
 import { getGroupList } from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -53,7 +53,9 @@ class MainPage extends Component {
                       <Avatar size={50} icon={<Icon type="play-circle-o" />} />
                     }
                     title={
-                      <a href={"/groups/" + item.GroupId}>{item.GroupName}</a>
+                      <a href={"/groups/" + item.GroupId + "/"}>
+                        {item.GroupName}
+                      </a>
                     }
                     description={item.GroupDescription}
                   />
