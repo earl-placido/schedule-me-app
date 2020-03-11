@@ -21,22 +21,30 @@ class App extends Component {
     return (
       <NativeRouter>
         <Container>
-          <Header>
-            {this.props.isAuthenticated ? (
-              <Button onPress={this.props.logoutUser}>
-                <Text>{this.props.userName}</Text>
-              </Button>
-            ) : (
-              <></>
-            )}
-          </Header>
-
           <NavigationContainer>
             <Stack.Navigator
-              screenOptions={{headerShown: false}}
               initialRouteName={
                 !this.props.isAuthenticated ? 'Main' : 'CreateGroup'
-              }>
+              }
+              screenOptions={{
+                header: props => {
+                  return (
+                    <Header>
+                      {this.props.isAuthenticated ? (
+                        <Button
+                          onPress={() => {
+                            this.props.logoutUser();
+                            props.navigation.navigate('Main');
+                          }}>
+                          <Text>{this.props.userName}</Text>
+                        </Button>
+                      ) : (
+                        <></>
+                      )}
+                    </Header>
+                  );
+                },
+              }}>
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="CreateGroup" component={CreateGroup} />
             </Stack.Navigator>
