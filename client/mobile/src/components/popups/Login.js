@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, ToastAndroid} from 'react-native';
-import {View, Button, Text, Card, Spinner} from 'native-base';
+import {View, Button, Text, Card} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
@@ -65,19 +65,25 @@ class Login extends Component {
     const value = this.form.getValue();
     if (value) {
       this.props.loginUser(value.email, value.password);
-    } 
+      setTimeout(() => {
+        this.attemptLogin();
+      }, 1000);
+    }
   };
 
   attemptLogin = () => {
-    if (this.props.isAuthenticated)
-    {
-      ToastAndroid.show("Login Successul", ToastAndroid.SHORT)
+    if (this.props.isAuthenticated) {
+      ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
       this.props.navigation.navigate('CreateGroup');
       this.toggleLogin();
     } else {
-      ToastAndroid.show("Login Failed", ToastAndroid.SHORT)
+      if (this.props.message.errors) {
+        ToastAndroid.show(this.props.message.errors[0].msg, ToastAndroid.SHORT);
+      } else if (this.props.message.err) {
+        ToastAndroid.show(this.props.message.err, ToastAndroid.SHORT);
+      }
     }
-  }
+  };
 
   render() {
     return (
@@ -108,15 +114,16 @@ class Login extends Component {
               ref={_form => (this.form = _form)}
               options={userOptions}
               type={user}
+              value={{
+                email: this.props.email,
+                password: this.props.password,
+              }}
             />
 
             <Button
               transparent
               onPress={() => {
                 this.userLogin();
-                setTimeout(() => {
-                  this.attemptLogin();
-                }, 1000);
               }}>
               <Text>Submit</Text>
             </Button>
@@ -145,6 +152,9 @@ const styles = StyleSheet.create({
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   userName: state.auth.userName,
+  message: state.auth.message,
+  email: state.auth.email,
+  password: state.auth.password,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -157,6 +167,10 @@ Login.propTypes = {
   navigate: PropTypes.func,
   loginGoogle: PropTypes.func,
   loginUser: PropTypes.func,
+  isAuthenticated: PropTypes.any,
+  message: PropTypes.any,
+  email: PropTypes.any,
+  password: PropTypes.any,
 };
 
 export default compose(

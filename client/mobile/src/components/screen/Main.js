@@ -18,7 +18,9 @@ class Main extends Component {
         <Button
           large
           style={styles.buttonStyle}
-          onPress={() => ToastAndroid.show('This is not yet available', ToastAndroid.SHORT)}>
+          onPress={() =>
+            ToastAndroid.show('This is not yet available', ToastAndroid.SHORT)
+          }>
           <Text>Continue as Guest</Text>
         </Button>
       </View>
