@@ -12,19 +12,27 @@ class LoginForm extends Component {
   }
 
   loginWithEmail(values) {
-    this.props.authenticate('login',values);
-  };
+    this.props.authenticate("login", values);
+  }
 
   loginFail(errorinfo) {
     console.log("Failed", errorinfo);
-  };
+  }
 
   render() {
     return (
       <div>
-        {this.props.errored ? (<p style={{ textAlign:'center', color:'Red' }}>{this.props.message}</p>) : null }
-        
-        <Form name="login" onFinish={this.loginWithEmail} onFinishFailed={this.loginFail}>
+        {this.props.errored ? (
+          <p style={{ textAlign: "center", color: "Red" }}>
+            {this.props.message}
+          </p>
+        ) : null}
+
+        <Form
+          name="login"
+          onFinish={this.loginWithEmail}
+          onFinishFailed={this.loginFail}
+        >
           <Form.Item
             name="email"
             rules={[
@@ -57,14 +65,14 @@ class LoginForm extends Component {
               className="login-form-button"
               style={{ width: "100%" }}
             >
-            Log In
-          </Button>
+              Log In
+            </Button>
           </Form.Item>
         </Form>
       </div>
     );
   }
-};
+}
 
 LoginForm.propTypes = {
   authenticate: PropTypes.func,
@@ -75,12 +83,12 @@ LoginForm.propTypes = {
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
-  errored : state.auth.errored,
-  message : state.auth.message
+  errored: state.auth.errored,
+  message: state.auth.message
 });
 
 const mapDispatchToProps = dispatch => ({
-  authenticate: (type, data) => dispatch(authenticate(type, data)),
+  authenticate: (type, data) => dispatch(authenticate(type, data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

@@ -8,27 +8,37 @@ import { authenticate } from "../../actions/components/screens/Auth.action";
 class SignupForm extends Component {
   constructor(props) {
     super(props);
-    this.signUp = this.signUp.bind(this)
+    this.signUp = this.signUp.bind(this);
   }
 
   signUp(values) {
     console.log("Success", values);
-    this.props.authenticate('signup', values)
-  };
+    this.props.authenticate("signup", values);
+  }
 
   onFinishFailed(errorinfo) {
     console.log("Failed", errorinfo);
-  };
+  }
 
   render() {
     return (
       <div>
-        {this.props.errored ? (<p style={{ textAlign: 'center', color: 'Red' }}>{this.props.message}</p>) : null}
+        {this.props.errored ? (
+          <p style={{ textAlign: "center", color: "Red" }}>
+            {this.props.message}
+          </p>
+        ) : null}
 
-        <Form name="signup" onFinish={this.signUp} onFinishFailed={this.onFinishFailed}>
+        <Form
+          name="signup"
+          onFinish={this.signUp}
+          onFinishFailed={this.onFinishFailed}
+        >
           <Form.Item
             name="firstName"
-            rules={[{ required: true, message: "Please input your first name!" }]}
+            rules={[
+              { required: true, message: "Please input your first name!" }
+            ]}
           >
             <Input
               placeholder={"First Name"}
@@ -38,7 +48,9 @@ class SignupForm extends Component {
 
           <Form.Item
             name="lastName"
-            rules={[{ required: true, message: "Please input your last name!" }]}
+            rules={[
+              { required: true, message: "Please input your last name!" }
+            ]}
           >
             <Input
               placeholder={"Last Name"}
@@ -112,7 +124,7 @@ class SignupForm extends Component {
       </div>
     );
   }
-};
+}
 
 SignupForm.propTypes = {
   authenticate: PropTypes.func,
@@ -128,7 +140,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  authenticate: (type, data) => dispatch(authenticate(type, data)),
+  authenticate: (type, data) => dispatch(authenticate(type, data))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignupForm);

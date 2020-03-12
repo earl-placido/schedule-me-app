@@ -16,7 +16,10 @@ import {
 import Icon from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { toggleModal } from "../../actions/components/login/Modal.action";
-import { authenticate, logout } from "../../actions/components/screens/Auth.action";
+import {
+  authenticate,
+  logout
+} from "../../actions/components/screens/Auth.action";
 
 const { Header } = Layout;
 
@@ -30,7 +33,7 @@ export class NavigationBar extends Component {
 
   loginUser(response) {
     //This will have to be changed
-    this.props.authenticate('google',response);
+    this.props.authenticate("google", response);
   }
 
   logoutUser() {

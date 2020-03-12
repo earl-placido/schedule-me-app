@@ -20,7 +20,7 @@ class Login extends Component {
   }
 
   loginWithGoogle(response) {
-    this.props.authenticate('google',response);
+    this.props.authenticate("google", response);
   }
 
   renderGoogleButton(text) {
@@ -47,8 +47,8 @@ class Login extends Component {
   render() {
     return (
       <div>
-        {this.props.isAuthenticated && this.props.location.pathname === '/' ? (
-          <Redirect to="/main"/>
+        {this.props.isAuthenticated && this.props.location.pathname === "/" ? (
+          <Redirect to="/main" />
         ) : null}
 
         {!this.state.signUpSelected ? (
@@ -97,7 +97,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  authenticate: (type, data) => dispatch(authenticate(type, data)),
+  authenticate: (type, data) => dispatch(authenticate(type, data))
 });
 
 Login.propTypes = {
@@ -107,4 +107,7 @@ Login.propTypes = {
   isAuthenticated: PropTypes.any
 };
 
-export default compose(withRouter,connect(mapStateToProps, mapDispatchToProps))(Login);
+export default compose(
+  withRouter,
+  connect(mapStateToProps, mapDispatchToProps)
+)(Login);
