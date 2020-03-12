@@ -72,7 +72,6 @@ export const authenticate = (type, response) => {
         };
         break
 
-
       default:
         dispatch(loginError("Unsuported authentication type specified!"))  
     }
@@ -115,12 +114,6 @@ function setUserData(token, userName, displayPicURL = null, userEmail) {
 
   axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 }
-
-/****** Sign Up with Email *******/
-export const signUp = response => {
-
-}
-
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

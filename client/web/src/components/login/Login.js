@@ -107,7 +107,4 @@ Login.propTypes = {
   isAuthenticated: PropTypes.any
 };
 
-export default compose(
-  withRouter,
-  connect(mapStateToProps, mapDispatchToProps)
-)(Login);
+export default compose(withRouter,connect(mapStateToProps, mapDispatchToProps))(Login);
