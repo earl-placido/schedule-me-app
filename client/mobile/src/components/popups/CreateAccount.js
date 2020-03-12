@@ -77,7 +77,7 @@ class CreateAccount extends Component {
   attemptSignup = () => {
     if (this.props.isAuthenticated) {
       ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
-      this.props.navigation.navigate('CreateGroup');
+      this.props.navigation.navigate('Create Group');
       this.toggleCreate();
     } else {
       if (this.props.message.errors) {

@@ -64,7 +64,7 @@ class Login extends Component {
         setTimeout(() => {
           this.attemptLogin();
           this.toggleSpinner();
-        }, 1000);
+        }, 2000);
       });
     });
     this.toggleSpinner();
@@ -85,7 +85,7 @@ class Login extends Component {
   attemptLogin = () => {
     if (this.props.isAuthenticated) {
       ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
-      this.props.navigation.navigate('CreateGroup');
+      this.props.navigation.navigate('Create Group');
       this.toggleLogin();
     } else {
       if (this.props.message.errors) {

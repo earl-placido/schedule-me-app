@@ -27,26 +27,24 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Stack = createStackNavigator();
 
-function DetailsScreen({navigation}) {
+function CreateGroupScreen({navigation}) {
   return (
     <Container>
-      <Button
-        title="Go to group details"
-        onPress={() => navigation.navigate('Group Detail')}
-      />
+      <Button onPress={() => navigation.navigate('Group Detail')}>
+        <Text>Go to group details</Text>
+      </Button>
       <CreateGroup />
       <Content />
     </Container>
   );
 }
 
-function HomeScreen({navigation}) {
+function GroupDetailScreen({navigation}) {
   return (
     <Container>
-      <Button
-        title="Go to create group"
-        onPress={() => navigation.navigate('Create Group')}
-      />
+      <Button onPress={() => navigation.navigate('Create Group')}>
+        <Text>Go to create group</Text>
+      </Button>
       <GroupDetail />
       <Content />
     </Container>
@@ -61,7 +59,7 @@ class App extends Component {
           <NavigationContainer>
             <Stack.Navigator
               initialRouteName={
-                !this.props.isAuthenticated ? 'Main' : 'CreateGroup'
+                !this.props.isAuthenticated ? 'Main' : 'Group Detail'
               }
               screenOptions={{
                 header: props => {
@@ -85,8 +83,8 @@ class App extends Component {
                 },
               }}>
               <Stack.Screen name="Main" component={Main} />
-              <Stack.Screen name="GroupDetail" component={GroupDetail} />
-              <Stack.Screen name="CreateGroup" component={CreateGroup} />
+              <Stack.Screen name="Create Group" component={CreateGroupScreen} />
+              <Stack.Screen name="Group Detail" component={GroupDetailScreen} />
             </Stack.Navigator>
           </NavigationContainer>
 
@@ -114,13 +112,13 @@ App.propTypes = {
   logoutUser: PropTypes.func,
 };
 
-DetailsScreen.propTypes = {
+CreateGroupScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-HomeScreen.propTypes = {
+GroupDetailScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
