@@ -3,12 +3,14 @@ import { Form, Input, Button, notification } from "antd";
 import Icon from "@ant-design/icons";
 import { withRouter, Redirect } from "react-router";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { updateLoginEmail, updateLoginPassword } from "../../actions/components/login/Login.action";
 
 const openNotification = () => {
   notification.info({
     message: "Unavailable Action",
     description:
-      "Login and with Username is unavailable at the moment. Use Google to proceed.",
+      "Sign Up and with Email is unavailable at the moment. Use Google to proceed.",
     duration: 5
   });
 };
@@ -110,4 +112,16 @@ class SignupForm extends Component{
   }
 };
 
-export default SignupForm;
+SignupForm.propTypes = {
+  updateLoginEmail: PropTypes.func,
+  updateLoginPassword: PropTypes.func,
+  loginEmail: PropTypes.any,
+  loginPassword: PropTypes.any,
+};
+
+const mapStateToProps = ({ LoginReducer }) => {
+  const { loginEmail, loginPassword } = LoginReducer;
+  return { loginEmail, loginPassword };
+};
+
+export default connect(mapStateToProps, { updateLoginEmail, updateLoginPassword })(SignupForm);
