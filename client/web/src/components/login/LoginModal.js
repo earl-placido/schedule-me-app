@@ -3,7 +3,7 @@ import { Modal } from "antd";
 import PropTypes from "prop-types";
 import Login from "./Login";
 import { connect } from "react-redux";
-import { toggleModal } from "../../actions/components/login/Login.action";
+import { toggleModal } from "../../actions/components/login/Modal.action";
 
 class LoginModal extends Component {
   constructor(props) {

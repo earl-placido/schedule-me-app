@@ -1,11 +1,8 @@
 import React, { Component } from "react";
 import { Layout } from "antd";
-
 import LoginModal from "./login/LoginModal";
 import PropTypes from "prop-types";
 import NavigationBar from "./layout/NavigationBar";
-import { toggleModal } from "../actions/components/login/Login.action";
-import { connect } from "react-redux";
 
 const { Content } = Layout;
 
@@ -51,14 +48,8 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ LoginReducer }) => {
-  const { modalVisible } = LoginReducer;
-  return { modalVisible };
-};
-
 ContentContainer.propTypes = {
-  modalVisible: PropTypes.any,
   children: PropTypes.any
 };
 
-export default connect(mapStateToProps, { toggleModal })(ContentContainer);
+export default ContentContainer;

@@ -4,11 +4,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Layout, Menu, Dropdown, Button, Avatar, message } from "antd";
 import PropTypes from "prop-types";
-import { toggleModal } from "../../actions/components/login/Login.action";
-import {
-  loginGoogle,
-  logoutGoogle
-} from "../../actions/components/screens/Auth.action";
+import { toggleModal } from "../../actions/components/login/Modal.action";
+import { authenticate, logout } from "../../actions/components/screens/Auth.action";
 
 const { Header } = Layout;
 
@@ -21,11 +18,12 @@ export class NavigationBar extends Component {
   }
 
   loginUser(response) {
-    this.props.loginGoogle(response);
+    //This will have to be changed
+    this.props.authenticate('google',response);
   }
 
   logoutUser() {
-    this.props.logoutGoogle();
+    this.props.logout();
     message.info("Logged out of account");
   }
 
@@ -92,8 +90,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  logoutGoogle: () => dispatch(logoutGoogle()),
-  loginGoogle: response => dispatch(loginGoogle(response)),
+  logout: () => dispatch(logout()),
+  authenticate: (type, response) => dispatch(authenticate(type, response)),
   toggleModal: value => dispatch(toggleModal(value))
 });
 
@@ -102,8 +100,8 @@ NavigationBar.propTypes = {
   userName: PropTypes.any,
   displayPicURL: PropTypes.any,
   isAuthenticated: PropTypes.any,
-  loginGoogle: PropTypes.func,
-  logoutGoogle: PropTypes.func,
+  authenticate: PropTypes.func,
+  logout: PropTypes.func,
   modalVisible: PropTypes.any,
   toggleModal: PropTypes.func
 };
