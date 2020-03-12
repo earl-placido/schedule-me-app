@@ -6,15 +6,13 @@ export const LOGIN_SUCCESS = "login_success";
 export const LOGIN_ERROR = "login_error";
 export const LOGOUT_SUCCESS = "logout_success";
 
-
 const INITIAL_STATE = {
   isAuthenticated: localStorage.getItem("token") ? true : false,
   token: localStorage.getItem("token"),
   userName: localStorage.getItem("userName"),
   displayPicURL: localStorage.getItem("displayPicURL"),
   message: "",
-  errored: false,
-
+  errored: false
 };
 
 const loginRequest = () => {
@@ -46,34 +44,34 @@ const logoutSuccess = () => {
 export const authenticate = (type, response) => {
   return dispatch => {
     dispatch(loginRequest());
-    let options = {}
-    switch(type){
-      case 'google':
+    let options = {};
+    switch (type) {
+      case "google":
         options = {
           url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`,
           method: "POST",
           data: { access_token: response.accessToken }
         };
-        break
+        break;
 
-      case 'login':
+      case "login":
         options = {
           url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/login`,
           method: "POST",
           data: response
         };
-        break
+        break;
 
-      case 'signup':
+      case "signup":
         options = {
           url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/signup`,
           method: "POST",
           data: response
         };
-        break
+        break;
 
       default:
-        dispatch(loginError("Unsuported authentication type specified!"))  
+        dispatch(loginError("Unsuported authentication type specified!"));
     }
 
     axios(options)
@@ -86,13 +84,13 @@ export const authenticate = (type, response) => {
 
           dispatch(loginSuccess(userName, res.data.displayPicURL, token));
         } else {
-          console.log(res.err)
-          throw new Error(res.err); 
+          console.log(res.err);
+          throw new Error(res.err);
         }
       })
       .catch(err => {
         console.log(err.response.data);
-        dispatch(loginError(err.response.data.err))
+        dispatch(loginError(err.response.data.err));
       });
   };
 };
