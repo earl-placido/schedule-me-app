@@ -1,6 +1,8 @@
+import {FloatingAction} from 'react-native-floating-action';
+
 import React, {Component} from 'react';
 import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
-import {Body, Container, Content, Card, CardItem, Button} from 'native-base';
+import {Body, Container, Content, Card, CardItem} from 'native-base';
 
 import PropTypes from 'prop-types';
 
@@ -28,6 +30,15 @@ const userList = [
   {
     name: 'Piglet',
     role: 'Moral Support',
+  },
+];
+
+const actions = [
+  {
+    text: 'Input Your Availability',
+    icon: require('../../assets/personIcon.png'),
+    name: 'inputAvalibility',
+    position: 1,
   },
 ];
 
@@ -73,13 +84,13 @@ export default class GroupDetail extends Component {
           </Card>
         </Content>
 
-        <View style={styles.viewCenter}>
-          <Button
-            style={styles.buttonStyle}
-            onPress={() => Alert.alert('Functionality to come')}>
-            <Text style={{color: 'white'}}>Input Your Availability</Text>
-          </Button>
-        </View>
+        <FloatingAction
+          actions={actions}
+          onPressItem={({item}) => {
+            console.log(`Selected button: ${item}`);
+            Alert.alert('Functionality to come');
+          }}
+        />
       </Container>
     );
   }
@@ -87,7 +98,7 @@ export default class GroupDetail extends Component {
 
 const styles = StyleSheet.create({
   containerStyle: {
-    flex: 5,
+    flex: 6,
   },
   buttonStyle: {
     marginTop: 20,
