@@ -22,4 +22,4 @@
 
   `http://<IP Address>:8000/`
   
-  * Note:  The ip address you put MUST be the same as the one you are using for your laptop/computer and phone.  If your two devices are using a different ip address, you may not be able to connect to the local server.  
+  * Note:  The ip address you put MUST be the same as the one you are using for your laptop/computer and phone.  If your two devices are using different ip addresses, you may not be able to connect to the local server.  
