@@ -21,4 +21,19 @@ router.get("/:userId", authenticateToken, (req, res, next) => {
     .catch(next);
 });
 
+router.get("/email/:userEmail", (req, res, next) => {
+  const { userEmail } = req.params;
+  return userModel
+    .getUserByEmail(userEmail)
+    .then(result => {
+      if (result.length > 0) {
+        res.status(responses.SUCCESS).json({ userId: result[0].UserId });
+      } else {
+        res.status(responses.NOT_FOUND);
+        res.send({ error: `user with ${userEmail} not found.` });
+      }
+    })
+    .catch(next);
+});
+
 module.exports = router;
