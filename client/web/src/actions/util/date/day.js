@@ -4,9 +4,13 @@ export const convertAvailabilityToDays = (availableDays, availabilities) => {
   let newAvailableDays = { ...availableDays };
   // convert database availability format into ui format
   for (const availability of availabilities) {
-    const { AvailabilityId, StartTime, EndTime } = availability;
+    const AvailabilityId = availability.AvailabilityId;
+    const StartTime = availability["CAST(StartTime as char)"];
+    const EndTime = availability["CAST(EndTime as char)"];
+
     const momentStartTime = moment(StartTime);
     const momentEndTime = moment(EndTime);
+
     const currentDay = momentStartTime.day();
     if (!newAvailableDays[currentDay])
       newAvailableDays[currentDay] = [
