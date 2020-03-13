@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
   Row,
+  Col,
   Card,
   Button,
   List,
@@ -23,20 +24,13 @@ class GroupDetail extends Component {
     this.props.getGroupMembers(this.props.match.params.id);
   }
 
-  copyToClipboard(event) {
-    console.log(event);
-    let stuff = document.getElementByClassName("ant-input-disabled").select();
-    console.log(stuff);
-    document.execCommand("copy");
-  }
-
   success() {
     message.success("Code copied!");
   }
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, codeTextStyle } = styles;
+    const { containerStyle, cardStyle } = styles;
     const inputAvailabilityLink = `${this.props.location.pathname}input/`;
 
     return (
@@ -46,19 +40,21 @@ class GroupDetail extends Component {
             <Title level={2}>Group: Equilibrium</Title>
           </Row>
           <Row justify="center">
-            <Input.Group compact style={codeTextStyle}>
+            <Col>
               <Input
                 addonBefore={"Sharable Code"}
                 disabled={true}
                 value={this.props.match.params.id}
               />
+            </Col>
+            <Col>
               <CopyToClipboard
                 onCopy={() => this.success()}
                 text={this.props.match.params.id}
               >
                 <Button>Copy Code</Button>
               </CopyToClipboard>
-            </Input.Group>
+            </Col>
           </Row>
           <Divider orientation="center" />
           <Row justify="center">
@@ -100,11 +96,6 @@ const styles = {
 
   cardStyle: {
     width: 800
-  },
-
-  codeTextStyle: {
-    width: 200,
-    textAlign: "center"
   }
 };
 

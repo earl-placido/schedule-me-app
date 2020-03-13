@@ -48,7 +48,7 @@ export class NavigationBar extends Component {
     const { headerStyle, listStyle, noDataStyle } = styles;
     const groupMenu = (
       <List
-        locale={{ emptyText: "You have not joined any groups.." }}
+        locale={{ emptyText: "You have not joined any groups" }}
         size="small"
         itemLayout="horizontal"
         dataSource={this.props.groupList}
