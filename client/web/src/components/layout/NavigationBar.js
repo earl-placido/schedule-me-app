@@ -15,10 +15,10 @@ import {
 } from "antd";
 import Icon from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { toggleModal } from "../../actions/components/login/LoginModal.action";
+import { toggleModal } from "../../actions/components/login/Modal.action";
 import {
-  loginGoogle,
-  logoutGoogle
+  authenticate,
+  logout
 } from "../../actions/components/screens/Auth.action";
 
 const { Header } = Layout;
@@ -32,11 +32,12 @@ export class NavigationBar extends Component {
   }
 
   loginUser(response) {
-    this.props.loginGoogle(response);
+    //This will have to be changed
+    this.props.authenticate("google", response);
   }
 
   logoutUser() {
-    this.props.logoutGoogle();
+    this.props.logout();
     message.info("Logged out of account");
   }
 
@@ -149,8 +150,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  logoutGoogle: () => dispatch(logoutGoogle()),
-  loginGoogle: response => dispatch(loginGoogle(response)),
+  logout: () => dispatch(logout()),
+  authenticate: (type, response) => dispatch(authenticate(type, response)),
   toggleModal: value => dispatch(toggleModal(value))
 });
 
@@ -159,10 +160,10 @@ NavigationBar.propTypes = {
   userName: PropTypes.any,
   displayPicURL: PropTypes.any,
   isAuthenticated: PropTypes.any,
-  groupList: PropTypes.any,
+  authenticate: PropTypes.func,
+  logout: PropTypes.func,
   modalVisible: PropTypes.any,
-  loginGoogle: PropTypes.func,
-  logoutGoogle: PropTypes.func,
+  groupList: PropTypes.any,
   toggleModal: PropTypes.func
 };
 
