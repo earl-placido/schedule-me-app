@@ -22,6 +22,7 @@ import PropTypes from "prop-types";
 class GroupDetail extends Component {
   componentDidMount() {
     this.props.getGroupMembers(this.props.match.params.id);
+    console.log(this);
   }
 
   success() {
@@ -30,7 +31,7 @@ class GroupDetail extends Component {
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle } = styles;
+    const { containerStyle, cardStyle, inputStyle } = styles;
     const inputAvailabilityLink = `${this.props.location.pathname}input/`;
 
     return (
@@ -45,9 +46,10 @@ class GroupDetail extends Component {
                 addonBefore={"Sharable Code"}
                 disabled={true}
                 value={this.props.match.params.id}
+                style={inputStyle}
               />
             </Col>
-            <Col>
+            <Col offset={1}>
               <CopyToClipboard
                 onCopy={() => this.success()}
                 text={this.props.match.params.id}
@@ -96,6 +98,10 @@ const styles = {
 
   cardStyle: {
     width: 800
+  },
+
+  inputStyle: {
+    width: 200
   }
 };
 
