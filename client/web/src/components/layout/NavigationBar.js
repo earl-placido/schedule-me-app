@@ -111,23 +111,24 @@ export class NavigationBar extends Component {
           style={{ lineHeight: "64px" }}
         ></Menu>
 
-        <Row>
-          <Col xs={6} sm={5} md={5} lg={4} xl={4}>
+        <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
+          <Col>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
               <Button>
                 Groups <DownOutlined />
               </Button>
             </Dropdown>
           </Col>
-          <Col xs={6} sm={7} md={5} lg={4} xl={4}>
+          <Col flex="100px">
             <Button type="primary" href="/createGroup">
               Create A Group
             </Button>
           </Col>
-          <Col xs={6} sm={8} md={10} lg={12} xl={12}>
+          <Col>
             <Button type="primary">Join A Group</Button>
           </Col>
-          <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+          <Col flex="auto"></Col>
+          <Col flex="100px">
             <div className="masthead-user">{userNavigation}</div>
           </Col>
         </Row>
