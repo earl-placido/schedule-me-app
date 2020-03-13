@@ -28,7 +28,6 @@ class SignupForm extends Component {
             {this.props.message}
           </p>
         ) : null}
-
         <Form
           name="signup"
           onFinish={this.signUp}
