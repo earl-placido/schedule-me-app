@@ -1,12 +1,20 @@
-import React, { Component } from 'react';
-import { View } from 'react-native';
+import React, {Component} from 'react';
+import {View} from 'react-native';
 
-import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm'
-import GroupMeetingForm from '../groups/CreateGroup/GroupMeetingForm'
+import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
+import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm';
+import GroupMeetingForm from '../groups/CreateGroup/GroupMeetingForm';
+import GroupShareCodeForm from '../groups/CreateGroup/GroupShareCodeForm';
 
 import PropTypes from 'prop-types';
-import {updateGroupName, updateGroupDescription, updateGroupDuration, updateGroupFrequency, updateGroupLocation} from '../../actions/components/screens/CreateGroup.action';
+import {
+  updateGroupName,
+  updateGroupDescription,
+  updateMeetingDuration,
+  updateMeetingFrequency,
+  updateMeetingLocation,
+  submitMeetingCreation,
+} from '../../actions/components/screens/CreateGroup.action';
 import {connect} from 'react-redux';
 
 const progressStepsStyle = {
@@ -16,76 +24,84 @@ const progressStepsStyle = {
   activeStepIconColor: '#686868',
   completedStepIconColor: '#686868',
   completedProgressBarColor: '#686868',
-  
 };
 
 const buttonTextStyle = {
   color: '#686868',
-  fontWeight: 'bold'
+  fontWeight: 'bold',
 };
 
 const hideButton = {
-  display: 'none'
+  display: 'none',
 };
 
 const defaultScrollViewProps = {
   keyboardShouldPersistTaps: 'handled',
   contentContainerStyle: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
 };
 
 class CreateGroup extends Component {
+  createNewMeeting = () => {
+    //TODO: Change share screen when error is received
+    this.props.submitMeetingCreation(
+      this.props.groupName,
+      this.props.groupDescription,
+      this.props.meetingDuration,
+      this.props.meetingFrequency,
+      this.props.meetingLocation,
+    );
+  };
+
   render() {
     return (
-      <View style={{ flex: 10}}>
+      <View style={{flex: 10}}>
         <ProgressSteps {...progressStepsStyle}>
           <ProgressStep
-                label = "Group"
-                onNext={this.onNextStep}
-                previousBtnDisabled
-                nextBtnDisabled={!this.props.groupName}
-                scrollViewProps={defaultScrollViewProps}
-                nextBtnTextStyle={buttonTextStyle}
-                previousBtnTextStyle={buttonTextStyle}
-              >
-                <GroupInfoForm
-                  handleGroupName={this.props.updateGroupName} 
-                  handleGroupDescription={this.props.updateGroupDescription} 
-                  groupName={this.props.groupName}
-                  groupDescription={this.props.groupDescription}
-                />
-          </ProgressStep>   
-          
-          <ProgressStep
-            label = "Meeting"
-            nextBtnText = "Done"
+            label="Group"
             onNext={this.onNextStep}
-            onPrevious={this.onPrevStep}
-            nextBtnDisabled={!this.props.groupDuration}
-            scrollViewProps={this.defaultScrollViewProps}
+            previousBtnDisabled
+            nextBtnDisabled={!this.props.groupName}
+            scrollViewProps={defaultScrollViewProps}
             nextBtnTextStyle={buttonTextStyle}
-            previousBtnTextStyle={buttonTextStyle}
-          >
-            <GroupMeetingForm
-              handleGroupDuration={this.props.updateGroupDuration} 
-              handleGroupFrequency={this.props.updateGroupFrequency} 
-              handleGroupLocation={this.props.updateGroupLocation}
-              groupDuration={this.props.groupDuration}
-              groupFrequency={this.props.groupFrequency}
-              groupLocation={this.props.groupLocation}
+            previousBtnTextStyle={buttonTextStyle}>
+            <GroupInfoForm
+              handleGroupName={this.props.updateGroupName}
+              handleGroupDescription={this.props.updateGroupDescription}
+              groupName={this.props.groupName}
+              groupDescription={this.props.groupDescription}
             />
           </ProgressStep>
 
           <ProgressStep
-            label = "Share"
-            finishBtnText = "Continue"
+            label="Meeting"
+            nextBtnText="Done"
+            onNext={this.createNewMeeting}
+            onPrevious={this.onPrevStep}
+            nextBtnDisabled={!this.props.meetingDuration}
+            scrollViewProps={this.defaultScrollViewProps}
+            nextBtnTextStyle={buttonTextStyle}
+            previousBtnTextStyle={buttonTextStyle}>
+            <GroupMeetingForm
+              handleMeetingDuration={this.props.updateMeetingDuration}
+              handleMeetingFrequency={this.props.updateMeetingFrequency}
+              handleMeetingLocation={this.props.updateMeetingLocation}
+              meetingDuration={this.props.meetingDuration}
+              meetingFrequency={this.props.meetingFrequency}
+              meetingLocation={this.props.meetingLocation}
+            />
+          </ProgressStep>
+
+          <ProgressStep
+            label="Share"
+            finishBtnText="Continue"
             onSubmit={this.onSubmitSteps}
             scrollViewProps={this.defaultScrollViewProps}
             nextBtnStyle={hideButton}
-            previousBtnStyle={hideButton}
-          >
+            previousBtnStyle={hideButton}>
+            <GroupShareCodeForm meetingCode={this.props.meetingCode} />
           </ProgressStep>
         </ProgressSteps>
       </View>
@@ -93,22 +109,45 @@ class CreateGroup extends Component {
   }
 }
 
-const mapStateToProps = ({ CreateGroupReducer }) => {
-  const { groupName, groupDescription, groupDuration, groupFrequency, groupLocation } = CreateGroupReducer;
-  return {groupName, groupDescription, groupDuration, groupFrequency, groupLocation};
+const mapStateToProps = ({CreateGroupReducer}) => {
+  const {
+    groupName,
+    groupDescription,
+    meetingDuration,
+    meetingFrequency,
+    meetingLocation,
+    meetingCode,
+  } = CreateGroupReducer;
+  return {
+    groupName,
+    groupDescription,
+    meetingDuration,
+    meetingFrequency,
+    meetingLocation,
+    meetingCode,
+  };
 };
 
 CreateGroup.propTypes = {
   groupName: PropTypes.any,
   groupDescription: PropTypes.any,
-  groupDuration: PropTypes.any,
-  groupFrequency: PropTypes.any,
-  groupLocation: PropTypes.any,
+  meetingDuration: PropTypes.any,
+  meetingFrequency: PropTypes.any,
+  meetingLocation: PropTypes.any,
+  meetingCode: PropTypes.any,
   updateGroupName: PropTypes.func,
   updateGroupDescription: PropTypes.func,
-  updateGroupDuration: PropTypes.func,
-  updateGroupFrequency: PropTypes.func,
-  updateGroupLocation: PropTypes.func,
+  updateMeetingDuration: PropTypes.func,
+  updateMeetingFrequency: PropTypes.func,
+  updateMeetingLocation: PropTypes.func,
+  submitMeetingCreation: PropTypes.func,
 };
 
-export default connect(mapStateToProps, {updateGroupName, updateGroupDescription, updateGroupDuration, updateGroupFrequency, updateGroupLocation})(CreateGroup);
+export default connect(mapStateToProps, {
+  updateGroupName,
+  updateGroupDescription,
+  updateMeetingDuration,
+  updateMeetingFrequency,
+  updateMeetingLocation,
+  submitMeetingCreation,
+})(CreateGroup);
