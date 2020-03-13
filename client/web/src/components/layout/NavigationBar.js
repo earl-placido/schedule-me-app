@@ -32,6 +32,10 @@ export class NavigationBar extends Component {
     this.loginUser = this.loginUser.bind(this);
   }
 
+  componentDidMount() {
+    this.props.getGroupList();
+  }
+
   loginUser(response) {
     this.props.loginGoogle(response);
   }
