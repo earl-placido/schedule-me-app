@@ -13,7 +13,7 @@ import {
   Row,
   List
 } from "antd";
-import Icon from "@ant-design/icons";
+import { DownOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { toggleModal } from "../../actions/components/login/LoginModal.action";
 import {
@@ -40,21 +40,30 @@ export class NavigationBar extends Component {
     message.info("Logged out of account");
   }
 
+  chooseStyle(array, noDataStyle, listStyle) {
+    return array && array.length > 0 ? listStyle : noDataStyle;
+  }
+
   render() {
-    const { headerStyle, listStyle } = styles;
+    const { headerStyle, listStyle, noDataStyle } = styles;
     const groupMenu = (
       <List
+        locale={{ emptyText: "You have not joined any groups.." }}
         size="small"
         itemLayout="horizontal"
         dataSource={this.props.groupList}
+        style={
+          this.props.groupList && this.props.groupList.length > 0
+            ? listStyle
+            : noDataStyle
+        }
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar size={25} icon={<Icon type="usergroup-add" />} />}
+              avatar={<Avatar size={25} icon={<UsergroupAddOutlined />} />}
               title={
                 <a href={"/groups/" + item.GroupId + "/"}>{item.GroupName}</a>
               }
-              style={listStyle}
             />
           </List.Item>
         )}
@@ -69,6 +78,7 @@ export class NavigationBar extends Component {
 
     const userNavigation = this.props.isAuthenticated ? (
       <Dropdown.Button
+        href="/main"
         overlay={userMenu}
         icon={
           <Avatar
@@ -101,26 +111,24 @@ export class NavigationBar extends Component {
           style={{ lineHeight: "64px" }}
         ></Menu>
 
-        <Row gutter={3}>
-          <Col className="gutter-row" span={3}>
+        <Row>
+          <Col xs={6} sm={5} md={5} lg={4} xl={4}>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
               <Button>
-                Groups <Icon type="down" />
+                Groups <DownOutlined />
               </Button>
             </Dropdown>
           </Col>
-          <Col className="gutter-row" span={4}>
+          <Col xs={6} sm={7} md={5} lg={4} xl={4}>
             <Button type="primary" href="/createGroup">
               Create A Group
             </Button>
           </Col>
-          <Col span={4}>
+          <Col xs={6} sm={8} md={10} lg={12} xl={12}>
             <Button type="primary">Join A Group</Button>
           </Col>
-          <Col>
-            <div className="masthead-user" style={{ float: "right" }}>
-              {userNavigation}
-            </div>
+          <Col xs={3} sm={3} md={3} lg={3} xl={3}>
+            <div className="masthead-user">{userNavigation}</div>
           </Col>
         </Row>
       </Header>
@@ -137,6 +145,10 @@ const styles = {
 
   listStyle: {
     paddingRight: 40
+  },
+
+  noDataStyle: {
+    padding: 30
   }
 };
 

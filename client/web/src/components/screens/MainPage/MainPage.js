@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { Row, Card, List, Avatar, Divider, Typography } from "antd";
-import Icon from "@ant-design/icons";
+import { UsergroupAddOutlined } from "@ant-design/icons";
 import { getGroupList } from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
@@ -14,15 +14,15 @@ class MainPage extends Component {
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, titleStyle } = styles;
+    const { containerStyle, cardStyle } = styles;
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
-          <Row style={titleStyle}>
+          <Row justify="center">
             <Title level={4}>Your Groups</Title>
           </Row>
           <Divider orientation="center" />
-          <Row>
+          <Row justify="center">
             <List
               itemLayout="horizontal"
               dataSource={this.props.groupList}
@@ -30,7 +30,7 @@ class MainPage extends Component {
                 <List.Item>
                   <List.Item.Meta
                     avatar={
-                      <Avatar size={50} icon={<Icon type="usergroup-add" />} />
+                      <Avatar size={50} icon={<UsergroupAddOutlined />} />
                     }
                     title={
                       <a href={"/groups/" + item.GroupId + "/"}>
@@ -57,10 +57,6 @@ const styles = {
 
   cardStyle: {
     width: 800
-  },
-
-  titleStyle: {
-    textAlign: "center"
   }
 };
 

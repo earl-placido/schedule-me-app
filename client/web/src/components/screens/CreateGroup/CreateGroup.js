@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Steps, Row, Col, Card, Button } from "antd";
-import Icon from "@ant-design/icons";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -118,7 +118,7 @@ class CreateGroup extends Component {
                     disabled={this.props.currentPage === 0}
                     onClick={this.goPreviousPage.bind(this)}
                   >
-                    <Icon type="left" />
+                    <LeftOutlined />
                     Previous
                   </Button>
 
@@ -128,7 +128,7 @@ class CreateGroup extends Component {
                     onClick={this.goNextPage.bind(this)}
                   >
                     {this.props.currentPage !== 1 ? "Continue" : "Done"}
-                    <Icon type="right" />
+                    <RightOutlined />
                   </Button>
                 </div>
               )}
