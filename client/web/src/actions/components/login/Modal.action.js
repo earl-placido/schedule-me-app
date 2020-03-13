@@ -1,6 +1,5 @@
 export const TOGGLE_MODAL = "toggle_modal";
 
-
 export const toggleModal = value => {
   return {
     type: TOGGLE_MODAL,
