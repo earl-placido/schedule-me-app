@@ -20,6 +20,7 @@ import {
   loginGoogle,
   logoutGoogle
 } from "../../actions/components/screens/Auth.action";
+import { getGroupList } from "../../actions/components/layout/NavigationBar.action";
 
 const { Header } = Layout;
 
@@ -46,7 +47,11 @@ export class NavigationBar extends Component {
       <List
         size="small"
         itemLayout="horizontal"
-        dataSource={this.props.groupList}
+        dataSource={
+          this.props.groupList && this.props.groupList.length > 0
+            ? this.props.groupList
+            : []
+        }
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
@@ -145,13 +150,14 @@ const mapStateToProps = state => ({
   userName: state.auth.userName,
   displayPicURL: state.auth.displayPicURL,
   modalVisible: state.modalVisible,
-  groupList: state.MainPageReducer.groupList
+  groupList: state.NavigationBarReducer.groupList
 });
 
 const mapDispatchToProps = dispatch => ({
   logoutGoogle: () => dispatch(logoutGoogle()),
   loginGoogle: response => dispatch(loginGoogle(response)),
-  toggleModal: value => dispatch(toggleModal(value))
+  toggleModal: value => dispatch(toggleModal(value)),
+  getGroupList: () => dispatch(getGroupList())
 });
 
 NavigationBar.propTypes = {
@@ -163,7 +169,8 @@ NavigationBar.propTypes = {
   modalVisible: PropTypes.any,
   loginGoogle: PropTypes.func,
   logoutGoogle: PropTypes.func,
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
+  getGroupList: PropTypes.func
 };
 
 export default compose(
