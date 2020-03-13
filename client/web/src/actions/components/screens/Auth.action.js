@@ -41,14 +41,34 @@ const logoutSuccess = () => {
   };
 };
 
-export const loginGoogle = response => {
+const authData = (type, response) => {
+  const types = {
+    google: {
+      data: { access_token: response.accessToken }
+    },
+
+    login: {
+      data: response
+    },
+
+    signup: {
+      data: response
+    }
+  };
+
+  return types[type];
+};
+
+export const authenticate = (type, response) => {
   return dispatch => {
     dispatch(loginRequest());
+
     const options = {
-      url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`,
+      url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/` + type,
       method: "POST",
-      data: { access_token: response.accessToken }
+      data: authData(type, response).data
     };
+
     axios(options)
       .then(res => {
         if (res.status === responses.SUCCESS) {
@@ -61,11 +81,13 @@ export const loginGoogle = response => {
           throw new Error(res.err);
         }
       })
-      .catch(err => dispatch(loginError(err.message)));
+      .catch(err => {
+        dispatch(loginError(err.response.data.err));
+      });
   };
 };
 
-export const logoutGoogle = () => {
+export const logout = () => {
   return dispatch => {
     localStorage.removeItem("token");
     localStorage.removeItem("userName");
@@ -89,14 +111,15 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isAuthenticated: false,
-        message: "Logging in"
+        message: "Authenticating"
       };
 
     case LOGIN_SUCCESS:
       return {
         ...state,
+        errored: false,
         isAuthenticated: true,
-        message: "Login is successful",
+        message: "Login is successful!",
         token: action.payload.token,
         userName: action.payload.userName,
         displayPicURL: action.payload.displayPicURL
