@@ -41,42 +41,37 @@ const logoutSuccess = () => {
   };
 };
 
+const authData = (type, response) => {
+  const types = {
+    google: {
+      data: { access_token: response.accessToken }
+    },
+
+    login: {
+      data: response
+    },
+
+    signup: {
+      data: response
+    }
+  };
+
+  return types[type];
+};
+
 export const authenticate = (type, response) => {
   return dispatch => {
     dispatch(loginRequest());
-    let options = {};
-    switch (type) {
-      case "google":
-        options = {
-          url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/google`,
-          method: "POST",
-          data: { access_token: response.accessToken }
-        };
-        break;
 
-      case "login":
-        options = {
-          url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/login`,
-          method: "POST",
-          data: response
-        };
-        break;
+    const options = {
+      url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/` + type,
+      method: "POST",
+      data: authData(type, response).data
+    };
 
-      case "signup":
-        options = {
-          url: `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/auth/signup`,
-          method: "POST",
-          data: response
-        };
-        break;
-
-      default:
-        dispatch(loginError("Unsuported authentication type specified!"));
-    }
-
+    console.log(options);
     axios(options)
       .then(res => {
-        console.log(res);
         if (res.status === responses.SUCCESS) {
           const token = res.headers["x-auth-token"];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
@@ -84,12 +79,10 @@ export const authenticate = (type, response) => {
 
           dispatch(loginSuccess(userName, res.data.displayPicURL, token));
         } else {
-          console.log(res.err);
           throw new Error(res.err);
         }
       })
       .catch(err => {
-        console.log(err.response.data);
         dispatch(loginError(err.response.data.err));
       });
   };
