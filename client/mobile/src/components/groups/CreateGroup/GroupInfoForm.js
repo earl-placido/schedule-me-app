@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {Content} from 'native-base';
 import t from 'tcomb-form-native';
 
@@ -9,7 +9,7 @@ const Form = t.form.Form;
 const groupOptions = {
   fields: {
     name: {
-      error: 'Please input group name'
+      error: 'Please input group name',
     },
     description: {
       multiline: true,
@@ -22,15 +22,15 @@ const groupOptions = {
             height: 150,
             textAlignVertical: 'top',
           },
-        }
-      }
+        },
+      },
     },
-  }
-}
+  },
+};
 
 const Group = t.struct({
   name: t.String,
-  description: t.maybe(t.String)
+  description: t.maybe(t.String),
 });
 
 export default class GroupInfoForm extends Component {
@@ -42,17 +42,20 @@ export default class GroupInfoForm extends Component {
     if (value) {
       this.props.handleGroupDescription(value.description);
     }
-  }
+  };
 
   render() {
     return (
       <Content padder>
-        <Form 
-          ref={_form => this.form = _form}
-          options={groupOptions} 
+        <Form
+          ref={_form => (this.form = _form)}
+          options={groupOptions}
           type={Group}
           onChange={this.handleGroupInfoChange}
-          value={{name: this.props.groupName, description: this.props.groupDescription}}
+          value={{
+            name: this.props.groupName,
+            description: this.props.groupDescription,
+          }}
         />
       </Content>
     );
@@ -63,5 +66,5 @@ GroupInfoForm.propTypes = {
   handleGroupName: PropTypes.func,
   handleGroupDescription: PropTypes.func,
   groupName: PropTypes.any,
-  groupDescription: PropTypes.any
+  groupDescription: PropTypes.any,
 };

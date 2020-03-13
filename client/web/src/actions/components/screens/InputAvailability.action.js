@@ -39,7 +39,6 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     });
     return;
   }
-
   const newAvailableDays = convertAvailabilityToDays(
     availableDays,
     availability
