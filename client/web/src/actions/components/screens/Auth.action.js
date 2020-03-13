@@ -69,7 +69,6 @@ export const authenticate = (type, response) => {
       data: authData(type, response).data
     };
 
-    console.log(options);
     axios(options)
       .then(res => {
         if (res.status === responses.SUCCESS) {
