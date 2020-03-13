@@ -5,6 +5,12 @@ import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem} from 'native-base';
 
 import PropTypes from 'prop-types';
+import {
+  getGroupInfo,
+  getGroupMembers,
+} from '../../actions/components/screens/GroupDetail.action';
+
+import {connect} from 'react-redux';
 
 const userList = [
   {
@@ -50,7 +56,12 @@ function DisplayUserDescription({title}) {
   );
 }
 
-export default class GroupDetail extends Component {
+export class GroupDetail extends Component {
+  componentDidMount() {
+    this.props.getGroupMembers(1000005);
+    // console.log(this.props.getGroupMembers(1000005));
+  }
+
   render() {
     return (
       <Container style={styles.containerStyle}>
@@ -117,3 +128,17 @@ const styles = StyleSheet.create({
 DisplayUserDescription.propTypes = {
   title: PropTypes.string.isRequired,
 };
+
+GroupDetail.propTypes = {
+  getGroupMembers: PropTypes.func,
+};
+
+const mapStateToProps = ({GroupDetailReducer}) => {
+  const {groupMembers} = GroupDetailReducer;
+  return {groupMembers};
+};
+
+export default connect(mapStateToProps, {
+  getGroupInfo,
+  getGroupMembers,
+})(GroupDetail);
