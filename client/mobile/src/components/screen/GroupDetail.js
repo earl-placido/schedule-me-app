@@ -60,7 +60,6 @@ export default class GroupDetail extends Component {
     };
   }
   showDialog(user) {
-    //Alert.alert(user);
     this.setState({currUser: user, dialogVisible: true});
   }
 
