@@ -78,7 +78,7 @@ class Login extends Component {
         this.props.loginGoogle(response);
         setTimeout(() => {
           this.attemptLogin();
-        }, 2000);
+        }, 3000);
       });
     });
   };
