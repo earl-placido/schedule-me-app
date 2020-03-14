@@ -14,6 +14,7 @@
 
 ## What to put for the REACT_APP_SERVER_ENDPOINT variable:
 * Normally, you could just use the following server endpoint:
+
   `http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/`
 
   * **Note**: This is our shared development server, so any changes you make will be visible to everyone.  If you want to use a local server, OR if you have made changes to the backend server that is not yet in our develop branch, you must use a different server endpoint. 
