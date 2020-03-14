@@ -10,18 +10,23 @@
     REACT_APP_SERVER_ENDPOINT=<See Possible Server Endpoints>
     REACT_APP_GOOGLE_CLIENT_ID=<Client ID from Google API>
     ```
-    
 6. `npx react-native run-android`
 
 ## What to put for the REACT_APP_SERVER_ENDPOINT variable:
-* If you are using an emulator, use the following server endpoint:
+* Normally, you could just use the following server endpoint:
+  `http://schedule-me-up-dev.aufeskudeq.us-east-2.elasticbeanstalk.com/`
+
+  * **Note**: This is our shared development server, so any changes you make will be visible to everyone.  If you want to use a local server, OR if you have made changes to the backend server that is not yet in our develop branch, you must use a different server endpoint. 
+
+## Running our backend server locally:
+* If you are using an emulator and want to run a local server, use the following server endpoint:
 
   `http://10.0.2.2:8000/`
   
-  * **Note**: This will connect your android emulator to your local web server.
+  * **Note**: This should connect your android emulator to your local web server.
  
-* If you are using a physical device, use the following server endpoint:
+* If you are using a physical device and want to run a local server, use the following server endpoint:
 
   `http://<IP Address>:8000/`
   
-  * **Note**:  The ip address you put MUST be the same as the one you are using for your laptop/computer and phone.  If your two devices are using different ip addresses, you may not be able to connect to the local server.  
+  * **Note**:  The ip address you put MUST be the same as the one you are using for your computer and phone.  If your two devices are using different ip addresses, you may not be able to connect to the local server.  
