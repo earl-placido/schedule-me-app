@@ -52,11 +52,8 @@ export class NavigationBar extends Component {
       <List
         size="small"
         itemLayout="horizontal"
-        dataSource={
-          this.props.groupList && this.props.groupList.length > 0
-            ? this.props.groupList
-            : []
-        }
+        dataSource={this.props.groupList}
+        selectable={"true"}
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
