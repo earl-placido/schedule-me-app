@@ -11,7 +11,10 @@ import {
   Avatar
 } from "antd";
 import Icon from "@ant-design/icons";
-import { getGroupMembers } from "../../../actions/components/screens/GroupDetail.action";
+import {
+  getGroupMembers,
+  getGroup
+} from "../../../actions/components/screens/GroupDetail.action";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -19,7 +22,9 @@ import PropTypes from "prop-types";
 
 class GroupDetail extends Component {
   componentDidMount() {
+    this.props.getGroup(this.props.match.params.id);
     this.props.getGroupMembers(this.props.match.params.id);
+    console.log(this);
   }
 
   render() {
@@ -31,7 +36,7 @@ class GroupDetail extends Component {
       <div style={containerStyle}>
         <Card style={cardStyle}>
           <Row style={titleStyle}>
-            <Title level={2}>Group: Equilibrium</Title>
+            <Title level={2}>Group: {this.props.group.GroupName}</Title>
             <h3>Sharable Code</h3>
             <Input value={this.props.match.params.id} />
           </Row>
@@ -89,17 +94,19 @@ const styles = {
 };
 
 const mapStateToProps = ({ GroupDetailReducer }) => {
-  const { groupMembers } = GroupDetailReducer;
-  return { groupMembers };
+  const { groupMembers, group } = GroupDetailReducer;
+  return { groupMembers, group };
 };
 
 GroupDetail.propTypes = {
   location: PropTypes.any,
   match: PropTypes.any,
   groupMembers: PropTypes.any,
-  getGroupMembers: PropTypes.func
+  group: PropTypes.any,
+  getGroupMembers: PropTypes.func,
+  getGroup: PropTypes.func
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getGroupMembers })(GroupDetail)
+  connect(mapStateToProps, { getGroupMembers, getGroup })(GroupDetail)
 );
