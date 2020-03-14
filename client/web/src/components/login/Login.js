@@ -10,17 +10,17 @@ import { withRouter, Redirect } from "react-router";
 
 import PropTypes from "prop-types";
 
-import { loginGoogle } from "../../actions/components/screens/Auth.action";
+import { authenticate } from "../../actions/components/screens/Auth.action";
 
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.loginUser = this.loginUser.bind(this);
+    this.loginWithGoogle = this.loginWithGoogle.bind(this);
     this.state = { signUpSelected: false };
   }
 
-  loginUser(response) {
-    this.props.loginGoogle(response);
+  loginWithGoogle(response) {
+    this.props.authenticate("google", response);
   }
 
   renderGoogleButton(text) {
@@ -38,7 +38,7 @@ class Login extends Component {
           </Button>
         )}
         buttonText={text}
-        onSuccess={this.loginUser}
+        onSuccess={this.loginWithGoogle}
         onFailure={this.onFailure}
       />
     );
@@ -47,7 +47,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        {this.props.isAuthenticated && this.props.location.pathname ? (
+        {this.props.isAuthenticated && this.props.location.pathname === "/" ? (
           <Redirect to="/main" />
         ) : null}
 
@@ -64,7 +64,6 @@ class Login extends Component {
                   this.setState({ signUpSelected: true });
                 }}
               >
-                {" "}
                 Sign Up
               </Button>
             </p>
@@ -83,7 +82,6 @@ class Login extends Component {
                   this.setState({ signUpSelected: false });
                 }}
               >
-                {" "}
                 Log In
               </Button>
             </p>
@@ -99,11 +97,11 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  loginGoogle: response => dispatch(loginGoogle(response))
+  authenticate: (type, data) => dispatch(authenticate(type, data))
 });
 
 Login.propTypes = {
-  loginGoogle: PropTypes.func,
+  authenticate: PropTypes.func,
   history: PropTypes.any,
   location: PropTypes.any,
   isAuthenticated: PropTypes.any
