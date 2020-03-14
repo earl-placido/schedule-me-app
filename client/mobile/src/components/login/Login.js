@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, ToastAndroid} from 'react-native';
-import {View, Button, Text, Card, Spinner} from 'native-base';
-import Modal from 'react-native-modal';
+import {StyleSheet} from 'react-native';
+import {View, Button, Text, Spinner, Toast} from 'native-base';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 import Config from 'react-native-config';
@@ -17,6 +16,7 @@ import {
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
+import Divider from '../styles/Divider';
 
 GoogleSignin.configure({
   webClientId: Config.REACT_APP_GOOGLE_CLIENT_ID,
@@ -47,6 +47,7 @@ class Login extends Component {
   state = {
     isLoginVisible: false,
     isSpinnerVisible: false,
+    isSigninInProgress: false,
   };
 
   toggleLogin = () => {
@@ -57,23 +58,37 @@ class Login extends Component {
     this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
   };
 
+  toggleSignInProgress = () => {
+    this.setState({isSigninInProgress: !this.state.isSigninInProgress});
+  };
+
+  showToast = message => {
+    Toast.show({
+      text: message,
+      buttonText: 'OK',
+      duration: 3000,
+    });
+  };
+
   googleLogin = () => {
     GoogleSignin.signIn().then(() => {
+      this.toggleSignInProgress();
+
       GoogleSignin.getTokens().then(response => {
         this.props.loginGoogle(response);
         setTimeout(() => {
           this.attemptLogin();
-          this.toggleSpinner();
         }, 2000);
       });
     });
-    this.toggleSpinner();
   };
 
   userLogin = () => {
     const value = this.form.getValue();
     if (value) {
       this.props.loginUser(value.email, value.password);
+      this.toggleSignInProgress();
+
       setTimeout(() => {
         this.attemptLogin();
         this.toggleSpinner();
@@ -84,77 +99,71 @@ class Login extends Component {
 
   attemptLogin = () => {
     if (this.props.isAuthenticated) {
-      ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
+      this.showToast(this.props.message);
       this.props.navigation.navigate('Create Group');
       this.toggleLogin();
     } else {
       if (this.props.message.errors) {
-        ToastAndroid.show(this.props.message.errors[0].msg, ToastAndroid.SHORT);
+        this.showToast(this.props.message.errors[0].msg);
       } else if (this.props.message.err) {
-        ToastAndroid.show(this.props.message.err, ToastAndroid.SHORT);
+        this.showToast(this.props.message.err);
       }
     }
+    this.toggleSignInProgress();
   };
 
   render() {
     return (
-      <View>
-        <Button large style={styles.buttonStyle} onPress={this.toggleLogin}>
-          <Text>Log in</Text>
+      <View style={styles.container}>
+        <Form
+          ref={_form => (this.form = _form)}
+          options={userOptions}
+          type={user}
+          value={{
+            email: this.props.loginFields.email,
+            password: this.props.loginFields.password,
+          }}
+        />
+
+        <Button
+          disabled={this.state.isSigninInProgress}
+          small
+          block
+          primary
+          onPress={() => this.userLogin()}>
+          <Text>Log In</Text>
+          {this.state.isSpinnerVisible && <Spinner color="white" />}
         </Button>
 
-        <Modal
-          isVisible={this.state.isLoginVisible}
-          onBackdropPress={this.toggleLogin}>
-          <Card style={styles.modalStyle}>
-            <View style={styles.googleButtonStyle}>
-              <GoogleSigninButton
-                style={styles.googleButtonStyle}
-                size={GoogleSigninButton.Size.Standard}
-                onPress={() => {
-                  this.googleLogin();
-                }}
-              />
-              <Text>or</Text>
-            </View>
-
-            <Form
-              ref={_form => (this.form = _form)}
-              options={userOptions}
-              type={user}
-              value={{
-                email: this.props.loginFields.email,
-                password: this.props.loginFields.password,
+        <View>
+          <Divider message="or"></Divider>
+          <View style={styles.googleContainer}>
+            <GoogleSigninButton
+              disabled={this.state.isSigninInProgress}
+              style={styles.googleButton}
+              size={GoogleSigninButton.Size.Wide}
+              onPress={() => {
+                this.googleLogin();
               }}
             />
-
-            <Button
-              transparent
-              onPress={() => {
-                this.userLogin();
-              }}>
-              <Text>Submit</Text>
-              {this.state.isSpinnerVisible && <Spinner color="blue" />}
-            </Button>
-          </Card>
-        </Modal>
+          </View>
+        </View>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  modalStyle: {
-    padding: 20,
+  container: {
+    margin: 10,
   },
-  buttonStyle: {
-    justifyContent: 'center',
-    marginVertical: 25,
-    marginHorizontal: 50,
-  },
-  googleButtonStyle: {
+  googleContainer: {
     alignItems: 'center',
-    marginBottom: 10,
+  },
+  googleButton: {
+    width: 200,
+    height: 40,
+    alignItems: 'center',
   },
 });
 
