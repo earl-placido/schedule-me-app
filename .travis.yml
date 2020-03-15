@@ -88,9 +88,14 @@ matrix:
 
         before_install:
           - yes | sdkmanager "platforms;android-26"
+          - nvm install 6
+          - node --version
+
+        install:
+          - npm install
 
         script:
-          - ./gradlew assembleDebug
+          - cd android && ./gradlew assembleDebug
 
         deploy:
           provider: releases
