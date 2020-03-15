@@ -54,3 +54,4 @@ A scheduler application for a group project in COMP 4350 at the University of Ma
 - [Docs](https://github.com/Syndrical/scheduler-app/tree/develop/Docs)
   - [Technologies used](https://github.com/Syndrical/scheduler-app/blob/develop/Docs/technologies-used.md)
   - [Retrospective](https://github.com/Syndrical/scheduler-app/blob/develop/Docs/retrospective.md)
+  - [Information on Version Control Flow/Contributing](https://github.com/Syndrical/scheduler-app/blob/develop/Docs/contributing.md)

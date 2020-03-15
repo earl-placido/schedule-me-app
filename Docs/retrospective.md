@@ -38,7 +38,11 @@ This retrospective was performed for the last month of development.
 
 ## Steps to take
 
-- Setup a "stand-up" channel in Slack. Our Trello can be hard to navigate and is a lot of information to take in. Having it in Slack gives us a quick point of viewing and since a lot of our discussion already happens on Slack, a place to quickly discuss and address blockers.
+- Setup a "stand-up" channel in Slack. 
+  - Our Trello can be hard to navigate and is a lot of information to take in. Having it in Slack gives us a quick point of viewing and since a lot of our discussion already happens on Slack, a place to quickly discuss and address blockers.
+- Make smaller pull requests.
+  -  Smaller PRs make it easier to review and understand code, which can help acquaint everyone to different areas of the code base. Smaller PRs also update everyone sooner on the work that is being done.
+- Continue asking for help and collaborating.
 
 
 
