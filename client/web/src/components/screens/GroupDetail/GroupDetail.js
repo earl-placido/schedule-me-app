@@ -7,14 +7,16 @@ import {
   List,
   Divider,
   Typography,
+  message,
   Input,
   Avatar
 } from "antd";
-import Icon from "@ant-design/icons";
 import {
   getGroupMembers,
   getGroup
 } from "../../../actions/components/screens/GroupDetail.action";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -24,12 +26,15 @@ class GroupDetail extends Component {
   componentDidMount() {
     this.props.getGroup(this.props.match.params.id);
     this.props.getGroupMembers(this.props.match.params.id);
-    console.log(this);
+  }
+
+  success() {
+    message.success("Code copied!");
   }
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, titleStyle, buttonStyle } = styles;
+    const { containerStyle, cardStyle, inputStyle } = styles;
     const inputAvailabilityLink = `${this.props.location.pathname}input/`;
 
     return (
@@ -40,16 +45,36 @@ class GroupDetail extends Component {
             <h3>Sharable Code</h3>
             <Input value={this.props.match.params.id} />
           </Row>
+          <Row justify="center">
+            <Col>
+              <Input
+                addonBefore={"Sharable Code"}
+                disabled={true}
+                value={this.props.match.params.id}
+                style={inputStyle}
+              />
+            </Col>
+            <Col offset={1}>
+              <CopyToClipboard
+                onCopy={() => this.success()}
+                text={this.props.match.params.id}
+              >
+                <Button>Copy Code</Button>
+              </CopyToClipboard>
+            </Col>
+          </Row>
           <Divider orientation="center" />
-          <Row>
+          <Row justify="center">
             <Title level={3}>Group Members</Title>
+          </Row>
+          <Row justify="center">
             <List
               itemLayout="horizontal"
               dataSource={this.props.groupMembers}
               renderItem={item => (
                 <List.Item>
                   <List.Item.Meta
-                    avatar={<Avatar size={25} icon={<Icon type="user" />} />}
+                    avatar={<Avatar size={25} icon={<UserOutlined />} />}
                     title={item.UserFName + " " + item.UserLName}
                   />
                 </List.Item>
@@ -57,17 +82,13 @@ class GroupDetail extends Component {
             />
           </Row>
           <Divider orientation="center" />
-          <Row>
-            <Col>
-              <Button
-                type="primary"
-                style={buttonStyle}
-                href={inputAvailabilityLink}
-              >
-                Input Your Availability
-              </Button>
-            </Col>
-          </Row>
+          <Button
+            type="primary"
+            href={inputAvailabilityLink}
+            style={{ float: "right" }}
+          >
+            Input Your Availability
+          </Button>
         </Card>
       </div>
     );
@@ -84,12 +105,8 @@ const styles = {
     width: 800
   },
 
-  titleStyle: {
-    textAlign: "center"
-  },
-
-  buttonStyle: {
-    float: "right"
+  inputStyle: {
+    width: 200
   }
 };
 
