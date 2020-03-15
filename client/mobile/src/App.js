@@ -8,14 +8,15 @@ import {
   Title,
   Button,
   Text,
+  Root,
 } from 'native-base';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Main from './components/screen/Main';
-import CreateGroup from './components/screen/CreateGroup';
-import GroupDetail from './components/screen/GroupDetail';
+import Home from './components/screens/Home/Home';
+import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+import GroupDetail from './components/screens/GroupDetail/GroupDetail';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -54,45 +55,53 @@ function GroupDetailScreen({navigation}) {
 class App extends Component {
   render() {
     return (
-      <NativeRouter>
-        <Container>
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName={
-                !this.props.isAuthenticated ? 'Main' : 'Group Detail'
-              }
-              screenOptions={{
-                header: props => {
-                  return (
-                    <Header>
-                      {this.props.isAuthenticated ? (
-                        <Button
-                          onPress={() => {
-                            GoogleSignin.revokeAccess();
-                            GoogleSignin.signOut();
-                            this.props.logoutUser();
-                            props.navigation.navigate('Main');
-                          }}>
-                          <Text>{this.props.userName}</Text>
-                        </Button>
-                      ) : (
-                        <></>
-                      )}
-                    </Header>
-                  );
-                },
-              }}>
-              <Stack.Screen name="Main" component={Main} />
-              <Stack.Screen name="Create Group" component={CreateGroupScreen} />
-              <Stack.Screen name="Group Detail" component={GroupDetailScreen} />
-            </Stack.Navigator>
-          </NavigationContainer>
+      <Root>
+        <NativeRouter>
+          <Container>
+            <NavigationContainer>
+              <Stack.Navigator
+                initialRouteName={
+                  !this.props.isAuthenticated ? 'Home' : 'Group Detail'
+                }
+                screenOptions={{
+                  header: props => {
+                    return (
+                      <Header>
+                        {this.props.isAuthenticated ? (
+                          <Button
+                            onPress={() => {
+                              GoogleSignin.revokeAccess();
+                              GoogleSignin.signOut();
+                              this.props.logoutUser();
+                              props.navigation.navigate('Home');
+                            }}>
+                            <Text>{this.props.userName}</Text>
+                          </Button>
+                        ) : (
+                          <></>
+                        )}
+                      </Header>
+                    );
+                  },
+                }}>
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen
+                  name="Create Group"
+                  component={CreateGroupScreen}
+                />
+                <Stack.Screen
+                  name="Group Detail"
+                  component={GroupDetailScreen}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
 
-          <Footer style={styles.footerStyle}>
-            <Title>schedule-me-up</Title>
-          </Footer>
-        </Container>
-      </NativeRouter>
+            <Footer style={styles.footerStyle}>
+              <Title>schedule-me-up</Title>
+            </Footer>
+          </Container>
+        </NativeRouter>
+      </Root>
     );
   }
 }

@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {View} from 'react-native';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
-import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm';
-import GroupMeetingForm from '../groups/CreateGroup/GroupMeetingForm';
-import GroupShareCodeForm from '../groups/CreateGroup/GroupShareCodeForm';
+import GroupInfoForm from '../../groups/GroupInfoForm';
+import GroupMeetingForm from '../../groups/GroupMeetingForm';
+import GroupShareCodeForm from '../../groups/GroupShareCodeForm';
 
 import PropTypes from 'prop-types';
 import {
@@ -14,7 +14,7 @@ import {
   updateMeetingFrequency,
   updateMeetingLocation,
   submitMeetingCreation,
-} from '../../actions/components/screens/CreateGroup.action';
+} from '../../../actions/components/screens/CreateGroup.action';
 import {connect} from 'react-redux';
 
 const progressStepsStyle = {

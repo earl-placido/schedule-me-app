@@ -19,7 +19,7 @@ const groupOptions = {
           ...Form.stylesheet.textbox,
           normal: {
             ...Form.stylesheet.textbox.normal,
-            height: 150,
+            height: 100,
             textAlignVertical: 'top',
           },
         },
