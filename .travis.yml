@@ -97,9 +97,11 @@ matrix:
           - node --version
 
         install:
+          - ant dep
           - npm install
 
         script:
+          - ant -version 
           - (cd android && ./gradlew assembleDebug)
 
         deploy:
