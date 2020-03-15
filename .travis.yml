@@ -86,20 +86,20 @@ matrix:
           - sys-img-x86-android-26
           - sys-img-armeabi-v7a-android-17
 
-          before_install:
-            - yes | sdkmanager "platforms;android-26"
+        before_install:
+          - yes | sdkmanager "platforms;android-26"
 
-          script:
-              - ./gradlew assembleDebug
+        script:
+          - ./gradlew assembleDebug
 
-          deploy:
-            provider: releases
-            api_key: $GITHUB_API_KEY
-            file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
-            skip_cleanup: true
-            prerelease: true
-            on:
-              branch: deploy-apk
+        deploy:
+          provider: releases
+          api_key: $GITHUB_API_KEY
+          file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
+          skip_cleanup: true
+          prerelease: true
+          on:
+            branch: deploy-apk
           
-          after_deploy:
-            - rm -rf "/client/mobile/android/app/build/outputs"
+        after_deploy:
+          - rm -rf "/client/mobile/android/app/build/outputs"
