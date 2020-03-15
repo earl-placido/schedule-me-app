@@ -18,7 +18,7 @@ class GroupMeetingForm extends Component {
   }
 
   render() {
-    const { errorText } = styles;
+    const { errorText, durationStyle } = styles;
 
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
@@ -27,10 +27,11 @@ class GroupMeetingForm extends Component {
             <div>
               <TimePicker
                 format={"HH:mm"}
-                placeholder="Duration"
+                placeholder="Duration (HH:mm)"
                 value={this.props.duration}
                 onChange={this.changeDuration.bind(this)}
                 id="duration"
+                style={durationStyle}
               />
               {!this.props.success && (
                 <h1 style={errorText}>Please input meeting duration.</h1>
@@ -74,6 +75,10 @@ const styles = {
     fontSize: 12,
     color: "red",
     marginLeft: 10
+  },
+
+  durationStyle: {
+    width: 200
   }
 };
 
