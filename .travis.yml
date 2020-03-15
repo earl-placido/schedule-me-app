@@ -86,6 +86,11 @@ matrix:
           - sys-img-x86-android-26
           - sys-img-armeabi-v7a-android-17
 
+        addons:
+          apt:
+            packages:
+              ant
+
         before_install:
           - yes | sdkmanager "platforms;android-26"
           - nvm install 6
@@ -93,8 +98,6 @@ matrix:
 
         install:
           - npm install
-          - (cd android && npm install)
-          - (cd android && npm install ant)
 
         script:
           - (cd android && ./gradlew assembleDebug)
