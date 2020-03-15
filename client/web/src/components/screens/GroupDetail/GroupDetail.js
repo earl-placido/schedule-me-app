@@ -40,10 +40,8 @@ class GroupDetail extends Component {
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
-          <Row style={titleStyle}>
+          <Row justify="center">
             <Title level={2}>Group: {this.props.group.GroupName}</Title>
-            <h3>Sharable Code</h3>
-            <Input value={this.props.match.params.id} />
           </Row>
           <Row justify="center">
             <Col>
