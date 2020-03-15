@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, ToastAndroid} from 'react-native';
-import {View, Button, Text, Card, Spinner} from 'native-base';
+import {StyleSheet, Alert} from 'react-native';
+import {View, Button, Text, Card, Spinner, Toast} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
@@ -56,6 +56,14 @@ class CreateAccount extends Component {
     this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
   };
 
+  showToast = message => {
+    Toast.show({
+      text: message,
+      buttonText: 'OK',
+      duration: 3000,
+    });
+  };
+
   userSignup = () => {
     const value = this.form.getValue();
     if (value) {
@@ -76,26 +84,35 @@ class CreateAccount extends Component {
 
   attemptSignup = () => {
     if (this.props.isAuthenticated) {
-      ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
+      this.showToast(this.props.message);
       this.props.navigation.navigate('Create Group');
       this.toggleCreate();
     } else {
       if (this.props.message.errors) {
-        ToastAndroid.show(this.props.message.errors[0].msg, ToastAndroid.SHORT);
+        Alert.alert(this.props.message.errors[0].msg);
       } else if (this.props.message.err) {
-        ToastAndroid.show(this.props.message.err, ToastAndroid.SHORT);
+        Alert.alert(this.props.message.err);
       } else if (this.props.message) {
-        ToastAndroid.show(this.props.message, ToastAndroid.SHORT);
+        Alert.alert(this.props.message);
       }
     }
   };
 
   render() {
     return (
-      <View>
-        <Button large style={styles.buttonStyle} onPress={this.toggleCreate}>
-          <Text>Create Account</Text>
-        </Button>
+      <View style={{margin: 5}}>
+        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'center'}}>
+          <View>
+            <Text> {"Don't"} have an account? </Text>
+          </View>
+          <View>
+            <Text
+              style={{color: '#3F51B5'}}
+              onPress={() => this.toggleCreate()}>
+              Sign Up
+            </Text>
+          </View>
+        </View>
 
         <Modal
           isVisible={this.state.isCreateVisible}
@@ -113,13 +130,9 @@ class CreateAccount extends Component {
                 confirmPassword: this.props.signupFields.confirmPassword,
               }}
             />
-            <Button
-              transparent
-              onPress={() => {
-                this.userSignup();
-              }}>
+            <Button small block primary onPress={() => this.userSignup()}>
               <Text>Submit</Text>
-              {this.state.isSpinnerVisible && <Spinner color="blue" />}
+              {this.state.isSpinnerVisible && <Spinner color="white" />}
             </Button>
           </Card>
         </Modal>
