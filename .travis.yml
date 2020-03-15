@@ -95,7 +95,7 @@ matrix:
           - npm install
 
         script:
-          - cd android && ./gradlew assembleDebug
+          - (cd android && ./gradlew assembleDebug)
 
         deploy:
           provider: releases
