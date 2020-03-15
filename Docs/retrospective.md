@@ -31,8 +31,8 @@ This retrospective was performed for the last month of development.
   - Some people have worked more on the project than others
   - Needed more guidance on how things worked
 - Lack of consistency between mobile and web
+- Our MVP/earliest usable product is quite large so we have not yet defined a working release as certain components are dependent on features that are not yet implemented
 - This is the case with all group projects, but communication could have been done better early on. I don't think anyone is to blame for lapses in communication. As with many group projects, there are many implicit expectations we individually have that might not get fulfilled and that's okay. All part of the learning process.
-- I wish I had taken leadership sooner. I was hesitant to cause tension in the group, but by now I see that people do listen to me and I could have better organized us sooner and defined smaller, more meaningful, and more concrete tasks to each person.
 
 
 
@@ -53,5 +53,7 @@ This retrospective was performed for the last month of development.
     - Untapped developer time as devs waited for setup to be done
     - A lot of us did not feel invested in the project early on
     - Once setup was ready, those of us who hadn't participated had a steep learning curve and took a long time to get settled into coding features
-  - Peer sessions (with the less knowledgeable leading the coding) we did recently proved that although some developer time is not maximized in the short run, it works out better in the longer run
-
+  - Peer sessions (with the less knowledgeable leading the coding) we did recently proved that although some developer time is not maximized in the short run, it works out better in the longer run.
+- We should have attempted to define a smaller MVP/earliest usable/testable product. 
+  - With this, it would have been easier to define smaller, more meaningful, and more concrete tasks to each person in the group. It might have also increased developer investment in the project and provided a sense of accomplishment and progress throughout. 
+  - Defining a smaller MVP could have also provided us a chance to establish earlier and more concrete deadlines to measure our progress and motivate those of us who like working towards a deadline.
