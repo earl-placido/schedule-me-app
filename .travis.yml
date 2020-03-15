@@ -9,6 +9,7 @@ matrix:
       cache:
         directories:
           - ./client/web/node_modules
+          - ./client/mobile/node_modules
           - ./server/node_modules
       before_install:
         - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production)
