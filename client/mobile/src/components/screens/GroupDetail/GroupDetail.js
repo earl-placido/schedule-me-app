@@ -36,7 +36,7 @@ const userList = [
 const actions = [
   {
     text: 'Input Your Availability',
-    icon: require('../../assets/personIcon.png'),
+    icon: require('../../../assets/personIcon.png'),
     name: 'inputAvalibility',
     position: 1,
   },
