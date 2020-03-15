@@ -93,6 +93,8 @@ matrix:
 
         install:
           - npm install
+          - (cd android && npm install)
+          - (cd android && npm install ant)
 
         script:
           - (cd android && ./gradlew assembleDebug)
