@@ -16,8 +16,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import Main from './components/screen/Main';
 import CreateGroup from './components/screen/CreateGroup';
 //import GroupDetail from './components/screen/GroupDetail';
-//import GroupCode from './components/screen/GroupCode';
-import GroupList from './components/screen/GroupList';
+import GroupCode from './components/screen/GroupCodeForm';
+//import GroupList from './components/screen/GroupList';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -47,7 +47,7 @@ function GroupDetailScreen({navigation}) {
       <Button onPress={() => navigation.navigate('Create Group')}>
         <Text>Go to create group</Text>
       </Button>
-      <GroupList />
+      <GroupCode />
       <Content />
     </Container>
   );
