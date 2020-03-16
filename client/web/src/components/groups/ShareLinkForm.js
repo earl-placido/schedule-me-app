@@ -16,18 +16,18 @@ class ShareLinkForm extends Component {
 
   render() {
     const { Title } = Typography;
-    const { buttonStyle } = styles;
+    const { marginTop20, marginTop15 } = styles;
     return (
       <div className="center-container">
         <Row justify="center">
-          <h3>
-            Your group has been created! The code for the group can be found
-            here:
-          </h3>
+          <h3>Your group has been created!</h3>
         </Row>
         <Row justify="center">
-          <Col>
-            <Title level={3}>
+          <h3>Share this code for others to join the group:</h3>
+        </Row>
+        <Row justify="center">
+          <Col offset={2}>
+            <Title level={2} style={marginTop15}>
               {this.retrieveCodeFromLink(this.props.link)}
             </Title>
           </Col>
@@ -36,11 +36,11 @@ class ShareLinkForm extends Component {
               onCopy={() => this.success()}
               text={this.retrieveCodeFromLink(this.props.link)}
             >
-              <Button icon={<CopyOutlined />} />
+              <Button style={marginTop20} icon={<CopyOutlined />} />
             </CopyToClipboard>
           </Col>
         </Row>
-        <Row justify="center" style={buttonStyle}>
+        <Row justify="center" style={marginTop15}>
           <Button type="primary" href={this.props.link}>
             Go to Group
           </Button>
@@ -51,12 +51,12 @@ class ShareLinkForm extends Component {
 }
 
 const styles = {
-  buttonStyle: {
-    margin: 30
+  marginTop20: {
+    marginTop: 20
   },
 
-  inputStyle: {
-    width: 200
+  marginTop15: {
+    marginTop: 15
   }
 };
 
