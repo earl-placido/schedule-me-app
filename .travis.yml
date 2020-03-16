@@ -88,7 +88,7 @@ matrix:
 
       before_install:
         - yes | sdkmanager "platforms;android-26"
-        - nvm install 12
+        - nvm install 8
         - node --version
       before_script:
         - (cd client/mobile && npm install)
