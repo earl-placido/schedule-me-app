@@ -88,13 +88,12 @@ matrix:
 
       before_install:
         - yes | sdkmanager "platforms;android-26"
-
+        - nvm install 6
+        - node --version
       before_script:
         - (cd client/mobile && npm install)
-
       script:
         - (cd client/mobile/android && ./gradlew assembleDebug)
-
       deploy:
         provider: releases
         api_key: $GITHUB_API_KEY
@@ -103,6 +102,5 @@ matrix:
         prerelease: true
         on:
           branch: deploy-apk
-          
       after_deploy:
         - rm -rf "/client/mobile/android/app/build/outputs"
