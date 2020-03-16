@@ -120,15 +120,24 @@ router.get("/:groupId/members/:userId", (req, res, next) => {
   } else {
     return groupMemberModel
       .getGroupMemberId(groupId, userId)
+      .then(result =>
+        res.status(responses.SUCCESS).json({ groupMembers: result })
+      )
+      .catch(next);
+  }
+});
+
+// group optimal time route
+router.get("/:groupId/optimaltime/", (req, res, next) => {
+  const { groupId } = req.params;
+  if (!groupId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: "groupId is required!" });
+  } else {
+    return groupsModel
+      .getGroupMemberAvailabilities(groupId)
       .then(result => {
-        if (result.length > 0) {
-          res.status(responses.SUCCESS).json(result[0]);
-        } else {
-          res.status(responses.NOT_FOUND);
-          res.send({
-            error: `could not find groupMemberId with ${groupId} and ${userId}`
-          });
-        }
+        res.status(responses.SUCCESS).json({ groupMemberAvailability: result })
       })
       .catch(next);
   }
