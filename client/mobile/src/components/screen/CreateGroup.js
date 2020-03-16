@@ -5,6 +5,7 @@ import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 import GroupInfoForm from '../groups/CreateGroup/GroupInfoForm';
 import GroupMeetingForm from '../groups/CreateGroup/GroupMeetingForm';
 import GroupShareCodeForm from '../groups/CreateGroup/GroupShareCodeForm';
+import InputAvailability from './InputAvailability';
 
 import PropTypes from 'prop-types';
 import {
@@ -96,12 +97,22 @@ class CreateGroup extends Component {
 
           <ProgressStep
             label="Share"
+            nxtBtnText="Continue"
+            onSubmit={this.onSubmitSteps}
+            scrollViewProps={this.defaultScrollViewProps}
+            nextBtnStyle={buttonTextStyle}
+            previousBtnStyle={buttonTextStyle}>
+            <GroupShareCodeForm meetingCode={this.props.meetingCode} />
+          </ProgressStep>
+
+          <ProgressStep
+            label="Availability"
             finishBtnText="Continue"
             onSubmit={this.onSubmitSteps}
             scrollViewProps={this.defaultScrollViewProps}
             nextBtnStyle={hideButton}
             previousBtnStyle={hideButton}>
-            <GroupShareCodeForm meetingCode={this.props.meetingCode} />
+            <InputAvailability />
           </ProgressStep>
         </ProgressSteps>
       </View>

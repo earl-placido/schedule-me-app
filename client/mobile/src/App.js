@@ -7,6 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Main from './components/screen/Main';
 import CreateGroup from './components/screen/CreateGroup';
+import InputAvailability from './components/screen/InputAvailability';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -39,6 +40,10 @@ class App extends Component {
               }>
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="CreateGroup" component={CreateGroup} />
+              <Stack.Screen
+                name="InputAvailability"
+                component={InputAvailability}
+              />
             </Stack.Navigator>
           </NavigationContainer>
 
