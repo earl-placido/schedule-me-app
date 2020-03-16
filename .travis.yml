@@ -95,7 +95,7 @@ matrix:
         - (cd client/mobile && npm install)
       script:
         - if [ "$TRAVIS_BRANCH" = "develop" ]; then (cd client/mobile/android && ./gradlew assembleDebug); fi
-        - if [ "$TRAVIS_BRANCH" = "master" ]; (cd client/mobile/android && ./gradlew assembleRelease); fi
+        - if [ "$TRAVIS_BRANCH" = "master" ]; then (cd client/mobile/android && ./gradlew assembleRelease); fi
       deploy:
         provider: releases
         api_key: $GITHUB_API_KEY
