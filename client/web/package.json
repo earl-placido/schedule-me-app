@@ -10,6 +10,7 @@
     "antd": "^4.0.1",
     "axios": "^0.19.2",
     "axios-mock-adapter": "^1.17.0",
+    "eslint-plugin-cypress": "^2.10.3",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
@@ -32,7 +33,9 @@
     "deploy_dev": "surge --domain schedule-me-up-dev.surge.sh build",
     "scss": "node-sass --watch src/scss -o src/css",
     "precommit": "lint-staged",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "cypress:run": "./node_modules/.bin/cypress run"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,6 +65,7 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "cypress": "^4.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.6.0",
