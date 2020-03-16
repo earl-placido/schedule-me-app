@@ -97,7 +97,7 @@ matrix:
           - node --version
 
         install:
-          - ant dep
+          - ant deps
           - npm install
 
         script:
