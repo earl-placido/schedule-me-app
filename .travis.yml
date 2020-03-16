@@ -89,6 +89,9 @@ matrix:
       before_install:
         - yes | sdkmanager "platforms;android-26"
 
+      before_script:
+        - (cd client/mobile && npm install)
+
       script:
         - (cd client/mobile/android && ./gradlew assembleDebug)
 
