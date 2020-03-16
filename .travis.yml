@@ -87,9 +87,10 @@ matrix:
           - sys-img-armeabi-v7a-android-17
 
       before_install:
-        - yes | sdkmanager "platforms;android-26"
-        - nvm install 8
+        - (cd client/mobile/android && yes | sdkmanager "platforms;android-26")
+        - nvm install 12
         - node --version
+        - (cd client/mobile && echo "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT" > .env && echo "REACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env )
       before_script:
         - (cd client/mobile && npm install)
       script:
