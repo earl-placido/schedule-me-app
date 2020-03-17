@@ -7,9 +7,9 @@ const { authenticateToken } = require("../../util/tokenHelper");
 const responses = require("../../util/responses");
 
 // Create a new group
-router.post("/", authenticateToken, (req, res, next) => {
+router.post("/", (req, res, next) => {
   const newGroup = req.body;
-  const groupOwnerId = req.user.userID;
+  const groupOwnerId = 1;//req.user.userID;
 
   if (!newGroup.groupName) {
     res.status(responses.NOT_FOUND);
@@ -25,7 +25,13 @@ router.post("/", authenticateToken, (req, res, next) => {
         newGroup.meetingLocation
       ) // create new group
       .then(result => {
+        
+        if (result.errno) {
+          throw Error(result.sqlMessage);
+        }
+
         let newGroupId = result;
+
         // add owner to the group with owner privileges
         return groupsModel
           .newMember(newGroupId, groupOwnerId, "AD")
