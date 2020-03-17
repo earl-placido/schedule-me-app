@@ -1,35 +1,40 @@
 import {FloatingAction} from 'react-native-floating-action';
+import Dialog from 'react-native-dialog';
 
 import React, {Component} from 'react';
 import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
-import {Body, Container, Content, Card, CardItem} from 'native-base';
-
-import PropTypes from 'prop-types';
+import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
 
 const userList = [
   {
-    name: 'Renz Cabusas',
-    role: 'Administrator',
+    UserFName: 'Renz',
+    UserLName: 'Cabusas',
+    UserEmail: 'renzCabusas@gmail.com',
   },
   {
-    name: 'Brenna Epp',
-    role: 'Member',
+    UserFName: 'Brenna',
+    UserLName: 'Epp',
+    UserEmail: 'brennaEpp@gmail.com',
   },
   {
-    name: 'Bonnie Tang',
-    role: 'Member',
+    UserFName: 'Bonnie',
+    UserLName: 'Tang',
+    UserEmail: 'bonnieTang@gmail.com',
   },
   {
-    name: 'Daryl Fung',
-    role: 'Member',
+    UserFName: 'Daryl',
+    UserLName: 'Fung',
+    UserEmail: 'darylFung@gmail.com',
   },
   {
-    name: 'Winnie the Pooh',
-    role: 'Honey Eater',
+    UserFName: 'Jennifer',
+    UserLName: 'Seo',
+    UserEmail: 'jenniferSeo@gmail.com',
   },
   {
-    name: 'Piglet',
-    role: 'Moral Support',
+    UserFName: 'Winnie',
+    UserLName: 'The Pooh',
+    UserEmail: 'poo@gmail.com',
   },
 ];
 
@@ -42,15 +47,26 @@ const actions = [
   },
 ];
 
-function DisplayUserDescription({title}) {
-  return (
-    <View>
-      <Text style={{marginLeft: 5}}>{title}</Text>
-    </View>
-  );
-}
-
 export default class GroupDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      dialogVisible: false,
+      currUser: {
+        UserFName: 'INVALID USER',
+        UserLName: 'INVALID USER',
+        UserEmail: 'INVALID USER',
+      },
+    };
+  }
+  showDialog(user) {
+    this.setState({currUser: user, dialogVisible: true});
+  }
+
+  handleClose = () => {
+    this.setState({dialogVisible: false});
+  };
+
   render() {
     return (
       <Container style={styles.containerStyle}>
@@ -72,12 +88,19 @@ export default class GroupDetail extends Component {
               showsHorizontalScrollIndicator={true}
               data={userList}
               renderItem={({item}) => (
-                <CardItem boardered>
-                  <Body>
-                    <DisplayUserDescription title={item.name} />
-                    <DisplayUserDescription title={item.role} />
-                  </Body>
-                </CardItem>
+                <View>
+                  <CardItem
+                    header
+                    bordered
+                    button
+                    onPress={() => this.showDialog(item)}>
+                    <Body>
+                      <Text style={{marginLeft: 5}}>
+                        {item.UserFName} {item.UserLName}
+                      </Text>
+                    </Body>
+                  </CardItem>
+                </View>
               )}
               keyExtractor={item => item.id}
             />
@@ -91,6 +114,35 @@ export default class GroupDetail extends Component {
             Alert.alert('Functionality to come');
           }}
         />
+
+        <Dialog.Container
+          onBackdropPress={this.handleClose}
+          visible={this.state.dialogVisible}>
+          <Icon
+            style={{padding: 10, position: 'absolute', right: 10}}
+            type="FontAwesome"
+            name="close"
+            onPress={this.handleClose}
+          />
+
+          <Dialog.Title
+            style={{
+              borderBottomColor: 'black',
+              borderBottomWidth: 0.5,
+              fontWeight: 'bold',
+            }}>
+            {this.state.currUser.UserFName}
+          </Dialog.Title>
+
+          <Dialog.Description>
+            <Text style={{fontWeight: 'bold'}}>Full Name: </Text>{' '}
+            {this.state.currUser.UserFName} {this.state.currUser.UserLName}{' '}
+            {'\n'}
+            <Text style={{fontWeight: 'bold'}}>Email: </Text>
+            {this.state.currUser.UserEmail}
+          </Dialog.Description>
+          <Dialog.Button label="ChangeAvailability" />
+        </Dialog.Container>
       </Container>
     );
   }
@@ -113,7 +165,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-DisplayUserDescription.propTypes = {
-  title: PropTypes.string.isRequired,
-};
