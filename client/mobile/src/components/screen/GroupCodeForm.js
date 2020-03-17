@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-
 import {StyleSheet, Text} from 'react-native';
 import {Container, Content, Button, View} from 'native-base';
 
@@ -11,7 +10,7 @@ const Form = t.form.Form;
 const codeOptions = {
   fields: {
     code: {
-      error: 'Please input code number',
+      error: 'Please input a code number',
     },
   },
 };
@@ -24,15 +23,23 @@ export default class InputGroupCode extends Component {
   handleOnChangeValue = () => {
     this.form.getValue();
   };
+
+  handleOnSubmit = () => {
+    const value = this.form.getValue();
+    if (value) {
+      this.props.navigation.navigate('Group Detail', {codeNum: value.code});
+    }
+  };
+
   render() {
     return (
       <Container>
         <View style={styles.titleStyle}>
           <Text style={{fontWeight: 'bold', fontSize: 25}}>
-            Enter Group Code
+            Enter Group Code{' '}
           </Text>
         </View>
-        <Content padder>
+        <Content padder style={{flex: 1}}>
           <Form
             ref={_form => (this.form = _form)}
             options={codeOptions}
@@ -43,9 +50,10 @@ export default class InputGroupCode extends Component {
             }}
           />
         </Content>
-
-        <View style={{alignItems: 'center'}}>
-          <Button onPress={this.handleOnChangeValue} style={styles.buttonStyle}>
+        <View style={styles.buttonStyle}>
+          <Button
+            onPress={this.handleOnSubmit}
+            style={styles.insideButtonStyle}>
             <Text style={{color: 'white'}}> Continue </Text>
           </Button>
         </View>
@@ -56,6 +64,11 @@ export default class InputGroupCode extends Component {
 
 const styles = StyleSheet.create({
   buttonStyle: {
+    padding: 20,
+    alignItems: 'center',
+    flex: 3,
+  },
+  insideButtonStyle: {
     padding: 15,
     alignItems: 'center',
   },
@@ -68,4 +81,7 @@ const styles = StyleSheet.create({
 InputGroupCode.propTypes = {
   handleCodeValue: PropTypes.func,
   code: PropTypes.any,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
 };
