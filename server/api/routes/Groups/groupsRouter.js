@@ -9,7 +9,7 @@ const responses = require("../../util/responses");
 // Create a new group
 router.post("/", (req, res, next) => {
   const newGroup = req.body;
-  const groupOwnerId = 1;//req.user.userID;
+  const groupOwnerId = 1; //req.user.userID;
 
   if (!newGroup.groupName) {
     res.status(responses.NOT_FOUND);
@@ -25,7 +25,6 @@ router.post("/", (req, res, next) => {
         newGroup.meetingLocation
       ) // create new group
       .then(result => {
-        
         if (result.errno) {
           throw Error(result.sqlMessage);
         }
