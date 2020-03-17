@@ -1,6 +1,15 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { Calendar, Modal, TimePicker, Button, Checkbox, Badge } from "antd";
+import {
+  Calendar,
+  Modal,
+  TimePicker,
+  Button,
+  Checkbox,
+  Badge,
+  Typography,
+  Row
+} from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -20,6 +29,11 @@ const { RangePicker } = TimePicker;
 class Group extends Component {
   onSelect = value => {
     this.props.selectDate(value, this.props.availableDays);
+    if (
+      value.year() === this.props.selectedDate.year() &&
+      value.month() === this.props.selectedDate.month()
+    )
+      this.showModal();
   };
 
   showModal = () => {
@@ -88,19 +102,27 @@ class Group extends Component {
   }
 
   render() {
+    const { Title } = Typography;
+
     return (
       <div>
-        <h2>
-          {this.props.groupInformation && this.props.groupInformation.GroupName}
-        </h2>
-        <p>
-          {this.props.groupInformation &&
-            this.props.groupInformation.GroupDescription}
-        </p>
-        <Button id="show-modal-button" onClick={this.showModal} type="primary">
-          Add Availability
-        </Button>
+        <Row justify="center">
+          <Title level={2}>
+            {this.props.groupInformation &&
+              this.props.groupInformation.GroupName}
+          </Title>
+        </Row>
+        <Row justify="center">
+          <Title level={4}>
+            {this.props.groupInformation &&
+              this.props.groupInformation.GroupDescription}
+          </Title>
+        </Row>
+        <Row justify="center">
+          <p>Click on a date to edit your availability for that day.</p>
+        </Row>
         <Calendar
+          id="availability-calendar"
           onSelect={this.onSelect}
           mode="month"
           dateCellRender={this.dateCellRender}
@@ -122,6 +144,7 @@ class Group extends Component {
             return (
               <div key={index} className="range-picker">
                 <RangePicker
+                  format={"h:mm"}
                   value={value}
                   onChange={this.onChangeRange.bind(this, index)}
                 />
