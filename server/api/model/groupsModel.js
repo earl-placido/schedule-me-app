@@ -151,7 +151,7 @@ module.exports = {
     });
   },
 
-  getGroupMemberAvailabilities(groupId){
+  getGroupMemberAvailabilities(groupId) {
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn
         .query(

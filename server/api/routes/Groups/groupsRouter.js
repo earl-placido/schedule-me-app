@@ -5,6 +5,7 @@ const groupsModel = require("../../model/groupsModel");
 const groupMemberModel = require("../../model/groupMemberModel");
 const { authenticateToken } = require("../../util/tokenHelper");
 const responses = require("../../util/responses");
+const findOptimalTime = require("../../util/OptimalAlgorithm");
 
 // Create a new group
 router.post("/", authenticateToken, (req, res, next) => {
@@ -137,14 +138,13 @@ router.get("/:groupId/optimaltime/", (req, res, next) => {
     return groupsModel
       .getGroupMemberAvailabilities(groupId)
       .then(result => {
-        res.status(responses.SUCCESS).json({ groupMemberAvailability: result })
+        const optimalTime = findOptimalTime(result);
+        res.status(responses.SUCCESS).json({ optimalTime });
       })
       .catch(next);
   }
 });
 
-// add group member router
-require("./groupMemberRouter")(router);
 // add availability router
 require("./AvailabilityRouter")(router);
 
