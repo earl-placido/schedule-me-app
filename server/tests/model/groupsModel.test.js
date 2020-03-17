@@ -111,61 +111,63 @@ describe(`getGroupFromGroupId tests `, () => {
   });
 });
 
-describe('getGroupMemberAvailabilities tests', () => {
-  it('return the groupMember format correctly', () => {
-    return groupsModel.getGroupMemberAvailabilities(1000000)
-    .then(availabilities => {
-      const expectedValue = [
+describe("getGroupMemberAvailabilities tests", () => {
+  it("return the groupMember format correctly", () => {
+    return groupsModel
+      .getGroupMemberAvailabilities(1000000)
+      .then(availabilities => {
+        const expectedValue = [
           {
-             "CAST(A.EndTime as char)": "2020-03-11 07:00:00",
-             "AvailabilityId": 1,
-             "CAST(A.StartTime as char)": "2020-03-11 05:00:00",
-             "GroupMemberId": 1,
-           },
-           {
-             "AvailabilityId": 2,
-             "CAST(A.EndTime as char)": "2020-03-12 04:00:00",
-             "CAST(A.StartTime as char)": "2020-03-12 01:00:00",
-             "GroupMemberId": 1,
-           },
-           {
-             "AvailabilityId": 3,
-             "CAST(A.EndTime as char)": "2020-03-12 04:00:00",
-             "CAST(A.StartTime as char)": "2020-03-12 01:00:00",
-             "GroupMemberId": 1,
-           },
+            "CAST(A.EndTime as char)": "2020-03-11 07:00:00",
+            AvailabilityId: 1,
+            "CAST(A.StartTime as char)": "2020-03-11 05:00:00",
+            GroupMemberId: 1
+          },
           {
-             "AvailabilityId": 4,
-             "CAST(A.EndTime as char)": "2020-03-12 03:00:00",
-             "CAST(A.StartTime as char)": "2020-03-12 02:00:00",
-             "GroupMemberId": 1,
-           },
+            AvailabilityId: 2,
+            "CAST(A.EndTime as char)": "2020-03-12 04:00:00",
+            "CAST(A.StartTime as char)": "2020-03-12 01:00:00",
+            GroupMemberId: 1
+          },
           {
-             "AvailabilityId": 5,
-             "CAST(A.EndTime as char)": "2020-03-14 03:00:00",
-             "CAST(A.StartTime as char)": "2020-03-14 01:00:00",
-             "GroupMemberId": 1,
-           },
+            AvailabilityId: 3,
+            "CAST(A.EndTime as char)": "2020-03-12 04:00:00",
+            "CAST(A.StartTime as char)": "2020-03-12 01:00:00",
+            GroupMemberId: 1
+          },
           {
-             "AvailabilityId": 6,
-             "CAST(A.EndTime as char)": "2020-03-14 03:00:00",
-             "CAST(A.StartTime as char)": "2020-03-14 02:00:00",
-             "GroupMemberId": 1,
-           }];
-      expect(availabilities).toEqual(expectedValue);
+            AvailabilityId: 4,
+            "CAST(A.EndTime as char)": "2020-03-12 03:00:00",
+            "CAST(A.StartTime as char)": "2020-03-12 02:00:00",
+            GroupMemberId: 1
+          },
+          {
+            AvailabilityId: 5,
+            "CAST(A.EndTime as char)": "2020-03-14 03:00:00",
+            "CAST(A.StartTime as char)": "2020-03-14 01:00:00",
+            GroupMemberId: 1
+          },
+          {
+            AvailabilityId: 6,
+            "CAST(A.EndTime as char)": "2020-03-14 03:00:00",
+            "CAST(A.StartTime as char)": "2020-03-14 02:00:00",
+            GroupMemberId: 1
+          }
+        ];
+        expect(availabilities).toEqual(expectedValue);
 
-      // remove availabilities so deletion group will not fail because of constraints
-      mysql.createConnection(MYSQLDB).then(conn => {
-        const query = `
+        // remove availabilities so deletion group will not fail because of constraints
+        mysql.createConnection(MYSQLDB).then(conn => {
+          const query = `
                 SET FOREIGN_KEY_CHECKS=0;
                 ${testUtil.resetAvailabilityQuery}
                 SET FOREIGN_KEY_CHECKS=1;
             `;
-        const result = conn.query(query);
-        conn.end();
-        return result;
+          const result = conn.query(query);
+          conn.end();
+          return result;
+        });
       });
-    });
   });
 });
 
@@ -258,6 +260,4 @@ describe(`newMember tests `, () => {
         });
     });
   });
-
-  
 });
