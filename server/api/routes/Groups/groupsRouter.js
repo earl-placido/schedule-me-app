@@ -7,9 +7,9 @@ const { authenticateToken } = require("../../util/tokenHelper");
 const responses = require("../../util/responses");
 
 // Create a new group
-router.post("/", (req, res, next) => {
+router.post("/", authenticateToken, (req, res, next) => {
   const newGroup = req.body;
-  const groupOwnerId = 1; //req.user.userID;
+  const groupOwnerId = req.user.userID;
 
   if (!newGroup.groupName) {
     res.status(responses.NOT_FOUND);
@@ -26,6 +26,9 @@ router.post("/", (req, res, next) => {
       ) // create new group
       .then(result => {
         if (result.errno) {
+          res
+            .status(responses.SERVER_ERROR)
+            .json({ error: "Unable to create group" });
           throw Error(result.sqlMessage);
         }
 
