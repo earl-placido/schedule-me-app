@@ -15,13 +15,16 @@ matrix:
         - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production)
         - (cd client/web && travis_wait docker-compose up -d)
       before_script:
-        - (cd server && npm install)
-        - (cd client/mobile && npm install)
+        - (cd server && npm ci && npm run db:init) 
+        - (cd client/web && npm ci)
+        - (cd client/mobile && npm ci)
       script:
         - (cd server && npm test && npx eslint ./)
         - (cd client/mobile && npm run test:ci && npm run lint)
         - docker exec web /bin/sh -c "eslint src"
         - docker exec web /bin/sh -c "npm run test:ci"
+        - (cd server && npm start) &
+        - (cd client/web && npm run cypress:ci)
         - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod && mv build/index.html build/200.html"; fi
         - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev && mv build/index.html build/200.html"; fi
       after_script:
