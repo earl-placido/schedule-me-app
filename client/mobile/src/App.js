@@ -4,19 +4,20 @@ import {
   Container,
   Header,
   Footer,
-  Content,
   Title,
   Button,
   Text,
   Root,
+  Icon,
+  Left,
+  Right,
 } from 'native-base';
 
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, DrawerActions} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import DrawerNavigator from './components/navigation/DrawerNavigator';
 import Home from './components/screens/Home/Home';
-import CreateGroup from './components/screens/CreateGroup/CreateGroup';
-import GroupDetail from './components/screens/GroupDetail/GroupDetail';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -28,30 +29,6 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Stack = createStackNavigator();
 
-function CreateGroupScreen({navigation}) {
-  return (
-    <Container>
-      <Button onPress={() => navigation.navigate('Group Detail')}>
-        <Text>Go to group details</Text>
-      </Button>
-      <CreateGroup />
-      <Content />
-    </Container>
-  );
-}
-
-function GroupDetailScreen({navigation}) {
-  return (
-    <Container>
-      <Button onPress={() => navigation.navigate('Create Group')}>
-        <Text>Go to create group</Text>
-      </Button>
-      <GroupDetail />
-      <Content />
-    </Container>
-  );
-}
-
 class App extends Component {
   render() {
     return (
@@ -61,22 +38,38 @@ class App extends Component {
             <NavigationContainer>
               <Stack.Navigator
                 initialRouteName={
-                  !this.props.isAuthenticated ? 'Home' : 'Group Detail'
+                  !this.props.isAuthenticated ? 'Home' : 'Drawer'
                 }
                 screenOptions={{
                   header: props => {
                     return (
                       <Header>
                         {this.props.isAuthenticated ? (
-                          <Button
-                            onPress={() => {
-                              GoogleSignin.revokeAccess();
-                              GoogleSignin.signOut();
-                              this.props.logoutUser();
-                              props.navigation.navigate('Home');
-                            }}>
-                            <Text>{this.props.userName}</Text>
-                          </Button>
+                          <>
+                            <Left>
+                              <Button
+                                transparent
+                                onPress={() =>
+                                  props.navigation.dispatch(
+                                    DrawerActions.toggleDrawer(),
+                                  )
+                                }>
+                                <Icon name="menu" />
+                              </Button>
+                            </Left>
+
+                            <Button
+                              onPress={() => {
+                                GoogleSignin.revokeAccess();
+                                GoogleSignin.signOut();
+                                this.props.logoutUser();
+                                props.navigation.navigate('Home');
+                              }}>
+                              <Text>{this.props.userName}</Text>
+                            </Button>
+
+                            <Right />
+                          </>
                         ) : (
                           <></>
                         )}
@@ -85,14 +78,7 @@ class App extends Component {
                   },
                 }}>
                 <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen
-                  name="Create Group"
-                  component={CreateGroupScreen}
-                />
-                <Stack.Screen
-                  name="Group Detail"
-                  component={GroupDetailScreen}
-                />
+                <Stack.Screen name="Drawer" component={DrawerNavigator} />
               </Stack.Navigator>
             </NavigationContainer>
 
@@ -119,18 +105,6 @@ App.propTypes = {
   isAuthenticated: PropTypes.any,
   userName: PropTypes.any,
   logoutUser: PropTypes.func,
-};
-
-CreateGroupScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
-GroupDetailScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
 };
 
 const mapStateToProps = state => ({
