@@ -25,7 +25,15 @@ router.post("/", authenticateToken, (req, res, next) => {
         newGroup.meetingLocation
       ) // create new group
       .then(result => {
+        if (result.errno) {
+          res
+            .status(responses.SERVER_ERROR)
+            .json({ error: "Unable to create group" });
+          throw Error(result.sqlMessage);
+        }
+
         let newGroupId = result;
+
         // add owner to the group with owner privileges
         return groupsModel
           .newMember(newGroupId, groupOwnerId, "AD")
