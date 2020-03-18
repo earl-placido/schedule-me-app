@@ -63,7 +63,7 @@ export default class GroupList extends Component {
                       })
                     }>
                     <Left style={{flex: 0.5}}>
-                      <Icon name="paw" style={{paddingLeft: 0}} />
+                      <Icon name="paw" />
                     </Left>
                     <Body style={{flex: 4}}>
                       <Text>{item.GroupName}</Text>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text} from 'react-native';
-import {Container, Content, Button, View} from 'native-base';
+import {Container, Content, Button, View, CardItem, Body} from 'native-base';
 
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
@@ -29,17 +29,22 @@ export default class GroupCodeForm extends Component {
     if (value) {
       this.props.navigation.navigate('Group Detail', {codeNum: value.code});
     }
+    //To do: Once the server is connected, will do a check to see if the group code exists
   };
 
   render() {
     return (
       <Container>
-        <View style={styles.titleStyle}>
-          <Text style={{fontWeight: 'bold', fontSize: 25}}>
-            Enter Group Code{' '}
-          </Text>
+        <View>
+          <CardItem header boardered>
+            <Body style={{alignItems: 'center'}}>
+              <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
+                Enter Group Code
+              </Text>
+            </Body>
+          </CardItem>
         </View>
-        <Content padder style={{flex: 1}}>
+        <Content padder>
           <Form
             ref={_form => (this.form = _form)}
             options={codeOptions}
@@ -75,6 +80,10 @@ const styles = StyleSheet.create({
   titleStyle: {
     padding: 20,
     alignItems: 'center',
+  },
+  titleTextStyle: {
+    fontWeight: 'bold',
+    fontSize: 25,
   },
 });
 
