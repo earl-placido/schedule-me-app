@@ -10,7 +10,6 @@ import { PrivateRoute } from "./components/util/PrivateRoute";
 import GroupDetail from "./components/screens/GroupDetail/GroupDetail";
 import MainPage from "./components/screens/MainPage/MainPage";
 import CreateGroup from "./components/screens/CreateGroup/CreateGroup";
-import InputAvailability from "./components/screens/Group/InputAvailability";
 import "antd/dist/antd.css";
 import "./css/app.css";
 
@@ -33,13 +32,6 @@ class App extends Component {
     );
   };
 
-  inputAvailabilityComponent = () => {
-    return (
-      <ContentContainer>
-        <InputAvailability />
-      </ContentContainer>
-    );
-  };
   createMainComponent = () => {
     return (
       <ContentContainer>
@@ -63,11 +55,6 @@ class App extends Component {
               />
               <PrivateRoute
                 exact
-                path="/groups/:id/input"
-                component={this.inputAvailabilityComponent}
-                authorized={this.props.isAuthenticated}
-              />
-              <PrivateRoute
                 path="/groups/:id"
                 component={this.createGroupDetailComponent}
                 authorized={this.props.isAuthenticated}

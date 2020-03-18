@@ -183,6 +183,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, rangeHours: action.payload };
     }
     default:
-      return INITIAL_STATE;
+      return state;
   }
 };
