@@ -141,7 +141,6 @@ export const addAvailability = (
   }
 
   const day = selectedDate.day();
-  availableDays[day] = rangeHours;
   const availabilityIds = rangeHours.map(item => item[0]);
   const startTimes = rangeHours.map(item =>
     item[1][0].format("YYYY-MM-DD HH:mm:ss")
@@ -150,14 +149,24 @@ export const addAvailability = (
     item[1][1].format("YYYY-MM-DD HH:mm:ss")
   );
 
-  await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes);
+  const addedAvailabilityIds = await addAvailabilityQuery(
+    memberId,
+    availabilityIds,
+    startTimes,
+    endTimes
+  );
+  console.log(addedAvailabilityIds);
 
-  // reload the page so we can get the updated availabilityId
-  window.location.reload(false);
+  // update the ids of rangeHours after getting the availbilityId from database
+  for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
+    if (addedAvailabilityIds.data.ids[i] !== 0)
+      rangeHours[i][0] = addedAvailabilityIds.data.ids[i];
+  }
+  availableDays[day] = rangeHours;
 
   dispatch({
     type: ADD_AVAILABILITY,
-    payload: { availableDays, modalVisible: false }
+    payload: { availableDays, modalVisible: false, rangeHours }
   });
 };
 

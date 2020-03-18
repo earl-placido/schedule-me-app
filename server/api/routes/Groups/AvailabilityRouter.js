@@ -59,7 +59,13 @@ module.exports = router => {
               error: `could not add availability: ${result.sqlMessage}`
             });
           } else {
-            res.status(responses.SUCCESS).json({ error: false, success: true });
+            // get the ids of inserted availability
+            let ids;
+            if (Array.isArray(result)) ids = result.map(item => item.insertId);
+            else ids = [result.insertId];
+            res
+              .status(responses.SUCCESS)
+              .json({ error: false, success: true, ids });
           }
         })
         .catch(next);

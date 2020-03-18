@@ -115,7 +115,9 @@ describe("test contacting server from group", () => {
         `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`
       )
       .reply(200, {
-        data: { success: true, error: false }
+        success: true,
+        error: false,
+        ids: [1]
       });
     addAvailability(1, selectedDate, rangeHours, availableDays)(store.dispatch);
     await flushAllPromises();
