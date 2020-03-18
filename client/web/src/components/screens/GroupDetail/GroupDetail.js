@@ -40,17 +40,13 @@ class GroupDetail extends Component {
     this.props.showModal();
   };
 
-  handleCancel = () => {
-    this.props.closeModal();
-  };
-
-  handleOk = () => {
+  handleDone = () => {
     this.props.closeModal();
   };
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, inputStyle } = styles;
+    const { containerStyle, cardStyle, inputStyle, buttonStyle } = styles;
 
     return (
       <div style={containerStyle}>
@@ -103,10 +99,18 @@ class GroupDetail extends Component {
             Input Your Availability
           </Button>
           <Modal
-            width={"70%"}
-            onCancel={this.handleCancel}
-            onOk={this.handleOk}
+            width={"60%"}
             visible={this.props.inputModalVisible}
+            footer={[
+              <Button
+                style={buttonStyle}
+                type="primary"
+                key="done"
+                onClick={this.handleDone}
+              >
+                Done
+              </Button>
+            ]}
           >
             <InputAvailability />
           </Modal>
@@ -128,6 +132,10 @@ const styles = {
 
   inputStyle: {
     width: 200
+  },
+
+  buttonStyle: {
+    margin: 30
   }
 };
 

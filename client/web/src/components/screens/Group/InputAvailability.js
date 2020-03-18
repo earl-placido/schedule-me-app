@@ -103,9 +103,10 @@ class Group extends Component {
 
   render() {
     const { Title } = Typography;
+    const { availabilityStyle, calendarStyle } = styles;
 
     return (
-      <div>
+      <div style={availabilityStyle}>
         <Row justify="center">
           <Title level={2}>
             {this.props.groupInformation &&
@@ -121,13 +122,15 @@ class Group extends Component {
         <Row justify="center">
           <p>Click on a date to edit your availability for that day.</p>
         </Row>
-        <Calendar
-          id="availability-calendar"
-          onSelect={this.onSelect}
-          mode="month"
-          dateCellRender={this.dateCellRender}
-          onPanelChange={this.onPanelChange}
-        />
+        <div style={calendarStyle}>
+          <Calendar
+            id="availability-calendar"
+            onSelect={this.onSelect}
+            mode="month"
+            dateCellRender={this.dateCellRender}
+            onPanelChange={this.onPanelChange}
+          />
+        </div>
 
         <Modal
           visible={this.props.modalVisible}
@@ -179,6 +182,20 @@ class Group extends Component {
     );
   }
 }
+
+const styles = {
+  availabilityStyle: {
+    paddingTop: 30,
+    marginLeft: 30,
+    marginRight: 30
+  },
+
+  calendarStyle: {
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: "#E8E8E8"
+  }
+};
 
 const mapStateToProps = ({ AddAvailabilityReducer }) => {
   const {
