@@ -17,6 +17,7 @@ import Main from './components/screen/Main';
 import CreateGroup from './components/screen/CreateGroup';
 import GroupDetail from './components/screen/GroupDetail';
 import GroupCode from './components/screen/GroupCodeForm';
+import GroupList from './components/screen/GroupList';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -33,6 +34,9 @@ function CreateGroupScreen({navigation}) {
     <Container>
       <Button onPress={() => navigation.navigate('Group Code')}>
         <Text>Go to group code screen</Text>
+      </Button>
+      <Button onPress={() => navigation.navigate('Group List')}>
+        <Text>Go to group list screen</Text>
       </Button>
       <CreateGroup />
       <Content />
@@ -79,6 +83,7 @@ class App extends Component {
                 initialParams={{codeNum: -1}}
               />
               <Stack.Screen name="Group Code" component={GroupCode} />
+              <Stack.Screen name="Group List" component={GroupList} />
             </Stack.Navigator>
           </NavigationContainer>
 

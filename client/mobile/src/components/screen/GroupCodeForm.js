@@ -19,7 +19,7 @@ const codeModel = t.struct({
   code: t.String,
 });
 
-export default class InputGroupCode extends Component {
+export default class GroupCodeForm extends Component {
   handleOnChangeValue = () => {
     this.form.getValue();
   };
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   },
 });
 
-InputGroupCode.propTypes = {
+GroupCodeForm.propTypes = {
   handleCodeValue: PropTypes.func,
   code: PropTypes.any,
   navigation: PropTypes.shape({

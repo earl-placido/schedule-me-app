@@ -1,42 +1,88 @@
 import React, {Component} from 'react';
 
-import {Text} from 'react-native';
-import {Container, CardItem, Body, View} from 'native-base';
+import {Text, FlatList} from 'react-native';
+import {
+  Container,
+  CardItem,
+  Body,
+  View,
+  Content,
+  Card,
+  Icon,
+  Left,
+} from 'native-base';
 
-// const userList = [
-//     {
-//         GroupId: '1',
-//         GroupName: 'Tallest Poppy',
-//         GroupDescription: 'Hipster food',
-//     },
-//     {
-//         GroupId: '2',
-//         GroupName: 'Stellas',
-//         GroupDescription: '#notMyStellas',
-//     },
-//     {
-//         GroupId: '3',
-//         GroupName: 'Dowon',
-//         GroupDescription: 'Korean food',
-//     },
-// ];
+import PropTypes from 'prop-types';
 
-export default class InputGroupCode extends Component {
+const groupList = [
+  {
+    GroupId: '1',
+    GroupName: 'Tallest Poppy',
+    GroupDescription: 'Hipster food',
+  },
+  {
+    GroupId: '2',
+    GroupName: 'Stellas',
+    GroupDescription: '#notMyStellas',
+  },
+  {
+    GroupId: '3',
+    GroupName: 'Dowon',
+    GroupDescription: 'Korean food',
+  },
+];
+
+export default class GroupList extends Component {
   render() {
     return (
       <Container>
-        <View style={{flexDirection: 'column'}}>
-          <CardItem header>
-            <Body>
+        <View>
+          <CardItem header boardered>
+            <Body style={{alignItems: 'center'}}>
               <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
-                Group Equilibrium{' '}
+                Your Groups
               </Text>
-              <Text style={{fontSize: 15}}>Optimal Time: 12pm - 2pm</Text>
-              <Text style={{fontSize: 15}}>Optimal Date: October 26, 1985</Text>
             </Body>
           </CardItem>
         </View>
+
+        <Content>
+          <Card style={{flexDirection: 'column'}}>
+            <FlatList
+              showsHorizontalScrollIndicator={true}
+              data={groupList}
+              renderItem={({item}) => (
+                <View>
+                  <CardItem
+                    header
+                    button
+                    bordered
+                    onPress={() =>
+                      this.props.navigation.navigate('Group Detail', {
+                        codeNum: item.GroupId,
+                      })
+                    }>
+                    <Left style={{flex: 0.5}}>
+                      <Icon name="paw" style={{paddingLeft: 0}} />
+                    </Left>
+                    <Body style={{flex: 4}}>
+                      <Text>{item.GroupName}</Text>
+                      <Text>{item.GroupDescription}</Text>
+                    </Body>
+                  </CardItem>
+                </View>
+              )}
+              keyExtractor={item => item.id}
+            />
+          </Card>
+        </Content>
       </Container>
     );
   }
 }
+
+GroupList.propTypes = {
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+  }).isRequired,
+};
