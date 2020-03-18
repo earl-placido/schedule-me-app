@@ -107,15 +107,20 @@ export const addAvailability = (
     return;
   }
 
+  // get rid of empty range hours, otherwise will send undefined to server
+  const filteredRangeHours = rangeHours.filter(item => {
+    return item !== "";
+  });
+
   const day = selectedDate.day();
-  availableDays[day] = rangeHours;
-  const availabilityIds = rangeHours.map(item => item[0]);
-  const startTimes = rangeHours.map(item =>
-    item[1][0].format("YYYY-MM-DD HH:mm:ss")
-  );
-  const endTimes = rangeHours.map(item =>
-    item[1][1].format("YYYY-MM-DD HH:mm:ss")
-  );
+  availableDays[day] = filteredRangeHours;
+  const availabilityIds = filteredRangeHours.map(item => item[0]);
+  const startTimes = filteredRangeHours.map(item => {
+    if (item[1]) return item[1][0].format("YYYY-MM-DD HH:mm:ss");
+  });
+  const endTimes = filteredRangeHours.map(item => {
+    if (item[1]) return item[1][1].format("YYYY-MM-DD HH:mm:ss");
+  });
 
   await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes);
 
