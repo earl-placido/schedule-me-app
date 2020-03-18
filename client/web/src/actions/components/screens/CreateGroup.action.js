@@ -123,7 +123,15 @@ const submitGroupCreation = (
   );
   //success
   if (response.status === 201) {
-    const link = `${window.location.origin}/groups/${response.data.groupId}`;
+    if (response.data.error) {
+      dispatch({
+        type: SUBMIT_GROUP_CREATION,
+        payload: { success: false, response, currentPage: currentPage + 1 }
+      });
+      return;
+    }
+
+    const link = `${window.location.origin}/groups/${response.data.groupId}/`;
     dispatch({
       type: SUBMIT_GROUP_CREATION,
       payload: { success: true, link, currentPage: currentPage + 1 }
@@ -133,7 +141,6 @@ const submitGroupCreation = (
       type: SUBMIT_GROUP_CREATION,
       payload: { success: false, response, currentPage: currentPage + 1 }
     });
-    console.log("failure");
   }
 };
 

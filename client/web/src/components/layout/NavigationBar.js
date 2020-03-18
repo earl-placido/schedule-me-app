@@ -13,12 +13,12 @@ import {
   Row,
   List
 } from "antd";
-import Icon from "@ant-design/icons";
+import { DownOutlined, UsergroupAddOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
-import { toggleModal } from "../../actions/components/login/LoginModal.action";
+import { toggleModal } from "../../actions/components/login/Modal.action";
 import {
-  loginGoogle,
-  logoutGoogle
+  authenticate,
+  logout
 } from "../../actions/components/screens/Auth.action";
 
 const { Header } = Layout;
@@ -32,29 +32,39 @@ export class NavigationBar extends Component {
   }
 
   loginUser(response) {
-    this.props.loginGoogle(response);
+    //This will have to be changed
+    this.props.authenticate("google", response);
   }
 
   logoutUser() {
-    this.props.logoutGoogle();
+    this.props.logout();
     message.info("Logged out of account");
   }
 
+  chooseStyle(array, noDataStyle, listStyle) {
+    return array && array.length > 0 ? listStyle : noDataStyle;
+  }
+
   render() {
-    const { headerStyle, listStyle } = styles;
+    const { headerStyle, listStyle, noDataStyle } = styles;
     const groupMenu = (
       <List
+        locale={{ emptyText: "You have not joined any groups" }}
         size="small"
         itemLayout="horizontal"
         dataSource={this.props.groupList}
+        style={
+          this.props.groupList && this.props.groupList.length > 0
+            ? listStyle
+            : noDataStyle
+        }
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar size={25} icon={<Icon type="usergroup-add" />} />}
+              avatar={<Avatar size={25} icon={<UsergroupAddOutlined />} />}
               title={
                 <a href={"/groups/" + item.GroupId + "/"}>{item.GroupName}</a>
               }
-              style={listStyle}
             />
           </List.Item>
         )}
@@ -69,6 +79,7 @@ export class NavigationBar extends Component {
 
     const userNavigation = this.props.isAuthenticated ? (
       <Dropdown.Button
+        href="/main"
         overlay={userMenu}
         icon={
           <Avatar
@@ -101,26 +112,25 @@ export class NavigationBar extends Component {
           style={{ lineHeight: "64px" }}
         ></Menu>
 
-        <Row gutter={3}>
-          <Col className="gutter-row" span={3}>
+        <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
+          <Col>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
               <Button>
-                Groups <Icon type="down" />
+                Groups <DownOutlined />
               </Button>
             </Dropdown>
           </Col>
-          <Col className="gutter-row" span={4}>
+          <Col flex="100px">
             <Button type="primary" href="/createGroup">
               Create A Group
             </Button>
           </Col>
-          <Col span={4}>
+          <Col>
             <Button type="primary">Join A Group</Button>
           </Col>
-          <Col>
-            <div className="masthead-user" style={{ float: "right" }}>
-              {userNavigation}
-            </div>
+          <Col flex="auto"></Col>
+          <Col flex="100px">
+            <div className="masthead-user">{userNavigation}</div>
           </Col>
         </Row>
       </Header>
@@ -137,6 +147,10 @@ const styles = {
 
   listStyle: {
     paddingRight: 40
+  },
+
+  noDataStyle: {
+    padding: 30
   }
 };
 
@@ -149,8 +163,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  logoutGoogle: () => dispatch(logoutGoogle()),
-  loginGoogle: response => dispatch(loginGoogle(response)),
+  logout: () => dispatch(logout()),
+  authenticate: (type, response) => dispatch(authenticate(type, response)),
   toggleModal: value => dispatch(toggleModal(value))
 });
 
@@ -159,10 +173,10 @@ NavigationBar.propTypes = {
   userName: PropTypes.any,
   displayPicURL: PropTypes.any,
   isAuthenticated: PropTypes.any,
-  groupList: PropTypes.any,
+  authenticate: PropTypes.func,
+  logout: PropTypes.func,
   modalVisible: PropTypes.any,
-  loginGoogle: PropTypes.func,
-  logoutGoogle: PropTypes.func,
+  groupList: PropTypes.any,
   toggleModal: PropTypes.func
 };
 

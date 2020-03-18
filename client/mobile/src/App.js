@@ -8,16 +8,17 @@ import {
   Title,
   Button,
   Text,
+  Root,
 } from 'native-base';
 
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Main from './components/screen/Main';
-import CreateGroup from './components/screen/CreateGroup';
-import GroupDetail from './components/screen/GroupDetail';
-import GroupCode from './components/screen/GroupCodeForm';
-import GroupList from './components/screen/GroupList';
+import CreateGroup from './components/screens/CreateGroup/CreateGroup';
+import GroupDetail from './components/screens/GroupDetail/GroupDetail';
+import GroupCode from './components/screens/GroupCodeForm/GroupCodeForm';
+import GroupList from './components/screens/GroupList/GroupList';
+import Home from './components/screens/Home/Home';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -47,51 +48,56 @@ function CreateGroupScreen({navigation}) {
 class App extends Component {
   render() {
     return (
-      <NativeRouter>
-        <Container>
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName={
-                !this.props.isAuthenticated ? 'Main' : 'Create Group'
-              }
-              screenOptions={{
-                header: props => {
-                  return (
-                    <Header>
-                      {this.props.isAuthenticated ? (
-                        <Button
-                          onPress={() => {
-                            GoogleSignin.revokeAccess();
-                            GoogleSignin.signOut();
-                            this.props.logoutUser();
-                            props.navigation.navigate('Main');
-                          }}>
-                          <Text>{this.props.userName}</Text>
-                        </Button>
-                      ) : (
-                        <></>
-                      )}
-                    </Header>
-                  );
-                },
-              }}>
-              <Stack.Screen name="Main" component={Main} />
-              <Stack.Screen name="Create Group" component={CreateGroupScreen} />
-              <Stack.Screen
-                name="Group Detail"
-                component={GroupDetail}
-                initialParams={{codeNum: -1}}
-              />
-              <Stack.Screen name="Group Code" component={GroupCode} />
-              <Stack.Screen name="Group List" component={GroupList} />
-            </Stack.Navigator>
-          </NavigationContainer>
+      <Root>
+        <NativeRouter>
+          <Container>
+            <NavigationContainer>
+              <Stack.Navigator
+                initialRouteName={
+                  !this.props.isAuthenticated ? 'Home' : 'Create Group'
+                }
+                screenOptions={{
+                  header: props => {
+                    return (
+                      <Header>
+                        {this.props.isAuthenticated ? (
+                          <Button
+                            onPress={() => {
+                              GoogleSignin.revokeAccess();
+                              GoogleSignin.signOut();
+                              this.props.logoutUser();
+                              props.navigation.navigate('Home');
+                            }}>
+                            <Text>{this.props.userName}</Text>
+                          </Button>
+                        ) : (
+                          <></>
+                        )}
+                      </Header>
+                    );
+                  },
+                }}>
+                <Stack.Screen name="Home" component={Home} />
+                <Stack.Screen
+                  name="Create Group"
+                  component={CreateGroupScreen}
+                />
+                <Stack.Screen
+                  name="Group Detail"
+                  component={GroupDetail}
+                  initialParams={{codeNum: -1}}
+                />
+                <Stack.Screen name="Group Code" component={GroupCode} />
+                <Stack.Screen name="Group List" component={GroupList} />
+              </Stack.Navigator>
+            </NavigationContainer>
 
-          <Footer style={styles.footerStyle}>
-            <Title>schedule-me-up</Title>
-          </Footer>
-        </Container>
-      </NativeRouter>
+            <Footer style={styles.footerStyle}>
+              <Title>schedule-me-up</Title>
+            </Footer>
+          </Container>
+        </NativeRouter>
+      </Root>
     );
   }
 }

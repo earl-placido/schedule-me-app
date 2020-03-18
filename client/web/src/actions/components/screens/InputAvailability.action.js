@@ -26,7 +26,6 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     groupId,
     localStorage.getItem("userEmail")
   );
-
   const availability = await getAvailabilityQuery(memberId);
   if (availability.error) {
     dispatch({
@@ -39,7 +38,6 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     });
     return;
   }
-
   const newAvailableDays = convertAvailabilityToDays(
     availableDays,
     availability

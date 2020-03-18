@@ -7,7 +7,9 @@ export const toggleModal = value => {
   };
 };
 
-const INITIAL_STATE = { modalVisible: false };
+const INITIAL_STATE = {
+  modalVisible: false
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

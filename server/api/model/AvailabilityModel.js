@@ -14,7 +14,7 @@ module.exports = {
       return conn
         .query(
           `
-                    SELECT AvailabilityId, StartTime, EndTime FROM 
+                    SELECT AvailabilityId, CAST(StartTime as char), CAST(EndTime as char) FROM 
                     \`Availability\` WHERE GroupMemberId = ?;
                 `,
           [groupMemberId]
