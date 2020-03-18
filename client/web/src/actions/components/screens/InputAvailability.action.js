@@ -79,14 +79,47 @@ export const cancelAvailability = () => {
   };
 };
 
-export const deleteAvailability = rangeHours => {
+export const deleteAvailability = (
+  rangeHours,
+  availableDays
+) => async dispatch => {
   let newRangeHours = [...rangeHours];
-  newRangeHours.pop();
+  const removedRangeHours = newRangeHours.pop();
+  // if the range hours that was removed is not empty
+  if (removedRangeHours) {
+    // if it is an existing id, then we query to the database to delete it
+    if (removedRangeHours[0] !== -1) {
+      // remove from database
+      const response = await axios.delete(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`,
+        {
+          data: { availabilityIds: [removedRangeHours[0]] }
+        }
+      );
 
-  return {
+      // handle errors if there is
+      if (response.data.error) {
+        dispatch({ type: DELETE_AVAILABILITY, payload: newRangeHours });
+        return;
+      }
+    }
+
+    // remove from availabilityDays
+    const currentDay = removedRangeHours[1][0].day();
+
+    const currentAvailableDays = availableDays[currentDay];
+    for (let i = 0; i < currentAvailableDays.length; i++) {
+      if (currentAvailableDays[i][1] === removedRangeHours[1]) {
+        availableDays[currentDay].splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  dispatch({
     type: DELETE_AVAILABILITY,
-    payload: newRangeHours
-  };
+    payload: { rangeHours: newRangeHours, availableDays }
+  });
 };
 
 // rangehours contain [[id, [start, end]], [id, [start, end]], ...]
@@ -119,9 +152,12 @@ export const addAvailability = (
 
   await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes);
 
+  // reload the page so we can get the updated availabilityId
+  window.location.reload(false);
+
   dispatch({
     type: ADD_AVAILABILITY,
-    payload: { availableDays, modalVisible: false, rangeHours: [""] }
+    payload: { availableDays, modalVisible: false }
   });
 };
 
@@ -166,7 +202,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, modalVisible: action.payload };
     }
     case DELETE_AVAILABILITY: {
-      return { ...state, rangeHours: action.payload };
+      return { ...state, ...action.payload };
     }
     case ADD_AVAILABILITY: {
       return { ...state, ...action.payload };

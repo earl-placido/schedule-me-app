@@ -10,8 +10,7 @@ import {
   SHOW_MODAL,
   SELECT_DATE,
   CHANGE_RANGE,
-  ADD_RANGE,
-  DELETE_AVAILABILITY
+  ADD_RANGE
 } from "../../actions/components/screens/InputAvailability.action";
 
 configure({ adapter: new Adapter() });
@@ -68,14 +67,6 @@ describe("test group", () => {
       .instance()
       .handleCancel();
     expect(store.getActions()[0].type).toEqual(SHOW_MODAL);
-  });
-
-  it("test click delete on rangeHours", () => {
-    component
-      .dive()
-      .instance()
-      .handleDelete();
-    expect(store.getActions()[0].type).toEqual(DELETE_AVAILABILITY);
   });
 
   it("test click add on rangeHours", () => {
