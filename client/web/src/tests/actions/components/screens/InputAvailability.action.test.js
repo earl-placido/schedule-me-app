@@ -131,7 +131,7 @@ describe("test contacting server from group", () => {
         `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/1000000/members/1`
       )
       .reply(200, {
-        GroupMemberId: 1
+        groupMembers: [{ GroupMemberId: 1 }]
       });
 
     httpMock
