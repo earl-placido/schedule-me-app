@@ -13,7 +13,7 @@ export const getMemberIdWithEmail = async (groupId, userEmail) => {
   const memberInformation = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`
   );
-  const memberId = memberInformation.data.GroupMemberId;
+  const memberId = memberInformation.data.groupMembers[0].GroupMemberId;
   return memberId;
 };
 

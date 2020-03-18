@@ -26,7 +26,6 @@ module.exports = router => {
 
   router.post("/members/availability", (req, res, next) => {
     const { groupMemberId, availabilityIds, startTimes, endTimes } = req.body;
-
     if (availabilityIds.length === 0) {
       res.status(responses.NOT_FOUND);
       res.send({ error: "availabilityIds is empty" });
