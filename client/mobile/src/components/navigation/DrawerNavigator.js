@@ -6,6 +6,8 @@ import {ScrollView} from 'react-native';
 
 import CreateGroup from '../screens/CreateGroup/CreateGroup';
 import GroupDetail from '../screens/GroupDetail/GroupDetail';
+import GroupCode from './components/screens/GroupCodeForm/GroupCodeForm';
+import GroupList from './components/screens/GroupList/GroupList';
 
 import PropTypes from 'prop-types';
 
@@ -14,8 +16,11 @@ const Drawer = createDrawerNavigator();
 function CreateGroupScreen({navigation}) {
   return (
     <Container>
-      <Button onPress={() => navigation.navigate('Group Detail')}>
-        <Text>Go to group details</Text>
+      <Button onPress={() => navigation.navigate('Group Code')}>
+        <Text>Go to group code screen</Text>
+      </Button>
+      <Button onPress={() => navigation.navigate('Group List')}>
+        <Text>Go to group list screen</Text>
       </Button>
       <CreateGroup />
       <Content />
@@ -63,9 +68,16 @@ function CustomDrawerContent({navigation}) {
 function DrawerNavigator() {
   return (
     <Drawer.Navigator
-      drawerContent={props => <CustomDrawerContent {...props} />}>
-      <Drawer.Screen name="Group Detail" component={GroupDetailScreen} />
+      drawerContent={props => <CustomDrawerContent {...props} />}
+      initialRouteName={'Create Group'}>
       <Drawer.Screen name="Create Group" component={CreateGroupScreen} />
+      <Drawer.Screen
+        name="Group Detail"
+        component={GroupDetail}
+        initialParams={{codeNum: -1}}
+      />
+      <Drawer.Screen name="Group Code" component={GroupCode} />
+      <Drawer.Screen name="Group List" component={GroupList} />
     </Drawer.Navigator>
   );
 }
