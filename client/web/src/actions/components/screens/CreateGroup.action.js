@@ -13,7 +13,7 @@ export const GO_PREVIOUS_PAGE = "go_previous_page";
 // submit group creation
 export const SUBMIT_GROUP_CREATION = "submit_group_creation";
 // error modal
-export const CLOSE_ERROR_MODAL= "close_error_modal";
+export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 /****** group actions *******/
 export const updateGroupName = groupName => {
@@ -111,45 +111,46 @@ const submitGroupCreation = (
     meetingLocation
   };
   const authToken = localStorage.getItem("token");
-  console.log("Here");
   // call backend to add group
-  await axios.post(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups`,
-    groupCreation,
-    {
-      headers: {
-        accept: "application/json",
-        Authorization: `${authToken}`
+  await axios
+    .post(
+      `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups`,
+      groupCreation,
+      {
+        headers: {
+          accept: "application/json",
+          Authorization: `${authToken}`
+        }
       }
-    }
-  ).then(response => {
-    if (response.status === 201) {
-      if (response.data.error) {
+    )
+    .then(response => {
+      if (response.status === 201) {
+        if (response.data.error) {
+          dispatch({
+            type: SUBMIT_GROUP_CREATION,
+            payload: { success: false, response, showErrorModal: true }
+          });
+          return;
+        }
+
+        const link = `${window.location.origin}/groups/${response.data.groupId}/`;
+        dispatch({
+          type: SUBMIT_GROUP_CREATION,
+          payload: { success: true, link, currentPage: currentPage + 1 }
+        });
+      } else {
         dispatch({
           type: SUBMIT_GROUP_CREATION,
           payload: { success: false, response, showErrorModal: true }
         });
-        return;
       }
-  
-      const link = `${window.location.origin}/groups/${response.data.groupId}/`;
+    })
+    .catch(() => {
       dispatch({
         type: SUBMIT_GROUP_CREATION,
-        payload: { success: true, link, currentPage: currentPage + 1 }
+        payload: { success: false, showErrorModal: true }
       });
-    } else {
-      dispatch({
-        type: SUBMIT_GROUP_CREATION,
-        payload: { success: false, response, showErrorModal: true }
-      });
-    }
-  }).catch(error => {
-    console.log(error);
-    dispatch({
-      type: SUBMIT_GROUP_CREATION,
-      payload: { success: false, showErrorModal: true }
     });
-  })
 };
 
 export const goPreviousPage = currentPage => {
@@ -165,9 +166,9 @@ export const goPreviousPage = currentPage => {
 export const closeErrorModal = () => async dispatch => {
   dispatch({
     type: CLOSE_ERROR_MODAL,
-    payload: false,
-  })
-}
+    payload: false
+  });
+};
 
 const INITIAL_STATE = {
   groupName: "",
@@ -179,7 +180,7 @@ const INITIAL_STATE = {
   response: null,
   success: true,
   currentPage: 0,
-  showErrorModal: false,
+  showErrorModal: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -209,7 +210,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, currentPage: action.payload };
     }
     case CLOSE_ERROR_MODAL: {
-      return { ...state, showErrorModal: action.payload};
+      return { ...state, showErrorModal: action.payload };
     }
     default: {
       return state;

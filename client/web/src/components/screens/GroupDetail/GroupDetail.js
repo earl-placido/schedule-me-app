@@ -47,8 +47,8 @@ class GroupDetail extends Component {
 
   closeErrorModal = () => {
     this.props.closeErrorModal();
-  }
-  
+  };
+
   handleCancel = () => {
     this.props.closeModal();
   };
@@ -125,19 +125,16 @@ class GroupDetail extends Component {
             <InputAvailability />
           </Modal>
         </Card>
-        <Modal 
-          visible={this.props.showErrorModal}  
-          onCancel={this.closeErrorModal} 
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
           footer={[
-            <Button
-              type="primary"
-              key="ok"
-              onClick={this.closeErrorModal}
-            >
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
               OK
             </Button>
-          ]}>
-          <ExclamationCircleOutlined/> Oops! Something went wrong!
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
         </Modal>
       </div>
     );
@@ -164,7 +161,12 @@ const styles = {
 };
 
 const mapStateToProps = ({ GroupDetailReducer }) => {
-  const { groupMembers, group, inputModalVisible, showErrorModal } = GroupDetailReducer;
+  const {
+    groupMembers,
+    group,
+    inputModalVisible,
+    showErrorModal
+  } = GroupDetailReducer;
   return { groupMembers, group, inputModalVisible, showErrorModal };
 };
 
@@ -179,7 +181,7 @@ GroupDetail.propTypes = {
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
   closeModal: PropTypes.func,
-  closeErrorModal: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
 export default withRouter(

@@ -1,39 +1,43 @@
-import { getGroupQuery, getGroupMembersQuery } from "../../../actions/components/generalQueries/group.action";
+import {
+  getGroupQuery,
+  getGroupMembersQuery
+} from "../../../actions/components/generalQueries/group.action";
 
 export const GROUP_MEMBERS = "group_members";
 export const GROUP = "group";
 export const SHOW_INPUT_MODAL = "show_input_modal";
-export const CLOSE_ERROR_MODAL= "close_error_modal";
+export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getGroupMembers = groupId => async dispatch => {
   await getGroupMembersQuery(groupId)
-  .then(response => {
-    console.log("Hello");
-    dispatch({
-      type: GROUP_MEMBERS,
-      payload: {groupMembers: response.data.groupMembers}
-    });
-  })
-  .catch(error => {
+    .then(response => {
       dispatch({
         type: GROUP_MEMBERS,
-        payload: {groupMembers: [], showErrorModal: true}
+        payload: { groupMembers: response.data.groupMembers }
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: GROUP_MEMBERS,
+        payload: { groupMembers: [], showErrorModal: true }
+      });
     });
-  });
 };
 
 export const getGroup = groupId => async dispatch => {
-  await getGroupQuery(groupId).then(response => {
-    dispatch({
-      type: GROUP,
-      payload: {group: response.data}
+  await getGroupQuery(groupId)
+    .then(response => {
+      dispatch({
+        type: GROUP,
+        payload: { group: response.data }
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: GROUP,
+        payload: { group: [], showErrorModal: true }
+      });
     });
-  }).catch(error=> {
-    dispatch({
-      type: GROUP,
-      payload: {group: [], showErrorModal: true}
-    });
-  })
 };
 
 export const showModal = () => async dispatch => {
@@ -53,11 +57,16 @@ export const closeModal = () => async dispatch => {
 export const closeErrorModal = () => async dispatch => {
   dispatch({
     type: CLOSE_ERROR_MODAL,
-    payload: false,
-  })
-}
+    payload: false
+  });
+};
 
-const INITIAL_STATE = { groupMembers: [], group: {}, inputModalVisible: false, showErrorModal: false };
+const INITIAL_STATE = {
+  groupMembers: [],
+  group: {},
+  inputModalVisible: false,
+  showErrorModal: false
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -71,10 +80,10 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, inputModalVisible: action.payload };
     }
     case CLOSE_ERROR_MODAL: {
-      return { ...state, showErrorModal: action.payload};
+      return { ...state, showErrorModal: action.payload };
     }
     default: {
-      return {...state};
+      return { ...state };
     }
   }
 };

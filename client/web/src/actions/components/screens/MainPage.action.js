@@ -1,28 +1,30 @@
 import { getGroupListQuery } from "../../../actions/components/generalQueries/group.action";
 
 export const GROUP_LIST = "group_list";
-export const CLOSE_ERROR_MODAL= "close_error_modal";
+export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getGroupList = () => async dispatch => {
-  await getGroupListQuery().then(response => {
-    dispatch({
-      type: GROUP_LIST,
-      payload: { groupList: response.data.groups }
+  await getGroupListQuery()
+    .then(response => {
+      dispatch({
+        type: GROUP_LIST,
+        payload: { groupList: response.data.groups }
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: GROUP_LIST,
+        payload: { groupList: [], showErrorModal: true }
+      });
     });
-  }).catch(error => {
-    dispatch({
-      type: GROUP_LIST,
-      payload: { groupList: [], showErrorModal: true }
-    });
-  })
 };
 
 export const closeErrorModal = () => async dispatch => {
   dispatch({
     type: CLOSE_ERROR_MODAL,
-    payload: false,
-  })
-}
+    payload: false
+  });
+};
 
 const INITIAL_STATE = { groupList: [], showErrorModal: false };
 
@@ -32,7 +34,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...action.payload };
     }
     case CLOSE_ERROR_MODAL: {
-      return { ...state, showErrorModal: action.payload};
+      return { ...state, showErrorModal: action.payload };
     }
     default: {
       return state;

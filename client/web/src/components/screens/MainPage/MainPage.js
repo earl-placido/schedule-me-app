@@ -1,10 +1,24 @@
 import React, { Component } from "react";
 
-import { Row, Card, List, Avatar, Divider, Typography, Modal, Button } from "antd";
-import { UsergroupAddOutlined } from "@ant-design/icons";
-import { getGroupList, closeErrorModal } from "../../../actions/components/screens/MainPage.action";
+import {
+  Row,
+  Card,
+  List,
+  Avatar,
+  Divider,
+  Typography,
+  Modal,
+  Button
+} from "antd";
+import {
+  UsergroupAddOutlined,
+  ExclamationCircleOutlined
+} from "@ant-design/icons";
+import {
+  getGroupList,
+  closeErrorModal
+} from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
@@ -15,7 +29,7 @@ class MainPage extends Component {
 
   closeErrorModal = () => {
     this.props.closeErrorModal();
-  }
+  };
 
   render() {
     const { Title } = Typography;
@@ -49,19 +63,16 @@ class MainPage extends Component {
             />
           </Row>
         </Card>
-        <Modal 
-          visible={this.props.showErrorModal}  
-          onCancel={this.closeErrorModal} 
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
           footer={[
-            <Button
-              type="primary"
-              key="ok"
-              onClick={this.closeErrorModal}
-            >
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
               OK
             </Button>
-          ]}>
-          <ExclamationCircleOutlined/> Oops! Something went wrong!
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
         </Modal>
       </div>
     );
@@ -91,4 +102,6 @@ MainPage.propTypes = {
   closeErrorModal: PropTypes.func
 };
 
-export default connect(mapStateToProps, { getGroupList, closeErrorModal })(MainPage);
+export default connect(mapStateToProps, { getGroupList, closeErrorModal })(
+  MainPage
+);

@@ -93,8 +93,8 @@ class CreateGroup extends Component {
 
   closeErrorModal = () => {
     this.props.closeErrorModal();
-  }
-  
+  };
+
   componentDidUpdate() {
     // update the navigatino bar group list
     if (this.props.currentPage === 2) {
@@ -150,19 +150,16 @@ class CreateGroup extends Component {
             </Row>
           </Card>
         </div>
-        <Modal 
-          visible={this.props.showErrorModal}  
-          onCancel={this.closeErrorModal} 
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
           footer={[
-            <Button
-              type="primary"
-              key="ok"
-              onClick={this.closeErrorModal}
-            >
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
               OK
             </Button>
-          ]}>
-          <ExclamationCircleOutlined/> Oops! Something went wrong!
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
         </Modal>
       </div>
     );
