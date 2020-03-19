@@ -123,7 +123,6 @@ const submitGroupCreation = (
       }
     }
   ).then(response => {
-    console.log("Hi");
     if (response.status === 201) {
       if (response.data.error) {
         dispatch({

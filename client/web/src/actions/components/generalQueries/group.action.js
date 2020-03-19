@@ -27,3 +27,17 @@ export const getGroupMembersQuery = async groupId => {
   );
   return response;
 };
+
+export const getGroupListQuery = async ()  => {
+  const authToken = localStorage.getItem("token");
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/`,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
+  );
+  return response;
+};

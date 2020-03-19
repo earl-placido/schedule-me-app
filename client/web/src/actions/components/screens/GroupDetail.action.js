@@ -8,9 +8,10 @@ export const CLOSE_ERROR_MODAL= "close_error_modal";
 export const getGroupMembers = groupId => async dispatch => {
   await getGroupMembersQuery(groupId)
   .then(response => {
+    console.log("Hello");
     dispatch({
       type: GROUP_MEMBERS,
-      payload: {groupMembers: response.data.groupMembers, showErrorModal: false}
+      payload: {groupMembers: response.data.groupMembers}
     });
   })
   .catch(error => {
@@ -25,7 +26,7 @@ export const getGroup = groupId => async dispatch => {
   await getGroupQuery(groupId).then(response => {
     dispatch({
       type: GROUP,
-      payload: {group: response.data, showErrorModal: false}
+      payload: {group: response.data}
     });
   }).catch(error=> {
     dispatch({

@@ -45,6 +45,10 @@ class GroupDetail extends Component {
     this.props.closeModal();
   };
 
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
+  }
+
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, inputStyle, buttonStyle } = styles;
@@ -165,6 +169,7 @@ GroupDetail.propTypes = {
   groupMembers: PropTypes.any,
   group: PropTypes.any,
   inputModalVisible: PropTypes.any,
+  showErrorModal: PropTypes.any,
   getGroupMembers: PropTypes.func,
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
