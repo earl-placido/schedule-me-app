@@ -8,6 +8,7 @@ WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
 # install and cache app dependencies
+RUN apk update && apk add git
 COPY package.json /app/package.json
 RUN npm config set unsafe-perm true
 RUN npm install --silent

@@ -1,0 +1,10 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "integrationFolder": "system_tests/tests",
+  "supportFile": false,
+  "pluginsFile": false,
+  "fixturesFolder": false,
+  "videosFolder": "system_tests/videos",
+  "screenshotsFolder:": "system_tests/images",
+  "projectId": "hrvwfk"
+}
