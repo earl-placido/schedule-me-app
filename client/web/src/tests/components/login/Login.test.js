@@ -6,7 +6,6 @@ import { GoogleLogin } from "react-google-login";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
 import { Redirect } from "react-router";
-import { spy } from 'sinon';
 
 configure({ adapter: new Adapter() });
 

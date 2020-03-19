@@ -19,15 +19,29 @@ describe("Testing the <Home/>", () => {
     expect(wrapper.length).toEqual(1);
   });
 
-  it("Renders Login", () => {
+  it("Checks if core child components rendered", () => {
     expect(wrapper.find(Login)).toHaveLength(1);
-  });
-
-  it("Renders `Continue as Guest` button", () => {
+    expect(wrapper.find(Content)).toHaveLength(1);
     expect(wrapper.find(Button)).toHaveLength(1);
   });
 
-  it("Renders `Content` container", () => {
-    expect(wrapper.find(Content)).toHaveLength(1);
+  it("Testing the `handleHttps` function", () => {
+    const handleHttpsSpy = jest.spyOn(wrapper.instance(), 'handleHttps');
+    wrapper.instance().handleHttps();
+    expect(handleHttpsSpy).toBeCalled();
+  });
+
+  it("Testing the `openRedirectMessage` function", () => {
+    const openMessageSpy = jest.spyOn(wrapper.instance(), 'openRedirectMessage');
+    wrapper.instance().openRedirectMessage();
+    expect(openMessageSpy).toBeCalled();
+  });
+
+  it("Tests if `httpsRedirect` actually works", () => {
+    let protocol = 'https:';
+    wrapper.instance().handleHttps(protocol);
+    jest.useFakeTimers();
+    jest.advanceTimersByTime(6000);
+    expect(window.location.protocol).toEqual("http:");
   });
 });
