@@ -9,17 +9,21 @@ import {
   Typography,
   message,
   Input,
-  Avatar
+  Avatar,
+  Modal
 } from "antd";
 import {
   getGroupMembers,
-  getGroup
+  getGroup,
+  showModal,
+  closeModal
 } from "../../../actions/components/screens/GroupDetail.action";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { UserOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import InputAvailability from "../Group/InputAvailability";
 import PropTypes from "prop-types";
 
 class GroupDetail extends Component {
@@ -32,10 +36,17 @@ class GroupDetail extends Component {
     message.success("Code copied!");
   }
 
+  showModal = () => {
+    this.props.showModal();
+  };
+
+  handleDone = () => {
+    this.props.closeModal();
+  };
+
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, inputStyle } = styles;
-    const inputAvailabilityLink = `${this.props.location.pathname}input/`;
+    const { containerStyle, cardStyle, inputStyle, buttonStyle } = styles;
 
     return (
       <div style={containerStyle}>
@@ -82,11 +93,27 @@ class GroupDetail extends Component {
           <Divider orientation="center" />
           <Button
             type="primary"
-            href={inputAvailabilityLink}
+            onClick={this.showModal}
             style={{ float: "right" }}
           >
             Input Your Availability
           </Button>
+          <Modal
+            width={"60%"}
+            visible={this.props.inputModalVisible}
+            footer={[
+              <Button
+                style={buttonStyle}
+                type="primary"
+                key="done"
+                onClick={this.handleDone}
+              >
+                Done
+              </Button>
+            ]}
+          >
+            <InputAvailability />
+          </Modal>
         </Card>
       </div>
     );
@@ -105,12 +132,16 @@ const styles = {
 
   inputStyle: {
     width: 200
+  },
+
+  buttonStyle: {
+    margin: 30
   }
 };
 
 const mapStateToProps = ({ GroupDetailReducer }) => {
-  const { groupMembers, group } = GroupDetailReducer;
-  return { groupMembers, group };
+  const { groupMembers, group, inputModalVisible } = GroupDetailReducer;
+  return { groupMembers, group, inputModalVisible };
 };
 
 GroupDetail.propTypes = {
@@ -118,10 +149,18 @@ GroupDetail.propTypes = {
   match: PropTypes.any,
   groupMembers: PropTypes.any,
   group: PropTypes.any,
+  inputModalVisible: PropTypes.any,
   getGroupMembers: PropTypes.func,
-  getGroup: PropTypes.func
+  getGroup: PropTypes.func,
+  showModal: PropTypes.func,
+  closeModal: PropTypes.func
 };
 
 export default withRouter(
-  connect(mapStateToProps, { getGroupMembers, getGroup })(GroupDetail)
+  connect(mapStateToProps, {
+    getGroupMembers,
+    getGroup,
+    showModal,
+    closeModal
+  })(GroupDetail)
 );
