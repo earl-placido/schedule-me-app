@@ -78,8 +78,6 @@ matrix:
       - sys-img-x86-android-28
       - sys-img-armeabi-v7a-android-17
     before_install:
-    - openssl aes-256-cbc -K $encrypted_873c6bbdf3eb_key -iv $encrypted_873c6bbdf3eb_iv
-      -in android-keystore.jks.enc -out client/mobile/android-keystore.jks -d
     - (cd client/mobile/android && yes | sdkmanager "platforms;android-28")
     - nvm install 12
     - node --version
@@ -88,18 +86,27 @@ matrix:
     before_script:
     - "(cd client/mobile && npm install)"
     script:
-    - if [ "$TRAVIS_BRANCH" = "develop" ]; then (cd client/mobile/android && ./gradlew
-      assembleDebug); fi
-    - if [ "$TRAVIS_BRANCH" = "master" ]; then (cd client/mobile/android && rm "app/src/main/res/raw"./gradlew
-      assembleRelease); fi
+    - (cd client/mobile/android && ./gradlew assembleDebug)
     deploy:
       provider: releases
       api_key: "$GITHUB_API_KEY"
-      file: "/client/mobile/android/app/build/outputs/apk/release/*"
+      file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
       skip_cleanup: true
       name: build-$TRAVIS_BRANCH
       body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
         on $(date +'%F %T %Z').
+      prerelease: true
+      on:
+        branch: develop
+    deploy:
+      provider: releases
+      api_key: "$GITHUB_API_KEY"
+      file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
+      skip_cleanup: true
+      name: build-$TRAVIS_BRANCH
+      body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
+        on $(date +'%F %T %Z').
+      prerelease: true
       on:
         branch: master
     after_deploy:
