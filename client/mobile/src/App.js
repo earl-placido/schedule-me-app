@@ -58,17 +58,17 @@ class App extends Component {
                               </Button>
                             </Left>
 
-                            <Button
-                              onPress={() => {
-                                GoogleSignin.revokeAccess();
-                                GoogleSignin.signOut();
-                                this.props.logoutUser();
-                                props.navigation.navigate('Home');
-                              }}>
-                              <Text>{this.props.userName}</Text>
-                            </Button>
-
-                            <Right />
+                            <Right>
+                              <Button
+                                onPress={() => {
+                                  GoogleSignin.revokeAccess();
+                                  GoogleSignin.signOut();
+                                  this.props.logoutUser();
+                                  props.navigation.navigate('Home');
+                                }}>
+                                <Text>{this.props.userName}</Text>
+                              </Button>
+                            </Right>
                           </>
                         ) : (
                           <></>

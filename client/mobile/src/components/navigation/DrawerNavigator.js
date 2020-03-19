@@ -1,6 +1,6 @@
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 import React, {Component} from 'react';
-import {ScrollView} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 
 import CreateGroup from '../screens/CreateGroup/CreateGroup';
 import GroupDetail from '../screens/GroupDetail/GroupDetail';
@@ -17,26 +17,30 @@ const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   return (
-    <ScrollView>
+    <ScrollView style={styles.menuStyle}>
       <DrawerItem
+        labelStyle={styles.menuItemStyle}
         label="Groups"
         onPress={() => {
           props.navigation.navigate('Group List');
         }}
       />
       <DrawerItem
+        labelStyle={styles.menuItemStyle}
         label="Create Group"
         onPress={() => {
           props.navigation.navigate('Create Group');
         }}
       />
       <DrawerItem
+        labelStyle={styles.menuItemStyle}
         label="Join Group"
         onPress={() => {
           props.navigation.navigate('Group Code');
         }}
       />
       <DrawerItem
+        labelStyle={styles.menuItemStyle}
         label="Log out"
         onPress={() => {
           GoogleSignin.revokeAccess();
@@ -67,6 +71,16 @@ class DrawerNavigator extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  menuStyle: {
+    backgroundColor: '#3F51B5',
+  },
+  menuItemStyle: {
+    color: 'white',
+    fontSize: 20,
+  },
+});
 
 CustomDrawerContent.propTypes = {
   navigation: PropTypes.shape({
