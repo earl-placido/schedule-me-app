@@ -126,7 +126,7 @@ const submitGroupCreation = (
     if (response.data.error) {
       dispatch({
         type: SUBMIT_GROUP_CREATION,
-        payload: { success: false, response, currentPage: currentPage + 1 }
+        payload: { success: false, response, currentPage: currentPage }
       });
       return;
     }
@@ -139,7 +139,7 @@ const submitGroupCreation = (
   } else {
     dispatch({
       type: SUBMIT_GROUP_CREATION,
-      payload: { success: false, response, currentPage: currentPage + 1 }
+      payload: { success: false, response, currentPage: currentPage }
     });
   }
 };
@@ -184,7 +184,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, location: action.payload };
     }
     case SUBMIT_GROUP_CREATION: {
-      console.log(action.payload);
       return { ...state, ...action.payload };
     }
     case GO_NEXT_PAGE: {
@@ -194,7 +193,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, currentPage: action.payload };
     }
     default: {
-      return INITIAL_STATE;
+      return state;
     }
   }
 };
