@@ -85,6 +85,8 @@ export const deleteAvailability = (
 ) => async dispatch => {
   let newRangeHours = [...rangeHours];
   const removedRangeHours = newRangeHours.pop();
+  console.log(removedRangeHours);
+  console.log(removedRangeHours[0] === -1);
   // if the range hours that was removed is not empty
   if (removedRangeHours) {
     // if it is an existing id, then we query to the database to delete it
@@ -102,16 +104,16 @@ export const deleteAvailability = (
         dispatch({ type: DELETE_AVAILABILITY, payload: newRangeHours });
         return;
       }
-    }
 
-    // remove from availabilityDays
-    const currentDay = removedRangeHours[1][0].day();
+      // remove from availabilityDays
+      const currentDay = removedRangeHours[1][0].day();
 
-    const currentAvailableDays = availableDays[currentDay];
-    for (let i = 0; i < currentAvailableDays.length; i++) {
-      if (currentAvailableDays[i][1] === removedRangeHours[1]) {
-        availableDays[currentDay].splice(i, 1);
-        break;
+      const currentAvailableDays = availableDays[currentDay];
+      for (let i = 0; i < currentAvailableDays.length; i++) {
+        if (currentAvailableDays[i][1] === removedRangeHours[1]) {
+          availableDays[currentDay].splice(i, 1);
+          break;
+        }
       }
     }
   }
@@ -140,14 +142,19 @@ export const addAvailability = (
     return;
   }
 
+  // get rid of empty range hours, otherwise will send undefined to server
+  let filteredRangeHours = rangeHours.filter(item => {
+    return item !== "";
+  });
+
   const day = selectedDate.day();
-  const availabilityIds = rangeHours.map(item => item[0]);
-  const startTimes = rangeHours.map(item =>
-    item[1][0].format("YYYY-MM-DD HH:mm:ss")
-  );
-  const endTimes = rangeHours.map(item =>
-    item[1][1].format("YYYY-MM-DD HH:mm:ss")
-  );
+  const availabilityIds = filteredRangeHours.map(item => item[0]);
+  const startTimes = filteredRangeHours.map(item => {
+    if (item[1]) return item[1][0].format("YYYY-MM-DD HH:mm:ss");
+  });
+  const endTimes = filteredRangeHours.map(item => {
+    if (item[1]) return item[1][1].format("YYYY-MM-DD HH:mm:ss");
+  });
 
   const addedAvailabilityIds = await addAvailabilityQuery(
     memberId,
@@ -155,18 +162,21 @@ export const addAvailability = (
     startTimes,
     endTimes
   );
-  console.log(addedAvailabilityIds);
 
   // update the ids of rangeHours after getting the availbilityId from database
   for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
     if (addedAvailabilityIds.data.ids[i] !== 0)
-      rangeHours[i][0] = addedAvailabilityIds.data.ids[i];
+      filteredRangeHours[i][0] = addedAvailabilityIds.data.ids[i];
   }
-  availableDays[day] = rangeHours;
+  availableDays[day] = filteredRangeHours;
 
   dispatch({
     type: ADD_AVAILABILITY,
-    payload: { availableDays, modalVisible: false, rangeHours }
+    payload: {
+      availableDays,
+      modalVisible: false,
+      rangeHours: filteredRangeHours
+    }
   });
 };
 
@@ -223,6 +233,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, rangeHours: action.payload };
     }
     default:
-      return INITIAL_STATE;
+      return state;
   }
 };
