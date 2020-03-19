@@ -1,10 +1,11 @@
 /// <reference types="cypress" />
 
-var user;
-
 context("Test register functionality", () => {
+  var generatedUser;
+
   before(() => {
-    user = {
+    // generate a random user
+    generatedUser = {
       fName: `fName_${Math.random()
         .toString(36)
         .slice(2)}`,
@@ -41,10 +42,10 @@ context("Test register functionality", () => {
 
     cy.get("p > .ant-btn").click();
 
-    cy.get("#signup_firstName").type(user.fName, { delay: 10 });
-    cy.get("#signup_lastName").type(user.lName, { delay: 10 });
-    cy.get("#signup_password").type(user.password, { delay: 10 });
-    cy.get("#signup_confirm").type(user.password, { delay: 10 });
+    cy.get("#signup_firstName").type(generatedUser.fName, { delay: 10 });
+    cy.get("#signup_lastName").type(generatedUser.lName, { delay: 10 });
+    cy.get("#signup_password").type(generatedUser.password, { delay: 10 });
+    cy.get("#signup_confirm").type(generatedUser.password, { delay: 10 });
 
     invalidEmails.forEach(email => {
       cy.get("#signup_email").type(email, { delay: 10 });
@@ -58,11 +59,10 @@ context("Test register functionality", () => {
     });
   });
 
-  it("Cannot create user with invalid password", () => {
-    let invalidPasswords = [
-      "longharactersabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz",
-      "short"
-    ];
+  it("Cannot create user with invalid passwords", () => {
+    let longPassword =
+      "longharactersabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz";
+    let shortPassword = "short";
 
     cy.visit("/");
 
@@ -72,18 +72,43 @@ context("Test register functionality", () => {
 
     cy.get("p > .ant-btn").click();
 
-    cy.get("#signup_firstName").type(user.fName, { delay: 10 });
-    cy.get("#signup_lastName").type(user.lName, { delay: 10 });
-    cy.get("#signup_email").type(user.email, { delay: 10 });
+    cy.get("#signup_firstName").type(generatedUser.fName, { delay: 10 });
+    cy.get("#signup_lastName").type(generatedUser.lName, { delay: 10 });
+    cy.get("#signup_email").type(generatedUser.email, { delay: 10 });
 
-    invalidPasswords.forEach(password => {
-      cy.get("#signup_password").type(password, { delay: 10 });
-      cy.get("#signup_confirm").type(password, { delay: 10 });
-      cy.get(".ant-form-item-control-input-content > .ant-btn").click();
-      cy.url().should("contain", "/");
-      cy.get("#signup_password").clear();
-      cy.get("#signup_confirm").clear();
-    });
+    // length over 100
+    cy.get("#signup_password").type(longPassword, { delay: 10 });
+    cy.get("#signup_confirm").type(longPassword, { delay: 10 });
+    cy.get(".ant-form-item-control-input-content > .ant-btn").click();
+    cy.url().should("contain", "/");
+    cy.get(".ant-form-item-explain > div").should(
+      "contain",
+      "Password cannot be over 100 characters!"
+    );
+
+    cy.get("#signup_password").clear();
+    cy.get("#signup_confirm").clear();
+
+    // length less than 8
+    cy.get("#signup_password").type(shortPassword, { delay: 10 });
+    cy.get("#signup_confirm").type(shortPassword, { delay: 10 });
+    cy.get(".ant-form-item-control-input-content > .ant-btn").click();
+    cy.url().should("contain", "/");
+    cy.get(
+      ".ant-form-item-has-error > .ant-col > .ant-form-item-explain > div"
+    ).should("contain", "Password must be atleast 8 characters");
+
+    cy.get("#signup_password").clear();
+    cy.get("#signup_confirm").clear();
+
+    // passwords not matching
+    cy.get("#signup_password").type(generatedUser.password, { delay: 10 });
+    cy.get("#signup_confirm").type(`${generatedUser.password}2`, { delay: 10 });
+    cy.get(".ant-form-item-control-input-content > .ant-btn").click();
+    cy.url().should("contain", "/");
+    cy.get(
+      ".ant-form-item-with-help.ant-form-item-has-feedback > .ant-col > .ant-form-item-explain > div"
+    ).should("contain", "The two passwords that you entered do not match!");
   });
 
   it("Can register", () => {
@@ -95,11 +120,11 @@ context("Test register functionality", () => {
 
     cy.get("p > .ant-btn").click();
 
-    cy.get("#signup_firstName").type(user.fName, { delay: 10 });
-    cy.get("#signup_lastName").type(user.lName, { delay: 10 });
-    cy.get("#signup_email").type(user.email, { delay: 10 });
-    cy.get("#signup_password").type(user.password, { delay: 10 });
-    cy.get("#signup_confirm").type(user.password, { delay: 10 });
+    cy.get("#signup_firstName").type(generatedUser.fName, { delay: 10 });
+    cy.get("#signup_lastName").type(generatedUser.lName, { delay: 10 });
+    cy.get("#signup_email").type(generatedUser.email, { delay: 10 });
+    cy.get("#signup_password").type(generatedUser.password, { delay: 10 });
+    cy.get("#signup_confirm").type(generatedUser.password, { delay: 10 });
 
     // signup button
     cy.get(".ant-form-item-control-input-content > .ant-btn").click();
@@ -116,11 +141,11 @@ context("Test register functionality", () => {
 
     cy.get("p > .ant-btn").click();
 
-    cy.get("#signup_firstName").type(user.fName, { delay: 10 });
-    cy.get("#signup_lastName").type(user.lName, { delay: 10 });
-    cy.get("#signup_email").type(user.email, { delay: 10 });
-    cy.get("#signup_password").type(user.password, { delay: 10 });
-    cy.get("#signup_confirm").type(user.password, { delay: 10 });
+    cy.get("#signup_firstName").type(generatedUser.fName, { delay: 10 });
+    cy.get("#signup_lastName").type(generatedUser.lName, { delay: 10 });
+    cy.get("#signup_email").type(generatedUser.email, { delay: 10 });
+    cy.get("#signup_password").type(generatedUser.password, { delay: 10 });
+    cy.get("#signup_confirm").type(generatedUser.password, { delay: 10 });
 
     // signup button
     cy.get(".ant-form-item-control-input-content > .ant-btn").click();

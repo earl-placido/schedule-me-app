@@ -20,6 +20,8 @@ A scheduler application for a group project in COMP 4350 at the University of Ma
 
 - [How to setup](./client/web/README.md)
 
+- [Automated UI Tests Dashboard](https://dashboard.cypress.io/projects/hrvwfk/runs)
+
 | Environment | URL                                 |
 | ----------- | ----------------------------------- |
 | Production  | [schedule-me-up.surge.sh/](http://schedule-me-up.surge.sh/)     |
