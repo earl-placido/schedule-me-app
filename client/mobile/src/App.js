@@ -1,19 +1,8 @@
 import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
-import {
-  Container,
-  Header,
-  Footer,
-  Title,
-  Button,
-  Text,
-  Root,
-  Icon,
-  Left,
-  Right,
-} from 'native-base';
+import {Container, Header, Footer, Title, Root} from 'native-base';
 
-import {NavigationContainer, DrawerActions} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import DrawerNavigator from './components/navigation/DrawerNavigator';
@@ -25,9 +14,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutUser} from './actions/components/screens/Auth.action';
 
-import {GoogleSignin} from '@react-native-community/google-signin';
-
-const Stack = createStackNavigator();
+const AuthStack = createStackNavigator();
 
 class App extends Component {
   render() {
@@ -36,50 +23,29 @@ class App extends Component {
         <NativeRouter>
           <Container>
             <NavigationContainer>
-              <Stack.Navigator
+              <AuthStack.Navigator
                 initialRouteName={
                   !this.props.isAuthenticated ? 'Home' : 'Drawer'
-                }
-                screenOptions={{
-                  header: props => {
-                    return (
-                      <Header>
-                        {this.props.isAuthenticated ? (
-                          <>
-                            <Left>
-                              <Button
-                                transparent
-                                onPress={() =>
-                                  props.navigation.dispatch(
-                                    DrawerActions.toggleDrawer(),
-                                  )
-                                }>
-                                <Icon name="menu" />
-                              </Button>
-                            </Left>
-
-                            <Right>
-                              <Button
-                                onPress={() => {
-                                  GoogleSignin.revokeAccess();
-                                  GoogleSignin.signOut();
-                                  this.props.logoutUser();
-                                  props.navigation.navigate('Home');
-                                }}>
-                                <Text>{this.props.userName}</Text>
-                              </Button>
-                            </Right>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-                      </Header>
-                    );
-                  },
-                }}>
-                <Stack.Screen name="Home" component={Home} />
-                <Stack.Screen name="Drawer" component={DrawerNavigator} />
-              </Stack.Navigator>
+                }>
+                <AuthStack.Screen
+                  name="Home"
+                  component={Home}
+                  options={{
+                    header: () => {
+                      return <Header />;
+                    },
+                  }}
+                />
+                <AuthStack.Screen
+                  name="Drawer"
+                  component={DrawerNavigator}
+                  options={{
+                    header: () => {
+                      return null;
+                    },
+                  }}
+                />
+              </AuthStack.Navigator>
             </NavigationContainer>
 
             <Footer style={styles.footerStyle}>

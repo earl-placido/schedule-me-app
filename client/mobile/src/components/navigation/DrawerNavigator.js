@@ -1,11 +1,9 @@
-import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 import React, {Component} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 
-import CreateGroup from '../screens/CreateGroup/CreateGroup';
-import GroupDetail from '../screens/GroupDetail/GroupDetail';
-import GroupCode from '../screens/GroupCodeForm/GroupCodeForm';
-import GroupList from '../screens/GroupList/GroupList';
+import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
+
+import StackNavigator from './StackNavigator';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
@@ -58,15 +56,8 @@ class DrawerNavigator extends Component {
     return (
       <Drawer.Navigator
         drawerContent={() => <CustomDrawerContent {...this.props} />}
-        initialRouteName={'Create Group'}>
-        <Drawer.Screen name="Create Group" component={CreateGroup} />
-        <Drawer.Screen
-          name="Group Detail"
-          component={GroupDetail}
-          initialParams={{codeNum: -1}}
-        />
-        <Drawer.Screen name="Group Code" component={GroupCode} />
-        <Drawer.Screen name="Group List" component={GroupList} />
+        initialRouteName={'Stack'}>
+        <Drawer.Screen name="Stack" component={StackNavigator} />
       </Drawer.Navigator>
     );
   }
@@ -75,6 +66,8 @@ class DrawerNavigator extends Component {
 const styles = StyleSheet.create({
   menuStyle: {
     backgroundColor: '#3F51B5',
+    paddingVertical: 20,
+    paddingHorizontal: 10,
   },
   menuItemStyle: {
     color: 'white',
