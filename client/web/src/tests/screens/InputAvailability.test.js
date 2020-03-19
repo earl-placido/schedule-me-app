@@ -46,20 +46,13 @@ describe("test group", () => {
     expect(component.props().groupInformation).toEqual("");
   });
 
-  it("test if add availability button show modal", () => {
-    component
-      .dive()
-      .find("#show-modal-button")
-      .simulate("click");
-    expect(store.getActions()[0].type).toEqual(SHOW_MODAL);
-  });
-
-  it("test if selecting calendar update the selectedDate", () => {
+  it("test if selecting calendar update the selectedDate and shows modal", () => {
     component
       .dive()
       .instance()
       .onSelect(moment());
     expect(store.getActions()[0].type).toEqual(SELECT_DATE);
+    expect(store.getActions()[1].type).toEqual(SHOW_MODAL);
   });
 
   it("test if click cancel on modal disable modal visible", () => {

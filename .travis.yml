@@ -1,115 +1,117 @@
 matrix:
   include:
-    - language: node_js
-      node_js:
-        - "stable"
-      services:
-        - docker
-        - mysql
-      cache:
-        directories:
-          - ./client/web/node_modules
-          - ./client/mobile/node_modules
-          - ./server/node_modules
-      before_install:
-        - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production)
-        - (cd client/web && travis_wait docker-compose up -d)
-      before_script:
-        - (cd server && npm ci && npm run db:init) 
-        - (cd client/web && npm ci)
-        - (cd client/mobile && npm ci)
-      script:
-        - (cd server && npm test && npx eslint ./)
-        - (cd client/mobile && npm run test:ci && npm run lint)
-        - docker exec web /bin/sh -c "eslint src"
-        - docker exec web /bin/sh -c "npm run test:ci"
-        - (cd server && npm start) &
-        - (cd client/web && npm run cypress:ci)
-        - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run build_prod && mv build/index.html build/200.html"; fi
-        - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run build_dev && mv build/index.html build/200.html"; fi
-      after_script:
-        - (cd client/web && travis_wait docker-compose down)      
-      deploy:
-        - provider: surge
-          skip_cleanup: true
-          domain: schedule-me-up-dev.surge.sh
-          project: ./client/web/build/
-          on:
-            branch: develop
-        - provider: surge
-          skip_cleanup: true
-          domain: schedule-me-up.surge.sh
-          project: ./client/web/build/
-          on:
-            branch: master
-        - provider: elasticbeanstalk
-          edge: true
-          access_key_id: $EBS_ACCESS_KEY
-          secret_access_key: $EBS_SECRET_KEY
-          region: $EBS_REGION
-          app: $EBS_APP_NAME
-          env: $EBS_ENV
-          bucket_name: $EBS_BUCKET_NAME
-          skip_cleanup: true
-          on:
-            branch: develop
-        - provider: elasticbeanstalk
-          edge: true
-          access_key_id: $EBS_ACCESS_KEY
-          secret_access_key: $EBS_SECRET_KEY
-          region: $EBS_REGION
-          app: $EBS_APP_NAME
-          env: $EBS_ENV
-          bucket_name: $EBS_BUCKET_NAME
-          skip_cleanup: true
-          on:
-            branch: master
-    - language: android
-      dist: trusty
-      android:
-        components:
-          # Uncomment the lines below if you want to
-          # use the latest revision of Android SDK Tools
-          - tools
-          - platform-tools
-     
-          # The BuildTools version used by your project
-          - build-tools-28.0.3
-     
-          # The SDK version used to compile your project
-          - android-28
-     
-          # Additional components
-          - extra-google-google_play_services
-          - extra-google-m2repository
-          - extra-android-m2repository
-     
-          # Specify at least one system image,
-          # if you need to run emulator(s) during your tests
-          - sys-img-x86-android-28
-          - sys-img-armeabi-v7a-android-17
+  - language: node_js
+    node_js:
+    - stable
+    services:
+    - docker
+    - mysql
+    cache:
+      directories:
+      - "./client/web/node_modules"
+      - "./client/mobile/node_modules"
+      - "./server/node_modules"
+    before_install:
+    - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production) 
+    - "(cd client/web && travis_wait docker-compose up -d)"
+    before_script:
+    - "(cd server && npm ci && npm run db:init)"
+    - "(cd client/web && npm ci)"
+    - "(cd client/mobile && npm ci)"
+    script:
+    - "(cd server && npm test && npx eslint ./)"
+    - "(cd client/mobile && npm run test:ci && npm run lint)"
+    - docker exec web /bin/sh -c "eslint src"
+    - docker exec web /bin/sh -c "npm run test:ci"
+    - "(cd server && npm start) &""
+    - "(cd client/web && npm run cypress:ci)"
+    - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run
+      build_prod && mv build/index.html build/200.html"; fi
+    - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run
+      build_dev && mv build/index.html build/200.html"; fi
+    after_script:
+    - "(cd client/web && travis_wait docker-compose down)"
+    deploy:
+    - provider: surge
+      skip_cleanup: true
+      domain: schedule-me-up-dev.surge.sh
+      project: "./client/web/build/"
+      on:
+        branch: develop
+    - provider: surge
+      skip_cleanup: true
+      domain: schedule-me-up.surge.sh
+      project: "./client/web/build/"
+      on:
+        branch: master
+    - provider: elasticbeanstalk
+      edge: true
+      access_key_id: "$EBS_ACCESS_KEY"
+      secret_access_key: "$EBS_SECRET_KEY"
+      region: "$EBS_REGION"
+      app: "$EBS_APP_NAME"
+      env: "$EBS_ENV"
+      bucket_name: "$EBS_BUCKET_NAME"
+      skip_cleanup: true
+      on:
+        branch: develop
+    - provider: elasticbeanstalk
+      edge: true
+      access_key_id: "$EBS_ACCESS_KEY"
+      secret_access_key: "$EBS_SECRET_KEY"
+      region: "$EBS_REGION"
+      app: "$EBS_APP_NAME"
+      env: "$EBS_ENV"
+      bucket_name: "$EBS_BUCKET_NAME"
+      skip_cleanup: true
+      on:
+        branch: master
+  - if: "(branch = master) OR (branch = develop)"
+    language: android
+    dist: trusty
+    android:
+      components:
+      - tools
+      - platform-tools
+      - build-tools-28.0.3
+      - android-28
+      - extra-google-google_play_services
+      - extra-google-m2repository
+      - extra-android-m2repository
+      - sys-img-x86-android-28
+      - sys-img-armeabi-v7a-android-17
+    before_install:
+    - (cd client/mobile/android && yes | sdkmanager "platforms;android-28")
+    - nvm install 12
+    - node --version
+    - (cd client/mobile && echo "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT" > .env
+      && echo "REACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env )
+    before_script:
+    - "(cd client/mobile && npm install)"
+    script:
+    - (cd client/mobile/android && ./gradlew assembleDebug)
+    deploy:
+      provider: releases
+      api_key: "$GITHUB_API_KEY"
+      file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
+      skip_cleanup: true
+      name: build-$TRAVIS_BRANCH
+      body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
+        on $(date +'%F %T %Z').
+      prerelease: true
+      on:
+        branch: develop
+    deploy:
+      provider: releases
+      api_key: "$GITHUB_API_KEY"
+      file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
+      skip_cleanup: true
+      name: build-$TRAVIS_BRANCH
+      body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
+        on $(date +'%F %T %Z').
+      prerelease: true
+      on:
+        branch: master
+    after_deploy:
+    - rm -rf "/client/mobile/android/app/build/outputs"
 
-      before_install:
-        - (cd client/mobile/android && yes | sdkmanager "platforms;android-28")
-        - nvm install 12
-        - node --version
-        - (cd client/mobile && echo "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT" > .env && echo "REACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env )
-      before_script:
-        - (cd client/mobile && npm install)
-      script:
-        - if [ "$TRAVIS_BRANCH" = "develop" ]; then (cd client/mobile/android && ./gradlew assembleDebug); fi
-        - if [ "$TRAVIS_BRANCH" = "master" ]; then (cd client/mobile/android && ./gradlew assembleRelease); fi
-      deploy:
-        provider: releases
-        api_key: $GITHUB_API_KEY
-        file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
-        skip_cleanup: true
-        name: build-$TRAVIS_BRANCH
-        body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI on $(date +'%F %T %Z').
-        prerelease: true
-        on:
-          branch: develop
-        on:  
-          branch: master
-      after_deploy:
-        - rm -rf "/client/mobile/android/app/build/outputs"
