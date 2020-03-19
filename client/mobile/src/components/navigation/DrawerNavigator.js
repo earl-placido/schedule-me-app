@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, View} from 'react-native';
+import {Button, Text} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 
@@ -15,39 +16,46 @@ const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props) {
   return (
-    <ScrollView style={styles.menuStyle}>
-      <DrawerItem
-        labelStyle={styles.menuItemStyle}
-        label="Groups"
-        onPress={() => {
-          props.navigation.navigate('Group List');
-        }}
-      />
-      <DrawerItem
-        labelStyle={styles.menuItemStyle}
-        label="Create Group"
-        onPress={() => {
-          props.navigation.navigate('Create Group');
-        }}
-      />
-      <DrawerItem
-        labelStyle={styles.menuItemStyle}
-        label="Join Group"
-        onPress={() => {
-          props.navigation.navigate('Group Code');
-        }}
-      />
-      <DrawerItem
-        labelStyle={styles.menuItemStyle}
-        label="Log out"
+    <View style={styles.menuStyle}>
+      <ScrollView>
+        <DrawerItem
+          labelStyle={{
+            ...styles.menuItemStyle,
+            fontWeight: 'bold',
+            fontSize: 24,
+          }}
+          label="Groups"
+          onPress={() => {
+            props.navigation.navigate('Group List');
+          }}
+        />
+        <DrawerItem
+          labelStyle={styles.menuItemStyle}
+          label="&#x2295; Create Group"
+          onPress={() => {
+            props.navigation.navigate('Create Group');
+          }}
+        />
+        <DrawerItem
+          labelStyle={styles.menuItemStyle}
+          label="&#x2295; Join Group"
+          onPress={() => {
+            props.navigation.navigate('Group Code');
+          }}
+        />
+      </ScrollView>
+      <Button
+        light
+        style={styles.logoutStyle}
         onPress={() => {
           GoogleSignin.revokeAccess();
           GoogleSignin.signOut();
           props.logoutUser();
           props.navigation.navigate('Home');
-        }}
-      />
-    </ScrollView>
+        }}>
+        <Text>Log out</Text>
+      </Button>
+    </View>
   );
 }
 
@@ -65,6 +73,9 @@ class DrawerNavigator extends Component {
 
 const styles = StyleSheet.create({
   menuStyle: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
     backgroundColor: '#3F51B5',
     paddingVertical: 20,
     paddingHorizontal: 10,
@@ -72,6 +83,10 @@ const styles = StyleSheet.create({
   menuItemStyle: {
     color: 'white',
     fontSize: 20,
+  },
+  logoutStyle: {
+    justifyContent: 'center',
+    marginHorizontal: 50,
   },
 });
 
