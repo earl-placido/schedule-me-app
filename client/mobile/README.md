@@ -31,3 +31,21 @@
   `http://<IP Address>:8000/`
   
   * **Note**:  The ip address you put MUST be the same as the one you are using for your computer and phone.  If your two devices are using different ip addresses, you may not be able to connect to the local server.  
+
+
+  # Tests
+
+  ## Unit Tests
+
+  ## System Tests
+
+- How to run on Android:
+
+  1. Install the following (while inside client/mobile):
+      ```
+      npm install -g appium 
+      npm install -g appium-doctor
+      npm install -g codeceptjs
+      npm install -g webdriverio
+      ```
+  2. In your CLI, run: `appium & codeceptjs run`

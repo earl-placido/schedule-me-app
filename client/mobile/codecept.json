@@ -1,0 +1,14 @@
+{
+  "tests": "./__system_tests__/*test.spec.js",
+  "timeout": 10000,
+  "output": "./__system_tests_output__",
+  "helpers": {
+    "Appium": {
+      "platform": "Android",
+      "desiredCapabilities": {
+        "appPackage": "com.schedulemeup",
+        "appActivity": ".MainActivity"
+      }
+    }
+  }
+}
