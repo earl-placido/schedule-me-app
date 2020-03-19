@@ -48,15 +48,21 @@ function CustomDrawerContent(props) {
   return (
     <ScrollView>
       <DrawerItem
-        label="Group Detail"
+        label="Groups"
         onPress={() => {
-          props.navigation.navigate('Group Detail');
+          props.navigation.navigate('Group List');
         }}
       />
       <DrawerItem
         label="Create Group"
         onPress={() => {
           props.navigation.navigate('Create Group');
+        }}
+      />
+      <DrawerItem
+        label="Join Group"
+        onPress={() => {
+          props.navigation.navigate('Group Code');
         }}
       />
       <DrawerItem
