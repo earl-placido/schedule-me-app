@@ -55,7 +55,10 @@ class Group extends Component {
   };
 
   handleDelete = () => {
-    this.props.deleteAvailability(this.props.rangeHours);
+    this.props.deleteAvailability(
+      this.props.rangeHours,
+      this.props.availableDays
+    );
   };
 
   handleAdd = () => {
