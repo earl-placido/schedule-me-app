@@ -18,6 +18,8 @@ import {
   closeErrorModal
 } from "../../../actions/components/screens/CreateGroup.action";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { getGroupList } from "../../../actions/components/layout/NavigationBar.action";
+
 import "antd/dist/antd.css";
 
 class CreateGroup extends Component {
@@ -91,6 +93,13 @@ class CreateGroup extends Component {
 
   closeErrorModal = () => {
     this.props.closeErrorModal();
+  }
+  
+  componentDidUpdate() {
+    // update the navigatino bar group list
+    if (this.props.currentPage === 2) {
+      this.props.getGroupList();
+    }
   }
 
   render() {
@@ -227,7 +236,8 @@ CreateGroup.propTypes = {
   goNextPage: PropTypes.func,
   goPreviousPage: PropTypes.func,
 
-  closeErrorModal: PropTypes.func
+  closeErrorModal: PropTypes.func,
+  getGroupList: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
@@ -239,4 +249,5 @@ export default connect(mapStateToProps, {
   goNextPage,
   goPreviousPage,
   closeErrorModal,
+  getGroupList
 })(CreateGroup);

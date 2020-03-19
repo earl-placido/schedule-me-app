@@ -200,7 +200,6 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, location: action.payload };
     }
     case SUBMIT_GROUP_CREATION: {
-      console.log(action.payload);
       return { ...state, ...action.payload };
     }
     case GO_NEXT_PAGE: {

@@ -48,6 +48,10 @@ class GroupDetail extends Component {
   closeErrorModal = () => {
     this.props.closeErrorModal();
   }
+  
+  handleCancel = () => {
+    this.props.closeModal();
+  };
 
   render() {
     const { Title } = Typography;
@@ -106,6 +110,7 @@ class GroupDetail extends Component {
           <Modal
             width={"60%"}
             visible={this.props.inputModalVisible}
+            onCancel={this.handleCancel}
             footer={[
               <Button
                 style={buttonStyle}
