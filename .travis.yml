@@ -63,7 +63,7 @@ matrix:
       skip_cleanup: true
       on:
         branch: master
-  - if: "(${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} = master) OR (${TRAVIS_PULL_REQUEST_BRANCH:-$TRAVIS_BRANCH} = develop)"
+  - if: "((branch = master) OR (branch = develop)) AND NOT type = pull_request"
     language: android
     dist: trusty
     android:
