@@ -6,8 +6,8 @@ import {ScrollView} from 'react-native';
 
 import CreateGroup from '../screens/CreateGroup/CreateGroup';
 import GroupDetail from '../screens/GroupDetail/GroupDetail';
-import GroupCode from './components/screens/GroupCodeForm/GroupCodeForm';
-import GroupList from './components/screens/GroupList/GroupList';
+import GroupCode from '../screens/GroupCodeForm/GroupCodeForm';
+import GroupList from '../screens/GroupList/GroupList';
 
 import PropTypes from 'prop-types';
 
@@ -82,8 +82,6 @@ function DrawerNavigator() {
   );
 }
 
-export default DrawerNavigator;
-
 CreateGroupScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
@@ -102,3 +100,5 @@ CustomDrawerContent.propTypes = {
     closeDrawer: PropTypes.func.isRequired,
   }).isRequired,
 };
+
+export default DrawerNavigator;
