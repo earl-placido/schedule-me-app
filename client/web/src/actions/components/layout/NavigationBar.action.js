@@ -1,18 +1,9 @@
-import axios from "axios";
+import { getGroupListQuery } from "../generalQueries/group.action";
 
 export const GROUP_LIST = "group_list";
 
 export const getGroupList = () => async dispatch => {
-  const authToken = localStorage.getItem("token");
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/`,
-    {
-      headers: {
-        accept: "application/json",
-        Authorization: `${authToken}`
-      }
-    }
-  );
+  const response = await getGroupListQuery();
   dispatch({
     type: GROUP_LIST,
     payload: response.data.groups
