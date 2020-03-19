@@ -20,6 +20,7 @@ import {
   authenticate,
   logout
 } from "../../actions/components/screens/Auth.action";
+import { getGroupList } from "../../actions/components/layout/NavigationBar.action";
 
 const { Header } = Layout;
 
@@ -29,6 +30,10 @@ export class NavigationBar extends Component {
 
     this.logoutUser = this.logoutUser.bind(this);
     this.loginUser = this.loginUser.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.getGroupList();
   }
 
   loginUser(response) {
@@ -53,6 +58,7 @@ export class NavigationBar extends Component {
         size="small"
         itemLayout="horizontal"
         dataSource={this.props.groupList}
+        selectable={"true"}
         style={
           this.props.groupList && this.props.groupList.length > 0
             ? listStyle
@@ -159,13 +165,14 @@ const mapStateToProps = state => ({
   userName: state.auth.userName,
   displayPicURL: state.auth.displayPicURL,
   modalVisible: state.modalVisible,
-  groupList: state.MainPageReducer.groupList
+  groupList: state.NavigationBarReducer.groupList
 });
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   authenticate: (type, response) => dispatch(authenticate(type, response)),
-  toggleModal: value => dispatch(toggleModal(value))
+  toggleModal: value => dispatch(toggleModal(value)),
+  getGroupList: () => dispatch(getGroupList())
 });
 
 NavigationBar.propTypes = {
@@ -177,7 +184,8 @@ NavigationBar.propTypes = {
   logout: PropTypes.func,
   modalVisible: PropTypes.any,
   groupList: PropTypes.any,
-  toggleModal: PropTypes.func
+  toggleModal: PropTypes.func,
+  getGroupList: PropTypes.func
 };
 
 export default compose(
