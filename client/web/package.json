@@ -20,7 +20,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "start-server-and-test": "^1.10.10"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -32,7 +33,11 @@
     "deploy_dev": "surge --domain schedule-me-up-dev.surge.sh build",
     "scss": "node-sass --watch src/scss -o src/css",
     "precommit": "lint-staged",
-    "lint": "eslint --fix ."
+    "lint": "eslint --fix .",
+    "cypress:open": "./node_modules/.bin/cypress open",
+    "cypress:run": "./node_modules/.bin/cypress run",
+    "cypress:record": "./node_modules/.bin/cypress run --record --key 5d6f9006-9249-48ca-a317-a9372fcdbb7d",
+    "cypress:ci": "start-server-and-test start http://localhost:3000 cypress:record"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -62,10 +67,12 @@
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
+    "cypress": "^4.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-cypress": "^2.10.3",
     "eslint-config-standard": "^14.1.0",
     "eslint-plugin-json": "^2.1.0",
     "eslint-plugin-node": "^11.0.0",
