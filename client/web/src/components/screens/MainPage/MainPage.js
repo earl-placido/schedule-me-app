@@ -1,15 +1,20 @@
 import React, { Component } from "react";
 
-import { Row, Card, List, Avatar, Divider, Typography } from "antd";
+import { Row, Card, List, Avatar, Divider, Typography, Modal, Button } from "antd";
 import { UsergroupAddOutlined } from "@ant-design/icons";
-import { getGroupList } from "../../../actions/components/screens/MainPage.action";
+import { getGroupList, closeErrorModal } from "../../../actions/components/screens/MainPage.action";
 import "antd/dist/antd.css";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 class MainPage extends Component {
   componentDidMount() {
     this.props.getGroupList();
+  }
+
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
   }
 
   render() {
@@ -44,6 +49,20 @@ class MainPage extends Component {
             />
           </Row>
         </Card>
+        <Modal 
+          visible={this.props.showErrorModal}  
+          onCancel={this.closeErrorModal} 
+          footer={[
+            <Button
+              type="primary"
+              key="ok"
+              onClick={this.closeErrorModal}
+            >
+              OK
+            </Button>
+          ]}>
+          <ExclamationCircleOutlined/> Oops! Something went wrong!
+        </Modal>
       </div>
     );
   }
@@ -61,13 +80,15 @@ const styles = {
 };
 
 const mapStateToProps = ({ MainPageReducer }) => {
-  const { groupList } = MainPageReducer;
-  return { groupList };
+  const { groupList, showErrorModal } = MainPageReducer;
+  return { groupList, showErrorModal };
 };
 
 MainPage.propTypes = {
   groupList: PropTypes.any,
-  getGroupList: PropTypes.func
+  showErrorModal: PropTypes.any,
+  getGroupList: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
-export default connect(mapStateToProps, { getGroupList })(MainPage);
+export default connect(mapStateToProps, { getGroupList, closeErrorModal })(MainPage);

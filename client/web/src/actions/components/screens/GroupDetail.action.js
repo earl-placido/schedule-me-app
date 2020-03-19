@@ -1,33 +1,38 @@
-import axios from "axios";
-import { getGroupQuery } from "../../../actions/components/generalQueries/group.action";
+import { getGroupQuery, getGroupMembersQuery } from "../../../actions/components/generalQueries/group.action";
 
 export const GROUP_MEMBERS = "group_members";
 export const GROUP = "group";
 export const SHOW_INPUT_MODAL = "show_input_modal";
+export const CLOSE_ERROR_MODAL= "close_error_modal";
 
 export const getGroupMembers = groupId => async dispatch => {
-  const authToken = localStorage.getItem("token");
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`,
-    {
-      headers: {
-        accept: "application/json",
-        Authorization: `${authToken}`
-      }
-    }
-  );
-  dispatch({
-    type: GROUP_MEMBERS,
-    payload: response.data.groupMembers
+  await getGroupMembersQuery(groupId)
+  .then(response => {
+    dispatch({
+      type: GROUP_MEMBERS,
+      payload: {groupMembers: response.data.groupMembers, showErrorModal: false}
+    });
+  })
+  .catch(error => {
+      dispatch({
+        type: GROUP_MEMBERS,
+        payload: {groupMembers: [], showErrorModal: true}
+    });
   });
 };
 
 export const getGroup = groupId => async dispatch => {
-  const response = await getGroupQuery(groupId);
-  dispatch({
-    type: GROUP,
-    payload: response.data
-  });
+  await getGroupQuery(groupId).then(response => {
+    dispatch({
+      type: GROUP,
+      payload: {group: response.data, showErrorModal: false}
+    });
+  }).catch(error=> {
+    dispatch({
+      type: GROUP,
+      payload: {group: [], showErrorModal: true}
+    });
+  })
 };
 
 export const showModal = () => async dispatch => {
@@ -44,21 +49,31 @@ export const closeModal = () => async dispatch => {
   });
 };
 
-const INITIAL_STATE = { groupMembers: [], group: {}, inputModalVisible: false };
+export const closeErrorModal = () => async dispatch => {
+  dispatch({
+    type: CLOSE_ERROR_MODAL,
+    payload: false,
+  })
+}
+
+const INITIAL_STATE = { groupMembers: [], group: {}, inputModalVisible: false, showErrorModal: false };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GROUP_MEMBERS: {
-      return { ...state, groupMembers: action.payload };
+      return { ...state, ...action.payload };
     }
     case GROUP: {
-      return { ...state, group: action.payload };
+      return { ...state, ...action.payload };
     }
     case SHOW_INPUT_MODAL: {
       return { ...state, inputModalVisible: action.payload };
     }
+    case CLOSE_ERROR_MODAL: {
+      return { ...state, showErrorModal: action.payload};
+    }
     default: {
-      return state;
+      return {...state};
     }
   }
 };
