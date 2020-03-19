@@ -5,6 +5,8 @@ import React, {Component} from 'react';
 import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
 
+import PropTypes from 'prop-types';
+
 const userList = [
   {
     UserFName: 'Renz',
@@ -73,6 +75,10 @@ export default class GroupDetail extends Component {
         <View style={{flexDirection: 'column'}}>
           <CardItem header>
             <Body>
+              <Text>
+                This is the code num: Will use when server is connected:{' '}
+                {this.props.route.params.codeNum}
+              </Text>
               <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
                 Group Equilibrium
               </Text>
@@ -165,3 +171,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
+GroupDetail.propTypes = {
+  route: PropTypes.any,
+  params: PropTypes.any,
+  codeNum: PropTypes.any,
+};
