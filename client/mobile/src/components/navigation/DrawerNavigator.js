@@ -1,7 +1,7 @@
 import {Container, Content, Button, Text} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
-import React from 'react';
+import React, {Component} from 'react';
 import {ScrollView} from 'react-native';
 
 import CreateGroup from '../screens/CreateGroup/CreateGroup';
@@ -10,6 +10,10 @@ import GroupCode from '../screens/GroupCodeForm/GroupCodeForm';
 import GroupList from '../screens/GroupList/GroupList';
 
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {logoutUser} from '../../actions/components/screens/Auth.action';
+
+import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Drawer = createDrawerNavigator();
 
@@ -40,46 +44,51 @@ function GroupDetailScreen({navigation}) {
   );
 }
 
-function CustomDrawerContent({navigation}) {
+function CustomDrawerContent(props) {
   return (
     <ScrollView>
       <DrawerItem
         label="Group Detail"
         onPress={() => {
-          navigation.navigate('Group Detail');
+          props.navigation.navigate('Group Detail');
         }}
       />
       <DrawerItem
         label="Create Group"
         onPress={() => {
-          navigation.navigate('Create Group');
+          props.navigation.navigate('Create Group');
         }}
       />
       <DrawerItem
-        label="Close"
+        label="Log out"
         onPress={() => {
-          navigation.closeDrawer();
+          GoogleSignin.revokeAccess();
+          GoogleSignin.signOut();
+          props.logoutUser();
+          props.navigation.navigate('Home');
         }}
       />
     </ScrollView>
   );
 }
 
-function DrawerNavigator() {
-  return (
-    <Drawer.Navigator
-      drawerContent={props => <CustomDrawerContent {...props} />}
-      initialRouteName={'Create Group'}>
-      <Drawer.Screen name="Create Group" component={CreateGroupScreen} />
-      <Drawer.Screen
-        name="Group Detail"
-        component={GroupDetail}
-        initialParams={{codeNum: -1}}
-      />
-      <Drawer.Screen name="Group Code" component={GroupCode} />
-      <Drawer.Screen name="Group List" component={GroupList} />
-    </Drawer.Navigator>
-  );
+class DrawerNavigator extends Component {
+  render() {
+    return (
+      <Drawer.Navigator
+        drawerContent={() => <CustomDrawerContent {...this.props} />}
+        initialRouteName={'Create Group'}>
+        <Drawer.Screen name="Create Group" component={CreateGroupScreen} />
+        <Drawer.Screen
+          name="Group Detail"
+          component={GroupDetail}
+          initialParams={{codeNum: -1}}
+        />
+        <Drawer.Screen name="Group Code" component={GroupCode} />
+        <Drawer.Screen name="Group List" component={GroupList} />
+      </Drawer.Navigator>
+    );
+  }
 }
 
 CreateGroupScreen.propTypes = {
@@ -97,8 +106,18 @@ GroupDetailScreen.propTypes = {
 CustomDrawerContent.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
-    closeDrawer: PropTypes.func.isRequired,
   }).isRequired,
+  userName: PropTypes.any,
+  logoutUser: PropTypes.func,
 };
 
-export default DrawerNavigator;
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  userName: state.auth.userName,
+});
+
+const mapDispatchToProps = dispatch => ({
+  logoutUser: () => dispatch(logoutUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerNavigator);
