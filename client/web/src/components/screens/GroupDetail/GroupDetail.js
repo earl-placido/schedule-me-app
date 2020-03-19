@@ -50,13 +50,24 @@ class GroupDetail extends Component {
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, inputStyle, buttonStyle } = styles;
+    const {
+      containerStyle,
+      cardStyle,
+      inputStyle,
+      buttonStyle,
+      noMarginStyle
+    } = styles;
 
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
           <Row justify="center">
-            <Title level={2}>Group: {this.props.group.GroupName}</Title>
+            <Title level={2} style={noMarginStyle}>
+              Group: {this.props.group.GroupName}
+            </Title>
+          </Row>
+          <Row justify="center">
+            <h4>{this.props.group.GroupDescription}</h4>
           </Row>
           <Row justify="center">
             <Col>
@@ -141,6 +152,11 @@ const styles = {
 
   buttonStyle: {
     margin: 30
+  },
+
+  noMarginStyle: {
+    margin: 0,
+    padding: 0
   }
 };
 
