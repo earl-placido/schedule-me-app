@@ -22,7 +22,6 @@ router.post(
       .withMessage("Group description cannot exceed 225 characters")
   ],
   (req, res, next) => {
-    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res
