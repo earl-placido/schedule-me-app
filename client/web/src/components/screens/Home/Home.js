@@ -4,11 +4,6 @@ import Login from "../../login/Login";
 const { Content } = Layout;
 
 export default class Home extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { toggleForms: false };
-  }
-
   openRedirectMessage() {
     notification.info({
       message: "Redirecting to HTTP",

@@ -7,16 +7,15 @@ import LoginForm from "./LoginForm";
 import SignupForm from "./SignupForm";
 import { GoogleLogin } from "react-google-login";
 import { withRouter, Redirect } from "react-router";
-
 import PropTypes from "prop-types";
-
 import { authenticate } from "../../actions/components/screens/Auth.action";
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.loginWithGoogle = this.loginWithGoogle.bind(this);
-    this.state = { signUpSelected: false };
+    this.renderGoogleButton = this.renderGoogleButton.bind(this);
+    this.state = { signUpSelected: false, authenticating: false };
   }
 
   loginWithGoogle(response) {
@@ -29,6 +28,7 @@ class Login extends Component {
         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
         render={renderProps => (
           <Button
+            className="google-button"
             onClick={renderProps.onClick}
             style={{ width: "100%", marginBottom: 20, marginTop: 10 }}
             size="large"
@@ -46,7 +46,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form-wrapper">
         {this.props.isAuthenticated && this.props.location.pathname === "/" ? (
           <Redirect to="/main" />
         ) : null}
@@ -59,6 +59,7 @@ class Login extends Component {
             <p>
               Don&lsquo;t have an account?
               <Button
+                className="signup-toggle"
                 type="link"
                 onClick={() => {
                   this.setState({ signUpSelected: true });
@@ -75,8 +76,9 @@ class Login extends Component {
             {this.renderGoogleButton("Sign Up with Google")}
 
             <p>
-              Have an account?{" "}
+              Have an account?
               <Button
+                className="login-toggle"
                 type="link"
                 onClick={() => {
                   this.setState({ signUpSelected: false });
@@ -102,7 +104,6 @@ const mapDispatchToProps = dispatch => ({
 
 Login.propTypes = {
   authenticate: PropTypes.func,
-  history: PropTypes.any,
   location: PropTypes.any,
   isAuthenticated: PropTypes.any
 };
