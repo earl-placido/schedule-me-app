@@ -16,6 +16,8 @@ import {
   goNextPage,
   goPreviousPage
 } from "../../../actions/components/screens/CreateGroup.action";
+import { getGroupList } from "../../../actions/components/layout/NavigationBar.action";
+
 import "antd/dist/antd.css";
 
 class CreateGroup extends Component {
@@ -85,6 +87,13 @@ class CreateGroup extends Component {
       this.props.location,
       this.props.currentPage
     );
+  }
+
+  componentDidUpdate() {
+    // update the navigatino bar group list
+    if (this.props.currentPage === 2) {
+      this.props.getGroupList();
+    }
   }
 
   render() {
@@ -201,7 +210,9 @@ CreateGroup.propTypes = {
   updateMeetingLocation: PropTypes.func,
 
   goNextPage: PropTypes.func,
-  goPreviousPage: PropTypes.func
+  goPreviousPage: PropTypes.func,
+
+  getGroupList: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
@@ -211,5 +222,6 @@ export default connect(mapStateToProps, {
   updateMeetingFrequency,
   updateMeetingLocation,
   goNextPage,
-  goPreviousPage
+  goPreviousPage,
+  getGroupList
 })(CreateGroup);
