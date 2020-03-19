@@ -180,7 +180,6 @@ android {
 }
 
 dependencies {
-    implementation project(':react-native-safe-area-context')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "com.android.support:appcompat-v7:23.0.1"

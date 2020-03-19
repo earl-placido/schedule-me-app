@@ -3,6 +3,7 @@ import { getGroupQuery } from "../../../actions/components/generalQueries/group.
 
 export const GROUP_MEMBERS = "group_members";
 export const GROUP = "group";
+export const SHOW_INPUT_MODAL = "show_input_modal";
 
 export const getGroupMembers = groupId => async dispatch => {
   const authToken = localStorage.getItem("token");
@@ -29,7 +30,21 @@ export const getGroup = groupId => async dispatch => {
   });
 };
 
-const INITIAL_STATE = { groupMembers: [], group: {} };
+export const showModal = () => async dispatch => {
+  dispatch({
+    type: SHOW_INPUT_MODAL,
+    payload: true
+  });
+};
+
+export const closeModal = () => async dispatch => {
+  dispatch({
+    type: SHOW_INPUT_MODAL,
+    payload: false
+  });
+};
+
+const INITIAL_STATE = { groupMembers: [], group: {}, inputModalVisible: false };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -39,8 +54,11 @@ export default (state = INITIAL_STATE, action) => {
     case GROUP: {
       return { ...state, group: action.payload };
     }
+    case SHOW_INPUT_MODAL: {
+      return { ...state, inputModalVisible: action.payload };
+    }
     default: {
-      return INITIAL_STATE;
+      return state;
     }
   }
 };
