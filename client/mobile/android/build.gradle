@@ -39,27 +39,3 @@ allprojects {
         maven { url 'https://jitpack.io' }
     }
 }
-
-android {
-
-    signingConfigs {
-        release
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-            signingConfig signingConfigs.release
-        }
-    }
-
-    def isRunningOnTravis = System.getenv("CI") == "true"
-
-    if (isRunningOnTravis) {
-        // configure keystore
-        signingConfigs.release.storeFile = file("../android-keystore.jks")
-        signingConfigs.release.storePassword = System.getenv("KEYSTORE_PASSWORD")
-        signingConfigs.release.keyAlias = System.getenv("KEYSTORE_ALIAS")
-        signingConfigs.release.keyPassword = System.getenv("KEYSTORE_ALIAS_PASSWORD")
-    }
-}

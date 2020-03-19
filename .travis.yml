@@ -95,7 +95,18 @@ matrix:
     deploy:
       provider: releases
       api_key: "$GITHUB_API_KEY"
-      file: "/client/mobile/android/app/build/outputs/apk/release/*"
+      file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
+      skip_cleanup: true
+      name: build-$TRAVIS_BRANCH
+      body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
+        on $(date +'%F %T %Z').
+      prerelease: true
+      on:
+        branch: develop
+    deploy:
+      provider: releases
+      api_key: "$GITHUB_API_KEY"
+      file: "/client/mobile/android/app/build/outputs/apk/release/app-release.apk"
       skip_cleanup: true
       name: build-$TRAVIS_BRANCH
       body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
