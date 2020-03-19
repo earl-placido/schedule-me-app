@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getGroupListQuery } from "../../../actions/components/generalQueries/group.action";
 
 export const GROUP_LIST = "group_list";
