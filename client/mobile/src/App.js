@@ -14,9 +14,11 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
-import Home from './components/screens/Home/Home';
 import CreateGroup from './components/screens/CreateGroup/CreateGroup';
 import GroupDetail from './components/screens/GroupDetail/GroupDetail';
+import GroupCode from './components/screens/GroupCodeForm/GroupCodeForm';
+import GroupList from './components/screens/GroupList/GroupList';
+import Home from './components/screens/Home/Home';
 
 import {NativeRouter} from 'react-router-native';
 
@@ -31,22 +33,13 @@ const Stack = createStackNavigator();
 function CreateGroupScreen({navigation}) {
   return (
     <Container>
-      <Button onPress={() => navigation.navigate('Group Detail')}>
-        <Text>Go to group details</Text>
+      <Button onPress={() => navigation.navigate('Group Code')}>
+        <Text>Go to group code screen</Text>
+      </Button>
+      <Button onPress={() => navigation.navigate('Group List')}>
+        <Text>Go to group list screen</Text>
       </Button>
       <CreateGroup />
-      <Content />
-    </Container>
-  );
-}
-
-function GroupDetailScreen({navigation}) {
-  return (
-    <Container>
-      <Button onPress={() => navigation.navigate('Create Group')}>
-        <Text>Go to create group</Text>
-      </Button>
-      <GroupDetail />
       <Content />
     </Container>
   );
@@ -61,7 +54,7 @@ class App extends Component {
             <NavigationContainer>
               <Stack.Navigator
                 initialRouteName={
-                  !this.props.isAuthenticated ? 'Home' : 'Group Detail'
+                  !this.props.isAuthenticated ? 'Home' : 'Create Group'
                 }
                 screenOptions={{
                   header: props => {
@@ -91,8 +84,11 @@ class App extends Component {
                 />
                 <Stack.Screen
                   name="Group Detail"
-                  component={GroupDetailScreen}
+                  component={GroupDetail}
+                  initialParams={{codeNum: -1}}
                 />
+                <Stack.Screen name="Group Code" component={GroupCode} />
+                <Stack.Screen name="Group List" component={GroupList} />
               </Stack.Navigator>
             </NavigationContainer>
 
@@ -122,12 +118,6 @@ App.propTypes = {
 };
 
 CreateGroupScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};
-
-GroupDetailScreen.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
