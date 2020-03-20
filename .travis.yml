@@ -93,7 +93,7 @@ matrix:
     deploy:
       provider: releases
       api_key: "$GITHUB_API_KEY"
-      file: "/client/mobile/android/app/build/outputs/debug/app-debug.apk"
+      file: "/client/mobile/android/app/build/*"
       skip_cleanup: true
       name: build-$TRAVIS_BRANCH
       body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
