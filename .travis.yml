@@ -66,8 +66,7 @@ matrix:
       skip_cleanup: true
       on:
         branch: master
-  - if: "(branch = master) OR (branch = develop)"
-    language: android
+  - language: android
     dist: trusty
     android:
       components:
