@@ -22,3 +22,6 @@ We separated our app into three different physical deployment tiers.
   - Each tier can be stored in separate instances and resources given to each instance can be scaled based on load
 - Separation of concerns
 - We can have multiple front-ends communicating to the same logic server (improving consistency)
+
+Please refer to our [technologies used document](technologies-used.md) for more information on the motivations behind our choices. 
+
