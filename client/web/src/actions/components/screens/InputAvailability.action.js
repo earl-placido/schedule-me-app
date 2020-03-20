@@ -190,7 +190,14 @@ export const handleAdd = rangeHours => {
 // rangehours contain [[id, [start, end]], [id, [start, end]], ...]
 export const onChangeRange = (index, value, rangeHours) => {
   let newRangeHours = [...rangeHours];
-  newRangeHours[index] = [-1, value];
+
+  // if deleted value
+  if (value === null) {
+    newRangeHours[index] = "";
+  } else {
+    newRangeHours[index] = [-1, value];
+  }
+
   return {
     type: CHANGE_RANGE,
     payload: newRangeHours

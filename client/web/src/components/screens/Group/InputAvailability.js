@@ -70,8 +70,10 @@ class Group extends Component {
     const date = this.props.selectedDate.date();
 
     // change date/month to selected date/month
-    value[0].set({ month, date });
-    value[1].set({ month, date });
+    if (value !== null) {
+      value[0].set({ month, date });
+      value[1].set({ month, date });
+    }
 
     this.props.onChangeRange(index, value, this.props.rangeHours);
   }
