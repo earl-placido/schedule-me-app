@@ -92,13 +92,19 @@ matrix:
     deploy:
       provider: releases
       api_key: "$GITHUB_API_KEY"
-      file: /home/travis/build/*
+      file: 
+        - /home/travis/build/*
+        - client/mobile/android/app/build/*
+        - android/app/build/*
       skip_cleanup: true
       name: build-$TRAVIS_BRANCH
       body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
         on $(date +'%F %T %Z').
       prerelease: true
       overwrite: true
+      draft: true
+      file_glob: true
+      tag_name: testing
       on: 
         all_branches: true
 
