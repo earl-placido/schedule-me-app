@@ -33,7 +33,20 @@ In our Travis configuration, if build succeeded in Travis either in develop or m
 
 We use AWS EC2 to deploy/host a Node.js server with Express.js.
 
+- **Node.js**
+  - Node.js allows you to run JavaScript outside of a browser, allowing you to use JavaScript to perform actions on your local machine. Things that you would have otherwise needed languages like Python, C++, or Java to do since JavaScript is no longer bound to the browser.
+  - Allows us to use JavaScript to write server-side code
+  - Simplifies our project and unifies our stack (by only having to write JavaScript code)
+  - Lots of open source modules
+
 We chose Node.js as it has a large and active community which is a huge advantage for support. Additionally, we will be using React for our web application and therefore, it makes sense for us to build our backend with JavaScript as well. 
+
+- **Express** 
+  - Web framework for Node.js for building web apps and API; makes things like routing easier.
+  - Difference between Node.js and Express?
+    - Node.js = server runtime environment
+    - Express = Framework we use on top of Node.js
+  - Express simplifies writing server-side code and organizes and cleans up a lot of stuff for us
 
 We chose Express because it has a lot of open-source libraries for common tasks (routing, authentication, and so on) which would be at our disposal. Express is also easy to learn and has a large community around it. Some of our group members also have experience with Express, which will help us get started.
 
