@@ -19,7 +19,11 @@ import {
   closeErrorModal
 } from "../../../actions/components/screens/GroupDetail.action";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { UserOutlined, CopyOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  CopyOutlined,
+  ExclamationCircleOutlined
+} from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
