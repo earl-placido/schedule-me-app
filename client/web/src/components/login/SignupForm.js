@@ -24,7 +24,10 @@ class SignupForm extends Component {
     return (
       <div className="signup-form">
         {this.props.errored ? (
-          <p  className="error-message" style={{ textAlign: "center", color: "Red" }}>
+          <p
+            className="error-message"
+            style={{ textAlign: "center", color: "Red" }}
+          >
             {this.props.message}
           </p>
         ) : null}

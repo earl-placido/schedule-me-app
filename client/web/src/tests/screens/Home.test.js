@@ -12,7 +12,7 @@ describe("Testing the <Home/>", () => {
   let wrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<Home/>);
+    wrapper = shallow(<Home />);
   });
 
   it("Test if component renders properly", () => {
@@ -26,19 +26,22 @@ describe("Testing the <Home/>", () => {
   });
 
   it("Testing the `handleHttps` function", () => {
-    const handleHttpsSpy = jest.spyOn(wrapper.instance(), 'handleHttps');
+    const handleHttpsSpy = jest.spyOn(wrapper.instance(), "handleHttps");
     wrapper.instance().handleHttps();
     expect(handleHttpsSpy).toBeCalled();
   });
 
   it("Testing the `openRedirectMessage` function", () => {
-    const openMessageSpy = jest.spyOn(wrapper.instance(), 'openRedirectMessage');
+    const openMessageSpy = jest.spyOn(
+      wrapper.instance(),
+      "openRedirectMessage"
+    );
     wrapper.instance().openRedirectMessage();
     expect(openMessageSpy).toBeCalled();
   });
 
   it("Tests if `httpsRedirect` actually works", () => {
-    let protocol = 'https:';
+    let protocol = "https:";
     wrapper.instance().handleHttps(protocol);
     jest.useFakeTimers();
     jest.advanceTimersByTime(6000);

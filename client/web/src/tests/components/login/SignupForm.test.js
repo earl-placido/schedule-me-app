@@ -6,19 +6,19 @@ import { shallow, configure } from "enzyme";
 
 configure({ adapter: new Adapter() });
 
-const setUp = (props={}) => {
+const setUp = (props = {}) => {
   const component = shallow(<SignupForm.WrappedComponent {...props} />);
   return component;
-}
+};
 
 describe("Testing the <SignupForm />", () => {
   describe("Testing Rendering without props", () => {
     let component;
-    beforeEach(()=>{
+    beforeEach(() => {
       component = setUp();
     });
-  
-    it("Component renders without error", ()=>{
+
+    it("Component renders without error", () => {
       expect(component.length).toEqual(1);
     });
 
@@ -30,38 +30,37 @@ describe("Testing the <SignupForm />", () => {
       expect(component.find(Input.Password)).toHaveLength(2);
       expect(component.find(Button)).toHaveLength(1);
     });
-
   });
 
   describe("Testing function calls", () => {
     let component, props;
-    beforeEach(()=>{
+    beforeEach(() => {
       props = {
-        authenticate : jest.fn()
-      }
+        authenticate: jest.fn()
+      };
       component = setUp(props);
     });
-    
-    it("Tests authenticate function call", () =>{
-      const signUpSpy = jest.spyOn(component.instance(), 'signUp');
+
+    it("Tests authenticate function call", () => {
+      const signUpSpy = jest.spyOn(component.instance(), "signUp");
       component.instance().signUp("data");
       expect(props.authenticate.mock.calls.length).toBe(1);
       expect(signUpSpy).toBeCalled();
     });
 
-    it("Tests `onFinishFail`", () =>{
-      const failSpy = jest.spyOn(component.instance(), 'onFinishFailed');
+    it("Tests `onFinishFail`", () => {
+      const failSpy = jest.spyOn(component.instance(), "onFinishFailed");
       component.instance().onFinishFailed("data");
       expect(failSpy).toBeCalled();
     });
-  })
+  });
 
   it("Test error message", () => {
     const props = {
-      errored : true,
-      message : "Error Message!"
-    }
+      errored: true,
+      message: "Error Message!"
+    };
     const component = setUp(props);
-    expect(component.find('.error-message')).toHaveLength(1);
+    expect(component.find(".error-message")).toHaveLength(1);
   });
 });

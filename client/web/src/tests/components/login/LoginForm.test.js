@@ -6,23 +6,23 @@ import { shallow, configure } from "enzyme";
 
 configure({ adapter: new Adapter() });
 
-const setUp = (props={}) => {
+const setUp = (props = {}) => {
   const component = shallow(<LoginForm.WrappedComponent {...props} />);
   return component;
-}
+};
 
 describe("Testing the <LoginForm />", () => {
   describe("Testing Rendering without props", () => {
     let component;
-    beforeEach(()=>{
+    beforeEach(() => {
       component = setUp();
     });
-  
-    it("Component renders without error", ()=>{
+
+    it("Component renders without error", () => {
       expect(component.length).toEqual(1);
     });
 
-    it("Child components render without fail", ()=>{
+    it("Child components render without fail", () => {
       expect(component.find(".login-form")).toHaveLength(1);
       expect(component.find(Form)).toHaveLength(1);
       expect(component.find(Form.Item)).toHaveLength(3);
@@ -37,27 +37,27 @@ describe("Testing the <LoginForm />", () => {
 
   describe("Testing functionality", () => {
     let component, props;
-    beforeEach(()=>{
+    beforeEach(() => {
       props = {
-        authenticate : jest.fn()
-      }
+        authenticate: jest.fn()
+      };
       component = setUp(props);
     });
-    
-    it("Tests authenticate function call", () =>{
-      const loginSpy = jest.spyOn(component.instance(), 'loginWithEmail');
+
+    it("Tests authenticate function call", () => {
+      const loginSpy = jest.spyOn(component.instance(), "loginWithEmail");
       component.instance().loginWithEmail("data");
       expect(props.authenticate.mock.calls.length).toBe(1);
       expect(loginSpy).toBeCalled();
     });
-  })
+  });
 
   it("Test error message", () => {
     const props = {
-      errored : true,
-      message : "Error Message!"
-    }
+      errored: true,
+      message: "Error Message!"
+    };
     const component = setUp(props);
-    expect(component.find('.error-message')).toHaveLength(1);
+    expect(component.find(".error-message")).toHaveLength(1);
   });
 });

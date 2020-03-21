@@ -15,7 +15,7 @@ class Login extends Component {
     super(props);
     this.loginWithGoogle = this.loginWithGoogle.bind(this);
     this.renderGoogleButton = this.renderGoogleButton.bind(this);
-    this.state = { signUpSelected: false, authenticating: false };
+    this.state = { signUpSelected: false };
   }
 
   loginWithGoogle(response) {

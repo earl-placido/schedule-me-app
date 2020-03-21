@@ -19,15 +19,15 @@ class LoginForm extends Component {
     return (
       <div className="login-form">
         {this.props.errored ? (
-          <p className="error-message" style={{ textAlign: "center", color: "Red" }}>
+          <p
+            className="error-message"
+            style={{ textAlign: "center", color: "Red" }}
+          >
             {this.props.message}
           </p>
         ) : null}
 
-        <Form
-          name="login"
-          onFinish={this.loginWithEmail}
-        >
+        <Form name="login" onFinish={this.loginWithEmail}>
           <Form.Item
             className="input-email"
             name="email"
@@ -55,9 +55,7 @@ class LoginForm extends Component {
             />
           </Form.Item>
 
-          <Form.Item
-            className="input-submit"
-          >
+          <Form.Item className="input-submit">
             <Button
               type="primary"
               htmlType="submit"
