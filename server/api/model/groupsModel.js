@@ -149,5 +149,28 @@ module.exports = {
           return err;
         });
     });
+  },
+
+  getGroupMemberAvailabilities(groupId) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn
+        .query(
+          `
+            SELECT G.GroupMemberId, A.AvailabilityId, CAST(A.StartTime as char), CAST(A.EndTime as char)
+            FROM \`GroupMember\` as G INNER JOIN \`Availability\` as A
+            ON G.GroupMemberId = A.GroupMemberId
+            WHERE G.GroupId = ? 
+                `,
+          [groupId]
+        )
+        .then(res => {
+          conn.end();
+          return res;
+        })
+        .catch(err => {
+          conn.end();
+          return err;
+        });
+    });
   }
 };

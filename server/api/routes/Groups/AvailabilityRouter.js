@@ -26,7 +26,6 @@ module.exports = router => {
 
   router.post("/members/availability", (req, res, next) => {
     const { groupMemberId, availabilityIds, startTimes, endTimes } = req.body;
-
     if (availabilityIds.length === 0) {
       res.status(responses.NOT_FOUND);
       res.send({ error: "availabilityIds is empty" });
@@ -60,10 +59,34 @@ module.exports = router => {
               error: `could not add availability: ${result.sqlMessage}`
             });
           } else {
-            res.status(responses.SUCCESS).json({ error: false, success: true });
+            // get the ids of inserted availability
+            let ids;
+            if (Array.isArray(result)) ids = result.map(item => item.insertId);
+            else ids = [result.insertId];
+            res
+              .status(responses.SUCCESS)
+              .json({ error: false, success: true, ids });
           }
         })
         .catch(next);
     }
+  });
+
+  router.delete("/members/availability", (req, res, next) => {
+    const { availabilityIds } = req.body;
+
+    if (availabilityIds.length == 0) {
+      res.status(responses.SERVER_ERROR);
+      res.send({ error: "No availability Id to delete provided" });
+    }
+
+    AvailabilityModel.deleteAvailability(availabilityIds)
+      .then(result => {
+        if (!result.errno)
+          res.status(responses.SUCCESS).json({ success: true });
+        else res.status(responses.SERVER_ERROR).json({ error: true });
+        throw Error("error deleting availability");
+      })
+      .catch(next);
   });
 };

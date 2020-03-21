@@ -4,10 +4,11 @@ import MainPageReducer, {
 
 describe("MainPage action", () => {
   const INITIAL_STATE = {
-    groupList: []
+    groupList: [],
+    showErrorModal: false
   };
   it("test getGroupList", () => {
-    const payload = { type: GROUP_LIST, payload: ["1"] };
+    const payload = { type: GROUP_LIST, payload: { groupList: ["1"] } };
     const reducerItem = MainPageReducer(INITIAL_STATE, payload);
     expect(reducerItem.groupList[0]).toEqual("1");
   });

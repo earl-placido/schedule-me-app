@@ -1,9 +1,10 @@
 # schedule-me-up
 
+For students and work groups, make scheduling meetings less time consuming for all party members. 
+
 A scheduler application for a group project in COMP 4350 at the University of Manitoba.
 
-
-Trello : <https://trello.com/b/ZWdpiKU1/4350-scheduler>
+## [Our Trello Board](https://trello.com/b/ZWdpiKU1/4350-scheduler)
 
 ---
 
@@ -18,6 +19,8 @@ Trello : <https://trello.com/b/ZWdpiKU1/4350-scheduler>
 ## Web Client
 
 - [How to setup](./client/web/README.md)
+
+- [Automated UI Tests Dashboard](https://dashboard.cypress.io/projects/hrvwfk/runs)
 
 | Environment | URL                                 |
 | ----------- | ----------------------------------- |
@@ -40,3 +43,17 @@ Trello : <https://trello.com/b/ZWdpiKU1/4350-scheduler>
 ## Mobile
 
 - [How to setup](./client/mobile/README.md)
+
+
+
+## Wiki/Docs
+
+- [Wiki](https://github.com/Syndrical/scheduler-app/wiki)
+  - [CI/CD](https://github.com/Syndrical/scheduler-app/wiki/CI-CD-Introduction)
+  - [Linting](https://github.com/Syndrical/scheduler-app/wiki/Linting)
+  - [How to setup Input Availability on LocalHost](https://github.com/Syndrical/scheduler-app/wiki/How-to-setup-Input-Availability-on-LocalHost)
+- [Docs](Docs)
+  - [Architecture](Docs/architecture.md)
+  - [Technologies used](Docs/technologies-used.md)
+  - [Retrospective](Docs/retrospective.md)
+  - [Information on Version Control Flow/Contributing](Docs/contributing.md)
