@@ -1,30 +1,40 @@
-import axios from "axios";
+import { getGroupListQuery } from "../../../actions/components/generalQueries/group.action";
 
 export const GROUP_LIST = "group_list";
+export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getGroupList = () => async dispatch => {
-  const authToken = localStorage.getItem("token");
-  const response = await axios.get(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/`,
-    {
-      headers: {
-        accept: "application/json",
-        Authorization: `${authToken}`
-      }
-    }
-  );
+  await getGroupListQuery()
+    .then(response => {
+      dispatch({
+        type: GROUP_LIST,
+        payload: { groupList: response.data.groups }
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: GROUP_LIST,
+        payload: { groupList: [], showErrorModal: true }
+      });
+    });
+};
+
+export const closeErrorModal = () => async dispatch => {
   dispatch({
-    type: GROUP_LIST,
-    payload: response.data.groups
+    type: CLOSE_ERROR_MODAL,
+    payload: false
   });
 };
 
-const INITIAL_STATE = { groupList: [] };
+const INITIAL_STATE = { groupList: [], showErrorModal: false };
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GROUP_LIST: {
-      return { ...state, groupList: action.payload };
+      return { ...state, ...action.payload };
+    }
+    case CLOSE_ERROR_MODAL: {
+      return { ...state, showErrorModal: action.payload };
     }
     default: {
       return state;
