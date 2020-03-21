@@ -41,3 +41,17 @@ export const getGroupListQuery = async () => {
   );
   return response;
 };
+
+export const getOptimalTimeQuery = async groupId => {
+  const authToken = localStorage.getItem("token");
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/optimaltime/`,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
+  );
+  return response.data.optimalTime;
+};  

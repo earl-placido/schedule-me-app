@@ -13,11 +13,13 @@ import {
   Modal
 } from "antd";
 import {
+  getGroupMember,
   getGroupMembers,
   getGroup,
   showModal,
   closeModal,
-  closeErrorModal
+  closeErrorModal,
+  getOptimalTime
 } from "../../../actions/components/screens/GroupDetail.action";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
@@ -25,20 +27,22 @@ import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import InputAvailability from "../Group/InputAvailability";
+import MeetingTimeModal from './MeetingTimeModal';
 import PropTypes from "prop-types";
 
 class GroupDetail extends Component {
   componentDidMount() {
     this.props.getGroup(this.props.match.params.id);
     this.props.getGroupMembers(this.props.match.params.id);
+    this.props.getGroupMember(this.props.match.params.id);
   }
 
   success() {
     message.success("Code copied!");
   }
 
-  showModal = () => {
-    this.props.showModal();
+  showModal(type) {
+    this.props.showModal(type);
   };
 
   handleDone = () => {
@@ -51,6 +55,22 @@ class GroupDetail extends Component {
 
   handleCancel = () => {
     this.props.closeModal();
+  };
+
+  getOptimalTime = () => {
+    this.props.getOptimalTime(this.props.match.params.id);
+    this.showModal("meeting");
+  }
+
+  currentMeetingTime = () => {
+    // query for meeting time;
+    return (
+      <div>
+        <p style={{display: 'inline', marginRight: 10}}>Meeting time is currently empty.</p>
+        {this.props.groupMember && this.props.groupMember.MemberRole === 'AD' && 
+        <Button type="primary" style={{backgroundColor: 'green'}} onClick={this.getOptimalTime}>Change</Button>}
+      </div>
+    );
   };
 
   render() {
@@ -83,6 +103,12 @@ class GroupDetail extends Component {
           </Row>
           <Divider orientation="center" />
           <Row justify="center">
+            <Col>
+              {this.currentMeetingTime()}
+            </Col>
+          </Row>
+          <Divider orientation="center" />
+          <Row justify="center">
             <Title level={3}>Group Members</Title>
           </Row>
           <Row justify="center">
@@ -102,7 +128,7 @@ class GroupDetail extends Component {
           <Divider orientation="center" />
           <Button
             type="primary"
-            onClick={this.showModal}
+            onClick={this.showModal.bind(this, 'availability')}
             style={{ float: "right" }}
           >
             Input Your Availability
@@ -123,6 +149,23 @@ class GroupDetail extends Component {
             ]}
           >
             <InputAvailability />
+          </Modal>
+
+          <Modal
+          width={"60%"}
+            visible={this.props.meetingModalVisible}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button
+                style={buttonStyle}
+                type="primary"
+                key="done"
+                onClick={this.handleDoneMeeting}
+              >
+                Done
+              </Button>
+            ]}>
+            <MeetingTimeModal optimalTimes={this.props.optimalTimes || []} />
           </Modal>
         </Card>
         <Modal
@@ -162,21 +205,28 @@ const styles = {
 
 const mapStateToProps = ({ GroupDetailReducer }) => {
   const {
+    groupMember,
     groupMembers,
     group,
     inputModalVisible,
-    showErrorModal
+    meetingModalVisible,
+    showErrorModal,
+    optimalTimes,
   } = GroupDetailReducer;
-  return { groupMembers, group, inputModalVisible, showErrorModal };
+  return { groupMember, groupMembers, group, inputModalVisible, meetingModalVisible, showErrorModal, optimalTimes };
 };
 
 GroupDetail.propTypes = {
   location: PropTypes.any,
   match: PropTypes.any,
   groupMembers: PropTypes.any,
+  groupMember: PropTypes.any,
   group: PropTypes.any,
   inputModalVisible: PropTypes.any,
   showErrorModal: PropTypes.any,
+  meetingModalVisible: PropTypes.any,
+  optimalTimes: PropTypes.any,
+  getGroupMember: PropTypes.func,
   getGroupMembers: PropTypes.func,
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
@@ -186,10 +236,12 @@ GroupDetail.propTypes = {
 
 export default withRouter(
   connect(mapStateToProps, {
+    getGroupMember,
     getGroupMembers,
     getGroup,
     showModal,
     closeModal,
-    closeErrorModal
+    closeErrorModal,
+    getOptimalTime
   })(GroupDetail)
 );

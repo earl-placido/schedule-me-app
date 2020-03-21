@@ -164,6 +164,7 @@ module.exports = {
           [groupId]
         )
         .then(res => {
+          console.log(res);
           conn.end();
           return res;
         })

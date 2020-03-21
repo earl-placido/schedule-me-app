@@ -93,7 +93,7 @@ router.get("/:groupId", (req, res, next) => {
 });
 
 // Get group members from groupId
-router.get("/:groupId/members", authenticateToken, (req, res, next) => {
+router.get("/:groupId/members", (req, res, next) => {
   const groupId = req.params.groupId;
 
   if (!groupId) {
