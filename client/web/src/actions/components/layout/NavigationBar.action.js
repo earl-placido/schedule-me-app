@@ -33,6 +33,9 @@ export default (state = INITIAL_STATE, action) => {
     case GROUP_LIST: {
       return { ...state, ...action.payload };
     }
+    case CLOSE_ERROR_MODAL: {
+      return { ...state, showErrorModal: action.payload };
+    }
     default: {
       return state;
     }
