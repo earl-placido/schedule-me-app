@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, ScrollView, View} from 'react-native';
+import {StyleSheet, ScrollView, View, FlatList} from 'react-native';
 import {Button, Text} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
@@ -14,6 +14,24 @@ import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Drawer = createDrawerNavigator();
 
+const groupList = [
+  {
+    GroupId: '1',
+    GroupName: 'Tallest Poppy',
+    GroupDescription: 'Hipster food',
+  },
+  {
+    GroupId: '2',
+    GroupName: 'Stellas',
+    GroupDescription: '#notMyStellas',
+  },
+  {
+    GroupId: '3',
+    GroupName: 'Dowon',
+    GroupDescription: 'Korean food',
+  },
+];
+
 function CustomDrawerContent(props) {
   return (
     <View style={styles.menuStyle}>
@@ -22,12 +40,26 @@ function CustomDrawerContent(props) {
           labelStyle={{
             ...styles.menuItemStyle,
             fontWeight: 'bold',
-            fontSize: 24,
+            fontSize: 30,
           }}
           label="Groups"
           onPress={() => {
             props.navigation.navigate('Group List');
           }}
+        />
+        <FlatList
+          data={groupList}
+          renderItem={({item}) => (
+            <DrawerItem
+              labelStyle={styles.menuItemStyle}
+              label={item.GroupName}
+              onPress={() => {
+                props.navigation.navigate('Group Detail', {
+                  codeNum: item.GroupId,
+                });
+              }}
+            />
+          )}
         />
         <DrawerItem
           labelStyle={styles.menuItemStyle}
