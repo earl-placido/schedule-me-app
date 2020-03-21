@@ -36,9 +36,8 @@
     "precommit": "lint-staged",
     "lint": "eslint --fix .",
     "cypress:open": "./node_modules/.bin/cypress open",
-    "cypress:run": "./node_modules/.bin/cypress run",
-    "cypress:record": "./node_modules/.bin/cypress run --record --key 5d6f9006-9249-48ca-a317-a9372fcdbb7d",
-    "cypress:ci": "start-server-and-test start http://localhost:3000 cypress:record"
+    "cypress:run": "./node_modules/.bin/cypress run --key 5d6f9006-9249-48ca-a317-a9372fcdbb7d",
+    "cypress:ci": "start-server-and-test start http://localhost:3000 cypress:run"
   },
   "eslintConfig": {
     "extends": "react-app"
