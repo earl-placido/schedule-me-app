@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import { getMemberIdWithEmail } from "../generalQueries/groupMember.action";
+import { getMemberIdWithEmail } from "../generalQueries/GroupMember.action";
 import {
   getAvailabilityQuery,
   addAvailabilityQuery

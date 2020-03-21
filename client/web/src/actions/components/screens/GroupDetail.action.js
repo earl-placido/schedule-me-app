@@ -1,7 +1,7 @@
 import {
   getGroupQuery,
   getGroupMembersQuery
-} from "../../../actions/components/generalQueries/group.action";
+} from "../../../actions/components/generalQueries/Group.action";
 
 export const GROUP_MEMBERS = "group_members";
 export const GROUP = "group";
