@@ -20,6 +20,7 @@ export const getGroupList = () => async dispatch => {
 };
 
 export const closeErrorModal = () => async dispatch => {
+  console.log("1");
   dispatch({
     type: CLOSE_ERROR_MODAL,
     payload: false
@@ -32,6 +33,9 @@ export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GROUP_LIST: {
       return { ...state, ...action.payload };
+    }
+    case CLOSE_ERROR_MODAL: {
+      return { ...state, showErrorModal: action.payload };
     }
     default: {
       return state;
