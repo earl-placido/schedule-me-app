@@ -20,7 +20,6 @@ export const getGroupList = () => async dispatch => {
 };
 
 export const closeErrorModal = () => async dispatch => {
-  console.log("1");
   dispatch({
     type: CLOSE_ERROR_MODAL,
     payload: false
