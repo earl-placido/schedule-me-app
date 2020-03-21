@@ -44,13 +44,6 @@ describe("test group actions", () => {
     expect(value.payload.modalVisible).toEqual(false);
   });
 
-  it("test delete availability action", () => {
-    const value = deleteAvailability([1, 0]); // should remove the last item in the array
-    expect(value.type).toEqual(DELETE_AVAILABILITY);
-    expect(value.payload.length).toEqual(1);
-    expect(value.payload[0]).toEqual(1);
-  });
-
   it("test handleadd action", () => {
     const rangeHours = [""];
     const newRangeHours = handleAdd(rangeHours);
@@ -85,6 +78,32 @@ describe("test contacting server from group", () => {
     store = mockStore({});
   });
 
+  it("test delete availability action", async () => {
+    httpMock
+      .onDelete(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`
+      )
+      .reply(200, {
+        data: { success: true, error: false }
+      });
+
+    const date = moment("2020-03-17 11:30");
+    const rangeHours = [
+      [1, [date, date]],
+      [2, [date, date]]
+    ];
+    deleteAvailability(rangeHours, { 2: rangeHours })(store.dispatch); // should remove the last item in the array
+    await flushAllPromises();
+
+    expect(store.getActions()[0].type).toEqual(DELETE_AVAILABILITY);
+    expect(store.getActions()[0].payload.rangeHours.length).toEqual(1);
+    expect(store.getActions()[0].payload.rangeHours[0][0]).toEqual(1);
+    expect(store.getActions()[0].payload.rangeHours[0][1]).toEqual([
+      date,
+      date
+    ]);
+  });
+
   it("test add availability action", async () => {
     const selectedDate = moment();
     const day = selectedDate.day();
@@ -96,7 +115,9 @@ describe("test contacting server from group", () => {
         `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`
       )
       .reply(200, {
-        data: { success: true, error: false }
+        success: true,
+        error: false,
+        ids: [1]
       });
     addAvailability(1, selectedDate, rangeHours, availableDays)(store.dispatch);
     await flushAllPromises();
@@ -107,7 +128,6 @@ describe("test contacting server from group", () => {
     expect(store.getActions()[0].payload.availableDays[day]).toEqual(
       rangeHours
     );
-    expect(store.getActions()[0].payload.rangeHours).toEqual([""]);
   });
 
   it("test obtaining group information", async () => {
@@ -131,7 +151,7 @@ describe("test contacting server from group", () => {
         `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/1000000/members/1`
       )
       .reply(200, {
-        GroupMemberId: 1
+        groupMembers: [{ GroupMemberId: 1 }]
       });
 
     httpMock

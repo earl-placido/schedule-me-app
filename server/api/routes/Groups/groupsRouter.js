@@ -1,20 +1,37 @@
 const express = require("express");
 const router = express.Router();
+const { check, validationResult } = require("express-validator");
 
 const groupsModel = require("../../model/groupsModel");
 const groupMemberModel = require("../../model/groupMemberModel");
 const { authenticateToken } = require("../../util/tokenHelper");
 const responses = require("../../util/responses");
+const findOptimalTime = require("../../util/OptimalAlgorithm");
 
 // Create a new group
-router.post("/", authenticateToken, (req, res, next) => {
-  const newGroup = req.body;
-  const groupOwnerId = req.user.userID;
+router.post(
+  "/",
+  authenticateToken,
+  [
+    check("groupName")
+      .exists({ checkNull: true })
+      .withMessage("Group name is required."),
+    check("groupDesc")
+      .optional({ checkFalsy: true })
+      .isLength({ max: 225 })
+      .withMessage("Group description cannot exceed 225 characters")
+  ],
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(responses.UNPROCESSABLE)
+        .json({ errors: errors.array() });
+    }
 
-  if (!newGroup.groupName) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: `groupName is required.` });
-  } else {
+    const newGroup = req.body;
+    const groupOwnerId = req.user.userID;
+
     return groupsModel
       .newGroup(
         newGroup.groupName,
@@ -25,7 +42,15 @@ router.post("/", authenticateToken, (req, res, next) => {
         newGroup.meetingLocation
       ) // create new group
       .then(result => {
+        if (result.errno) {
+          res
+            .status(responses.SERVER_ERROR)
+            .json({ error: "Unable to create group" });
+          throw Error(result.sqlMessage);
+        }
+
         let newGroupId = result;
+
         // add owner to the group with owner privileges
         return groupsModel
           .newMember(newGroupId, groupOwnerId, "AD")
@@ -35,7 +60,7 @@ router.post("/", authenticateToken, (req, res, next) => {
       })
       .catch(next); // returns the id of the created group
   }
-});
+);
 
 // Get all groups
 router.get("/", authenticateToken, (req, res, next) => {
@@ -120,22 +145,30 @@ router.get("/:groupId/members/:userId", (req, res, next) => {
   } else {
     return groupMemberModel
       .getGroupMemberId(groupId, userId)
+      .then(result =>
+        res.status(responses.SUCCESS).json({ groupMembers: result })
+      )
+      .catch(next);
+  }
+});
+
+// group optimal time route
+router.get("/:groupId/optimaltime/", (req, res, next) => {
+  const { groupId } = req.params;
+  if (!groupId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: "groupId is required!" });
+  } else {
+    return groupsModel
+      .getGroupMemberAvailabilities(groupId)
       .then(result => {
-        if (result.length > 0) {
-          res.status(responses.SUCCESS).json(result[0]);
-        } else {
-          res.status(responses.NOT_FOUND);
-          res.send({
-            error: `could not find groupMemberId with ${groupId} and ${userId}`
-          });
-        }
+        const optimalTime = findOptimalTime(result);
+        res.status(responses.SUCCESS).json({ optimalTime });
       })
       .catch(next);
   }
 });
 
-// add group member router
-require("./groupMemberRouter")(router);
 // add availability router
 require("./AvailabilityRouter")(router);
 

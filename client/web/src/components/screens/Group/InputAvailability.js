@@ -1,8 +1,18 @@
 import React, { Component } from "react";
 import moment from "moment";
-import { Calendar, Modal, TimePicker, Button, Checkbox, Badge } from "antd";
+import {
+  Calendar,
+  Modal,
+  TimePicker,
+  Button,
+  Checkbox,
+  Badge,
+  Typography,
+  Row
+} from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import {
   selectDate,
@@ -12,7 +22,8 @@ import {
   addAvailability,
   getInformation,
   handleAdd,
-  onChangeRange
+  onChangeRange,
+  closeErrorModal
 } from "../../../actions/components/screens/InputAvailability.action";
 
 const { RangePicker } = TimePicker;
@@ -20,6 +31,11 @@ const { RangePicker } = TimePicker;
 class Group extends Component {
   onSelect = value => {
     this.props.selectDate(value, this.props.availableDays);
+    if (
+      value.year() === this.props.selectedDate.year() &&
+      value.month() === this.props.selectedDate.month()
+    )
+      this.showModal();
   };
 
   showModal = () => {
@@ -41,7 +57,10 @@ class Group extends Component {
   };
 
   handleDelete = () => {
-    this.props.deleteAvailability(this.props.rangeHours);
+    this.props.deleteAvailability(
+      this.props.rangeHours,
+      this.props.availableDays
+    );
   };
 
   handleAdd = () => {
@@ -53,8 +72,10 @@ class Group extends Component {
     const date = this.props.selectedDate.date();
 
     // change date/month to selected date/month
-    value[0].set({ month, date });
-    value[1].set({ month, date });
+    if (value !== null) {
+      value[0].set({ month, date });
+      value[1].set({ month, date });
+    }
 
     this.props.onChangeRange(index, value, this.props.rangeHours);
   }
@@ -87,25 +108,40 @@ class Group extends Component {
       this.props.getInformation(groupId, this.props.availableDays);
   }
 
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
+  };
+
   render() {
+    const { Title } = Typography;
+    const { availabilityStyle, calendarStyle } = styles;
+
     return (
-      <div>
-        <h2>
-          {this.props.groupInformation && this.props.groupInformation.GroupName}
-        </h2>
-        <p>
-          {this.props.groupInformation &&
-            this.props.groupInformation.GroupDescription}
-        </p>
-        <Button id="show-modal-button" onClick={this.showModal} type="primary">
-          Add Availability
-        </Button>
-        <Calendar
-          onSelect={this.onSelect}
-          mode="month"
-          dateCellRender={this.dateCellRender}
-          onPanelChange={this.onPanelChange}
-        />
+      <div style={availabilityStyle}>
+        <Row justify="center">
+          <Title level={2}>
+            {this.props.groupInformation &&
+              this.props.groupInformation.GroupName}
+          </Title>
+        </Row>
+        <Row justify="center">
+          <Title level={4}>
+            {this.props.groupInformation &&
+              this.props.groupInformation.GroupDescription}
+          </Title>
+        </Row>
+        <Row justify="center">
+          <p>Click on a date to edit your availability for that day.</p>
+        </Row>
+        <div style={calendarStyle}>
+          <Calendar
+            id="availability-calendar"
+            onSelect={this.onSelect}
+            mode="month"
+            dateCellRender={this.dateCellRender}
+            onPanelChange={this.onPanelChange}
+          />
+        </div>
 
         <Modal
           visible={this.props.modalVisible}
@@ -122,6 +158,7 @@ class Group extends Component {
             return (
               <div key={index} className="range-picker">
                 <RangePicker
+                  format={"h:mm"}
                   value={value}
                   onChange={this.onChangeRange.bind(this, index)}
                 />
@@ -152,10 +189,35 @@ class Group extends Component {
             </Button>
           </div>
         </Modal>
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
+          footer={[
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
+              OK
+            </Button>
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
+        </Modal>
       </div>
     );
   }
 }
+
+const styles = {
+  availabilityStyle: {
+    paddingTop: 30,
+    marginLeft: 30,
+    marginRight: 30
+  },
+
+  calendarStyle: {
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: "#E8E8E8"
+  }
+};
 
 const mapStateToProps = ({ AddAvailabilityReducer }) => {
   const {
@@ -164,7 +226,8 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     selectedDate,
     availableDays,
     groupInformation,
-    memberId
+    memberId,
+    showErrorModal
   } = AddAvailabilityReducer;
   return {
     modalVisible,
@@ -172,7 +235,8 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     selectedDate,
     availableDays,
     groupInformation,
-    memberId
+    memberId,
+    showErrorModal
   };
 };
 
@@ -187,12 +251,14 @@ Group.propTypes = {
   availableDays: PropTypes.any,
   groupInformation: PropTypes.any,
   memberId: PropTypes.any,
+  showErrorModal: PropTypes.any,
 
   handleAdd: PropTypes.func,
   selectDate: PropTypes.func,
   onChangeRange: PropTypes.func,
   addAvailability: PropTypes.func,
-  getInformation: PropTypes.func
+  getInformation: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
@@ -203,5 +269,6 @@ export default connect(mapStateToProps, {
   addAvailability,
   getInformation,
   handleAdd,
-  onChangeRange
+  onChangeRange,
+  closeErrorModal
 })(Group);
