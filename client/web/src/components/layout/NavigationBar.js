@@ -11,16 +11,24 @@ import {
   message,
   Col,
   Row,
-  List
+  List,
+  Modal
 } from "antd";
-import { DownOutlined, UsergroupAddOutlined } from "@ant-design/icons";
+import {
+  DownOutlined,
+  UsergroupAddOutlined,
+  ExclamationCircleOutlined
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import { toggleModal } from "../../actions/components/login/Modal.action";
 import {
   authenticate,
   logout
 } from "../../actions/components/screens/Auth.action";
-import { getGroupList } from "../../actions/components/layout/NavigationBar.action";
+import {
+  getGroupList,
+  closeErrorModal
+} from "../../actions/components/layout/NavigationBar.action";
 
 const { Header } = Layout;
 
@@ -49,6 +57,10 @@ export class NavigationBar extends Component {
   chooseStyle(array, noDataStyle, listStyle) {
     return array && array.length > 0 ? listStyle : noDataStyle;
   }
+
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
+  };
 
   render() {
     const { headerStyle, listStyle, noDataStyle } = styles;
@@ -139,6 +151,17 @@ export class NavigationBar extends Component {
             <div className="masthead-user">{userNavigation}</div>
           </Col>
         </Row>
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
+          footer={[
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
+              OK
+            </Button>
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
+        </Modal>
       </Header>
     );
   }
@@ -165,14 +188,16 @@ const mapStateToProps = state => ({
   userName: state.auth.userName,
   displayPicURL: state.auth.displayPicURL,
   modalVisible: state.modalVisible,
-  groupList: state.NavigationBarReducer.groupList
+  groupList: state.NavigationBarReducer.groupList,
+  showErrorModal: state.NavigationBarReducer.showErrorModal
 });
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
   authenticate: (type, response) => dispatch(authenticate(type, response)),
   toggleModal: value => dispatch(toggleModal(value)),
-  getGroupList: () => dispatch(getGroupList())
+  getGroupList: () => dispatch(getGroupList()),
+  closeErrorModal: () => dispatch(closeErrorModal())
 });
 
 NavigationBar.propTypes = {
@@ -180,12 +205,14 @@ NavigationBar.propTypes = {
   userName: PropTypes.any,
   displayPicURL: PropTypes.any,
   isAuthenticated: PropTypes.any,
+  showErrorModal: PropTypes.any,
   authenticate: PropTypes.func,
   logout: PropTypes.func,
   modalVisible: PropTypes.any,
   groupList: PropTypes.any,
   toggleModal: PropTypes.func,
-  getGroupList: PropTypes.func
+  getGroupList: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
 export default compose(

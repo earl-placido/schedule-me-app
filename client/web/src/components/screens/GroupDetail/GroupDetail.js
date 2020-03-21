@@ -16,10 +16,11 @@ import {
   getGroupMembers,
   getGroup,
   showModal,
-  closeModal
+  closeModal,
+  closeErrorModal
 } from "../../../actions/components/screens/GroupDetail.action";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -42,6 +43,10 @@ class GroupDetail extends Component {
 
   handleDone = () => {
     this.props.closeModal();
+  };
+
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
   };
 
   handleCancel = () => {
@@ -120,6 +125,17 @@ class GroupDetail extends Component {
             <InputAvailability />
           </Modal>
         </Card>
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
+          footer={[
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
+              OK
+            </Button>
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
+        </Modal>
       </div>
     );
   }
@@ -145,8 +161,13 @@ const styles = {
 };
 
 const mapStateToProps = ({ GroupDetailReducer }) => {
-  const { groupMembers, group, inputModalVisible } = GroupDetailReducer;
-  return { groupMembers, group, inputModalVisible };
+  const {
+    groupMembers,
+    group,
+    inputModalVisible,
+    showErrorModal
+  } = GroupDetailReducer;
+  return { groupMembers, group, inputModalVisible, showErrorModal };
 };
 
 GroupDetail.propTypes = {
@@ -155,10 +176,12 @@ GroupDetail.propTypes = {
   groupMembers: PropTypes.any,
   group: PropTypes.any,
   inputModalVisible: PropTypes.any,
+  showErrorModal: PropTypes.any,
   getGroupMembers: PropTypes.func,
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
 export default withRouter(
@@ -166,6 +189,7 @@ export default withRouter(
     getGroupMembers,
     getGroup,
     showModal,
-    closeModal
+    closeModal,
+    closeErrorModal
   })(GroupDetail)
 );
