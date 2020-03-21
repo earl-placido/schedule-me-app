@@ -4,10 +4,14 @@ import GroupDetailReducer, {
 
 describe("GroupDetail action", () => {
   const INITIAL_STATE = {
-    groupMembers: []
+    groupMembers: [],
+    showErrorModal: false
   };
   it("test getGroupMembers", () => {
-    const payload = { type: GROUP_MEMBERS, payload: ["Johnny"] };
+    const payload = {
+      type: GROUP_MEMBERS,
+      payload: { groupMembers: ["Johnny"] }
+    };
     const reducerItem = GroupDetailReducer(INITIAL_STATE, payload);
     expect(reducerItem.groupMembers[0]).toEqual("Johnny");
   });

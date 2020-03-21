@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Steps, Row, Col, Card, Button } from "antd";
+import { Steps, Row, Col, Card, Button, Modal } from "antd";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -14,8 +14,10 @@ import {
   updateMeetingFrequency,
   updateMeetingLocation,
   goNextPage,
-  goPreviousPage
+  goPreviousPage,
+  closeErrorModal
 } from "../../../actions/components/screens/CreateGroup.action";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 import { getGroupList } from "../../../actions/components/layout/NavigationBar.action";
 
 import "antd/dist/antd.css";
@@ -89,6 +91,10 @@ class CreateGroup extends Component {
     );
   }
 
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
+  };
+
   componentDidUpdate() {
     // update the navigatino bar group list
     if (this.props.currentPage === 2) {
@@ -144,6 +150,17 @@ class CreateGroup extends Component {
             </Row>
           </Card>
         </div>
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
+          footer={[
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
+              OK
+            </Button>
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
+        </Modal>
       </div>
     );
   }
@@ -175,7 +192,8 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
     location,
     link,
     success,
-    currentPage
+    currentPage,
+    showErrorModal
   } = CreateGroupReducer;
   return {
     groupName,
@@ -185,7 +203,8 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
     location,
     link,
     success,
-    currentPage
+    currentPage,
+    showErrorModal
   };
 };
 
@@ -202,6 +221,8 @@ CreateGroup.propTypes = {
   success: PropTypes.any,
   currentPage: PropTypes.any,
 
+  showErrorModal: PropTypes.any,
+
   updateGroupName: PropTypes.func,
   updateGroupDescription: PropTypes.func,
 
@@ -212,6 +233,7 @@ CreateGroup.propTypes = {
   goNextPage: PropTypes.func,
   goPreviousPage: PropTypes.func,
 
+  closeErrorModal: PropTypes.func,
   getGroupList: PropTypes.func
 };
 
@@ -223,5 +245,6 @@ export default connect(mapStateToProps, {
   updateMeetingLocation,
   goNextPage,
   goPreviousPage,
+  closeErrorModal,
   getGroupList
 })(CreateGroup);
