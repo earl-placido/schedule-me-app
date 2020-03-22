@@ -186,7 +186,7 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ CreateGroupReducer }) => {
+const mapStateToProps = ({ CreateGroupScreenReducer }) => {
   const {
     groupName,
     groupDescription,
@@ -197,7 +197,7 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
     success,
     currentPage,
     showErrorModal
-  } = CreateGroupReducer;
+  } = CreateGroupScreenReducer;
   return {
     groupName,
     groupDescription,
