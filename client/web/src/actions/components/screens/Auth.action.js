@@ -82,7 +82,11 @@ export const authenticate = (type, response) => {
         }
       })
       .catch(err => {
-        dispatch(loginError(err.response.data.err));
+        if (err.response) {
+          dispatch(loginError(err.response.data.err));
+        } else {
+          dispatch(loginError(err.toString()));
+        }
       });
   };
 };
