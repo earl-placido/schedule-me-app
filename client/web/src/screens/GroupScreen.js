@@ -27,7 +27,7 @@ import {
   showModal,
   closeModal,
   closeErrorModal
-} from "../actions/Group.action";
+} from "../actions/screens/GroupScreen.action";
 
 class GroupScreen extends Component {
   constructor(props) {
@@ -225,5 +225,5 @@ export default withRouter(
     showModal,
     closeModal,
     closeErrorModal
-  })(GroupDetail)
+  })(GroupScreen)
 );

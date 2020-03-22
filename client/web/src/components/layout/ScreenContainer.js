@@ -2,7 +2,7 @@ import { Layout } from "antd";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import NavigationBar from "NavigationBar";
+import NavigationBar from "./NavigationBar";
 
 const { Content } = Layout;
 

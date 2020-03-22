@@ -8,8 +8,8 @@ import { withRouter, Redirect } from "react-router";
 import PropTypes from "prop-types";
 
 import { authenticate } from "../../actions/Auth.action";
-import LoginForm from "LoginForm";
-import SignupForm from "SignupForm";
+import LoginForm from "./LoginForm";
+import SignupForm from "./SignupForm";
 
 class LoginComponent extends Component {
   constructor(props) {

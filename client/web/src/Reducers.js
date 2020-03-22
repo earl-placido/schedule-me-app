@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
 
-import CreateGroupReducer from "./actions/components/screens/CreateGroup.action";
+import CreateGroupReducer from "./actions/screens/CreateGroupScreen.action";
 import LoginReducer from "./actions/components/login/Modal.action";
-import AuthReducer from "./actions/components/screens/Auth.action";
-import AddAvailabilityReducer from "./actions/components/screens/InputAvailability.action";
-import MainPageReducer from "./actions/components/screens/MainPage.action";
-import GroupDetailReducer from "./actions/components/screens/GroupDetail.action";
+import AuthReducer from "./actions/Auth.action";
+import AddAvailabilityReducer from "./actions/components/InputAvailabilityModal.action";
+import MainPageReducer from "./actions/screens/GroupListScreen.action";
+import GroupDetailReducer from "./actions/screens/GroupScreen.action";
 import NavigationBarReducer from "./actions/components/layout/NavigationBar.action";
 
 export default combineReducers({

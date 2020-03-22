@@ -18,7 +18,7 @@ import PropTypes from "prop-types";
 import {
   getGroupList,
   closeErrorModal
-} from "../actions/Group.action";
+} from "../actions/screens/GroupListScreen.action";
 
 class GroupListScreen extends Component {
   componentDidMount() {

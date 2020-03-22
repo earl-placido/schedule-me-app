@@ -60,7 +60,7 @@ const styles = {
   }
 };
 
-ShareLinkForm.propTypes = {
+GroupShareComponent.propTypes = {
   link: PropTypes.any
 };
 

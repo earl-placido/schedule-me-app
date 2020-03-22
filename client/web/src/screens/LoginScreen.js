@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Layout, Button, Divider, notification } from "antd";
-import Login from "../components/LoginComponent";
+import Login from "../components/login/LoginComponent";
 
 const { Content } = Layout;
 
