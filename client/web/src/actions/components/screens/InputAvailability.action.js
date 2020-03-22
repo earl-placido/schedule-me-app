@@ -16,41 +16,51 @@ export const DELETE_AVAILABILITY = "delete_availability";
 export const ADD_AVAILABILITY = "add_availability";
 export const ADD_RANGE = "add_range";
 export const CHANGE_RANGE = "change_range";
+export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getInformation = (groupId, availableDays) => async dispatch => {
-  const groupInformation = await axios.get(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`
-  );
+  await axios
+    .get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`)
+    .then(groupInformation => {
+      getMemberIdWithEmail(groupId, localStorage.getItem("userEmail")).then(
+        memberId => {
+          getAvailabilityQuery(memberId).then(availability => {
+            if (availability.error) {
+              dispatch({
+                type: GROUP_INFORMATION,
+                payload: {
+                  memberId,
+                  groupInformation: groupInformation.data,
+                  availableDays: {}
+                }
+              });
+              return;
+            }
+            const newAvailableDays = convertAvailabilityToDays(
+              availableDays,
+              availability
+            );
 
-  const memberId = await getMemberIdWithEmail(
-    groupId,
-    localStorage.getItem("userEmail")
-  );
-  const availability = await getAvailabilityQuery(memberId);
-  if (availability.error) {
-    dispatch({
-      type: GROUP_INFORMATION,
-      payload: {
-        memberId,
-        groupInformation: groupInformation.data,
-        availableDays: {}
-      }
+            dispatch({
+              type: GROUP_INFORMATION,
+              payload: {
+                groupInformation: groupInformation.data,
+                memberId,
+                availableDays: newAvailableDays
+              }
+            });
+          });
+        }
+      );
+    })
+    .catch(() => {
+      dispatch({
+        type: GROUP_INFORMATION,
+        payload: {
+          showErrorModal: true
+        }
+      });
     });
-    return;
-  }
-  const newAvailableDays = convertAvailabilityToDays(
-    availableDays,
-    availability
-  );
-
-  dispatch({
-    type: GROUP_INFORMATION,
-    payload: {
-      groupInformation: groupInformation.data,
-      memberId,
-      availableDays: newAvailableDays
-    }
-  });
 };
 
 export const selectDate = (selectedDate, availableDays) => {
@@ -92,29 +102,42 @@ export const deleteAvailability = (
     // if it is an existing id, then we query to the database to delete it
     if (removedRangeHours[0] !== -1) {
       // remove from database
-      const response = await axios.delete(
-        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`,
-        {
-          data: { availabilityIds: [removedRangeHours[0]] }
-        }
-      );
+      await axios
+        .delete(
+          `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`,
+          {
+            data: { availabilityIds: [removedRangeHours[0]] }
+          }
+        )
+        .then(response => {
+          // handle errors if there is
+          if (response.data.error) {
+            dispatch({
+              type: DELETE_AVAILABILITY,
+              payload: newRangeHours,
+              showErrorModal: true
+            });
+            return;
+          }
 
-      // handle errors if there is
-      if (response.data.error) {
-        dispatch({ type: DELETE_AVAILABILITY, payload: newRangeHours });
-        return;
-      }
+          // remove from availabilityDays
+          const currentDay = removedRangeHours[1][0].day();
 
-      // remove from availabilityDays
-      const currentDay = removedRangeHours[1][0].day();
-
-      const currentAvailableDays = availableDays[currentDay];
-      for (let i = 0; i < currentAvailableDays.length; i++) {
-        if (currentAvailableDays[i][1] === removedRangeHours[1]) {
-          availableDays[currentDay].splice(i, 1);
-          break;
-        }
-      }
+          const currentAvailableDays = availableDays[currentDay];
+          for (let i = 0; i < currentAvailableDays.length; i++) {
+            if (currentAvailableDays[i][1] === removedRangeHours[1]) {
+              availableDays[currentDay].splice(i, 1);
+              break;
+            }
+          }
+        })
+        .catch(() => {
+          dispatch({
+            type: DELETE_AVAILABILITY,
+            payload: { showErrorModal: true }
+          });
+          return;
+        });
     }
   }
 
@@ -156,28 +179,32 @@ export const addAvailability = (
     if (item[1]) return item[1][1].format("YYYY-MM-DD HH:mm:ss");
   });
 
-  const addedAvailabilityIds = await addAvailabilityQuery(
-    memberId,
-    availabilityIds,
-    startTimes,
-    endTimes
-  );
+  await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes)
+    .then(addedAvailabilityIds => {
+      // update the ids of rangeHours after getting the availbilityId from database
+      for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
+        if (addedAvailabilityIds.data.ids[i] !== 0)
+          filteredRangeHours[i][0] = addedAvailabilityIds.data.ids[i];
+      }
+      availableDays[day] = filteredRangeHours;
 
-  // update the ids of rangeHours after getting the availbilityId from database
-  for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
-    if (addedAvailabilityIds.data.ids[i] !== 0)
-      filteredRangeHours[i][0] = addedAvailabilityIds.data.ids[i];
-  }
-  availableDays[day] = filteredRangeHours;
-
-  dispatch({
-    type: ADD_AVAILABILITY,
-    payload: {
-      availableDays,
-      modalVisible: false,
-      rangeHours: filteredRangeHours
-    }
-  });
+      dispatch({
+        type: ADD_AVAILABILITY,
+        payload: {
+          availableDays,
+          modalVisible: false,
+          rangeHours: filteredRangeHours
+        }
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: ADD_AVAILABILITY,
+        payload: {
+          showErrorModal: true
+        }
+      });
+    });
 };
 
 export const handleAdd = rangeHours => {
@@ -190,11 +217,25 @@ export const handleAdd = rangeHours => {
 // rangehours contain [[id, [start, end]], [id, [start, end]], ...]
 export const onChangeRange = (index, value, rangeHours) => {
   let newRangeHours = [...rangeHours];
-  newRangeHours[index] = [-1, value];
+
+  // if deleted value
+  if (value === null) {
+    newRangeHours[index] = "";
+  } else {
+    newRangeHours[index] = [-1, value];
+  }
+
   return {
     type: CHANGE_RANGE,
     payload: newRangeHours
   };
+};
+
+export const closeErrorModal = () => async dispatch => {
+  dispatch({
+    type: CLOSE_ERROR_MODAL,
+    payload: false
+  });
 };
 
 const INITIAL_STATE = {
@@ -203,7 +244,8 @@ const INITIAL_STATE = {
   selectedDate: "",
   availableDays: {},
   groupInformation: "",
-  memberId: ""
+  memberId: "",
+  showErrorModal: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -231,6 +273,9 @@ export default (state = INITIAL_STATE, action) => {
     }
     case CHANGE_RANGE: {
       return { ...state, rangeHours: action.payload };
+    }
+    case CLOSE_ERROR_MODAL: {
+      return { ...state, showErrorModal: action.payload };
     }
     default:
       return state;

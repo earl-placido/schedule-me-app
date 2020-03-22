@@ -35,7 +35,7 @@ export default class GroupInfoForm extends Component {
                     style={{ color: "rgba(0,0,0,.25)" }}
                   />
                 }
-                placeholder={"Enter Group Names"}
+                placeholder={"Enter a group name"}
                 value={this.props.groupName}
               />
               {!this.props.success && (
@@ -50,7 +50,7 @@ export default class GroupInfoForm extends Component {
             <TextArea
               id="groupDescriptionInput"
               onChange={this.handleGroupDescriptionChange.bind(this)}
-              placeholder="Enter group description (Optional)"
+              placeholder="Enter a description for your group (optional)"
               rows={7}
               allowClear
               value={this.props.groupDescription}

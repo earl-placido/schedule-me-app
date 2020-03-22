@@ -8,7 +8,6 @@ import {
   Divider,
   Typography,
   message,
-  Input,
   Avatar,
   Modal
 } from "antd";
@@ -16,10 +15,15 @@ import {
   getGroupMembers,
   getGroup,
   showModal,
-  closeModal
+  closeModal,
+  closeErrorModal
 } from "../../../actions/components/screens/GroupDetail.action";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  CopyOutlined,
+  ExclamationCircleOutlined
+} from "@ant-design/icons";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
@@ -27,6 +31,11 @@ import InputAvailability from "../Group/InputAvailability";
 import PropTypes from "prop-types";
 
 class GroupDetail extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { showCode: false };
+  }
+
   componentDidMount() {
     this.props.getGroup(this.props.match.params.id);
     this.props.getGroupMembers(this.props.match.params.id);
@@ -44,38 +53,65 @@ class GroupDetail extends Component {
     this.props.closeModal();
   };
 
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
+  };
+
   handleCancel = () => {
     this.props.closeModal();
   };
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle, inputStyle, buttonStyle } = styles;
+    const {
+      containerStyle,
+      cardStyle,
+      buttonStyle,
+      noMarginStyle,
+      marginTop5
+    } = styles;
 
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
           <Row justify="center">
-            <Title level={2}>Group: {this.props.group.GroupName}</Title>
+            <Title level={2} style={noMarginStyle}>
+              Group: {this.props.group.GroupName}
+            </Title>
           </Row>
           <Row justify="center">
-            <Col>
-              <Input
-                addonBefore={"Sharable Code"}
-                disabled={true}
-                value={this.props.match.params.id}
-                style={inputStyle}
-              />
-            </Col>
-            <Col offset={1}>
-              <CopyToClipboard
-                onCopy={() => this.success()}
-                text={this.props.match.params.id}
-              >
-                <Button>Copy Code</Button>
-              </CopyToClipboard>
-            </Col>
+            <h4>{this.props.group.GroupDescription}</h4>
           </Row>
+          {!this.state.showCode ? (
+            <Row justify="center">
+              <Button
+                onClick={() => {
+                  this.setState({ showCode: true });
+                }}
+              >
+                Share Group
+              </Button>
+            </Row>
+          ) : (
+            <div>
+              <Row justify="center" style={marginTop5}>
+                <h3>Share this code for others to join the group:</h3>
+              </Row>
+              <Row justify="center">
+                <Col offset={2}>
+                  <Title level={2}>{this.props.match.params.id}</Title>
+                </Col>
+                <Col offset={1}>
+                  <CopyToClipboard
+                    onCopy={() => this.success()}
+                    text={this.props.match.params.id}
+                  >
+                    <Button style={marginTop5} icon={<CopyOutlined />} />
+                  </CopyToClipboard>
+                </Col>
+              </Row>
+            </div>
+          )}
           <Divider orientation="center" />
           <Row justify="center">
             <Title level={3}>Group Members</Title>
@@ -94,7 +130,6 @@ class GroupDetail extends Component {
               )}
             />
           </Row>
-          <Divider orientation="center" />
           <Button
             type="primary"
             onClick={this.showModal}
@@ -120,6 +155,17 @@ class GroupDetail extends Component {
             <InputAvailability />
           </Modal>
         </Card>
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
+          footer={[
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
+              OK
+            </Button>
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
+        </Modal>
       </div>
     );
   }
@@ -135,18 +181,28 @@ const styles = {
     width: 800
   },
 
-  inputStyle: {
-    width: 200
-  },
-
   buttonStyle: {
     margin: 30
+  },
+
+  noMarginStyle: {
+    margin: 0,
+    padding: 0
+  },
+
+  marginTop5: {
+    marginTop: 5
   }
 };
 
 const mapStateToProps = ({ GroupDetailReducer }) => {
-  const { groupMembers, group, inputModalVisible } = GroupDetailReducer;
-  return { groupMembers, group, inputModalVisible };
+  const {
+    groupMembers,
+    group,
+    inputModalVisible,
+    showErrorModal
+  } = GroupDetailReducer;
+  return { groupMembers, group, inputModalVisible, showErrorModal };
 };
 
 GroupDetail.propTypes = {
@@ -155,10 +211,12 @@ GroupDetail.propTypes = {
   groupMembers: PropTypes.any,
   group: PropTypes.any,
   inputModalVisible: PropTypes.any,
+  showErrorModal: PropTypes.any,
   getGroupMembers: PropTypes.func,
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
-  closeModal: PropTypes.func
+  closeModal: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
 export default withRouter(
@@ -166,6 +224,7 @@ export default withRouter(
     getGroupMembers,
     getGroup,
     showModal,
-    closeModal
+    closeModal,
+    closeErrorModal
   })(GroupDetail)
 );

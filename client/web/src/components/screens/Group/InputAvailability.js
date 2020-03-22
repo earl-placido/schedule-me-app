@@ -12,6 +12,7 @@ import {
 } from "antd";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 
 import {
   selectDate,
@@ -21,7 +22,8 @@ import {
   addAvailability,
   getInformation,
   handleAdd,
-  onChangeRange
+  onChangeRange,
+  closeErrorModal
 } from "../../../actions/components/screens/InputAvailability.action";
 
 const { RangePicker } = TimePicker;
@@ -70,8 +72,10 @@ class Group extends Component {
     const date = this.props.selectedDate.date();
 
     // change date/month to selected date/month
-    value[0].set({ month, date });
-    value[1].set({ month, date });
+    if (value !== null) {
+      value[0].set({ month, date });
+      value[1].set({ month, date });
+    }
 
     this.props.onChangeRange(index, value, this.props.rangeHours);
   }
@@ -103,6 +107,10 @@ class Group extends Component {
     if (!this.props.groupInformation)
       this.props.getInformation(groupId, this.props.availableDays);
   }
+
+  closeErrorModal = () => {
+    this.props.closeErrorModal();
+  };
 
   render() {
     const { Title } = Typography;
@@ -181,6 +189,17 @@ class Group extends Component {
             </Button>
           </div>
         </Modal>
+        <Modal
+          visible={this.props.showErrorModal}
+          onCancel={this.closeErrorModal}
+          footer={[
+            <Button type="primary" key="ok" onClick={this.closeErrorModal}>
+              OK
+            </Button>
+          ]}
+        >
+          <ExclamationCircleOutlined /> Oops! Something went wrong!
+        </Modal>
       </div>
     );
   }
@@ -207,7 +226,8 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     selectedDate,
     availableDays,
     groupInformation,
-    memberId
+    memberId,
+    showErrorModal
   } = AddAvailabilityReducer;
   return {
     modalVisible,
@@ -215,7 +235,8 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     selectedDate,
     availableDays,
     groupInformation,
-    memberId
+    memberId,
+    showErrorModal
   };
 };
 
@@ -230,12 +251,14 @@ Group.propTypes = {
   availableDays: PropTypes.any,
   groupInformation: PropTypes.any,
   memberId: PropTypes.any,
+  showErrorModal: PropTypes.any,
 
   handleAdd: PropTypes.func,
   selectDate: PropTypes.func,
   onChangeRange: PropTypes.func,
   addAvailability: PropTypes.func,
-  getInformation: PropTypes.func
+  getInformation: PropTypes.func,
+  closeErrorModal: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
@@ -246,5 +269,6 @@ export default connect(mapStateToProps, {
   addAvailability,
   getInformation,
   handleAdd,
-  onChangeRange
+  onChangeRange,
+  closeErrorModal
 })(Group);
