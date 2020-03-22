@@ -21,7 +21,7 @@ class StackNavigator extends Component {
   render() {
     return (
       <Stack.Navigator
-        initialRouteName={'Create Group'}
+        initialRouteName={'Group List'}
         screenOptions={{
           header: props => {
             return (
@@ -43,10 +43,7 @@ class StackNavigator extends Component {
                     <Right>
                       <Button
                         onPress={() => {
-                          GoogleSignin.revokeAccess();
-                          GoogleSignin.signOut();
-                          this.props.logoutUser();
-                          props.navigation.navigate('Home');
+                          props.navigation.navigate('Group List');
                         }}>
                         <Text>{this.props.userName}</Text>
                       </Button>

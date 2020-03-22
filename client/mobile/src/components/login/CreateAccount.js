@@ -85,7 +85,7 @@ class CreateAccount extends Component {
   attemptSignup = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
-      this.props.navigation.navigate('Create Group');
+      this.props.navigation.navigate('Group List');
       this.toggleCreate();
     } else {
       if (this.props.message.errors) {
