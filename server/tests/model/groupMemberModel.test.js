@@ -2,7 +2,7 @@ require("dotenv").config();
 const mysql = require("promise-mysql");
 const testUtil = require("../test-utils/testUtil");
 const groupmemberModel = require("../../api/model/groupMemberModel");
-const data = require("../util/testdata/groupsModel.testdata");
+const data = require("../test-utils/testdata/groupsModel.testdata");
 
 const MYSQLDB = {
   host: process.env.RDS_HOSTNAME,
