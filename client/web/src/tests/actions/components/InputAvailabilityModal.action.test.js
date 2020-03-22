@@ -19,7 +19,7 @@ import {
   ADD_AVAILABILITY,
   ADD_RANGE,
   CHANGE_RANGE
-} from "../../../../actions/components/screens/InputAvailability.action";
+} from "../../../actions/components/InputAvailabilityModal.action";
 
 describe("test group actions", () => {
   it("test selectdate action", () => {

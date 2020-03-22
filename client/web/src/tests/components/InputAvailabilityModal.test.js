@@ -5,13 +5,13 @@ import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import moment from "moment";
 
-import Group from "../../components/screens/Group/InputAvailability";
+import Group from "../../components/InputAvailabilityModal";
 import {
   SHOW_MODAL,
   SELECT_DATE,
   CHANGE_RANGE,
   ADD_RANGE
-} from "../../actions/components/screens/InputAvailability.action";
+} from "../../actions/components/InputAvailabilityModal.action";
 
 configure({ adapter: new Adapter() });
 

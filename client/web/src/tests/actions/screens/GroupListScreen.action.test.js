@@ -1,6 +1,6 @@
 import MainPageReducer, {
   GROUP_LIST
-} from "../../../../actions/components/screens/MainPage.action";
+} from "../../../actions/screens/GroupListScreen.action";
 
 describe("MainPage action", () => {
   const INITIAL_STATE = {

@@ -18,7 +18,7 @@ import CreateGroupReducer, {
   UPDATE_MEETING_FREQUENCY,
   UPDATE_MEETING_LOCATION,
   SUBMIT_GROUP_CREATION
-} from "../../../../actions/components/screens/CreateGroup.action";
+} from "../../../actions/screens/CreateGroupScreen.action";
 
 describe("CreateGroup action", () => {
   it("test update group name", () => {

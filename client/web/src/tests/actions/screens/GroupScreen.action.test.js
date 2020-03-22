@@ -1,6 +1,6 @@
 import GroupDetailReducer, {
   GROUP_MEMBERS
-} from "../../../../actions/components/screens/GroupDetail.action";
+} from "../../../actions/screens/GroupScreen.action";
 
 describe("GroupDetail action", () => {
   const INITIAL_STATE = {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import MainPage from "../../components/screens/MainPage/MainPage";
+import MainPage from "../../screens/LoginScreen";
 import configureStore from "redux-mock-store";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";

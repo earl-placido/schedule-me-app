@@ -1,6 +1,6 @@
 import React from "react";
-import Home from "../../components/screens/Home/Home";
-import Login from "../../components/login/Login";
+import Home from "../../screens/LoginScreen";
+import Login from "../../components/login/LoginComponent";
 import Adapter from "enzyme-adapter-react-16";
 import { Layout, Button } from "antd";
 const { Content } = Layout;

@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 
-import GroupDetail from "../../components/screens/GroupDetail/GroupDetail";
+import GroupDetail from "../../screens/GroupScreen";
 import configureStore from "redux-mock-store";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
