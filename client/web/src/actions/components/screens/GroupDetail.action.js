@@ -15,7 +15,6 @@ export const SHOW_GROUP_DETAIL_MODAL = "SHOW_GROUP_DETAIL_MODAL";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 export const OPTIMAL_TIME = 'optimal_time';
 
-const NUMBER_TO_DAY = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
 export const getGroupMembers = groupId => async dispatch => {
   await getGroupMembersQuery(groupId)
@@ -66,26 +65,10 @@ export const getGroupMember = groupId => async dispatch => {
 
 export const getOptimalTime = groupId => async dispatch => {
   getOptimalTimeQuery(groupId).then(optimalTimes => {
-    const optimalTimesString = optimalTimes.map(optimalTime => {
-      const timeInformation = optimalTime[0].split(":");
-      const currentDay = timeInformation[0];
-      const timeRange = timeInformation[1].split("_");
-      
-      const startTime = timeRange[0];
-      const endTime = timeRange[1];
-      const count = optimalTime[1];
-
-      const currentDayString = NUMBER_TO_DAY[currentDay];
-
-      const meetingString = `${currentDayString} ${startTime} - ${endTime}`;
-      const availableString = `${count} available`;
-
-      return [meetingString, availableString];
-    });
 
     dispatch({
       type: OPTIMAL_TIME,
-      payload: {optimalTimes: optimalTimesString}
+      payload: {optimalTimes}
     });
   });
 };

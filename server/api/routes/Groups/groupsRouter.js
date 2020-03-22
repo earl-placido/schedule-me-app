@@ -63,8 +63,8 @@ router.post(
 );
 
 // Get all groups
-router.get("/", authenticateToken, (req, res, next) => {
-  const userId = req.user.userID;
+router.get("/", (req, res, next) => {
+  const userId = 1;//req.user.userID;
   if (!userId) {
     res.status(responses.NOT_FOUND);
     res.send({ error: `userId is required.` });
@@ -166,6 +166,34 @@ router.get("/:groupId/optimaltime/", (req, res, next) => {
         res.status(responses.SUCCESS).json({ optimalTime });
       })
       .catch(next);
+  }
+});
+
+// get meeting id
+router.get("/:groupId/meetings/", (req, res, next) => {
+  const {groupId} = req.params;
+    if (!groupId) {
+      res.status(responses.NOT_FOUND);
+      res.send({ error: "groupId is required!" });
+    } else {
+      return groupsModel
+        .getMeetingByGroupId(groupId)
+        .then(result => {
+          res.status(responses.SUCCESS).json({ meetingId: result[0] });
+        })
+        .catch(next);
+    }
+});
+
+router.post("/meetings/setoptimaltime/", (req, res, next) => {
+  const {meetingId, startTime, endTime} = req.body;
+  if (!meetingId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: 'meetingId is required!'});
+  } else {
+    return groupsModel.setOptimalTimeForMeeting(meetingId, startTime, endTime).then(result => {
+      res.status(responses.SUCCESS).json({ success: true });
+    }).catch(next);
   }
 });
 

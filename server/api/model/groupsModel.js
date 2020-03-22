@@ -164,7 +164,6 @@ module.exports = {
           [groupId]
         )
         .then(res => {
-          console.log(res);
           conn.end();
           return res;
         })
@@ -173,5 +172,51 @@ module.exports = {
           return err;
         });
     });
-  }
-};
+  },
+
+  getMeetingByGroupId(groupId) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn.query(
+        `SELECT MeetingId FROM \`Meeting\` WHERE GroupId=?`,
+        [groupId]
+      )
+      .then(res => {
+        conn.end();
+        return res;
+      })
+      .catch(err => {
+        conn.end();
+        return err;
+      })
+    });
+  },
+
+  setOptimalTimeForMeeting(meetingId, startTime, endTime) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn.query(
+        `
+        SELECT * FROM OptimalAvailability WHERE Meetingid=?;
+        `,
+        [meetingId]
+      ).then(res => {
+        let query = '';
+        if (res.length === 0) {
+          query = `INSERT into \`OptimalAvailability\` (StartTime, EndTime, MeetingId) VALUES (?, ?, ?)`;
+        } else {
+          query = `UPDATE \`OptimalAvailability\` SET StartTime=?, EndTime=? WHERE MeetingId=?`;
+        }
+        return conn.query(
+          query,
+          [startTime, endTime, meetingId]
+        ).then(res => {
+          conn.end();
+          return res;
+        }).catch(err => {
+          console.log(err);
+          conn.end();
+          return err;
+        });
+      });
+  });
+}
+}
