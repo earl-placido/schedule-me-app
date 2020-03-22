@@ -177,7 +177,7 @@ module.exports = {
   getMeetingByGroupId(groupId) {
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn.query(
-        `SELECT MeetingId FROM \`Meeting\` WHERE GroupId=?`,
+        `SELECT MeetingId, MeetingDuration FROM \`Meeting\` WHERE GroupId=?`,
         [groupId]
       )
       .then(res => {
@@ -189,6 +189,23 @@ module.exports = {
         return err;
       })
     });
+  },
+
+  getOptimalTimeForMeeting(meetingIds) {
+    return mysql.createConnection(MYSQLDB).then(conn => {
+      return conn.query(
+        `
+        SELECT * FROM OptimalAvailability WHERE ${meetingIds.map(meetingId => `MeetingId=${meetingId}`).join(" OR ")};
+        `,
+        [meetingIds]
+      ).then(res => {
+        conn.end();
+        return res;
+      }).catch(err => {
+        conn.end();
+        return err;
+      });
+    }); 
   },
 
   setOptimalTimeForMeeting(meetingId, startTime, endTime) {
@@ -212,7 +229,6 @@ module.exports = {
           conn.end();
           return res;
         }).catch(err => {
-          console.log(err);
           conn.end();
           return err;
         });

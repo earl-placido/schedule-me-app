@@ -19,7 +19,11 @@ import {
   showModal,
   closeModal,
   closeErrorModal,
-  getOptimalTime
+  getOptimalTime,
+  getMeetings,
+  selectMeeting,
+  selectOptimalTime,
+  setOptimalTime
 } from "../../../actions/components/screens/GroupDetail.action";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { UserOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
@@ -27,7 +31,7 @@ import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import InputAvailability from "../Group/InputAvailability";
-import MeetingTimeModal from './MeetingTimeModal';
+import MeetingTimeModal from "./MeetingTimeModal";
 import PropTypes from "prop-types";
 
 class GroupDetail extends Component {
@@ -35,6 +39,7 @@ class GroupDetail extends Component {
     this.props.getGroup(this.props.match.params.id);
     this.props.getGroupMembers(this.props.match.params.id);
     this.props.getGroupMember(this.props.match.params.id);
+    this.props.getMeetings(this.props.match.params.id);
   }
 
   success() {
@@ -43,7 +48,7 @@ class GroupDetail extends Component {
 
   showModal(type) {
     this.props.showModal(type);
-  };
+  }
 
   handleDone = () => {
     this.props.closeModal();
@@ -57,7 +62,15 @@ class GroupDetail extends Component {
     this.props.closeModal();
   };
 
-  getOptimalTime = () => {
+  handleDoneMeeting = () => {
+    this.props.setOptimalTime(
+      this.props.selectedMeeting,
+      this.props.selectedOptimalTime
+    );
+  };
+
+  getOptimalTime(selectedMeeting) {
+    this.props.selectMeeting(selectedMeeting);
     this.props.getOptimalTime(this.props.match.params.id);
     this.showModal("meeting");
   }
@@ -66,9 +79,26 @@ class GroupDetail extends Component {
     // query for meeting time;
     return (
       <div>
-        <p style={{display: 'inline', marginRight: 10}}>Meeting time is currently empty.</p>
-        {this.props.groupMember && this.props.groupMember.MemberRole === 'AD' && 
-        <Button type="primary" style={{backgroundColor: 'green'}} onClick={this.getOptimalTime}>Change</Button>}
+        {this.props.meetings &&
+          this.props.meetings.map((meeting, index) => {
+            return (
+              <div key={index}>
+                <p style={{ display: "inline", marginRight: 10 }}>
+                  Meeting time is currently empty.
+                </p>
+                {this.props.groupMember &&
+                  this.props.groupMember.MemberRole === "AD" && (
+                    <Button
+                      type="primary"
+                      style={{ backgroundColor: "green" }}
+                      onClick={this.getOptimalTime.bind(this, meeting)}
+                    >
+                      Change
+                    </Button>
+                  )}
+              </div>
+            );
+          })}
       </div>
     );
   };
@@ -76,7 +106,6 @@ class GroupDetail extends Component {
   render() {
     const { Title } = Typography;
     const { containerStyle, cardStyle, inputStyle, buttonStyle } = styles;
-
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
@@ -103,9 +132,7 @@ class GroupDetail extends Component {
           </Row>
           <Divider orientation="center" />
           <Row justify="center">
-            <Col>
-              {this.currentMeetingTime()}
-            </Col>
+            <Col>{this.currentMeetingTime()}</Col>
           </Row>
           <Divider orientation="center" />
           <Row justify="center">
@@ -128,7 +155,7 @@ class GroupDetail extends Component {
           <Divider orientation="center" />
           <Button
             type="primary"
-            onClick={this.showModal.bind(this, 'availability')}
+            onClick={this.showModal.bind(this, "availability")}
             style={{ float: "right" }}
           >
             Input Your Availability
@@ -152,7 +179,7 @@ class GroupDetail extends Component {
           </Modal>
 
           <Modal
-          width={"60%"}
+            width={"60%"}
             visible={this.props.meetingModalVisible}
             onCancel={this.handleCancel}
             footer={[
@@ -164,8 +191,12 @@ class GroupDetail extends Component {
               >
                 Done
               </Button>
-            ]}>
-            <MeetingTimeModal optimalTimes={this.props.optimalTimes || []} />
+            ]}
+          >
+            <MeetingTimeModal
+              optimalTimes={this.props.optimalTimes || []}
+              selectOptimalTime={this.props.selectOptimalTime}
+            />
           </Modal>
         </Card>
         <Modal
@@ -212,8 +243,22 @@ const mapStateToProps = ({ GroupDetailReducer }) => {
     meetingModalVisible,
     showErrorModal,
     optimalTimes,
+    meetings,
+    selectedMeeting,
+    selectedOptimalTime
   } = GroupDetailReducer;
-  return { groupMember, groupMembers, group, inputModalVisible, meetingModalVisible, showErrorModal, optimalTimes };
+  return {
+    groupMember,
+    groupMembers,
+    group,
+    inputModalVisible,
+    meetingModalVisible,
+    showErrorModal,
+    optimalTimes,
+    meetings,
+    selectedMeeting,
+    selectedOptimalTime
+  };
 };
 
 GroupDetail.propTypes = {
@@ -226,12 +271,20 @@ GroupDetail.propTypes = {
   showErrorModal: PropTypes.any,
   meetingModalVisible: PropTypes.any,
   optimalTimes: PropTypes.any,
+  meetings: PropTypes.any,
+  selectedMeeting: PropTypes.any,
+  selectedOptimalTime: PropTypes.any,
   getGroupMember: PropTypes.func,
   getGroupMembers: PropTypes.func,
+  getOptimalTime: PropTypes.func,
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
   closeModal: PropTypes.func,
-  closeErrorModal: PropTypes.func
+  closeErrorModal: PropTypes.func,
+  getMeetings: PropTypes.func,
+  selectMeeting: PropTypes.func,
+  setOptimalTime: PropTypes.func,
+  selectOptimalTime: PropTypes.func
 };
 
 export default withRouter(
@@ -242,6 +295,10 @@ export default withRouter(
     showModal,
     closeModal,
     closeErrorModal,
-    getOptimalTime
+    getOptimalTime,
+    getMeetings,
+    selectMeeting,
+    selectOptimalTime,
+    setOptimalTime
   })(GroupDetail)
 );

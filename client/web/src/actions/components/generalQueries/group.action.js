@@ -54,4 +54,39 @@ export const getOptimalTimeQuery = async groupId => {
     }
   );
   return response.data.optimalTime;
-};  
+};
+
+export const getMeetingCurrentOptimalTimeQuery = async meetingIds => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/getoptimaltime/`,
+    { meetingIds }
+  );
+
+  console.log(response);
+};
+
+export const setCurrentOptimalTimeQuery = async (
+  meetingId,
+  startTime,
+  endTime
+) => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/setoptimaltime/`,
+    { meetingId, startTime, endTime }
+  );
+  return response.data;
+};
+
+export const getMeetingIdsQuery = async groupId => {
+  const authToken = localStorage.getItem("token");
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/meetings/`,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
+  );
+  return response.data.meetingIds;
+};

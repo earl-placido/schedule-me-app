@@ -169,7 +169,7 @@ router.get("/:groupId/optimaltime/", (req, res, next) => {
   }
 });
 
-// get meeting id
+// get meeting information
 router.get("/:groupId/meetings/", (req, res, next) => {
   const {groupId} = req.params;
     if (!groupId) {
@@ -179,19 +179,34 @@ router.get("/:groupId/meetings/", (req, res, next) => {
       return groupsModel
         .getMeetingByGroupId(groupId)
         .then(result => {
-          res.status(responses.SUCCESS).json({ meetingId: result[0] });
+          res.status(responses.SUCCESS).json({ meetingIds: result });
         })
         .catch(next);
     }
 });
 
+router.post("/meetings/getoptimaltime", (req, res, next) => {
+  const {meetingIds} = req.body;
+
+  if (meetingIds && meetingIds.length === 0) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: "meetingIds length cannot be 0!"});
+  }
+
+  return groupsModel.getOptimalTimeForMeeting(meetingIds).then(result => {
+    res.status(responses.SUCCESS).json({optimalAvailabilities: result});
+  }).catch(next);
+
+});
+
 router.post("/meetings/setoptimaltime/", (req, res, next) => {
   const {meetingId, startTime, endTime} = req.body;
-  if (!meetingId) {
+  if (!meetingId || !startTime || !endTime) {
     res.status(responses.NOT_FOUND);
-    res.send({ error: 'meetingId is required!'});
+    res.send({ error: 'meetingId/startTime/endTime is required!'});
   } else {
     return groupsModel.setOptimalTimeForMeeting(meetingId, startTime, endTime).then(result => {
+      console.log(result);
       res.status(responses.SUCCESS).json({ success: true });
     }).catch(next);
   }

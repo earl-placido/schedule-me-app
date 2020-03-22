@@ -19,7 +19,7 @@ export const CHANGE_RANGE = "change_range";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getInformation = (groupId, availableDays) => async dispatch => {
-    axios
+  axios
     .get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`)
     .then(groupInformation => {
       getMemberIdWithEmail(groupId, localStorage.getItem("userEmail")).then(
