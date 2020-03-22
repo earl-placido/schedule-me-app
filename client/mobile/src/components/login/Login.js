@@ -9,10 +9,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import {
-  loginGoogle,
-  loginUser,
-} from '../../actions/components/Auth.action';
+import {loginGoogle, loginUser} from '../../actions/components/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
@@ -100,7 +97,7 @@ class Login extends Component {
   attemptLogin = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
-      this.props.navigation.navigate('Create Group');
+      this.props.navigation.navigate('Drawer');
       this.toggleLogin();
     } else {
       if (this.props.message.errors) {
