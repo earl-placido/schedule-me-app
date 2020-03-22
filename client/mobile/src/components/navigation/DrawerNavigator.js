@@ -8,7 +8,7 @@ import StackNavigator from './StackNavigator';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutUser} from '../../actions/components/screens/Auth.action';
+import {logoutUser} from '../../actions/components/Auth.action';
 
 import {GoogleSignin} from '@react-native-community/google-signin';
 

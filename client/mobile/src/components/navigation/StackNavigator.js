@@ -11,7 +11,7 @@ import GroupList from '../screens/GroupList/GroupList';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutUser} from '../../actions/components/screens/Auth.action';
+import {logoutUser} from '../../actions/components/Auth.action';
 
 const Stack = createStackNavigator();
 
