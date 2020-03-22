@@ -64,6 +64,7 @@ class GroupDetail extends Component {
 
   handleDoneMeeting = () => {
     this.props.setOptimalTime(
+      this.props.meetings,
       this.props.selectedMeeting,
       this.props.selectedOptimalTime
     );
@@ -76,8 +77,6 @@ class GroupDetail extends Component {
   }
 
   currentMeetingTime = () => {
-    // query for meeting time;
-    console.log(this.props.meetings);
     return (
       <div>
         {this.props.meetings &&

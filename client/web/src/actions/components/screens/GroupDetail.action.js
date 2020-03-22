@@ -32,6 +32,15 @@ const NUMBER_TO_DATE = [
   "2020-03-28"
 ];
 
+const formatDateToString = (startTime, endTime) => {
+  //starttime and endtime is in moment format
+  const day = startTime.format("dddd");
+  const startTimeString = startTime.format("HH:mm");
+  const endTimeString = endTime.format("HH:mm");
+  const meetingAvailableString = `${day} ${startTimeString} - ${endTimeString}`;
+  return meetingAvailableString;
+};
+
 export const getGroupMembers = groupId => async dispatch => {
   await getGroupMembersQuery(groupId)
     .then(response => {
@@ -89,7 +98,11 @@ export const getOptimalTime = groupId => async dispatch => {
   });
 };
 
-export const setOptimalTime = (meeting, optimalTime) => async dispatch => {
+export const setOptimalTime = (
+  meetings,
+  selectedMeeting,
+  optimalTime
+) => async dispatch => {
   const optimalTimeInfo = optimalTime[0].split(":");
   const currentDay = optimalTimeInfo[0];
   const date = NUMBER_TO_DATE[currentDay];
@@ -113,18 +126,30 @@ export const setOptimalTime = (meeting, optimalTime) => async dispatch => {
   endTime =
     date + " " + endTime.substr(endTime.length - 5).replace(".", ":") + ":00";
 
-  setCurrentOptimalTimeQuery(meeting.MeetingId, startTime, endTime).then(
-    result => {
-      dispatch({
-        type: SET_OPTIMAL_TIME,
-        payload: {
-          success: result.success,
-          error: !result.success,
-          meetingModalVisible: false
-        }
-      });
+  setCurrentOptimalTimeQuery(
+    selectedMeeting.MeetingId,
+    startTime,
+    endTime
+  ).then(result => {
+    for (let i = 0; i < meetings.length; i++) {
+      if (meetings[i].MeetingId === selectedMeeting.MeetingId) {
+        const meetingAvailableString = formatDateToString(
+          moment(startTime),
+          moment(endTime)
+        );
+        meetings[i].meetingAvailableString = meetingAvailableString;
+      }
     }
-  );
+
+    dispatch({
+      type: SET_OPTIMAL_TIME,
+      payload: {
+        success: result.success,
+        error: !result.success,
+        meetingModalVisible: false
+      }
+    });
+  });
 };
 
 export const getMeetings = groupId => async dispatch => {
@@ -138,12 +163,8 @@ export const getMeetings = groupId => async dispatch => {
             optimalAvailability["CAST(StartTime as char)"]
           );
           const endTime = moment(optimalAvailability["CAST(EndTime as char)"]);
-          const day = startTime.format("dddd");
-          const startTimeString = startTime.format("HH:mm");
-          const endTimeString = endTime.format("HH:mm");
 
-          const meetingAvailableString = `${day} ${startTimeString} - ${endTimeString}`;
-
+          const meetingAvailableString = formatDateToString(startTime, endTime);
           meetings[index].meetingAvailableString = meetingAvailableString;
         });
 
