@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mysql = require("promise-mysql");
-const testUtil = require("../util/testUtil");
+const testUtil = require("../test-utils/testUtil");
 const userModel = require("../../api/model/userModel");
 const data = require("../util/testdata/userModel.testdata");
 
