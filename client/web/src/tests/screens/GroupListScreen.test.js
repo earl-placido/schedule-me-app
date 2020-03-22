@@ -1,17 +1,16 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 
-import GroupDetail from "../../screens/GroupScreen";
+import MainPage from "../../screens/LoginScreen";
 import configureStore from "redux-mock-store";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
 
 configure({ adapter: new Adapter() });
 
-describe("GroupDetail, test groupDetailReducer", () => {
+describe("MainPage, test groupInfoForm", () => {
   const initialState = {
-    GroupDetailReducer: {
-      groupMembers: "groupMembers"
+    MainPageReducer: {
+      groupList: "groupList"
     }
   };
   const mockStore = configureStore();
@@ -19,14 +18,10 @@ describe("GroupDetail, test groupDetailReducer", () => {
 
   beforeEach(() => {
     store = mockStore(initialState);
-    component = shallow(
-      <Router>
-        <GroupDetail store={store} />
-      </Router>
-    ).dive();
+    component = shallow(<MainPage store={store} />).dive();
   });
 
-  it("should render GroupDetail", () => {
+  it("should render GroupList", () => {
     expect(component.length).toEqual(1);
   });
 });

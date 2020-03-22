@@ -1,5 +1,5 @@
 import React from "react";
-import Login from "../../../components/login/Login";
+import Login from "../../../components/login/LoginComponent";
 import LoginForm from "../../../components/login/LoginForm";
 import SignupForm from "../../../components/login/SignupForm";
 import { GoogleLogin } from "react-google-login";

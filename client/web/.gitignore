@@ -12,8 +12,8 @@
 /build
 
 #system tests
-/system_tests/videos
-/system_tests/examples
+/system-tests/videos
+/system-tests/examples
 
 # misc
 .DS_Store

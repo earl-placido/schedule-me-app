@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Modal } from "antd";
 import PropTypes from "prop-types";
-import Login from "./Login";
+import Login from "./LoginComponent";
 import { connect } from "react-redux";
 import { toggleModal } from "../../actions/components/login/Modal.action";
 

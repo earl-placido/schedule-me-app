@@ -1,4 +1,4 @@
-import { getGroupListQuery } from "../../Group.action";
+import { getGroupListQuery } from "../Group.action";
 
 export const GROUP_LIST = "group_list";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
