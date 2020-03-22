@@ -9,10 +9,7 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import {
-  loginGoogle,
-  loginUser,
-} from '../../actions/components/Auth.action';
+import {loginGoogle, loginUser} from '../../actions/components/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
