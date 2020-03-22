@@ -1,18 +1,17 @@
-import React, { Component } from "react";
 import { Button } from "antd";
 import Icon from "@ant-design/icons";
+import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
-import LoginForm from "./LoginForm";
-import SignupForm from "./SignupForm";
 import { GoogleLogin } from "react-google-login";
 import { withRouter, Redirect } from "react-router";
-
 import PropTypes from "prop-types";
 
-import { authenticate } from "../../actions/components/screens/Auth.action";
+import { authenticate } from "../../actions/Auth.action";
+import LoginForm from "LoginForm";
+import SignupForm from "SignupForm";
 
-class Login extends Component {
+class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.loginWithGoogle = this.loginWithGoogle.bind(this);
@@ -100,7 +99,7 @@ const mapDispatchToProps = dispatch => ({
   authenticate: (type, data) => dispatch(authenticate(type, data))
 });
 
-Login.propTypes = {
+LoginComponent.propTypes = {
   authenticate: PropTypes.func,
   history: PropTypes.any,
   location: PropTypes.any,
@@ -110,4 +109,4 @@ Login.propTypes = {
 export default compose(
   withRouter,
   connect(mapStateToProps, mapDispatchToProps)
-)(Login);
+)(LoginComponent);

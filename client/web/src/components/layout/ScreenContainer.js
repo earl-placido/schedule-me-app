@@ -1,12 +1,12 @@
-import React, { Component } from "react";
 import { Layout } from "antd";
-import LoginModal from "./login/LoginModal";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-import NavigationBar from "./layout/NavigationBar";
+
+import NavigationBar from "NavigationBar";
 
 const { Content } = Layout;
 
-class ContentContainer extends Component {
+class ScreenContainer extends Component {
   render() {
     const { contentStyle, containerStyle } = styles;
 
@@ -17,8 +17,6 @@ class ContentContainer extends Component {
         <Content style={contentStyle}>
           <div style={containerStyle}>{this.props.children}</div>
         </Content>
-
-        <LoginModal />
       </div>
     );
   }
@@ -48,8 +46,8 @@ const styles = {
   }
 };
 
-ContentContainer.propTypes = {
+ScreenContainer.propTypes = {
   children: PropTypes.any
 };
 
-export default ContentContainer;
+export default ScreenContainer;

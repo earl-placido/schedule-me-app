@@ -1,10 +1,10 @@
-import React, { Component } from "react";
 import { Button, Row, Typography, Col, message } from "antd";
 import { CopyOutlined } from "@ant-design/icons";
+import React, { Component } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import PropTypes from "prop-types";
 
-class ShareLinkForm extends Component {
+class GroupShareComponent extends Component {
   retrieveCodeFromLink(link) {
     var theLink = link.split("/");
     return theLink[theLink.length - 2];
@@ -64,4 +64,4 @@ ShareLinkForm.propTypes = {
   link: PropTypes.any
 };
 
-export default ShareLinkForm;
+export default GroupShareComponent;

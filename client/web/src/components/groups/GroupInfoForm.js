@@ -1,11 +1,10 @@
-import React, { Component } from "react";
 import { Form, Input } from "antd";
 import Icon from "@ant-design/icons";
-
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import "antd/dist/antd.css";
-import "../../css/app.css";
+// import "../../css/app.css";
 
 const { TextArea } = Input;
 

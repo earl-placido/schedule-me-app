@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import { getMemberIdWithEmail } from "../general-queries/GroupMember.action";
+import { getMemberIdWithEmail } from "../GroupMember.action";
 import {
   getAvailabilityQuery,
   addAvailabilityQuery
-} from "../general-queries/Availability.action";
-import { convertAvailabilityToDays } from "../../util/date/day";
+} from "../Availability.action";
+import { convertAvailabilityToDays } from "../util/date/day";
 
 export const GROUP_INFORMATION = "group_information";
 export const SELECT_DATE = "select_date";

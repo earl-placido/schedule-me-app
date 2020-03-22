@@ -1,5 +1,5 @@
 import axios from "axios";
-import responses from "../../util/responses";
+import responses from "../util/responses";
 
 export const LOGIN_REQUEST = "login_request";
 export const LOGIN_SUCCESS = "login_success";
@@ -82,11 +82,7 @@ export const authenticate = (type, response) => {
         }
       })
       .catch(err => {
-        if (err.response) {
-          dispatch(loginError(err.response.data.err));
-        } else {
-          dispatch(loginError(err.toString()));
-        }
+        dispatch(loginError(err.response.data.err));
       });
   };
 };
