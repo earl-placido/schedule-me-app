@@ -1,12 +1,16 @@
 import { Steps, Row, Col, Card, Button, Modal } from "antd";
-import { ExclamationCircleOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
+import {
+  ExclamationCircleOutlined,
+  LeftOutlined,
+  RightOutlined
+} from "@ant-design/icons";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import GroupInfoForm from "../components/groups/GroupInfoForm";
 import GroupMeetingForm from "../components/groups/GroupMeetingForm";
-import ShareLinkForm from "../components/groups/GroupShareComponent";
+import GroupShareComponent from "../components/groups/GroupShareComponent";
 import {
   updateGroupName,
   updateGroupDescription,
@@ -67,7 +71,7 @@ class CreateGroupScreen extends Component {
         );
       }
       case 2: {
-        return <ShareLinkForm link={this.props.link} />;
+        return <GroupShareComponent link={this.props.link} />;
       }
       default: {
         return null;

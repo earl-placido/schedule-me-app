@@ -15,6 +15,7 @@ class LoginComponent extends Component {
   constructor(props) {
     super(props);
     this.loginWithGoogle = this.loginWithGoogle.bind(this);
+    this.renderGoogleButton = this.renderGoogleButton.bind(this);
     this.state = { signUpSelected: false };
   }
 
@@ -28,6 +29,7 @@ class LoginComponent extends Component {
         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
         render={renderProps => (
           <Button
+            className="google-button"
             onClick={renderProps.onClick}
             style={{ width: "100%", marginBottom: 20, marginTop: 10 }}
             size="large"
@@ -45,7 +47,7 @@ class LoginComponent extends Component {
 
   render() {
     return (
-      <div>
+      <div className="form-wrapper">
         {this.props.isAuthenticated && this.props.location.pathname === "/" ? (
           <Redirect to="/main" />
         ) : null}
@@ -58,6 +60,7 @@ class LoginComponent extends Component {
             <p>
               Don&lsquo;t have an account?
               <Button
+                className="signup-toggle"
                 type="link"
                 onClick={() => {
                   this.setState({ signUpSelected: true });
@@ -74,8 +77,9 @@ class LoginComponent extends Component {
             {this.renderGoogleButton("Sign Up with Google")}
 
             <p>
-              Have an account?{" "}
+              Have an account?
               <Button
+                className="login-toggle"
                 type="link"
                 onClick={() => {
                   this.setState({ signUpSelected: false });
@@ -101,7 +105,6 @@ const mapDispatchToProps = dispatch => ({
 
 LoginComponent.propTypes = {
   authenticate: PropTypes.func,
-  history: PropTypes.any,
   location: PropTypes.any,
   isAuthenticated: PropTypes.any
 };

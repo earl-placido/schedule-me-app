@@ -18,8 +18,8 @@ export default class LoginScreen extends Component {
     });
   }
 
-  handleHttps() {
-    if (window.location.protocol === "https:") {
+  handleHttps(protocol) {
+    if (protocol === "https:") {
       this.openRedirectMessage();
       setInterval(() => {
         window.location.replace(
@@ -32,7 +32,7 @@ export default class LoginScreen extends Component {
   }
 
   render() {
-    this.handleHttps();
+    this.handleHttps(window.location.protocol);
 
     const { containerStyle, contentStyle, logoStyle, buttonStyle } = styles;
 
