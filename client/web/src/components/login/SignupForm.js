@@ -22,9 +22,12 @@ class SignupForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="signup-form">
         {this.props.errored ? (
-          <p style={{ textAlign: "center", color: "Red" }}>
+          <p
+            className="error-message"
+            style={{ textAlign: "center", color: "Red" }}
+          >
             {this.props.message}
           </p>
         ) : null}
@@ -86,6 +89,7 @@ class SignupForm extends Component {
           </Form.Item>
 
           <Form.Item
+            className="confirm-password"
             name="confirm"
             dependencies={["password"]}
             hasFeedback
@@ -127,13 +131,11 @@ class SignupForm extends Component {
 
 SignupForm.propTypes = {
   authenticate: PropTypes.func,
-  isAuthenticated: PropTypes.any,
   errored: PropTypes.any,
   message: PropTypes.any
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   errored: state.auth.errored,
   message: state.auth.message
 });
