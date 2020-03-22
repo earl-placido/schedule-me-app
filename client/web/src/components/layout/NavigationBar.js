@@ -1,7 +1,3 @@
-import React, { Component } from "react";
-import { compose } from "redux";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
 import {
   Layout,
   Menu,
@@ -19,12 +15,14 @@ import {
   UsergroupAddOutlined,
   ExclamationCircleOutlined
 } from "@ant-design/icons";
+import React, { Component } from "react";
+import { compose } from "redux";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import PropTypes from "prop-types";
+
 import { toggleModal } from "../../actions/components/login/Modal.action";
-import {
-  authenticate,
-  logout
-} from "../../actions/components/screens/Auth.action";
+import { authenticate, logout } from "../../actions/Auth.action";
 import {
   getGroupList,
   closeErrorModal

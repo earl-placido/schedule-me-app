@@ -1,9 +1,10 @@
-import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
 import Icon from "@ant-design/icons";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { authenticate } from "../../actions/components/screens/Auth.action";
+
+import { authenticate } from "../../actions/Auth.action";
 
 class SignupForm extends Component {
   constructor(props) {

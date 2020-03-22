@@ -12,7 +12,7 @@ import {
 import {
   loginGoogle,
   loginUser,
-} from '../../actions/components/screens/Auth.action';
+} from '../../actions/components/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';

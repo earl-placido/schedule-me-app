@@ -14,7 +14,7 @@ import {
   updateMeetingFrequency,
   updateMeetingLocation,
   submitMeetingCreation,
-} from '../../../actions/components/screens/CreateGroup.action';
+} from '../../../actions/screens/CreateGroup.action';
 import {connect} from 'react-redux';
 
 const progressStepsStyle = {

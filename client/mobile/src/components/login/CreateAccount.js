@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {signupUser} from '../../actions/components/screens/Auth.action';
+import {signupUser} from '../../actions/components/Auth.action';
 import {connect} from 'react-redux';
 
 const Form = t.form.Form;

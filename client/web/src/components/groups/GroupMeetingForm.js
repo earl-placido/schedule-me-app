@@ -1,7 +1,6 @@
-import React, { Component } from "react";
 import { Form, Input, TimePicker } from "antd";
 import Icon from "@ant-design/icons";
-
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class GroupMeetingForm extends Component {
