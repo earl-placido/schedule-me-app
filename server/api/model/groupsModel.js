@@ -195,7 +195,7 @@ module.exports = {
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn.query(
         `
-        SELECT * FROM OptimalAvailability WHERE ${meetingIds.map(meetingId => `MeetingId=${meetingId}`).join(" OR ")};
+        SELECT MeetingId, CAST(StartTime as char), CAST(EndTime as char) FROM OptimalAvailability WHERE ${meetingIds.map(meetingId => `MeetingId=${meetingId}`).join(" OR ")};
         `,
         [meetingIds]
       ).then(res => {

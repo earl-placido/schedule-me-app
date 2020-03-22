@@ -1,3 +1,5 @@
+import moment from "moment";
+
 import {
   getGroupQuery,
   getGroupMembersQuery,
@@ -115,7 +117,11 @@ export const setOptimalTime = (meeting, optimalTime) => async dispatch => {
     result => {
       dispatch({
         type: SET_OPTIMAL_TIME,
-        payload: { success: result.success, error: !result.success }
+        payload: {
+          success: result.success,
+          error: !result.success,
+          meetingModalVisible: false
+        }
       });
     }
   );
@@ -125,11 +131,28 @@ export const getMeetings = groupId => async dispatch => {
   getMeetingIdsQuery(groupId).then(meetings => {
     const meetingIds = meetings.map(meeting => meeting.MeetingId);
 
-    getMeetingCurrentOptimalTimeQuery(meetingIds);
-    dispatch({
-      type: MEETING_IDS,
-      payload: { meetings }
-    });
+    getMeetingCurrentOptimalTimeQuery(meetingIds).then(
+      optimalAvailabilities => {
+        optimalAvailabilities.map((optimalAvailability, index) => {
+          const startTime = moment(
+            optimalAvailability["CAST(StartTime as char)"]
+          );
+          const endTime = moment(optimalAvailability["CAST(EndTime as char)"]);
+          const day = startTime.format("dddd");
+          const startTimeString = startTime.format("HH:mm");
+          const endTimeString = endTime.format("HH:mm");
+
+          const meetingAvailableString = `${day} ${startTimeString} - ${endTimeString}`;
+
+          meetings[index].meetingAvailableString = meetingAvailableString;
+        });
+
+        dispatch({
+          type: MEETING_IDS,
+          payload: { meetings }
+        });
+      }
+    );
   });
 };
 
@@ -221,6 +244,9 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...action.payload };
     }
     case SELECT_OPTIMAL_TIME: {
+      return { ...state, ...action.payload };
+    }
+    case SET_OPTIMAL_TIME: {
       return { ...state, ...action.payload };
     }
     default: {

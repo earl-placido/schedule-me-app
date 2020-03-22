@@ -62,7 +62,7 @@ export const getMeetingCurrentOptimalTimeQuery = async meetingIds => {
     { meetingIds }
   );
 
-  console.log(response);
+  return response.data;
 };
 
 export const setCurrentOptimalTimeQuery = async (

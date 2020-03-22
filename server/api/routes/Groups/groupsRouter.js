@@ -194,7 +194,8 @@ router.post("/meetings/getoptimaltime", (req, res, next) => {
   }
 
   return groupsModel.getOptimalTimeForMeeting(meetingIds).then(result => {
-    res.status(responses.SUCCESS).json({optimalAvailabilities: result});
+
+    res.status(responses.SUCCESS).json(result);
   }).catch(next);
 
 });
@@ -206,7 +207,6 @@ router.post("/meetings/setoptimaltime/", (req, res, next) => {
     res.send({ error: 'meetingId/startTime/endTime is required!'});
   } else {
     return groupsModel.setOptimalTimeForMeeting(meetingId, startTime, endTime).then(result => {
-      console.log(result);
       res.status(responses.SUCCESS).json({ success: true });
     }).catch(next);
   }

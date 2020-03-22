@@ -77,6 +77,7 @@ class GroupDetail extends Component {
 
   currentMeetingTime = () => {
     // query for meeting time;
+    console.log(this.props.meetings);
     return (
       <div>
         {this.props.meetings &&
@@ -84,7 +85,8 @@ class GroupDetail extends Component {
             return (
               <div key={index}>
                 <p style={{ display: "inline", marginRight: 10 }}>
-                  Meeting time is currently empty.
+                  {meeting.meetingAvailableString ||
+                    "Meeting time is currently empty."}
                 </p>
                 {this.props.groupMember &&
                   this.props.groupMember.MemberRole === "AD" && (
