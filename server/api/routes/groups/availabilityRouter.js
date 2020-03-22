@@ -1,6 +1,6 @@
 const responses = require("../../util/responses");
 
-const AvailabilityModel = require("../../model/AvailabilityModel");
+const AvailabilityModel = require("../../model/availabilityModel");
 
 module.exports = router => {
   router.get("/members/:groupMemberId/availability", (req, res, next) => {
