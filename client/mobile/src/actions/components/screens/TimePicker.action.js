@@ -1,6 +1,3 @@
-import Config from 'react-native-config';
-import AsyncStorage from '@react-native-community/async-storage';
-
 export const UPDATE_INPUT_START_TIME = 'update_input_start_time';
 export const UPDATE_INPUT_END_TIME = 'update_input_end_time';
 export const SUBMIT_TIME_PICKER = 'submit_meeting_creation';
