@@ -1,5 +1,5 @@
 import axios from 'axios';
-import responses from '../../util/responses';
+import responses from '../util/responses';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-community/async-storage';
 
