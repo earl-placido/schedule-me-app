@@ -3,6 +3,7 @@ import {StyleSheet, ScrollView, View, FlatList} from 'react-native';
 import {Button, Text} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
+import {DrawerActions} from '@react-navigation/native';
 
 import StackNavigator from './StackNavigator';
 
@@ -83,6 +84,7 @@ function CustomDrawerContent(props) {
           GoogleSignin.revokeAccess();
           GoogleSignin.signOut();
           props.logoutUser();
+          props.navigation.dispatch(DrawerActions.closeDrawer());
           props.navigation.navigate('Home');
         }}>
         <Text>Log out</Text>
@@ -125,6 +127,7 @@ const styles = StyleSheet.create({
 CustomDrawerContent.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired,
   }).isRequired,
   userName: PropTypes.any,
   logoutUser: PropTypes.func,
