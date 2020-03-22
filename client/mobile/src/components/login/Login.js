@@ -100,7 +100,7 @@ class Login extends Component {
   attemptLogin = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
-      this.props.navigation.navigate('Group List');
+      this.props.navigation.navigate('Drawer');
       this.toggleLogin();
     } else {
       if (this.props.message.errors) {
