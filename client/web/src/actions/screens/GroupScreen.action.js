@@ -1,7 +1,4 @@
-import {
-  getGroupQuery,
-  getGroupMembersQuery
-} from "../Group.action";
+import { getGroupQuery, getGroupMembersQuery } from "../Group.action";
 
 export const GROUP_MEMBERS = "group_members";
 export const GROUP = "group";

@@ -22,10 +22,7 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import { toggleModal } from "../../actions/components/login/Modal.action";
-import {
-  authenticate,
-  logout
-} from "../../actions/Auth.action";
+import { authenticate, logout } from "../../actions/Auth.action";
 import {
   getGroupList,
   closeErrorModal
