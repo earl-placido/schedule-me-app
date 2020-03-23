@@ -1,9 +1,10 @@
-import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
 import Icon from "@ant-design/icons";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { authenticate } from "../../actions/components/screens/Auth.action";
+
+import { authenticate } from "../../actions/Auth.action";
 
 class SignupForm extends Component {
   constructor(props) {
@@ -22,9 +23,12 @@ class SignupForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="signup-form">
         {this.props.errored ? (
-          <p style={{ textAlign: "center", color: "Red" }}>
+          <p
+            className="error-message"
+            style={{ textAlign: "center", color: "Red" }}
+          >
             {this.props.message}
           </p>
         ) : null}
@@ -86,6 +90,7 @@ class SignupForm extends Component {
           </Form.Item>
 
           <Form.Item
+            className="confirm-password"
             name="confirm"
             dependencies={["password"]}
             hasFeedback
@@ -127,13 +132,11 @@ class SignupForm extends Component {
 
 SignupForm.propTypes = {
   authenticate: PropTypes.func,
-  isAuthenticated: PropTypes.any,
   errored: PropTypes.any,
   message: PropTypes.any
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
   errored: state.auth.errored,
   message: state.auth.message
 });

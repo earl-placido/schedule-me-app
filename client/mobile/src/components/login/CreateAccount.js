@@ -5,7 +5,7 @@ import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {signupUser} from '../../actions/components/screens/Auth.action';
+import {signupUser} from '../../actions/components/Auth.action';
 import {connect} from 'react-redux';
 
 const Form = t.form.Form;
@@ -85,7 +85,7 @@ class CreateAccount extends Component {
   attemptSignup = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
-      this.props.navigation.navigate('Create Group');
+      this.props.navigation.navigate('Drawer');
       this.toggleCreate();
     } else {
       if (this.props.message.errors) {

@@ -1,7 +1,6 @@
-import React, { Component } from "react";
 import { Form, Input, TimePicker } from "antd";
 import Icon from "@ant-design/icons";
-
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class GroupMeetingForm extends Component {
@@ -46,7 +45,7 @@ class GroupMeetingForm extends Component {
               prefix={
                 <Icon type="calendar" style={{ color: "rgba(0,0,0,.25)" }} />
               }
-              placeholder="Meeting Frequency (Optional)"
+              placeholder="Meeting frequency (optional)"
               value={this.props.frequency}
               onChange={this.changeFrequency.bind(this)}
               id="frequency"
@@ -58,7 +57,7 @@ class GroupMeetingForm extends Component {
           {
             <Input
               prefix={<Icon type="home" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Meeting Location (Optional)"
+              placeholder="Meeting location (optional)"
               value={this.props.location}
               onChange={this.changeLocation.bind(this)}
               id="location"

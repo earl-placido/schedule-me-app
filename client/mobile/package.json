@@ -25,6 +25,7 @@
     "@react-native-community/async-storage": "^1.8.1",
     "@react-native-community/google-signin": "^3.0.4",
     "@react-native-community/masked-view": "^0.1.7",
+    "@react-navigation/drawer": "^5.2.0",
     "@react-navigation/native": "^5.0.9",
     "@react-navigation/stack": "^5.1.1",
     "axios": "^0.19.2",
@@ -80,7 +81,8 @@
       "./node_modules/react-native-gesture-handler/jestSetup.js",
       "./__mocks__/@react-native-community/google-signin.js",
       "./__mocks__/@react-native-community/async-storage.js",
-      "./__mocks__/redux-persist/persistgate.js"
+      "./__mocks__/redux-persist/persistgate.js",
+      "./__mocks__/react-native-reanimated/setup.js"
     ]
   }
 }
