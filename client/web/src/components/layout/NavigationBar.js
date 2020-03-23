@@ -61,7 +61,7 @@ export class NavigationBar extends Component {
   };
 
   render() {
-    const { headerStyle, listStyle, noDataStyle } = styles;
+    const { headerStyle, listStyle, noDataStyle, oldAntColStyle } = styles;
     const groupMenu = (
       <List
         locale={{ emptyText: "You have not joined any groups" }}
@@ -129,7 +129,7 @@ export class NavigationBar extends Component {
         ></Menu>
 
         <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
-          <Col>
+          <Col style={oldAntColStyle}>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
               <Button>
                 Groups <DownOutlined />
@@ -178,6 +178,10 @@ const styles = {
 
   noDataStyle: {
     padding: 30
+  },
+
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 
