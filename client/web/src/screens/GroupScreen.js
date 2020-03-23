@@ -38,7 +38,6 @@ import "antd/dist/antd.css";
 import InputAvailability from "../components/InputAvailabilityModal";
 import MeetingTimeModal from "./MeetingTimeModal";
 
-
 class GroupScreen extends Component {
   constructor(props) {
     super(props);
@@ -287,8 +286,18 @@ const mapStateToProps = ({ GroupScreenReducer }) => {
     selectedMeeting,
     selectedOptimalTime
   } = GroupScreenReducer;
-  return { selfMember, groupMembers, group, inputModalVisible, 
-    meetingModalVisible, showErrorModal, optimalTimes, meetings, selectedMeeting, selectedOptimalTime };
+  return {
+    selfMember,
+    groupMembers,
+    group,
+    inputModalVisible,
+    meetingModalVisible,
+    showErrorModal,
+    optimalTimes,
+    meetings,
+    selectedMeeting,
+    selectedOptimalTime
+  };
 };
 
 GroupScreen.propTypes = {
