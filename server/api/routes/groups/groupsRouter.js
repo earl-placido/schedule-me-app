@@ -63,7 +63,7 @@ router.post(
 );
 
 // Get all groups
-router.get("/", (req, res, next) => {
+router.get("/", authenticateToken, (req, res, next) => {
   const userId = req.user.userID;
   if (!userId) {
     res.status(responses.NOT_FOUND);
@@ -76,7 +76,7 @@ router.get("/", (req, res, next) => {
   }
 });
 
-// Get group information from groupId
+//  group information from groupId
 router.get("/:groupId", (req, res, next) => {
   const { groupId } = req.params;
   return groupsModel
