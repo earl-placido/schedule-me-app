@@ -105,6 +105,14 @@ const resetAvailabilityQuery = `
   TRUNCATE TABLE \`Availability\`;
 `;
 
+const resetMeetingQuery = `
+  TRUNCATE TABLE \`Meeting\`;
+`;
+
+const resetOptimalAvailabilityQuery = `
+  TRUNCATE TABLE \`OptimalAvailability\`;
+`;
+
 module.exports = {
   insertUsersQuery,
   insertGroupsQuery,
@@ -113,5 +121,7 @@ module.exports = {
   resetUsersQuery,
   resetGroupsQuery,
   resetGroupMembersQuery,
-  resetAvailabilityQuery
+  resetAvailabilityQuery,
+  resetMeetingQuery,
+  resetOptimalAvailabilityQuery
 };

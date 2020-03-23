@@ -33,6 +33,8 @@ describe("test availability model", () => {
                 ${testUtil.resetGroupsQuery}
                 ${testUtil.resetGroupMembersQuery}
                 ${testUtil.resetAvailabilityQuery}
+                ${testUtil.resetOptimalAvailabilityQuery}
+                ${testUtil.resetMeetingQuery}
                 SET FOREIGN_KEY_CHECKS=1;
             `;
     const result = conn.query(query);
