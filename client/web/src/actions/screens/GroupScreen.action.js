@@ -1,7 +1,13 @@
 import moment from "moment";
 
-import { getGroupQuery, getGroupMembersQuery, getOptimalTimeQuery, 
-  getMeetingIdsQuery, setCurrentOptimalTimeQuery, getMeetingCurrentOptimalTimeQuery } from "../Group.action";
+import {
+  getGroupQuery,
+  getGroupMembersQuery,
+  getOptimalTimeQuery,
+  getMeetingIdsQuery,
+  setCurrentOptimalTimeQuery,
+  getMeetingCurrentOptimalTimeQuery
+} from "../Group.action";
 
 import { getMemberIdWithEmail } from "../GroupMember.action";
 
@@ -68,7 +74,6 @@ export const getGroup = groupId => async dispatch => {
     });
 };
 
-
 export const getSelfMember = groupId => async dispatch => {
   getMemberIdWithEmail(groupId, localStorage.getItem("userEmail"))
     .then(selfMember => {
@@ -99,6 +104,14 @@ export const setOptimalTime = (
   selectedMeeting,
   optimalTime
 ) => async dispatch => {
+  if (!optimalTime) {
+    dispatch({
+      type: SET_OPTIMAL_TIME,
+      payload: { meetingModalVisible: false }
+    });
+    return;
+  }
+
   const optimalTimeInfo = optimalTime[0].split(":");
   const currentDay = optimalTimeInfo[0];
   const date = NUMBER_TO_DATE[currentDay];
