@@ -64,7 +64,7 @@ router.post(
 
 // Get all groups
 router.get("/", (req, res, next) => {
-  const userId = 1;//req.user.userID;
+  const userId = 1; //req.user.userID;
   if (!userId) {
     res.status(responses.NOT_FOUND);
     res.send({ error: `userId is required.` });
@@ -171,44 +171,48 @@ router.get("/:groupId/optimaltime/", (req, res, next) => {
 
 // get meeting information
 router.get("/:groupId/meetings/", (req, res, next) => {
-  const {groupId} = req.params;
-    if (!groupId) {
-      res.status(responses.NOT_FOUND);
-      res.send({ error: "groupId is required!" });
-    } else {
-      return groupsModel
-        .getMeetingByGroupId(groupId)
-        .then(result => {
-          res.status(responses.SUCCESS).json({ meetingIds: result });
-        })
-        .catch(next);
-    }
+  const { groupId } = req.params;
+  if (!groupId) {
+    res.status(responses.NOT_FOUND);
+    res.send({ error: "groupId is required!" });
+  } else {
+    return groupsModel
+      .getMeetingByGroupId(groupId)
+      .then(result => {
+        res.status(responses.SUCCESS).json({ meetingIds: result });
+      })
+      .catch(next);
+  }
 });
 
 router.post("/meetings/getoptimaltime", (req, res, next) => {
-  const {meetingIds} = req.body;
+  const { meetingIds } = req.body;
 
   if (meetingIds && meetingIds.length === 0) {
     res.status(responses.NOT_FOUND);
-    res.send({ error: "meetingIds length cannot be 0!"});
+    res.send({ error: "meetingIds length cannot be 0!" });
   }
 
-  return groupsModel.getOptimalTimeForMeeting(meetingIds).then(result => {
-
-    res.status(responses.SUCCESS).json(result);
-  }).catch(next);
-
+  return groupsModel
+    .getOptimalTimeForMeeting(meetingIds)
+    .then(result => {
+      res.status(responses.SUCCESS).json(result);
+    })
+    .catch(next);
 });
 
 router.post("/meetings/setoptimaltime/", (req, res, next) => {
-  const {meetingId, startTime, endTime} = req.body;
+  const { meetingId, startTime, endTime } = req.body;
   if (!meetingId || !startTime || !endTime) {
     res.status(responses.NOT_FOUND);
-    res.send({ error: 'meetingId/startTime/endTime is required!'});
+    res.send({ error: "meetingId/startTime/endTime is required!" });
   } else {
-    return groupsModel.setOptimalTimeForMeeting(meetingId, startTime, endTime).then(result => {
-      res.status(responses.SUCCESS).json({ success: true });
-    }).catch(next);
+    return groupsModel
+      .setOptimalTimeForMeeting(meetingId, startTime, endTime)
+      .then(() => {
+        res.status(responses.SUCCESS).json({ success: true });
+      })
+      .catch(next);
   }
 });
 
