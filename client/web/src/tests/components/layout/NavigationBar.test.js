@@ -50,6 +50,7 @@ describe("Testing the <NavigationBar />", () => {
         logout: jest.fn(),
         getGroupList: jest.fn(),
         closeErrorModal: jest.fn(),
+        toggleModal: jest.fn(),
         isAuthenticated: false
       };
       component = setUp(props);
@@ -90,6 +91,8 @@ describe("Testing the <NavigationBar />", () => {
   
     it("Testing the auth options displayed", () => {
       expect(component.find(".auth-button")).toHaveLength(1);
+      component.find(".auth-button").simulate("click");
+      expect(props.toggleModal.mock.calls.length).toBe(1);
     });
   });
 
@@ -102,6 +105,7 @@ describe("Testing the <NavigationBar />", () => {
         isAuthenticated: true,
         userName: "myUserName",
         displayPicURL: "pic",
+        groupList: []
       };
       component = setUp(props);
     });
@@ -111,7 +115,7 @@ describe("Testing the <NavigationBar />", () => {
       expect(component.find(Dropdown.Button)).toHaveLength(1);
       expect(component.find('.username')).toHaveLength(1);
       expect(component.find('.username').text()).toEqual(props.userName);
-      console.log(component.debug());
+      expect(component.find(Dropdown).prop("overlay").props.dataSource).toEqual(props.groupList);
     });
 
     it("Testing logoutUser function", () => {
