@@ -104,11 +104,14 @@ export class NavigationBar extends Component {
           />
         }
       >
-        {this.props.userName}
+        <div className="username">
+          {this.props.userName}
+        </div>
       </Dropdown.Button>
     ) : (
       <div>
         <Button
+          className="auth-button"
           onClick={() => {
             this.props.toggleModal(true);
           }}
@@ -131,18 +134,18 @@ export class NavigationBar extends Component {
         <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
           <Col>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
-              <Button>
+              <Button className="dropdown-button">
                 Groups <DownOutlined />
               </Button>
             </Dropdown>
           </Col>
           <Col flex="100px">
-            <Button type="primary" href="/createGroup">
+            <Button className="nav-button" type="primary" href="/createGroup">
               Create A Group
             </Button>
           </Col>
           <Col>
-            <Button type="primary">Join A Group</Button>
+            <Button className="nav-button" type="primary">Join A Group</Button>
           </Col>
           <Col flex="auto"></Col>
           <Col flex="100px">
