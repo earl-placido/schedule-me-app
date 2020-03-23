@@ -121,7 +121,8 @@ class GroupScreen extends Component {
       cardStyle,
       buttonStyle,
       noMarginStyle,
-      marginTop5
+      marginTop5,
+      oldAntColStyle
     } = styles;
 
     return (
@@ -151,10 +152,10 @@ class GroupScreen extends Component {
                 <h3>Share this code for others to join the group:</h3>
               </Row>
               <Row justify="center">
-                <Col offset={2}>
+                <Col offset={2} style={oldAntColStyle}>
                   <Title level={2}>{this.props.match.params.id}</Title>
                 </Col>
-                <Col offset={1}>
+                <Col offset={1} style={oldAntColStyle}>
                   <CopyToClipboard
                     onCopy={() => this.success()}
                     text={this.props.match.params.id}
@@ -270,6 +271,10 @@ const styles = {
 
   marginTop5: {
     marginTop: 5
+  },
+
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 
