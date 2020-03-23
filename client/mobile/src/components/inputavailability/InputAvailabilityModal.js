@@ -4,44 +4,27 @@ import {View, Button, Text} from 'native-base';
 import moment from 'moment';
 import AvailabilityModal from './AvailabilityModal';
 import Modal from 'react-native-modal';
+import PropTypes from 'prop-types';
 
-export default class InputAvailabilityModal extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAvailabilityVisible: false,
-      selectedDate: '',
-    };
-  }
+import {selectDate, showModal, cancelAvailability} from '../../actions/InputAvailability.action';
+import {connect} from 'react-redux';
 
-  toggleInputAvailability = () => {
-    this.setState({isAvailabilityVisible: !this.state.isAvailabilityVisible});
-  };
-
+class InputAvailabilityModal extends Component {
   render() {
     return (
       <View>
         <Calendar
           minDate={moment(new Date()).format('YYYY-MM-DD')}
           onDayPress={day => {
-            this.toggleInputAvailability();
-            this.setState({
-              selectedDate: moment(day.dateString).format(
-                'YYYY-MMMM-DD (dddd)',
-              ),
-            });
+            this.props.selectDate(moment(day.dateString).format('YYYY-MM-DD (dddd)'));
+            this.props.showModal();
           }}
         />
 
         <Modal
-          isVisible={this.state.isAvailabilityVisible}
-          onBackdropPress={() => {
-            this.toggleInputAvailability();
-          }}>
-          <AvailabilityModal
-            selectedDate={this.state.selectedDate}
-            modalVisible={this.state.isAvailabilityVisible}
-          />
+          isVisible={this.props.modalVisible}
+          onBackdropPress={() => {this.props.cancelAvailability()}}>
+          <AvailabilityModal />
         </Modal>
 
         <View>
@@ -53,3 +36,27 @@ export default class InputAvailabilityModal extends Component {
     );
   }
 }
+
+const mapStateToProps = ({InputAvailabilityReducer}) => {
+  const {selectedDate, modalVisible} = InputAvailabilityReducer;
+
+  return {
+    selectedDate,
+    modalVisible,
+  };
+};
+
+InputAvailabilityModal.propTypes = {
+  selectedDate: PropTypes.any,
+  modalVisible: PropTypes.any,
+
+  selectDate: PropTypes.func,
+  showModal: PropTypes.func,
+  cancelAvailability: PropTypes.func
+};
+
+export default connect(mapStateToProps, {
+  selectDate,
+  showModal,
+  cancelAvailability
+})(InputAvailabilityModal);
