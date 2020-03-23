@@ -4,8 +4,11 @@ import Dialog from 'react-native-dialog';
 import React, {Component} from 'react';
 import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
+import Modal from 'react-native-modal';
 
 import PropTypes from 'prop-types';
+
+import InputAvailabilityModal from '../../inputavailability/InputAvailabilityModal'
 
 const userList = [
   {
@@ -54,6 +57,7 @@ export default class GroupDetail extends Component {
     super(props);
     this.state = {
       dialogVisible: false,
+      isInputAvailabilityVisible: false,
       currUser: {
         UserFName: 'INVALID USER',
         UserLName: 'INVALID USER',
@@ -68,6 +72,10 @@ export default class GroupDetail extends Component {
   handleClose = () => {
     this.setState({dialogVisible: false});
   };
+
+  toggleInputAvailability = () => {
+    this.setState({isInputAvailabilityVisible: !this.state.isInputAvailabilityVisible});
+  }
 
   render() {
     return (
@@ -115,11 +123,14 @@ export default class GroupDetail extends Component {
 
         <FloatingAction
           actions={actions}
-          onPressItem={({item}) => {
-            console.log(`Selected button: ${item}`);
-            Alert.alert('Functionality to come');
-          }}
+          onPressItem={() => this.toggleInputAvailability()}
         />
+
+        <Modal
+          isVisible={this.state.isInputAvailabilityVisible}
+          onBackdropPress={() => {this.toggleInputAvailability()}}>
+            <InputAvailabilityModal/>
+        </Modal>
 
         <Dialog.Container
           onBackdropPress={this.handleClose}
