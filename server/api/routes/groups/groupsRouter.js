@@ -64,7 +64,7 @@ router.post(
 
 // Get all groups
 router.get("/", (req, res, next) => {
-  const userId = 1; //req.user.userID;
+  const userId = req.user.userID;
   if (!userId) {
     res.status(responses.NOT_FOUND);
     res.send({ error: `userId is required.` });
