@@ -111,6 +111,7 @@ describe("Testing the <NavigationBar />", () => {
       expect(component.find(Dropdown.Button)).toHaveLength(1);
       expect(component.find('.username')).toHaveLength(1);
       expect(component.find('.username').text()).toEqual(props.userName);
+      console.log(component.debug());
     });
 
     it("Testing logoutUser function", () => {
