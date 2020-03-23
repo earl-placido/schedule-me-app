@@ -88,8 +88,8 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ MainPageReducer }) => {
-  const { groupList, showErrorModal } = MainPageReducer;
+const mapStateToProps = ({ GroupListScreenReducer }) => {
+  const { groupList, showErrorModal } = GroupListScreenReducer;
   return { groupList, showErrorModal };
 };
 

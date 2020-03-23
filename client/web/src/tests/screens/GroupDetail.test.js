@@ -10,7 +10,7 @@ configure({ adapter: new Adapter() });
 
 describe("GroupDetail, test groupDetailReducer", () => {
   const initialState = {
-    GroupDetailReducer: {
+    GroupScreenReducer: {
       groupMembers: "groupMembers"
     }
   };

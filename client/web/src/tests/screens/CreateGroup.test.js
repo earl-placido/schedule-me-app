@@ -18,7 +18,7 @@ configure({ adapter: new Adapter() });
 
 describe("CreateGroup, test groupInfoForm", () => {
   const initialState = {
-    CreateGroupReducer: {
+    CreateGroupScreenReducer: {
       groupName: "groupName",
       groupDescription: "groupDescription",
       duration: "duration",
@@ -89,7 +89,7 @@ describe("CreateGroup, test groupInfoForm", () => {
 
 describe("Create group test GroupMeetingForm", () => {
   const initialState = {
-    CreateGroupReducer: {
+    CreateGroupScreenReducer: {
       groupName: "groupName",
       groupDescription: "groupDescription",
       duration: "duration",
