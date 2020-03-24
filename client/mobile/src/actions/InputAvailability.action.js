@@ -13,12 +13,12 @@ const INITIAL_STATE = {
   modalVisible: false,
   rangeHours: [[]],
   availableDays: {},
-  markedDates: {}
+  markedDates: {},
 };
 
 export const selectDate = (selectedDate, availableDays) => {
-  const date = moment(selectedDate.dateString).format("YYYY-MM-DD");
-  
+  const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
+
   let rangeHours = [[]];
 
   if (availableDays !== undefined) {
@@ -38,7 +38,7 @@ export const showModal = () => {
   };
 };
 
-export const cancelAvailability = (rangeHours) => {
+export const cancelAvailability = rangeHours => {
   if (rangeHours !== undefined) {
     // remove any empty range hours
     let filteredRangeHours = rangeHours.filter(rangeHour => {
@@ -49,7 +49,7 @@ export const cancelAvailability = (rangeHours) => {
       type: SHOW_MODAL,
       payload: {
         modalVisible: false,
-        rangeHours: filteredRangeHours
+        rangeHours: filteredRangeHours,
       },
     };
   }
@@ -124,8 +124,7 @@ export const addAvailability = (
     return rangeHour.length !== 0;
   });
 
-
-  const date = moment(selectedDate.dateString).format("YYYY-MM-DD");
+  const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
 
   availableDays[date] = filteredRangeHours;
 
@@ -142,31 +141,28 @@ export const addAvailability = (
 export const addRangeHour = rangeHours => {
   return {
     type: ADD_RANGE_HOUR,
-    payload: [...rangeHours, []]
-  }
-}
+    payload: [...rangeHours, []],
+  };
+};
 
 export const markDates = availableDays => {
-  if (availableDays !== undefined)
-  {
+  if (availableDays !== undefined) {
     // make copy of available days map
     let markedDates = {};
-    for (var date in availableDays)
-      markedDates[date] = availableDays[date];
+    for (var date in availableDays) markedDates[date] = availableDays[date];
 
-    for (let day in availableDays)
-    {
+    for (var day in availableDays) {
       markedDates[day] = {marked: true};
     }
-    
+
     return {
       type: MARK_DATES,
       payload: {
-        markedDates: markedDates
-      }
-    }
-  } 
-}
+        markedDates: markedDates,
+      },
+    };
+  }
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

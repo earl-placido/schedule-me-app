@@ -6,14 +6,10 @@ import AvailabilityModal from './AvailabilityModal';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 
-import {
-  selectDate,
-  showModal,
-} from '../../actions/InputAvailability.action';
+import {selectDate, showModal} from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
 class InputAvailabilityModal extends Component {
-
   render() {
     return (
       <View>
@@ -26,8 +22,7 @@ class InputAvailabilityModal extends Component {
           markedDates={this.props.markedDates}
         />
 
-        <Modal
-          isVisible={this.props.modalVisible}>
+        <Modal isVisible={this.props.modalVisible}>
           <AvailabilityModal />
         </Modal>
 
@@ -42,13 +37,18 @@ class InputAvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate, modalVisible, availableDays, markedDates} = InputAvailabilityReducer;
+  const {
+    selectedDate,
+    modalVisible,
+    availableDays,
+    markedDates,
+  } = InputAvailabilityReducer;
 
   return {
     selectedDate,
     modalVisible,
     availableDays,
-    markedDates
+    markedDates,
   };
 };
 

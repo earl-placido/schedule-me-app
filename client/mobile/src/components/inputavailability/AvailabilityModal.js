@@ -32,11 +32,14 @@ const maxHeight = rangeHourHeight * 5;
 class AvailabilityModal extends Component {
   constructor(props) {
     super(props);
-    let height = this.props.rangeHours.length != undefined ? 45 * (this.props.rangeHours.length) : rangeHourHeight;
+    let height =
+      this.props.rangeHours.length != undefined
+        ? 45 * this.props.rangeHours.length
+        : rangeHourHeight;
 
     this.state = {
       rangeHours: [[]],
-      height: height
+      height: height,
     };
   }
 
@@ -213,7 +216,9 @@ class AvailabilityModal extends Component {
               <Button
                 small
                 light
-                onPress={() => this.props.cancelAvailability(this.props.rangeHours)}>
+                onPress={() =>
+                  this.props.cancelAvailability(this.props.rangeHours)
+                }>
                 <Text>Cancel</Text>
               </Button>
               <Button small onPress={() => this.addAvailability()}>
@@ -246,7 +251,7 @@ AvailabilityModal.propTypes = {
   handleChangeRangeHour: PropTypes.func,
   addAvailability: PropTypes.func,
   addRangeHour: PropTypes.func,
-  markDates: PropTypes.func
+  markDates: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
@@ -254,5 +259,5 @@ export default connect(mapStateToProps, {
   handleChangeRangeHour,
   addAvailability,
   addRangeHour,
-  markDates
+  markDates,
 })(AvailabilityModal);
