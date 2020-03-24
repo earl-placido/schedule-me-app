@@ -9,8 +9,6 @@ matrix:
     cache:
       directories:
       - "./client/web/node_modules"
-      - "./client/mobile/node_modules"
-      - "./server/node_modules"
     before_install:
     - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production) 
     - "(cd client/web && travis_wait docker-compose up -d)"
@@ -24,7 +22,7 @@ matrix:
     - docker exec web /bin/sh -c "eslint src"
     - docker exec web /bin/sh -c "npm run test:ci"
     - "(cd server && npm start) &"
-    - "(cd client/web && npm run cypress:ci)"
+    - "(cd client/web && npm run cypress:run)"
     - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run
       build_prod && mv build/index.html build/200.html"; fi
     - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run
