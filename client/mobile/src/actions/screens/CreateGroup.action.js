@@ -75,7 +75,7 @@ export const submitMeetingCreation = (
     method: 'POST',
     data: groupCreation,
     headers: {
-      accept: "application/json",
+      accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   };

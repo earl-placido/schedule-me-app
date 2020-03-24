@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {ScrollView, SafeAreaView} from 'react-native';
+import {ScrollView, SafeAreaView, Alert} from 'react-native';
 import {
   Card,
   CardItem,
@@ -12,13 +12,15 @@ import {
   Right,
 } from 'native-base';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 // import moment, {calendarFormat} from 'moment';
 import DatePicker from 'react-native-datepicker';
 
 import {
-  selectDate,
   cancelAvailability,
+  handleChangeRangeHour,
+  addAvailability
 } from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
@@ -76,35 +78,27 @@ class AvailabilityModal extends Component {
   }
 
   handleChange(date, index, startOrEndTimeIndex) {
-    let newRangeHours = [...this.state.rangeHours];
-
-    newRangeHours[index][startOrEndTimeIndex] = date;
-
-    if (newRangeHours[index][0] > newRangeHours[index][1]) {
-      this.swapStartAndEndTime(newRangeHours[index]);
-    }
-
-    this.setState({
-      rangeHours: newRangeHours,
-    });
+    this.props.handleChangeRangeHour(date, index, startOrEndTimeIndex, this.props.rangeHours);
   }
 
-  swapStartAndEndTime(newRangeHours) {
-    let temp = newRangeHours[0];
-    newRangeHours[0] = newRangeHours[1];
-    newRangeHours[1] = temp;
+  handleOk() {
+    // TO DO: Change group member id to actual group member id
   }
+
 
   availabilityRender(rangeHour, index) {
+    let startTime = rangeHour[0] ? rangeHour[0][1] : "";
+    let endTime = rangeHour[1] ? rangeHour[1][1] : "";
+
     return (
       <View
         key={index}
         style={{flexDirection: 'row', justifyContent: 'center'}}>
         <DatePicker
           style={{width: 100, paddingLeft: 10}}
-          date={rangeHour[0]}
+          date={startTime}
           mode="time"
-          format="hh:mm A"
+          format="h:mm A"
           placeholder="Start Time"
           showIcon={false}
           androidMode="spinner"
@@ -112,7 +106,7 @@ class AvailabilityModal extends Component {
         />
         <DatePicker
           style={{width: 100, paddingLeft: 10}}
-          date={rangeHour[1]}
+          date={endTime}
           mode="time"
           format="hh:mm A"
           placeholder="End Time"
@@ -132,12 +126,32 @@ class AvailabilityModal extends Component {
     );
   }
 
+  addAvailability() {
+    if (this.foundUnfilledTime(this.props.rangeHours))
+    {
+      Alert.alert("A start time or end time has not been filled in!");
+      return;
+    }
+
+    // TODO: change group member id to actual group member id
+    this.props.addAvailability(this.props.selectedDate, this.props.rangeHours, this.props.availableDays);
+  }
+
+  foundUnfilledTime(rangeHours) {
+    for (let i = 0; i < rangeHours.length; i++) {
+      if (rangeHours[i].length != 2)
+        return true;
+    }
+  
+    return false;
+  }
+
   render() {
     return (
       <Card>
         <CardItem header>
           <Text style={{fontWeight: 'bold', fontSize: 20}}>
-            {this.props.selectedDate}
+            {moment(this.props.selectedDate.dateString).format("YYYY-MM-DD (dddd)")}
           </Text>
         </CardItem>
 
@@ -147,15 +161,6 @@ class AvailabilityModal extends Component {
           </Body>
         </CardItem>
 
-        {/* 
-        {this.state.rangeHours.map((rangeHour, index) => {
-          return (
-            <Text key={index}>
-              Start Time: {rangeHour[0]}, End Time: {rangeHour[1]}
-            </Text>
-          );
-        })} */}
-
         <SafeAreaView>
           <ScrollView
             style={{
@@ -163,7 +168,7 @@ class AvailabilityModal extends Component {
                 this.state.height < maxHeight ? this.state.height : maxHeight,
             }}>
             <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-              {this.state.rangeHours.map((rangeHour, index) => {
+              {this.props.rangeHours.map((rangeHour, index) => {
                 return this.availabilityRender(rangeHour, index);
               })}
             </View>
@@ -203,7 +208,7 @@ class AvailabilityModal extends Component {
                 onPress={() => this.props.cancelAvailability()}>
                 <Text>Cancel</Text>
               </Button>
-              <Button small>
+              <Button small onPress={() => this.addAvailability()}>
                 <Text>OK</Text>
               </Button>
             </View>
@@ -215,21 +220,27 @@ class AvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate} = InputAvailabilityReducer;
+  const {selectedDate, rangeHours, availableDays} = InputAvailabilityReducer;
 
   return {
     selectedDate,
+    rangeHours,
+    availableDays
   };
 };
 
 AvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
+  rangeHours: PropTypes.any,
+  availableDays: PropTypes.any,
 
-  selectDate: PropTypes.func,
   cancelAvailability: PropTypes.func,
+  handleChangeRangeHour: PropTypes.func,
+  addAvailability: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
-  selectDate,
   cancelAvailability,
+  handleChangeRangeHour,
+  addAvailability
 })(AvailabilityModal);

@@ -20,9 +20,7 @@ class InputAvailabilityModal extends Component {
         <Calendar
           minDate={moment(new Date()).format('YYYY-MM-DD')}
           onDayPress={day => {
-            this.props.selectDate(
-              moment(day.dateString).format('YYYY-MM-DD (dddd)'),
-            );
+            this.props.selectDate(day, this.props.availableDays);
             this.props.showModal();
           }}
         />
@@ -46,17 +44,19 @@ class InputAvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate, modalVisible} = InputAvailabilityReducer;
+  const {selectedDate, modalVisible, availableDays} = InputAvailabilityReducer;
 
   return {
     selectedDate,
     modalVisible,
+    availableDays,
   };
 };
 
 InputAvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
   modalVisible: PropTypes.any,
+  availableDays: PropTypes.any,
 
   selectDate: PropTypes.func,
   showModal: PropTypes.func,
