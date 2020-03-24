@@ -62,7 +62,12 @@ class AvailabilityModal extends Component {
 
   deleteAvailability(index) {
     this.decreaseHeight();
-    this.props.deleteAvailability(this.props.rangeHours, this.props.availableDays, index, this.props.selectedDate);
+    this.props.deleteAvailability(
+      this.props.rangeHours,
+      this.props.availableDays,
+      index,
+      this.props.selectedDate,
+    );
   }
 
   handleChange(date, index, startOrEndTimeIndex) {
@@ -181,7 +186,13 @@ class AvailabilityModal extends Component {
             justifyContent: 'center',
           }}>
           <View style={{paddingRight: 10}}>
-            <Button small light rounded onPress={() => this.deleteAvailability(this.props.rangeHours.length - 1)}>
+            <Button
+              small
+              light
+              rounded
+              onPress={() =>
+                this.deleteAvailability(this.props.rangeHours.length - 1)
+              }>
               <Text>Delete</Text>
             </Button>
           </View>
@@ -235,7 +246,7 @@ AvailabilityModal.propTypes = {
   addAvailability: PropTypes.func,
   addRangeHour: PropTypes.func,
   markDates: PropTypes.func,
-  deleteAvailability: PropTypes.func
+  deleteAvailability: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
@@ -244,5 +255,5 @@ export default connect(mapStateToProps, {
   addAvailability,
   addRangeHour,
   markDates,
-  deleteAvailability
+  deleteAvailability,
 })(AvailabilityModal);

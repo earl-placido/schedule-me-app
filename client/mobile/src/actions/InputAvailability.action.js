@@ -146,26 +146,27 @@ export const addRangeHour = rangeHours => {
   };
 };
 
-export const deleteAvailability = (rangeHours, availableDays, index, selectedDate) => {
+export const deleteAvailability = (
+  rangeHours,
+  availableDays,
+  index,
+  selectedDate,
+) => {
   let newRangeHours = [...rangeHours];
   const removedRangeHour = newRangeHours.splice(index, 1);
 
   // if removed range hour is not empty
-  if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0)
-  {
+  if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0) {
     // TO DO: delete from database
 
-    if (availableDays !== undefined)
-    {
-      if (availableDays[selectedDate.dateString] !== undefined)
-      {
+    if (availableDays !== undefined) {
+      if (availableDays[selectedDate.dateString] !== undefined) {
         availableDays[selectedDate.dateString].splice(index, 1);
 
-        if (availableDays[selectedDate.dateString].length === 0)
-        {
+        if (availableDays[selectedDate.dateString].length === 0) {
           delete availableDays[selectedDate.dateString];
         }
-      }      
+      }
     }
   }
 
@@ -173,7 +174,7 @@ export const deleteAvailability = (rangeHours, availableDays, index, selectedDat
     type: DELETE_AVAILABILITY,
     payload: {
       rangeHours: newRangeHours,
-      availableDays: availableDays
+      availableDays: availableDays,
     },
   };
 
@@ -181,7 +182,7 @@ export const deleteAvailability = (rangeHours, availableDays, index, selectedDat
   // this.setState({
   //   rangeHours: newRangeHours,
   // });
-}
+};
 
 export const markDates = availableDays => {
   if (availableDays !== undefined) {
