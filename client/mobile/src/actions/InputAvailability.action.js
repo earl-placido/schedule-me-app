@@ -4,20 +4,25 @@ export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
 export const HANDLE_CHANGE_RANGE_HOUR = 'handle_change_range_hour';
 export const ADD_AVAILABILITY = 'add_availability';
+export const ADD_RANGE_HOUR = 'add_range_hour';
+export const CANCEL_AVAILABILITY = 'cancel_availability';
+export const MARK_DATES = 'mark_dates';
 
 const INITIAL_STATE = {
   selectedDate: '',
   modalVisible: false,
   rangeHours: [[]],
-  availableDays: [],
+  availableDays: {},
+  markedDates: {}
 };
 
 export const selectDate = (selectedDate, availableDays) => {
-  const day = moment(selectedDate.dateString).day();
+  const date = moment(selectedDate.dateString).format("YYYY-MM-DD");
+  
   let rangeHours = [[]];
 
   if (availableDays !== undefined) {
-    rangeHours = availableDays[day] !== undefined ? availableDays[day] : [[]];
+    rangeHours = availableDays[date] !== undefined ? availableDays[date] : [[]];
   }
 
   return {
@@ -33,10 +38,27 @@ export const showModal = () => {
   };
 };
 
-export const cancelAvailability = () => {
+export const cancelAvailability = (rangeHours) => {
+  if (rangeHours !== undefined) {
+    // remove any empty range hours
+    let filteredRangeHours = rangeHours.filter(rangeHour => {
+      return rangeHour.length !== 0;
+    });
+
+    return {
+      type: SHOW_MODAL,
+      payload: {
+        modalVisible: false,
+        rangeHours: filteredRangeHours
+      },
+    };
+  }
+
   return {
     type: SHOW_MODAL,
-    payload: {modalVisible: false},
+    payload: {
+      modalVisible: false,
+    },
   };
 };
 
@@ -99,23 +121,52 @@ export const addAvailability = (
 
   // remove empty range hours
   let filteredRangeHours = rangeHours.filter(rangeHour => {
-    return rangeHour !== '';
+    return rangeHour.length !== 0;
   });
 
-  const day = moment(selectedDate.dateString).day();
 
-  availableDays[day] = filteredRangeHours;
+  const date = moment(selectedDate.dateString).format("YYYY-MM-DD");
+
+  availableDays[date] = filteredRangeHours;
 
   dispatch({
     type: ADD_AVAILABILITY,
     payload: {
       availableDays,
       modalVisible: false,
-      rangeHours,
-      filteredRangeHours,
+      rangeHours: filteredRangeHours,
     },
   });
 };
+
+export const addRangeHour = rangeHours => {
+  return {
+    type: ADD_RANGE_HOUR,
+    payload: [...rangeHours, []]
+  }
+}
+
+export const markDates = availableDays => {
+  if (availableDays !== undefined)
+  {
+    // make copy of available days map
+    let markedDates = {};
+    for (var date in availableDays)
+      markedDates[date] = availableDays[date];
+
+    for (let day in availableDays)
+    {
+      markedDates[day] = {marked: true};
+    }
+    
+    return {
+      type: MARK_DATES,
+      payload: {
+        markedDates: markedDates
+      }
+    }
+  } 
+}
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -129,6 +180,15 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, rangeHours: action.payload};
     }
     case ADD_AVAILABILITY: {
+      return {...state, ...action.payload};
+    }
+    case ADD_RANGE_HOUR: {
+      return {...state, rangeHours: action.payload};
+    }
+    case CANCEL_AVAILABILITY: {
+      return {...state, ...action.payload};
+    }
+    case MARK_DATES: {
       return {...state, ...action.payload};
     }
     default:

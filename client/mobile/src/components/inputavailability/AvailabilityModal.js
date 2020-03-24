@@ -21,6 +21,8 @@ import {
   cancelAvailability,
   handleChangeRangeHour,
   addAvailability,
+  addRangeHour,
+  markDates,
 } from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
@@ -30,9 +32,11 @@ const maxHeight = rangeHourHeight * 5;
 class AvailabilityModal extends Component {
   constructor(props) {
     super(props);
+    let height = this.props.rangeHours.length != undefined ? 45 * (this.props.rangeHours.length) : rangeHourHeight;
+
     this.state = {
       rangeHours: [[]],
-      height: rangeHourHeight,
+      height: height
     };
   }
 
@@ -50,9 +54,7 @@ class AvailabilityModal extends Component {
 
   addRangeHour() {
     this.increaseHeight();
-    this.setState({
-      rangeHours: [...this.state.rangeHours, ['']],
-    });
+    this.props.addRangeHour(this.props.rangeHours);
   }
 
   deleteLatestHour() {
@@ -86,10 +88,6 @@ class AvailabilityModal extends Component {
     );
   }
 
-  handleOk() {
-    // TO DO: Change group member id to actual group member id
-  }
-
   availabilityRender(rangeHour, index) {
     let startTime = rangeHour[0] ? rangeHour[0][1] : '';
     let endTime = rangeHour[1] ? rangeHour[1][1] : '';
@@ -102,7 +100,7 @@ class AvailabilityModal extends Component {
           style={{width: 100, paddingLeft: 10}}
           date={startTime}
           mode="time"
-          format="h:mm A"
+          format="hh:mm A"
           placeholder="Start Time"
           showIcon={false}
           androidMode="spinner"
@@ -142,11 +140,13 @@ class AvailabilityModal extends Component {
       this.props.rangeHours,
       this.props.availableDays,
     );
+
+    this.props.markDates(this.props.availableDays);
   }
 
   foundUnfilledTime(rangeHours) {
     for (let i = 0; i < rangeHours.length; i++) {
-      if (rangeHours[i].length != 2) return true;
+      if (rangeHours[i].length == 1) return true;
     }
 
     return false;
@@ -185,7 +185,7 @@ class AvailabilityModal extends Component {
 
         <ListItem noIndent noBorder>
           <CheckBox checked />
-          <Text style={{padding: 10}}>Repeat Weekly</Text>
+          <Text style={{padding: 10}}>Repeat Monthly</Text>
         </ListItem>
 
         <View
@@ -213,7 +213,7 @@ class AvailabilityModal extends Component {
               <Button
                 small
                 light
-                onPress={() => this.props.cancelAvailability()}>
+                onPress={() => this.props.cancelAvailability(this.props.rangeHours)}>
                 <Text>Cancel</Text>
               </Button>
               <Button small onPress={() => this.addAvailability()}>
@@ -245,10 +245,14 @@ AvailabilityModal.propTypes = {
   cancelAvailability: PropTypes.func,
   handleChangeRangeHour: PropTypes.func,
   addAvailability: PropTypes.func,
+  addRangeHour: PropTypes.func,
+  markDates: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
   cancelAvailability,
   handleChangeRangeHour,
   addAvailability,
+  addRangeHour,
+  markDates
 })(AvailabilityModal);

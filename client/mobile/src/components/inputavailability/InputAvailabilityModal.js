@@ -9,11 +9,11 @@ import PropTypes from 'prop-types';
 import {
   selectDate,
   showModal,
-  cancelAvailability,
 } from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
 class InputAvailabilityModal extends Component {
+
   render() {
     return (
       <View>
@@ -23,13 +23,11 @@ class InputAvailabilityModal extends Component {
             this.props.selectDate(day, this.props.availableDays);
             this.props.showModal();
           }}
+          markedDates={this.props.markedDates}
         />
 
         <Modal
-          isVisible={this.props.modalVisible}
-          onBackdropPress={() => {
-            this.props.cancelAvailability();
-          }}>
+          isVisible={this.props.modalVisible}>
           <AvailabilityModal />
         </Modal>
 
@@ -44,12 +42,13 @@ class InputAvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate, modalVisible, availableDays} = InputAvailabilityReducer;
+  const {selectedDate, modalVisible, availableDays, markedDates} = InputAvailabilityReducer;
 
   return {
     selectedDate,
     modalVisible,
     availableDays,
+    markedDates
   };
 };
 
@@ -57,14 +56,13 @@ InputAvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
   modalVisible: PropTypes.any,
   availableDays: PropTypes.any,
+  markedDates: PropTypes.any,
 
   selectDate: PropTypes.func,
   showModal: PropTypes.func,
-  cancelAvailability: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
   selectDate,
   showModal,
-  cancelAvailability,
 })(InputAvailabilityModal);
