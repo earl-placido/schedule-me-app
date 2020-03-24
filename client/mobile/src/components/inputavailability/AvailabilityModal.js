@@ -20,7 +20,7 @@ import DatePicker from 'react-native-datepicker';
 import {
   cancelAvailability,
   handleChangeRangeHour,
-  addAvailability
+  addAvailability,
 } from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
@@ -78,17 +78,21 @@ class AvailabilityModal extends Component {
   }
 
   handleChange(date, index, startOrEndTimeIndex) {
-    this.props.handleChangeRangeHour(date, index, startOrEndTimeIndex, this.props.rangeHours);
+    this.props.handleChangeRangeHour(
+      date,
+      index,
+      startOrEndTimeIndex,
+      this.props.rangeHours,
+    );
   }
 
   handleOk() {
     // TO DO: Change group member id to actual group member id
   }
 
-
   availabilityRender(rangeHour, index) {
-    let startTime = rangeHour[0] ? rangeHour[0][1] : "";
-    let endTime = rangeHour[1] ? rangeHour[1][1] : "";
+    let startTime = rangeHour[0] ? rangeHour[0][1] : '';
+    let endTime = rangeHour[1] ? rangeHour[1][1] : '';
 
     return (
       <View
@@ -127,22 +131,24 @@ class AvailabilityModal extends Component {
   }
 
   addAvailability() {
-    if (this.foundUnfilledTime(this.props.rangeHours))
-    {
-      Alert.alert("A start time or end time has not been filled in!");
+    if (this.foundUnfilledTime(this.props.rangeHours)) {
+      Alert.alert('A start time or end time has not been filled in!');
       return;
     }
 
     // TODO: change group member id to actual group member id
-    this.props.addAvailability(this.props.selectedDate, this.props.rangeHours, this.props.availableDays);
+    this.props.addAvailability(
+      this.props.selectedDate,
+      this.props.rangeHours,
+      this.props.availableDays,
+    );
   }
 
   foundUnfilledTime(rangeHours) {
     for (let i = 0; i < rangeHours.length; i++) {
-      if (rangeHours[i].length != 2)
-        return true;
+      if (rangeHours[i].length != 2) return true;
     }
-  
+
     return false;
   }
 
@@ -151,7 +157,9 @@ class AvailabilityModal extends Component {
       <Card>
         <CardItem header>
           <Text style={{fontWeight: 'bold', fontSize: 20}}>
-            {moment(this.props.selectedDate.dateString).format("YYYY-MM-DD (dddd)")}
+            {moment(this.props.selectedDate.dateString).format(
+              'YYYY-MM-DD (dddd)',
+            )}
           </Text>
         </CardItem>
 
@@ -225,7 +233,7 @@ const mapStateToProps = ({InputAvailabilityReducer}) => {
   return {
     selectedDate,
     rangeHours,
-    availableDays
+    availableDays,
   };
 };
 
@@ -242,5 +250,5 @@ AvailabilityModal.propTypes = {
 export default connect(mapStateToProps, {
   cancelAvailability,
   handleChangeRangeHour,
-  addAvailability
+  addAvailability,
 })(AvailabilityModal);
