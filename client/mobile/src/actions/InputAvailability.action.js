@@ -7,6 +7,7 @@ export const ADD_AVAILABILITY = 'add_availability';
 export const ADD_RANGE_HOUR = 'add_range_hour';
 export const CANCEL_AVAILABILITY = 'cancel_availability';
 export const MARK_DATES = 'mark_dates';
+export const DELETE_AVAILABILITY = 'delete_availability';
 
 const INITIAL_STATE = {
   selectedDate: '',
@@ -107,7 +108,7 @@ export const addAvailability = (
   // TODO: Add availabilityId to range hours
 
   // if no range hours were added to date, reset range hours and close modal
-  if (rangeHours.length === 0 || rangeHours[0].length === 0) {
+  if (rangeHours.length === 0) {
     dispatch({
       type: ADD_AVAILABILITY,
       payload: {
@@ -144,6 +145,43 @@ export const addRangeHour = rangeHours => {
     payload: [...rangeHours, []],
   };
 };
+
+export const deleteAvailability = (rangeHours, availableDays, index, selectedDate) => {
+  let newRangeHours = [...rangeHours];
+  const removedRangeHour = newRangeHours.splice(index, 1);
+
+  // if removed range hour is not empty
+  if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0)
+  {
+    // TO DO: delete from database
+
+    if (availableDays !== undefined)
+    {
+      if (availableDays[selectedDate.dateString] !== undefined)
+      {
+        availableDays[selectedDate.dateString].splice(index, 1);
+
+        if (availableDays[selectedDate.dateString].length === 0)
+        {
+          delete availableDays[selectedDate.dateString];
+        }
+      }      
+    }
+  }
+
+  return {
+    type: DELETE_AVAILABILITY,
+    payload: {
+      rangeHours: newRangeHours,
+      availableDays: availableDays
+    },
+  };
+
+  // this.decreaseHeight();
+  // this.setState({
+  //   rangeHours: newRangeHours,
+  // });
+}
 
 export const markDates = availableDays => {
   if (availableDays !== undefined) {
@@ -185,6 +223,9 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, ...action.payload};
     }
     case MARK_DATES: {
+      return {...state, ...action.payload};
+    }
+    case DELETE_AVAILABILITY: {
       return {...state, ...action.payload};
     }
     default:

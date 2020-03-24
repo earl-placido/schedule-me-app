@@ -23,6 +23,7 @@ import {
   addAvailability,
   addRangeHour,
   markDates,
+  deleteAvailability,
 } from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
@@ -38,7 +39,6 @@ class AvailabilityModal extends Component {
         : rangeHourHeight;
 
     this.state = {
-      rangeHours: [[]],
       height: height,
     };
   }
@@ -60,26 +60,9 @@ class AvailabilityModal extends Component {
     this.props.addRangeHour(this.props.rangeHours);
   }
 
-  deleteLatestHour() {
-    let newRangeHours = [...this.state.rangeHours];
-
-    newRangeHours.pop();
-
+  deleteAvailability(index) {
     this.decreaseHeight();
-    this.setState({
-      rangeHours: newRangeHours,
-    });
-  }
-
-  deleteRangeHour(index) {
-    let newRangeHours = [...this.state.rangeHours];
-
-    newRangeHours.splice(index, 1);
-
-    this.decreaseHeight();
-    this.setState({
-      rangeHours: newRangeHours,
-    });
+    this.props.deleteAvailability(this.props.rangeHours, this.props.availableDays, index, this.props.selectedDate);
   }
 
   handleChange(date, index, startOrEndTimeIndex) {
@@ -123,7 +106,7 @@ class AvailabilityModal extends Component {
           <Button
             danger
             transparent
-            onPress={() => this.deleteRangeHour(index)}>
+            onPress={() => this.deleteAvailability(index)}>
             <Text>Delete</Text>
           </Button>
         }
@@ -198,7 +181,7 @@ class AvailabilityModal extends Component {
             justifyContent: 'center',
           }}>
           <View style={{paddingRight: 10}}>
-            <Button small light rounded onPress={() => this.deleteLatestHour()}>
+            <Button small light rounded onPress={() => this.deleteAvailability(this.props.rangeHours.length - 1)}>
               <Text>Delete</Text>
             </Button>
           </View>
@@ -252,6 +235,7 @@ AvailabilityModal.propTypes = {
   addAvailability: PropTypes.func,
   addRangeHour: PropTypes.func,
   markDates: PropTypes.func,
+  deleteAvailability: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
@@ -260,4 +244,5 @@ export default connect(mapStateToProps, {
   addAvailability,
   addRangeHour,
   markDates,
+  deleteAvailability
 })(AvailabilityModal);
