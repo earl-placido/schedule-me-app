@@ -11,6 +11,10 @@
 # production
 /build
 
+#system tests
+/system-tests/videos
+/system-tests/examples
+
 # misc
 .DS_Store
 .env.local

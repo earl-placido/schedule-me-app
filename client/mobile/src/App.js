@@ -1,61 +1,59 @@
 import React, {Component} from 'react';
+import {StyleSheet} from 'react-native';
+import {Container, Header, Footer, Title, Root} from 'native-base';
+
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {Container, Footer, Content, Title} from 'native-base';
-import {Button, StyleSheet} from 'react-native';
+
+import DrawerNavigator from './components/navigation/DrawerNavigator';
+import Home from './components/screens/Home/Home';
+
+import {NativeRouter} from 'react-router-native';
+
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {logoutUser} from './actions/components/Auth.action';
 
-import {createStore, applyMiddleware} from 'redux';
-import {Provider} from 'react-redux';
-import thunk from 'redux-thunk';
-import Reducers from './Reducers';
+const AuthStack = createStackNavigator();
 
-import GroupDetail from './components/screen/GroupDetail';
-import CreateGroup from './components/screen/CreateGroup';
-
-function DetailsScreen({navigation}) {
-  return (
-    <Container>
-      <Button
-        title="Go to group details"
-        onPress={() => navigation.navigate('Group Detail')}
-      />
-      <CreateGroup />
-      <Content />
-    </Container>
-  );
-}
-
-function HomeScreen({navigation}) {
-  return (
-    <Container>
-      <Button
-        title="Go to create group"
-        onPress={() => navigation.navigate('Create Group')}
-      />
-      <GroupDetail />
-      <Content />
-    </Container>
-  );
-}
-
-const Stack = createStackNavigator();
-
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
-      <Provider store={createStore(Reducers, {}, applyMiddleware(thunk))}>
-        <NavigationContainer>
-          <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Group Detail" component={HomeScreen} />
-            <Stack.Screen name="Create Group" component={DetailsScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
+      <Root>
+        <NativeRouter>
+          <Container>
+            <NavigationContainer>
+              <AuthStack.Navigator
+                initialRouteName={
+                  !this.props.isAuthenticated ? 'Home' : 'Drawer'
+                }>
+                <AuthStack.Screen
+                  name="Home"
+                  component={Home}
+                  options={{
+                    header: () => {
+                      return <Header />;
+                    },
+                  }}
+                />
+                <AuthStack.Screen
+                  name="Drawer"
+                  component={DrawerNavigator}
+                  options={{
+                    header: () => {
+                      return null;
+                    },
+                  }}
+                />
+              </AuthStack.Navigator>
+            </NavigationContainer>
 
-        <Footer style={styles.footerStyle}>
-          <Title>schedule-me-up</Title>
-        </Footer>
-      </Provider>
+            <Footer style={styles.footerStyle}>
+              <Title>schedule-me-up</Title>
+            </Footer>
+          </Container>
+        </NativeRouter>
+      </Root>
     );
   }
 }
@@ -67,14 +65,21 @@ const styles = StyleSheet.create({
   },
 });
 
-DetailsScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
+App.propTypes = {
+  navigation: PropTypes.any,
+  navigate: PropTypes.func,
+  isAuthenticated: PropTypes.any,
+  userName: PropTypes.any,
+  logoutUser: PropTypes.func,
 };
 
-HomeScreen.propTypes = {
-  navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-  }).isRequired,
-};
+const mapStateToProps = state => ({
+  isAuthenticated: state.auth.isAuthenticated,
+  userName: state.auth.userName,
+});
+
+const mapDispatchToProps = dispatch => ({
+  logoutUser: () => dispatch(logoutUser()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,7 +1,6 @@
-import React, { Component } from "react";
 import { Form, Input, TimePicker } from "antd";
 import Icon from "@ant-design/icons";
-
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class GroupMeetingForm extends Component {
@@ -18,7 +17,7 @@ class GroupMeetingForm extends Component {
   }
 
   render() {
-    const { errorText } = styles;
+    const { errorText, durationStyle } = styles;
 
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
@@ -27,10 +26,11 @@ class GroupMeetingForm extends Component {
             <div>
               <TimePicker
                 format={"HH:mm"}
-                placeholder="Duration"
+                placeholder="Duration (HH:mm)"
                 value={this.props.duration}
                 onChange={this.changeDuration.bind(this)}
                 id="duration"
+                style={durationStyle}
               />
               {!this.props.success && (
                 <h1 style={errorText}>Please input meeting duration.</h1>
@@ -45,7 +45,7 @@ class GroupMeetingForm extends Component {
               prefix={
                 <Icon type="calendar" style={{ color: "rgba(0,0,0,.25)" }} />
               }
-              placeholder="Meeting Frequency (Optional)"
+              placeholder="Meeting frequency (optional)"
               value={this.props.frequency}
               onChange={this.changeFrequency.bind(this)}
               id="frequency"
@@ -57,7 +57,7 @@ class GroupMeetingForm extends Component {
           {
             <Input
               prefix={<Icon type="home" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Meeting Location (Optional)"
+              placeholder="Meeting location (optional)"
               value={this.props.location}
               onChange={this.changeLocation.bind(this)}
               id="location"
@@ -74,6 +74,10 @@ const styles = {
     fontSize: 12,
     color: "red",
     marginLeft: 10
+  },
+
+  durationStyle: {
+    width: 200
   }
 };
 
