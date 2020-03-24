@@ -80,6 +80,7 @@ function CustomDrawerContent(props) {
       <Button
         light
         style={styles.logoutStyle}
+        accessibilityLabel={'LogoutButton'}
         onPress={() => {
           GoogleSignin.revokeAccess();
           GoogleSignin.signOut();

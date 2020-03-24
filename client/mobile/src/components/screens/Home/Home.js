@@ -11,7 +11,7 @@ import Divider from '../../styles/Divider';
 class Home extends Component {
   render() {
     return (
-      <Container style={styles.container}>
+      <Container style={styles.container} accessibilityLabel={'HomeContainer'}>
         <Text style={styles.title}>Schedule Me Up</Text>
 
         <Button

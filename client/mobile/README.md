@@ -41,11 +41,14 @@
 
 - How to run on Android:
 
-  1. Install the following (while inside client/mobile):
+  1. Install the following:
       ```
       npm install -g appium 
       npm install -g appium-doctor
-      npm install -g codeceptjs
       npm install -g webdriverio
       ```
-  2. In your CLI, run: `appium & codeceptjs run`
+  2. Run the app on your device (i.e. `npx react-native run-android`)
+  
+  3. While in `client/mobile`, run: `(appium & wdio run wdio.conf.js)`
+
+     - If appium takes too long to initialize, run `appium` in its own separate instance and run `wdio run wdio.conf.js` in another
