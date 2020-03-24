@@ -1,44 +1,16 @@
 import {FloatingAction} from 'react-native-floating-action';
 import Dialog from 'react-native-dialog';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
 import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
 
-import PropTypes from 'prop-types';
-
-const userList = [
-  {
-    UserFName: 'Renz',
-    UserLName: 'Cabusas',
-    UserEmail: 'renzCabusas@gmail.com',
-  },
-  {
-    UserFName: 'Brenna',
-    UserLName: 'Epp',
-    UserEmail: 'brennaEpp@gmail.com',
-  },
-  {
-    UserFName: 'Bonnie',
-    UserLName: 'Tang',
-    UserEmail: 'bonnieTang@gmail.com',
-  },
-  {
-    UserFName: 'Daryl',
-    UserLName: 'Fung',
-    UserEmail: 'darylFung@gmail.com',
-  },
-  {
-    UserFName: 'Jennifer',
-    UserLName: 'Seo',
-    UserEmail: 'jenniferSeo@gmail.com',
-  },
-  {
-    UserFName: 'Winnie',
-    UserLName: 'The Pooh',
-    UserEmail: 'poo@gmail.com',
-  },
-];
+import {
+  getGroup,
+  getGroupMembers,
+} from '../../../actions/screens/GroupDetail.action';
 
 const actions = [
   {
@@ -49,7 +21,12 @@ const actions = [
   },
 ];
 
-export default class GroupDetail extends Component {
+class GroupDetail extends Component {
+  componentDidMount() {
+    this.props.getGroup(this.props.match.params.id);
+    this.props.getGroupMembers(this.props.match.params.id);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -92,7 +69,7 @@ export default class GroupDetail extends Component {
           <Card style={{flexDirection: 'column'}}>
             <FlatList
               showsHorizontalScrollIndicator={true}
-              data={userList}
+              data={this.props.getGroupMembers}
               renderItem={({item}) => (
                 <View>
                   <CardItem
@@ -172,8 +149,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = ({GroupDetailReducer}) => {
+  const {group, groupMembers} = GroupDetailReducer;
+  return {group, groupMembers};
+};
+
 GroupDetail.propTypes = {
   route: PropTypes.any,
   params: PropTypes.any,
   codeNum: PropTypes.any,
+  group: PropTypes.any,
+  groupMembers: PropTypes.array,
+  getGroup: PropTypes.func,
+  getGroupMembers: PropTypes.func,
+  match: PropTypes.any,
 };
+
+export default connect(mapStateToProps, {getGroupMembers, getGroup})(
+  GroupDetail,
+);

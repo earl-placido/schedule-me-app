@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 
 import {Text, FlatList} from 'react-native';
 import {
@@ -12,27 +14,13 @@ import {
   Left,
 } from 'native-base';
 
-import PropTypes from 'prop-types';
+import {getGroupList} from '../../../actions/screens/GroupList.action';
 
-const groupList = [
-  {
-    GroupId: '1',
-    GroupName: 'Tallest Poppy',
-    GroupDescription: 'Hipster food',
-  },
-  {
-    GroupId: '2',
-    GroupName: 'Stellas',
-    GroupDescription: '#notMyStellas',
-  },
-  {
-    GroupId: '3',
-    GroupName: 'Dowon',
-    GroupDescription: 'Korean food',
-  },
-];
+class GroupList extends Component {
+  componentDidMount() {
+    this.props.getGroupList();
+  }
 
-export default class GroupList extends Component {
   render() {
     return (
       <Container>
@@ -50,7 +38,7 @@ export default class GroupList extends Component {
           <Card style={{flexDirection: 'column'}}>
             <FlatList
               showsHorizontalScrollIndicator={true}
-              data={groupList}
+              data={this.props.groupList}
               renderItem={({item}) => (
                 <View>
                   <CardItem
@@ -66,8 +54,8 @@ export default class GroupList extends Component {
                       <Icon name="paw" />
                     </Left>
                     <Body style={{flex: 4}}>
+                      <Text>{item.GroupId}</Text>
                       <Text>{item.GroupName}</Text>
-                      <Text>{item.GroupDescription}</Text>
                     </Body>
                   </CardItem>
                 </View>
@@ -81,8 +69,17 @@ export default class GroupList extends Component {
   }
 }
 
+const mapStateToProps = ({GroupListReducer}) => {
+  const {groupList} = GroupListReducer;
+  return {groupList};
+};
+
 GroupList.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
+  groupList: PropTypes.array,
+  getGroupList: PropTypes.func,
 };
+
+export default connect(mapStateToProps, {getGroupList})(GroupList);
