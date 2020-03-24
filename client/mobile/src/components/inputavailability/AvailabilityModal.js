@@ -16,7 +16,10 @@ import PropTypes from 'prop-types';
 // import moment, {calendarFormat} from 'moment';
 import DatePicker from 'react-native-datepicker';
 
-import {selectDate, cancelAvailability} from '../../actions/InputAvailability.action';
+import {
+  selectDate,
+  cancelAvailability,
+} from '../../actions/InputAvailability.action';
 import {connect} from 'react-redux';
 
 const rangeHourHeight = 45;
@@ -133,7 +136,9 @@ class AvailabilityModal extends Component {
     return (
       <Card>
         <CardItem header>
-          <Text style={{fontWeight: 'bold', fontSize: 20}}>{this.props.selectedDate}</Text>
+          <Text style={{fontWeight: 'bold', fontSize: 20}}>
+            {this.props.selectedDate}
+          </Text>
         </CardItem>
 
         <CardItem>
@@ -192,7 +197,10 @@ class AvailabilityModal extends Component {
           <Body />
           <Right>
             <View style={{flexDirection: 'row'}}>
-              <Button small light onPress={() => this.props.cancelAvailability()}>
+              <Button
+                small
+                light
+                onPress={() => this.props.cancelAvailability()}>
                 <Text>Cancel</Text>
               </Button>
               <Button small>
@@ -207,22 +215,21 @@ class AvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-    const {selectedDate} = InputAvailabilityReducer;
-  
-    return {
-      selectedDate,
-    };
+  const {selectedDate} = InputAvailabilityReducer;
+
+  return {
+    selectedDate,
   };
-  
-  AvailabilityModal.propTypes = {
-    selectedDate: PropTypes.any,
-  
-    selectDate: PropTypes.func,
-    cancelAvailability: PropTypes.func
-  };
-  
-  export default connect(mapStateToProps, {
-    selectDate, 
-    cancelAvailability
-  })(AvailabilityModal);
-  
+};
+
+AvailabilityModal.propTypes = {
+  selectedDate: PropTypes.any,
+
+  selectDate: PropTypes.func,
+  cancelAvailability: PropTypes.func,
+};
+
+export default connect(mapStateToProps, {
+  selectDate,
+  cancelAvailability,
+})(AvailabilityModal);

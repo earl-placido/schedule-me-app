@@ -16,17 +16,16 @@ export const selectDate = selectedDate => {
 export const showModal = () => {
   return {
     type: SHOW_MODAL,
-    payload: {modalVisible: true}
-  }
-}
+    payload: {modalVisible: true},
+  };
+};
 
 export const cancelAvailability = () => {
   return {
     type: SHOW_MODAL,
-    payload: {modalVisible: false}
-  }
-}
-
+    payload: {modalVisible: false},
+  };
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
