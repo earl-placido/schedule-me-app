@@ -41,6 +41,7 @@ class StackNavigator extends Component {
                     <Right>
                       <Button
                         onPress={() => {
+                          props.navigation.push('Group List');
                           props.navigation.navigate('Group List');
                         }}>
                         <Text>{this.props.userName}</Text>

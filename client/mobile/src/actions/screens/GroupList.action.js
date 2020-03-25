@@ -25,7 +25,7 @@ const getGroupListFailure = error => {
   };
 };
 
-export const getGroupList = () => async dispatch =>{
+export const getGroupList = () => async dispatch => {
   const token = await AsyncStorage.getItem('token');
 
   const options = {

@@ -45,6 +45,7 @@ function CustomDrawerContent(props) {
           }}
           label="Groups"
           onPress={() => {
+            props.navigation.push('Group List');
             props.navigation.navigate('Group List');
           }}
         />
@@ -128,6 +129,7 @@ CustomDrawerContent.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   }).isRequired,
   userName: PropTypes.any,
   logoutUser: PropTypes.func,
