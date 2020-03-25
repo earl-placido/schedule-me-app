@@ -8,10 +8,7 @@ import {
   Modal,
   Button
 } from "antd";
-import {
-  UsergroupAddOutlined,
-  ExclamationCircleOutlined
-} from "@ant-design/icons";
+import { TeamOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -31,7 +28,7 @@ class GroupListScreen extends Component {
 
   render() {
     const { Title } = Typography;
-    const { containerStyle, cardStyle } = styles;
+    const { containerStyle, cardStyle, listItem } = styles;
     return (
       <div style={containerStyle}>
         <Card style={cardStyle}>
@@ -44,19 +41,15 @@ class GroupListScreen extends Component {
               itemLayout="horizontal"
               dataSource={this.props.groupList}
               renderItem={item => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar size={50} icon={<UsergroupAddOutlined />} />
-                    }
-                    title={
-                      <a href={"/groups/" + item.GroupId + "/"}>
-                        {item.GroupName}
-                      </a>
-                    }
-                    description={item.GroupDescription}
-                  />
-                </List.Item>
+                <a href={"/groups/" + item.GroupId + "/"}>
+                  <List.Item style={listItem} className="focus-outlined">
+                    <List.Item.Meta
+                      avatar={<Avatar size={50} icon={<TeamOutlined />} />}
+                      title={item.GroupName}
+                      description={item.GroupDescription}
+                    />
+                  </List.Item>
+                </a>
               )}
             />
           </Row>
@@ -85,11 +78,15 @@ const styles = {
 
   cardStyle: {
     width: 800
+  },
+
+  listItem: {
+    padding: 10
   }
 };
 
-const mapStateToProps = ({ MainPageReducer }) => {
-  const { groupList, showErrorModal } = MainPageReducer;
+const mapStateToProps = ({ GroupListScreenReducer }) => {
+  const { groupList, showErrorModal } = GroupListScreenReducer;
   return { groupList, showErrorModal };
 };
 

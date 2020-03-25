@@ -9,7 +9,7 @@ configure({ adapter: new Adapter() });
 
 describe("MainPage, test groupInfoForm", () => {
   const initialState = {
-    MainPageReducer: {
+    GroupListScreenReducer: {
       groupList: "groupList"
     }
   };

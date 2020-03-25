@@ -12,8 +12,8 @@ import {
 } from "antd";
 import {
   DownOutlined,
-  UsergroupAddOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
+  TeamOutlined
 } from "@ant-design/icons";
 import React, { Component } from "react";
 import { compose } from "redux";
@@ -61,7 +61,7 @@ export class NavigationBar extends Component {
   };
 
   render() {
-    const { headerStyle, listStyle, noDataStyle } = styles;
+    const { headerStyle, listStyle, noDataStyle, oldAntColStyle } = styles;
     const groupMenu = (
       <List
         locale={{ emptyText: "You have not joined any groups" }}
@@ -77,7 +77,7 @@ export class NavigationBar extends Component {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar size={25} icon={<UsergroupAddOutlined />} />}
+              avatar={<Avatar size={25} icon={<TeamOutlined />} />}
               title={
                 <a href={"/groups/" + item.GroupId + "/"}>{item.GroupName}</a>
               }
@@ -132,7 +132,7 @@ export class NavigationBar extends Component {
         ></Menu>
 
         <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
-          <Col>
+          <Col style={oldAntColStyle}>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
               <Button className="dropdown-button">
                 Groups <DownOutlined />
@@ -181,6 +181,10 @@ const styles = {
 
   noDataStyle: {
     padding: 30
+  },
+
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 

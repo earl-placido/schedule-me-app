@@ -23,8 +23,6 @@ import {
 } from "../actions/screens/CreateGroupScreen.action";
 import { getGroupList } from "../actions/components/layout/NavigationBar.action";
 
-import "antd/dist/antd.css";
-
 class CreateGroupScreen extends Component {
   // keeping component inside steps prevents the component being re-rendered
   // the component must be re-rendered with new redux properties every time input changes
@@ -186,7 +184,7 @@ const styles = {
   }
 };
 
-const mapStateToProps = ({ CreateGroupReducer }) => {
+const mapStateToProps = ({ CreateGroupScreenReducer }) => {
   const {
     groupName,
     groupDescription,
@@ -197,7 +195,7 @@ const mapStateToProps = ({ CreateGroupReducer }) => {
     success,
     currentPage,
     showErrorModal
-  } = CreateGroupReducer;
+  } = CreateGroupScreenReducer;
   return {
     groupName,
     groupDescription,
