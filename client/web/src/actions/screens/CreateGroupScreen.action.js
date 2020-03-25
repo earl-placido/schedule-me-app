@@ -63,18 +63,17 @@ export const goNextPage = (
 ) => {
   // pass in meeting and share parameters once done
   if (currentPage === 0) return groupPageLogic(groupName, currentPage);
-  else
-    if(duration === null){
-      return { type: SUBMIT_GROUP_CREATION, payload: { success: false } };
-    }
-    return submitGroupCreation(
-      groupName,
-      groupDescription,
-      duration,
-      frequency,
-      location,
-      currentPage
-    );
+  else if (duration === null) {
+    return { type: SUBMIT_GROUP_CREATION, payload: { success: false } };
+  }
+  return submitGroupCreation(
+    groupName,
+    groupDescription,
+    duration,
+    frequency,
+    location,
+    currentPage
+  );
 };
 
 const groupPageLogic = (groupName, currentPage) => {
