@@ -74,7 +74,7 @@ export const handleChangeRangeHour = (
 
   // swap values if start time is later than end time
   let startAndEndTimeDefined =
-    newRangeHours[index][0] !== undefined && newRangeHours[index][1];
+    newRangeHours[index][0] && newRangeHours[index][1];
 
   if (startAndEndTimeDefined) {
     let startTime = newRangeHours[index][0][1];
