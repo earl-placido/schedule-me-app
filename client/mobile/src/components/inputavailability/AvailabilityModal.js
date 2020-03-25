@@ -4,7 +4,6 @@ import {Card, CardItem, Body, Text, Button, View, Right} from 'native-base';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-// import moment, {calendarFormat} from 'moment';
 import DatePicker from 'react-native-datepicker';
 
 import {
