@@ -1,16 +1,6 @@
 import React, {Component} from 'react';
 import {ScrollView, SafeAreaView, Alert} from 'react-native';
-import {
-  Card,
-  CardItem,
-  Body,
-  Text,
-  CheckBox,
-  ListItem,
-  Button,
-  View,
-  Right,
-} from 'native-base';
+import {Card, CardItem, Body, Text, Button, View, Right} from 'native-base';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
@@ -28,14 +18,16 @@ import {
 import {connect} from 'react-redux';
 
 const rangeHourHeight = 45;
-const maxHeight = rangeHourHeight * 5;
+const maxHeight = rangeHourHeight * 5; // at most, show 5 time picker components in the modal
 
 class AvailabilityModal extends Component {
   constructor(props) {
     super(props);
+
+    // set height based on the number of time picker components in the screen
     let height =
       this.props.rangeHours.length != undefined
-        ? 45 * this.props.rangeHours.length
+        ? rangeHourHeight * this.props.rangeHours.length
         : rangeHourHeight;
 
     this.state = {
@@ -125,7 +117,7 @@ class AvailabilityModal extends Component {
       return;
     }
 
-    // TODO: change group member id to actual group member id
+    // TODO: pass in group member id
     this.props.addAvailability(
       this.props.selectedDate,
       this.props.rangeHours,
@@ -173,11 +165,6 @@ class AvailabilityModal extends Component {
             </View>
           </ScrollView>
         </SafeAreaView>
-
-        <ListItem noIndent noBorder>
-          <CheckBox checked />
-          <Text style={{padding: 10}}>Repeat Monthly</Text>
-        </ListItem>
 
         <View
           style={{

@@ -17,11 +17,13 @@ const INITIAL_STATE = {
   markedDates: {},
 };
 
+// sets the date that the user clicked on from the calendar and retrieve range of hours the user is availability on that date
 export const selectDate = (selectedDate, availableDays) => {
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
 
   let rangeHours = [[]];
 
+  // retrieve range hours for date if user previously added an availability for that date
   if (availableDays !== undefined) {
     rangeHours = availableDays[date] !== undefined ? availableDays[date] : [[]];
   }
@@ -32,6 +34,7 @@ export const selectDate = (selectedDate, availableDays) => {
   };
 };
 
+// display the input availability modal
 export const showModal = () => {
   return {
     type: SHOW_MODAL,
@@ -39,6 +42,7 @@ export const showModal = () => {
   };
 };
 
+// when user decides to not input an availability, close the modal and remove any empty hours
 export const cancelAvailability = rangeHours => {
   if (rangeHours !== undefined) {
     // remove any empty range hours
@@ -54,15 +58,9 @@ export const cancelAvailability = rangeHours => {
       },
     };
   }
-
-  return {
-    type: SHOW_MODAL,
-    payload: {
-      modalVisible: false,
-    },
-  };
 };
 
+// add specified range hour to range hours array: [[-1, startTime, endTime], [-1, startTime, endTime], ...]
 export const handleChangeRangeHour = (
   selectedDate,
   index,
@@ -71,7 +69,7 @@ export const handleChangeRangeHour = (
 ) => {
   let newRangeHours = [...rangeHours];
 
-  // -1 represents the group member id.  Right now, set it to -1 and will change later
+  // -1 represents the group member id.  Right now, set it to -1 and will change to actual member availability later
   newRangeHours[index][startOrEndTimeIndex] = [-1, selectedDate];
 
   // swap values if start time is later than end time
@@ -100,6 +98,14 @@ const swapStartAndEndTime = (newRangeHours, index) => {
   newRangeHours[index][1][1] = startTime;
 };
 
+// when user clicks OK, add the inputted range of hours to availabileDay object
+/*
+  e.g. 
+  availableDays: {
+    "1998-31-01": [[-1, startTime, endTime], [-1, startTime, endTime]]
+    "2020-03-24": [[-1, startTime, endTime], [-1, startTime, endTime], [-1, startTime, endTime], [-1, startTime, endTime]]
+  }
+*/
 export const addAvailability = (
   selectedDate,
   rangeHours,
@@ -126,8 +132,7 @@ export const addAvailability = (
   });
 
   // if just empty hours, don't add any availability
-  if (filteredRangeHours.length == 0)
-  {
+  if (filteredRangeHours.length == 0) {
     dispatch({
       type: ADD_AVAILABILITY,
       payload: {
@@ -138,8 +143,9 @@ export const addAvailability = (
     return;
   }
 
+  // we have at least one non empty range hour, so add it to availableDays object
+  // date will act as a key and the range hours will be the values for that key
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
-
   availableDays[date] = filteredRangeHours;
 
   dispatch({
@@ -152,6 +158,7 @@ export const addAvailability = (
   });
 };
 
+// render a new range hour to the screen
 export const addRangeHour = rangeHours => {
   return {
     type: ADD_RANGE_HOUR,
@@ -159,23 +166,27 @@ export const addRangeHour = rangeHours => {
   };
 };
 
+// delete availability from availableDay object
 export const deleteAvailability = (
   rangeHours,
   availableDays,
   index,
   selectedDate,
 ) => {
+  // copy given range hours and remove entry using the given index
   let newRangeHours = [...rangeHours];
   const removedRangeHour = newRangeHours.splice(index, 1);
 
-  // if removed range hour is not empty
+  // if a range hour was actually removed...
   if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0) {
     // TO DO: delete from database
 
+    // check if availableDays had that range hour as a value for the selected date
     if (availableDays !== undefined) {
       if (availableDays[selectedDate.dateString] !== undefined) {
         availableDays[selectedDate.dateString].splice(index, 1);
 
+        // if selectedDate no longer has any range hours, then completely delete the entry in the object.  This should also remove the marking from the calendar
         if (availableDays[selectedDate.dateString].length === 0) {
           delete availableDays[selectedDate.dateString];
         }
@@ -190,19 +201,16 @@ export const deleteAvailability = (
       availableDays: availableDays,
     },
   };
-
-  // this.decreaseHeight();
-  // this.setState({
-  //   rangeHours: newRangeHours,
-  // });
 };
 
+// mark the dates that the user is available on, which is used to render dots in the calendar
 export const markDates = availableDays => {
   if (availableDays !== undefined) {
-    // make copy of available days map
+    // make copy of available days object
     let markedDates = {};
     for (var date in availableDays) markedDates[date] = availableDays[date];
 
+    // mark each date
     for (var day in availableDays) {
       markedDates[day] = {marked: true};
     }
