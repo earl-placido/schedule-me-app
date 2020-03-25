@@ -125,6 +125,19 @@ export const addAvailability = (
     return rangeHour.length !== 0;
   });
 
+  // if just empty hours, don't add any availability
+  if (filteredRangeHours.length == 0)
+  {
+    dispatch({
+      type: ADD_AVAILABILITY,
+      payload: {
+        modalVisible: false,
+        rangeHours: filteredRangeHours,
+      },
+    });
+    return;
+  }
+
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
 
   availableDays[date] = filteredRangeHours;
