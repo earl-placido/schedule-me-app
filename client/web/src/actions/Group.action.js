@@ -71,8 +71,8 @@ export const setCurrentOptimalTimeQuery = async (
   endTime
 ) => {
   const response = await axios.post(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/setoptimaltime/`,
-    { meetingId, startTime, endTime }
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${meetingId}/setoptimaltime/`,
+    { startTime, endTime }
   );
   return response.data;
 };

@@ -201,8 +201,9 @@ router.post("/meetings/getoptimaltime", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/meetings/setoptimaltime/", (req, res, next) => {
-  const { meetingId, startTime, endTime } = req.body;
+router.post("/meetings/:meetingId/setoptimaltime/", (req, res, next) => {
+  const { startTime, endTime } = req.body;
+  const { meetingId } = req.params;
   if (!meetingId || !startTime || !endTime) {
     res.status(responses.NOT_FOUND);
     res.send({ error: "meetingId/startTime/endTime is required!" });
