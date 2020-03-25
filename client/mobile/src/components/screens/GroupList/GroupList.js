@@ -11,7 +11,6 @@ import {
   Content,
   Card,
   Icon,
-  Left,
 } from 'native-base';
 
 import {getGroupList} from '../../../actions/screens/GroupList.action';
@@ -50,11 +49,9 @@ class GroupList extends Component {
                         codeNum: item.GroupId,
                       })
                     }>
-                    <Left style={{flex: 0.5}}>
-                      <Icon name="people" />
-                    </Left>
-                    <Body style={{flex: 4}}>
-                      <Text>{item.GroupId}</Text>
+                    <Icon name="people" />
+                    <Body style={{paddingLeft: 10}}>
+                      {console.log(item)}
                       <Text>{item.GroupName}</Text>
                     </Body>
                   </CardItem>
