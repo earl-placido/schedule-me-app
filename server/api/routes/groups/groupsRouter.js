@@ -185,8 +185,11 @@ router.get("/:groupId/meetings/", (req, res, next) => {
   }
 });
 
-router.post("/meetings/getoptimaltime", (req, res, next) => {
-  const { meetingIds } = req.body;
+router.get("/meetings/:stringMeetingIds/getoptimaltime/", (req, res, next) => {
+  const { stringMeetingIds } = req.params;
+  const meetingIds = stringMeetingIds
+    .split(",")
+    .map(stringMeetingId => parseInt(stringMeetingId));
 
   if (meetingIds && meetingIds.length === 0) {
     res.status(responses.NOT_FOUND);
