@@ -51,7 +51,7 @@ class GroupList extends Component {
                       })
                     }>
                     <Left style={{flex: 0.5}}>
-                      <Icon name="paw" />
+                      <Icon name="people" />
                     </Left>
                     <Body style={{flex: 4}}>
                       <Text>{item.GroupId}</Text>

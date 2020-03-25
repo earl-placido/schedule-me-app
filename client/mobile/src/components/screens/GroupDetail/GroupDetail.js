@@ -48,52 +48,54 @@ class GroupDetail extends Component {
 
   render() {
     return (
-      <Container style={styles.containerStyle}>
+      <Container>
         {/* Display Group Details */}
-        <View style={{flexDirection: 'column'}}>
+        <View style={styles.headerStyle}>
           <CardItem header>
-            <Body>
-              <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
-                {this.props.group.GroupName}
-                {console.log(this.props.group)}
-              </Text>
-              <Text style={{fontSize: 15}}>
-                GroupID: {this.props.group.GroupId}
-              </Text>
-              <Text style={{fontSize: 15}}>
-                Meeting Duration: {this.props.group.MeetingDuration}
-              </Text>
-              <Text style={{fontSize: 15}}>
+            <Body style={{alignItems: 'center'}}>
+              <View style={{paddingBottom: 10}}>
+                <Text style={styles.titleStyle}>
+                  Group: {this.props.group.GroupName}
+                </Text>
+              </View>
+
+              <Text>GroupID: {this.props.group.GroupId}</Text>
+              <Text>Meeting Duration: {this.props.group.MeetingDuration}</Text>
+              <Text>
                 Meeting Location:{' '}
                 {this.props.group.MeetingLocation
                   ? this.props.group.MeetingLocation
                   : 'Not Specified'}
               </Text>
-              <Text style={{fontSize: 15}}>
+              <Text>
                 Meeting Frequency:{' '}
-                {this.props.group.MeetingLocation
-                  ? this.props.group.MeetingLocation
+                {this.props.group.MeetingFrequency
+                  ? this.props.group.MeetingFrequency
                   : 'Not Specified'}
               </Text>
             </Body>
           </CardItem>
         </View>
 
+        {/* Display Group Members */}
+        <CardItem>
+          <Body style={{alignItems: 'center'}}>
+            <Text style={styles.subHeaderStyle}>Group Members</Text>
+          </Body>
+        </CardItem>
+
         <Content>
-          <Card style={{flexDirection: 'column'}}>
+          <Card>
             <FlatList
               showsHorizontalScrollIndicator={true}
               data={this.props.groupMembers}
               renderItem={({item}) => (
                 <View>
-                  <CardItem
-                    header
-                    bordered
-                    button
-                    onPress={() => this.showDialog(item)}>
+                  <CardItem header button onPress={() => this.showDialog(item)}>
+                    <Icon name="person" />
                     <Body>
-                      <Text style={{marginLeft: 5}}>
-                        {item.UserFName} {item.UserLName}
+                      <Text>
+                        {item.UserFName} {item.UserLName}{' '}
                       </Text>
                     </Body>
                   </CardItem>
@@ -122,14 +124,7 @@ class GroupDetail extends Component {
             onPress={this.handleClose}
           />
 
-          <Dialog.Title
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 0.5,
-              fontWeight: 'bold',
-            }}>
-            {this.state.currUser.UserFName}
-          </Dialog.Title>
+          <Dialog.Title>{this.state.currUser.UserFName}</Dialog.Title>
 
           <Dialog.Description>
             <Text style={{fontWeight: 'bold'}}>Full Name: </Text>{' '}
@@ -146,20 +141,18 @@ class GroupDetail extends Component {
 }
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    flex: 6,
-  },
-  buttonStyle: {
-    marginTop: 20,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  viewCenter: {
+  headerStyle: {
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderBottomColor: 'black',
+    borderBottomWidth: 0.5,
+  },
+  titleStyle: {
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
+  subHeaderStyle: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
 
