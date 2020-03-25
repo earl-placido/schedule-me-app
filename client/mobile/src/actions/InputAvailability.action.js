@@ -17,7 +17,7 @@ const INITIAL_STATE = {
   markedDates: {},
 };
 
-// sets the date that the user clicked on from the calendar and retrieve range of hours the user is availability on that date
+// sets the date that the user clicked on from the calendar and retrieve range of hours the user is availabile for on that date
 export const selectDate = (selectedDate, availableDays) => {
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
 
