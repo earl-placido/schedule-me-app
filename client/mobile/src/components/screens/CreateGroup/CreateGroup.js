@@ -14,6 +14,7 @@ import {
   updateMeetingFrequency,
   updateMeetingLocation,
   submitMeetingCreation,
+  resetCreateGroup,
 } from '../../../actions/screens/CreateGroup.action';
 import {connect} from 'react-redux';
 
@@ -53,6 +54,7 @@ class CreateGroup extends Component {
       this.props.meetingFrequency,
       this.props.meetingLocation,
     );
+    this.props.resetCreateGroup();
   };
 
   render() {
@@ -97,7 +99,6 @@ class CreateGroup extends Component {
           <ProgressStep
             label="Share"
             finishBtnText="Continue"
-            onSubmit={this.onSubmitSteps}
             scrollViewProps={this.defaultScrollViewProps}
             nextBtnStyle={hideButton}
             previousBtnStyle={hideButton}>
@@ -141,6 +142,7 @@ CreateGroup.propTypes = {
   updateMeetingFrequency: PropTypes.func,
   updateMeetingLocation: PropTypes.func,
   submitMeetingCreation: PropTypes.func,
+  resetCreateGroup: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
@@ -150,4 +152,5 @@ export default connect(mapStateToProps, {
   updateMeetingFrequency,
   updateMeetingLocation,
   submitMeetingCreation,
+  resetCreateGroup,
 })(CreateGroup);
