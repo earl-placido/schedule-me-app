@@ -12,8 +12,8 @@ import {
 } from "antd";
 import {
   DownOutlined,
-  UsergroupAddOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
+  TeamOutlined
 } from "@ant-design/icons";
 import React, { Component } from "react";
 import { compose } from "redux";
@@ -77,7 +77,7 @@ export class NavigationBar extends Component {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<Avatar size={25} icon={<UsergroupAddOutlined />} />}
+              avatar={<Avatar size={25} icon={<TeamOutlined />} />}
               title={
                 <a href={"/groups/" + item.GroupId + "/"}>{item.GroupName}</a>
               }
