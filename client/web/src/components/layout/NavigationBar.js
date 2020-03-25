@@ -104,9 +104,7 @@ export class NavigationBar extends Component {
           />
         }
       >
-        <div className="username">
-          {this.props.userName}
-        </div>
+        <div className="username">{this.props.userName}</div>
       </Dropdown.Button>
     ) : (
       <div>
@@ -145,7 +143,9 @@ export class NavigationBar extends Component {
             </Button>
           </Col>
           <Col>
-            <Button className="nav-button" type="primary">Join A Group</Button>
+            <Button className="nav-button" type="primary">
+              Join A Group
+            </Button>
           </Col>
           <Col flex="auto"></Col>
           <Col flex="100px">

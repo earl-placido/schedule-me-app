@@ -2,19 +2,7 @@ import React from "react";
 import NavigationBar from "../../../components/layout/NavigationBar";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
-import configureStore from "redux-mock-store";
-import {
-  Layout,
-  Menu,
-  Dropdown,
-  Button,
-  Avatar,
-  message,
-  Col,
-  Row,
-  List,
-  Modal
-} from "antd";
+import { Menu, Dropdown, Row, Modal } from "antd";
 
 configure({ adapter: new Adapter() });
 
