@@ -185,7 +185,7 @@ router.get("/:groupId/meetings/", (req, res, next) => {
   }
 });
 
-router.get("/meetings/:stringMeetingIds/getoptimaltime/", (req, res, next) => {
+router.get("/meetings/:stringMeetingIds/optimaltime/", (req, res, next) => {
   const { stringMeetingIds } = req.params;
   const meetingIds = stringMeetingIds
     .split(",")
@@ -204,7 +204,7 @@ router.get("/meetings/:stringMeetingIds/getoptimaltime/", (req, res, next) => {
     .catch(next);
 });
 
-router.post("/meetings/:meetingId/setoptimaltime/", (req, res, next) => {
+router.post("/meetings/:meetingId/optimaltime/", (req, res, next) => {
   const { startTime, endTime } = req.body;
   const { meetingId } = req.params;
   if (!meetingId || !startTime || !endTime) {

@@ -59,7 +59,7 @@ export const getOptimalTimeQuery = async groupId => {
 export const getMeetingCurrentOptimalTimeQuery = async meetingIds => {
   const stringMeetingIds = meetingIds.toString();
   const response = await axios.get(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${stringMeetingIds}/getoptimaltime/`
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${stringMeetingIds}/optimaltime/`
   );
 
   return response.data;
@@ -71,7 +71,7 @@ export const setCurrentOptimalTimeQuery = async (
   endTime
 ) => {
   const response = await axios.post(
-    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${meetingId}/setoptimaltime/`,
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${meetingId}/optimaltime/`,
     { startTime, endTime }
   );
   return response.data;
