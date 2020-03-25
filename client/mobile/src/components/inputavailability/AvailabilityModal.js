@@ -172,7 +172,7 @@ class AvailabilityModal extends Component {
             flexDirection: 'row',
             justifyContent: 'center',
           }}>
-          <View style={{paddingRight: 10}}>
+          <View style={{paddingRight: 10, paddingTop: 10}}>
             <Button
               small
               light
@@ -183,7 +183,7 @@ class AvailabilityModal extends Component {
               <Text>Delete</Text>
             </Button>
           </View>
-          <View>
+          <View style={{paddingTop: 10}}>
             <Button small rounded onPress={() => this.addRangeHour()}>
               <Text>Add</Text>
             </Button>
