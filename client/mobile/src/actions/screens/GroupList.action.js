@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import responses from '../util/responses';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const GET_GROUP_LIST_SUCCESS = 'get_group_list_success';
@@ -15,13 +14,6 @@ const getGroupListSuccess = groupList => {
   return {
     type: GET_GROUP_LIST_SUCCESS,
     payload: groupList,
-  };
-};
-
-const getGroupListFailure = error => {
-  return {
-    type: GET_GROUP_LIST_FAILURE,
-    payload: error,
   };
 };
 

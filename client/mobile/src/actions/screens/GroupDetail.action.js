@@ -1,6 +1,6 @@
 import axios from 'axios';
 import Config from 'react-native-config';
-import responses from '../util/responses';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const GET_GROUP_INFO_SUCCESS = 'get_group_info_success';
 export const GET_GROUP_INFO_FAILURE = 'get_group_info_failure';
@@ -34,13 +34,6 @@ const getGroupSuccess = group => {
   };
 };
 
-const getGroupFailure = error => {
-  return {
-    type: GET_GROUP_INFO_SUCCESS,
-    payload: error,
-  };
-};
-
 const getGroupMembersSuccess = members => {
   return {
     type: GET_GROUP_MEMBERS_SUCCESS,
@@ -48,51 +41,42 @@ const getGroupMembersSuccess = members => {
   };
 };
 
-const getGroupMembersFailure = error => {
-  return {
-    type: GET_GROUP_MEMBERS_SUCCESS,
-    payload: error,
+export const getGroup = groupId => async dispatch => {
+  const token = await AsyncStorage.getItem('token');
+
+  const options = {
+    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/`,
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   };
+  try {
+    const response = await axios(options);
+    dispatch(getGroupSuccess(response.data));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
-export const getGroup = groupId => {
-  return dispatch => {
-    const options = {
-      url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/`,
-      method: 'GET',
-    };
-    axios(options)
-      .then(res => {
-        if (res.status === responses.SUCCESS) {
-          dispatch(getGroupSuccess(res.data.groups));
-        } else {
-          throw new Error(res.err);
-        }
-      })
-      .catch(err => {
-        dispatch(getGroupFailure(err.message));
-      });
-  };
-};
+export const getGroupMembers = groupId => async dispatch => {
+  const token = await AsyncStorage.getItem('token');
 
-export const getGroupMembers = groupId => {
-  return dispatch => {
-    const options = {
-      url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/`,
-      method: 'GET',
-    };
-    axios(options)
-      .then(res => {
-        if (res.status === responses.SUCCESS) {
-          dispatch(getGroupMembersSuccess(res.data.members));
-        } else {
-          throw new Error(res.err);
-        }
-      })
-      .catch(err => {
-        dispatch(getGroupMembersFailure(err.message));
-      });
+  const options = {
+    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/`,
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
   };
+  try {
+    const response = await axios(options);
+    dispatch(getGroupMembersSuccess(response.data.groupMembers));
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export default (state = INITIAL_STATE, action) => {

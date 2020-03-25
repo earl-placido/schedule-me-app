@@ -23,8 +23,8 @@ const actions = [
 
 class GroupDetail extends Component {
   componentDidMount() {
-    this.props.getGroup(this.props.match.params.id);
-    this.props.getGroupMembers(this.props.match.params.id);
+    this.props.getGroup(this.props.route.params.codeNum);
+    this.props.getGroupMembers(this.props.route.params.codeNum);
   }
 
   constructor(props) {
@@ -49,18 +49,32 @@ class GroupDetail extends Component {
   render() {
     return (
       <Container style={styles.containerStyle}>
+        {/* Display Group Details */}
         <View style={{flexDirection: 'column'}}>
           <CardItem header>
             <Body>
-              <Text>
-                This is the code num: Will use when server is connected:{' '}
-                {this.props.route.params.codeNum}
-              </Text>
               <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
-                Group Equilibrium
+                {this.props.group.GroupName}
+                {console.log(this.props.group)}
               </Text>
-              <Text style={{fontSize: 15}}>Optimal Time: 12pm - 2pm</Text>
-              <Text style={{fontSize: 15}}>Optimal Date: October 26, 1985</Text>
+              <Text style={{fontSize: 15}}>
+                GroupID: {this.props.group.GroupId}
+              </Text>
+              <Text style={{fontSize: 15}}>
+                Meeting Duration: {this.props.group.MeetingDuration}
+              </Text>
+              <Text style={{fontSize: 15}}>
+                Meeting Location:{' '}
+                {this.props.group.MeetingLocation
+                  ? this.props.group.MeetingLocation
+                  : 'Not Specified'}
+              </Text>
+              <Text style={{fontSize: 15}}>
+                Meeting Frequency:{' '}
+                {this.props.group.MeetingLocation
+                  ? this.props.group.MeetingLocation
+                  : 'Not Specified'}
+              </Text>
             </Body>
           </CardItem>
         </View>
@@ -69,7 +83,7 @@ class GroupDetail extends Component {
           <Card style={{flexDirection: 'column'}}>
             <FlatList
               showsHorizontalScrollIndicator={true}
-              data={this.props.getGroupMembers}
+              data={this.props.groupMembers}
               renderItem={({item}) => (
                 <View>
                   <CardItem
@@ -162,7 +176,6 @@ GroupDetail.propTypes = {
   groupMembers: PropTypes.array,
   getGroup: PropTypes.func,
   getGroupMembers: PropTypes.func,
-  match: PropTypes.any,
 };
 
 export default connect(mapStateToProps, {getGroupMembers, getGroup})(
