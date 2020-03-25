@@ -14,7 +14,7 @@ const INITIAL_STATE = {
 const getGroupListSuccess = groupList => {
   return {
     type: GET_GROUP_LIST_SUCCESS,
-    payload: {groupList: groupList},
+    payload: groupList,
   };
 };
 
@@ -50,7 +50,7 @@ export default (state = INITIAL_STATE, action) => {
     case GET_GROUP_LIST_SUCCESS:
       return {
         ...state,
-        ...action.payload,
+        groupList: action.payload,
       };
     case GET_GROUP_LIST_FAILURE:
       return {
