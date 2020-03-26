@@ -56,6 +56,7 @@ function CustomDrawerContent(props) {
               labelStyle={styles.menuItemStyle}
               label={item.GroupName}
               onPress={() => {
+                props.navigation.push('Group Detail');
                 props.navigation.navigate('Group Detail', {
                   codeNum: item.GroupId,
                 });
