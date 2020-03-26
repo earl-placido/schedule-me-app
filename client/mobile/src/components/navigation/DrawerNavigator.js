@@ -13,7 +13,7 @@ import {logoutUser} from '../../actions/components/Auth.action';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Drawer = createDrawerNavigator();
-const MAX_ITEMS = 3;
+const NUM_ITEMS = 3;
 
 const groupList = [
   {
@@ -67,7 +67,7 @@ class CustomDrawerContent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: MAX_ITEMS,
+      items: NUM_ITEMS,
     };
   }
 
@@ -109,7 +109,7 @@ class CustomDrawerContent extends Component {
               labelStyle={styles.menuItemStyle}
               label="..."
               onPress={() => {
-                this.setState(prev => ({items: prev.items + MAX_ITEMS}));
+                this.setState(prev => ({items: prev.items + NUM_ITEMS}));
               }}
             />
           )}
