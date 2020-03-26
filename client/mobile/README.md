@@ -47,12 +47,19 @@ How to run:
 
     ```
     npm install -g appium
+    npm install -g appium-doctor
     ```
 
     And make sure to do an `npm install`
 
+    - Verify that all of Appium's dependencies are all set by running `appium-doctor --android`
+
+      Should look like this in the end:
+
+      ![](https://i.imgur.com/79VjRIX.png)
+
 2. Run the app on your device (i.e. `npx react-native run-android`)
 
-3. While in `client/mobile`, run: `(appium & wdio run wdio.conf.js)`
+3. While in `client/mobile`, run: `(appium & npm run test:system)`
 
-    - If appium takes too long to initialize, run `appium` in its own separate instance and run `wdio run wdio.conf.js` in another instance
+    - If appium takes too long to initialize, run `appium` in its own separate instance and run `npm run test:system` in another instance
