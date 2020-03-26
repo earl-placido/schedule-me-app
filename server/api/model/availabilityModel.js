@@ -58,7 +58,6 @@ module.exports = {
     for (let index = 0; index < availabilityIds.length; index++) {
       query += `DELETE FROM \`Availability\` WHERE AvailabilityId=${availabilityIds[index]};`;
     }
-    console.log(query);
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn
         .query(query)

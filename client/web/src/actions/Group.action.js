@@ -41,3 +41,52 @@ export const getGroupListQuery = async () => {
   );
   return response;
 };
+
+export const getOptimalTimeQuery = async groupId => {
+  const authToken = localStorage.getItem("token");
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/optimaltime/`,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
+  );
+  return response.data.optimalTime;
+};
+
+export const getMeetingCurrentOptimalTimeQuery = async meetingIds => {
+  const stringMeetingIds = meetingIds.toString();
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${stringMeetingIds}/optimaltime/`
+  );
+
+  return response.data;
+};
+
+export const setCurrentOptimalTimeQuery = async (
+  meetingId,
+  startTime,
+  endTime
+) => {
+  const response = await axios.post(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${meetingId}/optimaltime/`,
+    { startTime, endTime }
+  );
+  return response.data;
+};
+
+export const getMeetingIdsQuery = async groupId => {
+  const authToken = localStorage.getItem("token");
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/meetings/`,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
+  );
+  return response.data.meetingIds;
+};
