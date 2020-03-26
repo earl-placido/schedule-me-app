@@ -1,12 +1,11 @@
 import axios from "axios";
-import moment from 'moment';
+import moment from "moment";
 
 import { getMemberIdWithEmail } from "../GroupMember.action";
 import {
   getAvailabilityQuery,
   addAvailabilityQuery
 } from "../Availability.action";
-import { convertAvailabilityToDays } from "../util/date/day";
 
 export const GROUP_INFORMATION = "group_information";
 export const SELECT_DATE = "select_date";
@@ -19,7 +18,7 @@ export const ADD_RANGE = "add_range";
 export const CHANGE_RANGE = "change_range";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 
-export const getInformation = (groupId) => async dispatch => {
+export const getInformation = groupId => async dispatch => {
   axios
     .get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`)
     .then(groupInformation => {
@@ -41,11 +40,12 @@ export const getInformation = (groupId) => async dispatch => {
             // formattedAvailability: {date: [{id, starttime, endtime}, {id, starttime, endtime}, {id, starttime, endtime}, ...], date2: ..., date3: ... }
             let formattedAvailability = {};
             for (const availability of availabilities) {
-              const date = moment(availability['CAST(StartTime as char)']).format('YYYY-MM-DD');
+              const date = moment(
+                availability["CAST(StartTime as char)"]
+              ).format("YYYY-MM-DD");
               if (formattedAvailability[date] === undefined)
                 formattedAvailability[date] = [availability];
-              else
-                formattedAvailability[date].push(availability);
+              else formattedAvailability[date].push(availability);
             }
 
             dispatch({
@@ -73,7 +73,8 @@ export const getInformation = (groupId) => async dispatch => {
 export const selectDate = (selectedDate, availabilities) => {
   let rangeHours = [""];
   const date = selectedDate.format("YYYY-MM-DD");
-  if (availabilities[date] !== undefined) rangeHours = availabilities[date] || [""];
+  if (availabilities[date] !== undefined)
+    rangeHours = availabilities[date] || [""];
 
   return {
     type: SELECT_DATE,
@@ -125,7 +126,9 @@ export const deleteAvailability = (
           }
 
           // remove from availabilityDays
-          const selectedDate = moment(removedRangeHours['CAST(StartTime as char)']).format("YYYY-MM-DD");
+          const selectedDate = moment(
+            removedRangeHours["CAST(StartTime as char)"]
+          ).format("YYYY-MM-DD");
           availabilities[selectedDate] = newRangeHours;
         })
         .catch(() => {
@@ -169,10 +172,10 @@ export const addAvailability = (
 
   const availabilityIds = filteredRangeHours.map(item => item.AvailabilityId);
   const startTimes = filteredRangeHours.map(item => {
-    return item['CAST(StartTime as char)'];
+    return item["CAST(StartTime as char)"];
   });
   const endTimes = filteredRangeHours.map(item => {
-    return item['CAST(EndTime as char)'];
+    return item["CAST(EndTime as char)"];
   });
 
   await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes)
@@ -180,9 +183,10 @@ export const addAvailability = (
       // update the ids of rangeHours after getting the availbilityId from database
       for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
         if (addedAvailabilityIds.data.ids[i] !== 0)
-          filteredRangeHours[i].AvailabilityId = addedAvailabilityIds.data.ids[i];
+          filteredRangeHours[i].AvailabilityId =
+            addedAvailabilityIds.data.ids[i];
       }
-      availabilities[selectedDate.format('YYYY-MM-DD')] = filteredRangeHours;
+      availabilities[selectedDate.format("YYYY-MM-DD")] = filteredRangeHours;
       dispatch({
         type: ADD_AVAILABILITY,
         payload: {
@@ -217,8 +221,11 @@ export const onChangeRange = (index, value, rangeHours) => {
   if (value === null) {
     newRangeHours[index] = "";
   } else {
-    newRangeHours[index] = {AvailabilityId: -1, 'CAST(StartTime as char)': value[0].format('YYYY-MM-DD HH:mm:ss'), 
-  'CAST(EndTime as char)': value[1].format('YYYY-MM-DD HH:mm:ss')};
+    newRangeHours[index] = {
+      AvailabilityId: -1,
+      "CAST(StartTime as char)": value[0].format("YYYY-MM-DD HH:mm:ss"),
+      "CAST(EndTime as char)": value[1].format("YYYY-MM-DD HH:mm:ss")
+    };
   }
 
   return {

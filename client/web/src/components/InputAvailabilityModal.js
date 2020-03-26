@@ -81,26 +81,26 @@ class InputAvailabilityModal extends Component {
   }
 
   dateCellRender = value => {
-    const availabilities = this.props.availabilities[value.format('YYYY-MM-DD')];
-    
+    const availabilities = this.props.availabilities[
+      value.format("YYYY-MM-DD")
+    ];
+
     if (availabilities === undefined) return;
 
     return (
       <ul className="events">
         {availabilities.map((item, index) => {
-          const startTime = moment(item['CAST(StartTime as char)']).format("HH:mm");
-          const endTime = moment(item['CAST(EndTime as char)']).format("HH:mm");
-          
+          const startTime = moment(item["CAST(StartTime as char)"]).format(
+            "HH:mm"
+          );
+          const endTime = moment(item["CAST(EndTime as char)"]).format("HH:mm");
+
           return (
-          <li key={index}>
-            <Badge
-              status={"success"}
-              text={
-                startTime + "-" + endTime
-              }
-            />
-          </li>
-        )})}
+            <li key={index}>
+              <Badge status={"success"} text={startTime + "-" + endTime} />
+            </li>
+          );
+        })}
       </ul>
     );
   };
@@ -109,7 +109,8 @@ class InputAvailabilityModal extends Component {
     const groupId = parseInt(window.location.pathname.split("/")[2]);
 
     // otherwise pressing addAvailability button would show that date is undefined
-    if (!this.props.selectedDate) this.props.selectDate(moment(), this.props.availabilities);
+    if (!this.props.selectedDate)
+      this.props.selectDate(moment(), this.props.availabilities);
     if (!this.props.groupInformation)
       this.props.getInformation(groupId, this.props.availabilities);
   }
@@ -161,10 +162,10 @@ class InputAvailabilityModal extends Component {
           <h3 className="modal-header">Input availability time</h3>
           {this.props.rangeHours.map((item, index) => {
             let value = null;
-            
+
             if (item) {
-              const startTime = moment(item['CAST(StartTime as char)']) || null;
-              const endTime = moment(item['CAST(EndTime as char)']) || null;
+              const startTime = moment(item["CAST(StartTime as char)"]) || null;
+              const endTime = moment(item["CAST(EndTime as char)"]) || null;
               value = [startTime, endTime];
             }
             return (
@@ -179,9 +180,7 @@ class InputAvailabilityModal extends Component {
           })}
 
           <div className="checkbox-event">
-            <Checkbox checked disabled>
-              Repeat weekly
-            </Checkbox>
+            <Checkbox disabled>Repeat weekly</Checkbox>
           </div>
           <div className="button-container">
             <Button
