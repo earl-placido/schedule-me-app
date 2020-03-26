@@ -39,7 +39,7 @@ class InputAvailabilityModal extends Component {
   };
 
   showModal = () => {
-    this.props.showModal(this.props.selectedDate, this.props.availableDays);
+    this.props.showModal();
   };
 
   handleOk = () => {
@@ -59,7 +59,7 @@ class InputAvailabilityModal extends Component {
   handleDelete = () => {
     this.props.deleteAvailability(
       this.props.rangeHours,
-      this.props.availableDays
+      this.props.availabilities
     );
   };
 
@@ -111,7 +111,7 @@ class InputAvailabilityModal extends Component {
     // otherwise pressing addAvailability button would show that date is undefined
     if (!this.props.selectedDate) this.props.selectDate(moment(), this.props.availabilities);
     if (!this.props.groupInformation)
-      this.props.getInformation(groupId, this.props.availableDays);
+      this.props.getInformation(groupId, this.props.availabilities);
   }
 
   closeErrorModal = () => {
@@ -236,7 +236,6 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     modalVisible,
     rangeHours,
     selectedDate,
-    availableDays,
     availabilities,
     groupInformation,
     memberId,
@@ -246,7 +245,6 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     modalVisible,
     rangeHours,
     selectedDate,
-    availableDays,
     availabilities,
     groupInformation,
     memberId,
@@ -262,7 +260,7 @@ InputAvailabilityModal.propTypes = {
   rangeHours: PropTypes.any,
   modalVisible: PropTypes.any,
   selectedDate: PropTypes.any,
-  availableDays: PropTypes.any,
+  availabilities: PropTypes.any,
   groupInformation: PropTypes.any,
   memberId: PropTypes.any,
   showErrorModal: PropTypes.any,

@@ -97,22 +97,20 @@ export const cancelAvailability = () => {
 
 export const deleteAvailability = (
   rangeHours,
-  availableDays
+  availabilities
 ) => async dispatch => {
   let newRangeHours = [...rangeHours];
   const removedRangeHours = newRangeHours.pop();
-  console.log(removedRangeHours);
-  console.log(removedRangeHours[0] === -1);
   // if the range hours that was removed is not empty
   if (removedRangeHours) {
     // if it is an existing id, then we query to the database to delete it
-    if (removedRangeHours[0] !== -1) {
+    if (removedRangeHours.AvailabilityId !== -1) {
       // remove from database
       await axios
         .delete(
           `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`,
           {
-            data: { availabilityIds: [removedRangeHours[0]] }
+            data: { availabilityIds: [removedRangeHours.AvailabilityId] }
           }
         )
         .then(response => {
@@ -127,15 +125,8 @@ export const deleteAvailability = (
           }
 
           // remove from availabilityDays
-          const currentDay = removedRangeHours[1][0].day();
-
-          const currentAvailableDays = availableDays[currentDay];
-          for (let i = 0; i < currentAvailableDays.length; i++) {
-            if (currentAvailableDays[i][1] === removedRangeHours[1]) {
-              availableDays[currentDay].splice(i, 1);
-              break;
-            }
-          }
+          const selectedDate = moment(removedRangeHours['CAST(StartTime as char)']).format("YYYY-MM-DD");
+          availabilities[selectedDate] = newRangeHours;
         })
         .catch(() => {
           dispatch({
@@ -149,7 +140,7 @@ export const deleteAvailability = (
 
   dispatch({
     type: DELETE_AVAILABILITY,
-    payload: { rangeHours: newRangeHours, availableDays }
+    payload: { rangeHours: newRangeHours, availabilities }
   });
 };
 
@@ -247,7 +238,6 @@ const INITIAL_STATE = {
   modalVisible: false,
   rangeHours: [""],
   selectedDate: "",
-  availableDays: {},
   availabilities: {},
   groupInformation: "",
   memberId: "",
