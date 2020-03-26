@@ -17,7 +17,6 @@ import {getGroupList} from '../../../actions/screens/GroupList.action';
 
 class GroupList extends Component {
   componentDidMount() {
-    console.log('mountedGroupList');
     this.props.getGroupList();
   }
 

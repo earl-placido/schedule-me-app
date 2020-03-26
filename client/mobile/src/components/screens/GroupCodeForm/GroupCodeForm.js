@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {getGroup} from '../../../actions/screens/GroupDetail.action';
+import {getGroup} from '../../../actions/screens/GetGroup.action';
 
 const Form = t.form.Form;
 
@@ -75,8 +75,8 @@ class GroupCodeForm extends Component {
   }
 }
 
-const mapStateToProps = ({GroupDetailReducer}) => {
-  const {group} = GroupDetailReducer;
+const mapStateToProps = ({GetGroupReducer}) => {
+  const {group} = GetGroupReducer;
   return {group};
 };
 
