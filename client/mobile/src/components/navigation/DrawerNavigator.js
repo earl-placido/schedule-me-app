@@ -10,7 +10,6 @@ import StackNavigator from './StackNavigator';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {logoutUser} from '../../actions/components/Auth.action';
-
 import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Drawer = createDrawerNavigator();
@@ -67,6 +66,7 @@ function CustomDrawerContent(props) {
           labelStyle={styles.menuItemStyle}
           label="&#x2295; Create Group"
           onPress={() => {
+            props.navigation.push('Create Group');
             props.navigation.navigate('Create Group');
           }}
         />

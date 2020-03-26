@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
-import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
+import {View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
+import Modal from 'react-native-modal';
+import InputAvailabilityModal from '../../inputavailability/InputAvailabilityModal';
 
 import {getGroup} from '../../../actions/screens/GetGroup.action';
-
 import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
 
 const actions = [
@@ -30,6 +31,7 @@ class GroupDetail extends Component {
     super(props);
     this.state = {
       dialogVisible: false,
+      isInputAvailabilityVisible: false,
       currUser: {
         UserFName: 'INVALID USER',
         UserLName: 'INVALID USER',
@@ -43,6 +45,12 @@ class GroupDetail extends Component {
 
   handleClose = () => {
     this.setState({dialogVisible: false});
+  };
+
+  toggleInputAvailability = () => {
+    this.setState({
+      isInputAvailabilityVisible: !this.state.isInputAvailabilityVisible,
+    });
   };
 
   render() {
@@ -107,11 +115,16 @@ class GroupDetail extends Component {
 
         <FloatingAction
           actions={actions}
-          onPressItem={({item}) => {
-            console.log(`Selected button: ${item}`);
-            Alert.alert('Functionality to come');
-          }}
+          onPressItem={() => this.toggleInputAvailability()}
         />
+
+        <Modal
+          isVisible={this.state.isInputAvailabilityVisible}
+          onBackdropPress={() => {
+            this.toggleInputAvailability();
+          }}>
+          <InputAvailabilityModal />
+        </Modal>
 
         <Dialog.Container
           onBackdropPress={this.handleClose}

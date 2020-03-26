@@ -31,6 +31,8 @@ describe("test group member model", () => {
                 ${testUtil.resetUsersQuery}
                 ${testUtil.resetGroupsQuery}
                 ${testUtil.resetGroupMembersQuery}
+                ${testUtil.resetOptimalAvailabilityQuery}
+                ${testUtil.resetMeetingQuery}
                 SET FOREIGN_KEY_CHECKS=1;
             `;
     const result = conn.query(query);

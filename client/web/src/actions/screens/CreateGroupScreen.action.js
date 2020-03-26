@@ -63,15 +63,17 @@ export const goNextPage = (
 ) => {
   // pass in meeting and share parameters once done
   if (currentPage === 0) return groupPageLogic(groupName, currentPage);
-  else
-    return submitGroupCreation(
-      groupName,
-      groupDescription,
-      duration,
-      frequency,
-      location,
-      currentPage
-    );
+  else if (duration === null) {
+    return { type: SUBMIT_GROUP_CREATION, payload: { success: false } };
+  }
+  return submitGroupCreation(
+    groupName,
+    groupDescription,
+    duration,
+    frequency,
+    location,
+    currentPage
+  );
 };
 
 const groupPageLogic = (groupName, currentPage) => {
@@ -94,9 +96,6 @@ const submitGroupCreation = (
   meetingLocation,
   currentPage
 ) => async dispatch => {
-  if (duration === null)
-    return { type: SUBMIT_GROUP_CREATION, payload: { success: false } };
-
   const dateDuration = duration.toDate(); // to format to 2 decimals
   const hours = ("0" + dateDuration.getHours()).slice(-2);
   const minutes = ("0" + dateDuration.getMinutes()).slice(-2);

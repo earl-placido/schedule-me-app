@@ -8,6 +8,7 @@ export const UPDATE_MEETING_DURATION = 'update_meeting_duration';
 export const UPDATE_MEETING_FREQUENCY = 'update_meeting_frequency';
 export const UPDATE_MEETING_LOCATION = 'update_meeting_location';
 export const SUBMIT_MEETING_CREATION = 'submit_meeting_creation';
+export const RESET_CREATE_GROUP = 'reset_create_group';
 
 export const updateGroupName = groupName => {
   return {
@@ -90,6 +91,13 @@ export const submitMeetingCreation = (
   }
 };
 
+export const resetCreateGroup = () => {
+  return {
+    type: RESET_CREATE_GROUP,
+    payload: INITIAL_STATE,
+  };
+};
+
 const INITIAL_STATE = {
   groupName: '',
   groupDescription: '',
@@ -118,6 +126,9 @@ export default (state = INITIAL_STATE, action) => {
     }
     case SUBMIT_MEETING_CREATION: {
       return {...state, meetingCode: action.payload.code};
+    }
+    case RESET_CREATE_GROUP: {
+      return {...state, ...action.payload};
     }
     default: {
       return INITIAL_STATE;

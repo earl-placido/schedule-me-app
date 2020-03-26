@@ -14,7 +14,7 @@ module.exports = {
       return conn
         .query(
           `
-                SELECT GroupMemberId FROM \`GroupMember\` WHERE GroupId = ? AND UserId = ?;
+                SELECT GroupMemberId, MemberRole FROM \`GroupMember\` WHERE GroupId = ? AND UserId = ?;
                 `,
           [groupId, userId]
         )

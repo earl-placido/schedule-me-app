@@ -16,18 +16,27 @@ import {
   ExclamationCircleOutlined
 } from "@ant-design/icons";
 import React, { Component } from "react";
-import { CopyToClipboard } from "react-copy-to-clipboard";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
-import InputAvailability from "../components/InputAvailabilityModal";
+
 import {
+  getSelfMember,
   getGroupMembers,
   getGroup,
   showModal,
   closeModal,
-  closeErrorModal
+  closeErrorModal,
+  getOptimalTime,
+  getMeetings,
+  selectMeeting,
+  selectOptimalTime,
+  setOptimalTime
 } from "../actions/screens/GroupScreen.action";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import "antd/dist/antd.css";
+import InputAvailability from "../components/InputAvailabilityModal";
+import MeetingTimeModal from "./MeetingTimeModal";
 
 class GroupScreen extends Component {
   constructor(props) {
@@ -38,15 +47,17 @@ class GroupScreen extends Component {
   componentDidMount() {
     this.props.getGroup(this.props.match.params.id);
     this.props.getGroupMembers(this.props.match.params.id);
+    this.props.getSelfMember(this.props.match.params.id);
+    this.props.getMeetings(this.props.match.params.id);
   }
 
   success() {
     message.success("Code copied!");
   }
 
-  showModal = () => {
-    this.props.showModal();
-  };
+  showModal(type) {
+    this.props.showModal(type);
+  }
 
   handleDone = () => {
     this.props.closeModal();
@@ -60,8 +71,51 @@ class GroupScreen extends Component {
     this.props.closeModal();
   };
 
+  handleDoneMeeting = () => {
+    this.props.setOptimalTime(
+      this.props.meetings,
+      this.props.selectedMeeting,
+      this.props.selectedOptimalTime
+    );
+  };
+
+  getOptimalTime(selectedMeeting) {
+    this.props.selectMeeting(selectedMeeting);
+    this.props.getOptimalTime(this.props.match.params.id);
+    this.showModal("meeting");
+  }
+
+  currentMeetingTime = () => {
+    return (
+      <div>
+        {this.props.meetings &&
+          this.props.meetings.map((meeting, index) => {
+            return (
+              <div key={index}>
+                <p style={{ display: "inline", marginRight: 10 }}>
+                  {meeting.meetingAvailableString ||
+                    "Meeting time is currently empty."}
+                </p>
+                {this.props.selfMember &&
+                  this.props.selfMember.MemberRole === "AD" && (
+                    <Button
+                      type="primary"
+                      style={{ backgroundColor: "green" }}
+                      onClick={this.getOptimalTime.bind(this, meeting)}
+                    >
+                      Change
+                    </Button>
+                  )}
+              </div>
+            );
+          })}
+      </div>
+    );
+  };
+
   render() {
     const { Title } = Typography;
+
     const {
       containerStyle,
       cardStyle,
@@ -114,6 +168,10 @@ class GroupScreen extends Component {
           )}
           <Divider orientation="center" />
           <Row justify="center">
+            <Col>{this.currentMeetingTime()}</Col>
+          </Row>
+          <Divider orientation="center" />
+          <Row justify="center">
             <Title level={3}>Group Members</Title>
           </Row>
           <Row justify="center">
@@ -132,7 +190,7 @@ class GroupScreen extends Component {
           </Row>
           <Button
             type="primary"
-            onClick={this.showModal}
+            onClick={this.showModal.bind(this, "availability")}
             style={{ float: "right" }}
           >
             Input Your Availability
@@ -153,6 +211,27 @@ class GroupScreen extends Component {
             ]}
           >
             <InputAvailability />
+          </Modal>
+
+          <Modal
+            width={"60%"}
+            visible={this.props.meetingModalVisible}
+            onCancel={this.handleCancel}
+            footer={[
+              <Button
+                style={buttonStyle}
+                type="primary"
+                key="done"
+                onClick={this.handleDoneMeeting}
+              >
+                Done
+              </Button>
+            ]}
+          >
+            <MeetingTimeModal
+              optimalTimes={this.props.optimalTimes || []}
+              selectOptimalTime={this.props.selectOptimalTime}
+            />
           </Modal>
         </Card>
         <Modal
@@ -201,34 +280,69 @@ const styles = {
 
 const mapStateToProps = ({ GroupScreenReducer }) => {
   const {
+    selfMember,
     groupMembers,
     group,
     inputModalVisible,
-    showErrorModal
+    meetingModalVisible,
+    showErrorModal,
+    optimalTimes,
+    meetings,
+    selectedMeeting,
+    selectedOptimalTime
   } = GroupScreenReducer;
-  return { groupMembers, group, inputModalVisible, showErrorModal };
+  return {
+    selfMember,
+    groupMembers,
+    group,
+    inputModalVisible,
+    meetingModalVisible,
+    showErrorModal,
+    optimalTimes,
+    meetings,
+    selectedMeeting,
+    selectedOptimalTime
+  };
 };
 
 GroupScreen.propTypes = {
   location: PropTypes.any,
   match: PropTypes.any,
   groupMembers: PropTypes.any,
+  selfMember: PropTypes.any,
   group: PropTypes.any,
   inputModalVisible: PropTypes.any,
   showErrorModal: PropTypes.any,
+  meetingModalVisible: PropTypes.any,
+  optimalTimes: PropTypes.any,
+  meetings: PropTypes.any,
+  selectedMeeting: PropTypes.any,
+  selectedOptimalTime: PropTypes.any,
+  getSelfMember: PropTypes.func,
   getGroupMembers: PropTypes.func,
+  getOptimalTime: PropTypes.func,
   getGroup: PropTypes.func,
   showModal: PropTypes.func,
   closeModal: PropTypes.func,
-  closeErrorModal: PropTypes.func
+  closeErrorModal: PropTypes.func,
+  getMeetings: PropTypes.func,
+  selectMeeting: PropTypes.func,
+  setOptimalTime: PropTypes.func,
+  selectOptimalTime: PropTypes.func
 };
 
 export default withRouter(
   connect(mapStateToProps, {
+    getSelfMember,
     getGroupMembers,
     getGroup,
     showModal,
     closeModal,
-    closeErrorModal
+    closeErrorModal,
+    getOptimalTime,
+    getMeetings,
+    selectMeeting,
+    selectOptimalTime,
+    setOptimalTime
   })(GroupScreen)
 );
