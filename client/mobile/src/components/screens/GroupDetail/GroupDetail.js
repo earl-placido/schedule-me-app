@@ -7,10 +7,9 @@ import React, {Component} from 'react';
 import {Alert, View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
 
-import {
-  getGroup,
-  getGroupMembers,
-} from '../../../actions/screens/GroupDetail.action';
+import {getGroup} from '../../../actions/screens/GetGroup.action';
+
+import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
 
 const actions = [
   {
@@ -156,8 +155,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const mapStateToProps = ({GroupDetailReducer}) => {
-  const {group, groupMembers} = GroupDetailReducer;
+const mapStateToProps = ({GetGroupReducer, GetGroupMembersReducer}) => {
+  const {group} = GetGroupReducer;
+  const {groupMembers} = GetGroupMembersReducer;
   return {group, groupMembers};
 };
 
