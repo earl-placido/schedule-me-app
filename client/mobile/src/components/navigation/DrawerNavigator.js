@@ -13,6 +13,7 @@ import {logoutUser} from '../../actions/components/Auth.action';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
 const Drawer = createDrawerNavigator();
+const MAX_ITEMS = 3;
 
 const groupList = [
   {
@@ -30,67 +31,119 @@ const groupList = [
     GroupName: 'Dowon',
     GroupDescription: 'Korean food',
   },
+  {
+    GroupId: '1',
+    GroupName: 'Tallest Poppy',
+    GroupDescription: 'Hipster food',
+  },
+  {
+    GroupId: '2',
+    GroupName: 'Stellas',
+    GroupDescription: '#notMyStellas',
+  },
+  {
+    GroupId: '3',
+    GroupName: 'Dowon',
+    GroupDescription: 'Korean food',
+  },
+  {
+    GroupId: '1',
+    GroupName: 'Tallest Poppy',
+    GroupDescription: 'Hipster food',
+  },
+  {
+    GroupId: '2',
+    GroupName: 'Stellas',
+    GroupDescription: '#notMyStellas',
+  },
+  {
+    GroupId: '3',
+    GroupName: 'Dowon',
+    GroupDescription: 'Korean food',
+  },
 ];
 
-function CustomDrawerContent(props) {
-  return (
-    <View style={styles.menuStyle}>
-      <ScrollView>
-        <DrawerItem
-          labelStyle={{
-            ...styles.menuItemStyle,
-            fontWeight: 'bold',
-            fontSize: 30,
-          }}
-          label="Groups"
-          onPress={() => {
-            props.navigation.navigate('Group List');
-          }}
-        />
-        <FlatList
-          data={groupList}
-          renderItem={({item}) => (
+class CustomDrawerContent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: MAX_ITEMS,
+    };
+  }
+
+  render() {
+    return (
+      <View style={styles.menuStyle}>
+        <ScrollView>
+          <DrawerItem
+            labelStyle={{
+              ...styles.menuItemStyle,
+              fontWeight: 'bold',
+              fontSize: 30,
+            }}
+            label="View Groups"
+            onPress={() => {
+              this.props.navigation.navigate('Group List');
+            }}
+          />
+          <FlatList
+            data={groupList
+              .sort((group1, group2) => {
+                return group1.GroupName.localeCompare(group2.GroupName) > 0;
+              })
+              .slice(0, this.state.items)}
+            renderItem={({item}) => (
+              <DrawerItem
+                labelStyle={styles.menuItemStyle}
+                label={item.GroupName}
+                onPress={() => {
+                  this.props.navigation.navigate('Group Detail', {
+                    codeNum: item.GroupId,
+                  });
+                }}
+              />
+            )}
+          />
+          {this.state.items < groupList.length && (
             <DrawerItem
               labelStyle={styles.menuItemStyle}
-              label={item.GroupName}
+              label="..."
               onPress={() => {
-                props.navigation.navigate('Group Detail', {
-                  codeNum: item.GroupId,
-                });
+                this.setState(prev => ({items: prev.items + MAX_ITEMS}));
               }}
             />
           )}
-        />
-        <DrawerItem
-          labelStyle={styles.menuItemStyle}
-          label="&#x2295; Create Group"
+          <DrawerItem
+            labelStyle={styles.menuItemStyle}
+            label="&#x2295; Create Group"
+            onPress={() => {
+              this.props.navigation.push('Create Group');
+              this.props.navigation.navigate('Create Group');
+            }}
+          />
+          <DrawerItem
+            labelStyle={styles.menuItemStyle}
+            label="&#x2295; Join Group"
+            onPress={() => {
+              this.props.navigation.navigate('Group Code');
+            }}
+          />
+        </ScrollView>
+        <Button
+          light
+          style={styles.logoutStyle}
           onPress={() => {
-            props.navigation.push('Create Group');
-            props.navigation.navigate('Create Group');
-          }}
-        />
-        <DrawerItem
-          labelStyle={styles.menuItemStyle}
-          label="&#x2295; Join Group"
-          onPress={() => {
-            props.navigation.navigate('Group Code');
-          }}
-        />
-      </ScrollView>
-      <Button
-        light
-        style={styles.logoutStyle}
-        onPress={() => {
-          GoogleSignin.revokeAccess();
-          GoogleSignin.signOut();
-          props.logoutUser();
-          props.navigation.dispatch(DrawerActions.closeDrawer());
-          props.navigation.navigate('Home');
-        }}>
-        <Text>Log out</Text>
-      </Button>
-    </View>
-  );
+            GoogleSignin.revokeAccess();
+            GoogleSignin.signOut();
+            this.props.logoutUser();
+            this.props.navigation.dispatch(DrawerActions.closeDrawer());
+            this.props.navigation.navigate('Home');
+          }}>
+          <Text>Log out</Text>
+        </Button>
+      </View>
+    );
+  }
 }
 
 class DrawerNavigator extends Component {
