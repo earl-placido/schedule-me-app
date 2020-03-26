@@ -104,12 +104,12 @@ export class NavigationBar extends Component {
           />
         }
       >
-        <div className="username">{this.props.userName}</div>
+        <div id="username">{this.props.userName}</div>
       </Dropdown.Button>
     ) : (
       <div>
         <Button
-          className="auth-button"
+          id="auth-button"
           onClick={() => {
             this.props.toggleModal(true);
           }}
@@ -121,7 +121,7 @@ export class NavigationBar extends Component {
 
     return (
       <Header style={headerStyle}>
-        <div className="logo" />
+        <div id="logo" />
         <Menu
           theme="dark"
           mode="horizontal"
@@ -132,7 +132,7 @@ export class NavigationBar extends Component {
         <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
           <Col style={oldAntColStyle}>
             <Dropdown overlay={groupMenu} placement="bottomCenter">
-              <Button className="dropdown-button">
+              <Button id="dropdown-button">
                 Groups <DownOutlined />
               </Button>
             </Dropdown>
@@ -149,7 +149,7 @@ export class NavigationBar extends Component {
           </Col>
           <Col flex="auto"></Col>
           <Col flex="100px">
-            <div className="masthead-user">{userNavigation}</div>
+            <div id="masthead-user">{userNavigation}</div>
           </Col>
         </Row>
         <Modal

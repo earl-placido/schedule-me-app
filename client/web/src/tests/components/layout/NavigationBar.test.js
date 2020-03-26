@@ -31,13 +31,13 @@ describe("Testing the <NavigationBar />", () => {
     });
 
     it("Tests if child componets render without error", () => {
-      expect(component.find(".logo")).toHaveLength(1);
+      expect(component.find("#logo")).toHaveLength(1);
       expect(component.find(Menu)).toHaveLength(1);
       expect(component.find(Row)).toHaveLength(1);
-      expect(component.find(".masthead-user")).toHaveLength(1);
+      expect(component.find("#masthead-user")).toHaveLength(1);
       expect(component.find(".nav-button")).toHaveLength(2);
       expect(component.find(Dropdown)).toHaveLength(1);
-      expect(component.find(".dropdown-button")).toHaveLength(1);
+      expect(component.find("#dropdown-button")).toHaveLength(1);
       expect(component.find(Modal)).toHaveLength(1);
     });
 
@@ -60,8 +60,8 @@ describe("Testing the <NavigationBar />", () => {
     });
 
     it("Testing the auth options displayed", () => {
-      expect(component.find(".auth-button")).toHaveLength(1);
-      component.find(".auth-button").simulate("click");
+      expect(component.find("#auth-button")).toHaveLength(1);
+      component.find("#auth-button").simulate("click");
       expect(props.toggleModal.mock.calls.length).toBe(1);
     });
   });
@@ -81,10 +81,10 @@ describe("Testing the <NavigationBar />", () => {
     });
 
     it("Checks if user details render when logged in", () => {
-      expect(component.find(".auth-button")).toHaveLength(0);
+      expect(component.find("#auth-button")).toHaveLength(0);
       expect(component.find(Dropdown.Button)).toHaveLength(1);
-      expect(component.find(".username")).toHaveLength(1);
-      expect(component.find(".username").text()).toEqual(props.userName);
+      expect(component.find("#username")).toHaveLength(1);
+      expect(component.find("#username").text()).toEqual(props.userName);
       expect(component.find(Dropdown).prop("overlay").props.dataSource).toEqual(
         props.groupList
       );
