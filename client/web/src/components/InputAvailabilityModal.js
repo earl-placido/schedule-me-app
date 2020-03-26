@@ -81,20 +81,26 @@ class InputAvailabilityModal extends Component {
   }
 
   dateCellRender = value => {
-    const availability = this.props.availableDays[value.day()];
-    if (availability === undefined) return;
+    const availabilities = this.props.availabilities[value.format('YYYY-MM-DD')];
+    
+    if (availabilities === undefined) return;
+
     return (
       <ul className="events">
-        {availability.map((item, index) => (
+        {availabilities.map((item, index) => {
+          const startTime = moment(item['CAST(StartTime as char)']).format("HH:mm");
+          const endTime = moment(item['CAST(EndTime as char)']).format("HH:mm");
+          
+          return (
           <li key={index}>
             <Badge
               status={"success"}
               text={
-                item[1][0].format("HH:mm") + "-" + item[1][1].format("HH:mm")
+                startTime + "-" + endTime
               }
             />
           </li>
-        ))}
+        )})}
       </ul>
     );
   };
@@ -225,6 +231,7 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     rangeHours,
     selectedDate,
     availableDays,
+    availabilities,
     groupInformation,
     memberId,
     showErrorModal
@@ -234,6 +241,7 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     rangeHours,
     selectedDate,
     availableDays,
+    availabilities,
     groupInformation,
     memberId,
     showErrorModal

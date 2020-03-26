@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from 'moment';
 
 import { getMemberIdWithEmail } from "../GroupMember.action";
 import {
@@ -25,29 +26,34 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
       getMemberIdWithEmail(groupId, localStorage.getItem("userEmail")).then(
         groupMember => {
           const memberId = groupMember.GroupMemberId;
-          getAvailabilityQuery(memberId).then(availability => {
-            if (availability.error) {
+          getAvailabilityQuery(memberId).then(availabilities => {
+            if (availabilities.error) {
               dispatch({
                 type: GROUP_INFORMATION,
                 payload: {
                   memberId,
                   groupInformation: groupInformation.data,
-                  availableDays: {}
+                  availabilities: []
                 }
               });
               return;
             }
-            const newAvailableDays = convertAvailabilityToDays(
-              availableDays,
-              availability
-            );
+            // formattedAvailability: {date: [{id, starttime, endtime}, {id, starttime, endtime}, {id, starttime, endtime}, ...], date2: ..., date3: ... }
+            let formattedAvailability = {};
+            for (const availability of availabilities) {
+              const date = moment(availability['CAST(StartTime as char)']).format('YYYY-MM-DD');
+              if (formattedAvailability[date] === undefined)
+                formattedAvailability[date] = [availability];
+              else
+                formattedAvailability[date].push(availability);
+            }
 
             dispatch({
               type: GROUP_INFORMATION,
               payload: {
                 groupInformation: groupInformation.data,
                 memberId,
-                availableDays: newAvailableDays
+                availabilities: formattedAvailability
               }
             });
           });
@@ -244,6 +250,7 @@ const INITIAL_STATE = {
   rangeHours: [""],
   selectedDate: "",
   availableDays: {},
+  availabilities: {},
   groupInformation: "",
   memberId: "",
   showErrorModal: false
