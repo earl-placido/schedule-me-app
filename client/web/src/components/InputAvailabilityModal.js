@@ -48,7 +48,7 @@ class InputAvailabilityModal extends Component {
       this.props.memberId,
       this.props.selectedDate,
       this.props.rangeHours,
-      this.props.availableDays
+      this.props.availabilities
     );
   };
 

@@ -19,7 +19,7 @@ export const ADD_RANGE = "add_range";
 export const CHANGE_RANGE = "change_range";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 
-export const getInformation = (groupId, availableDays) => async dispatch => {
+export const getInformation = (groupId) => async dispatch => {
   axios
     .get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`)
     .then(groupInformation => {
@@ -158,7 +158,7 @@ export const addAvailability = (
   memberId,
   selectedDate,
   rangeHours,
-  availableDays
+  availabilities
 ) => async dispatch => {
   //currently doesn't check for clashing of time
 
@@ -176,13 +176,12 @@ export const addAvailability = (
     return item !== "";
   });
 
-  const day = selectedDate.day();
-  const availabilityIds = filteredRangeHours.map(item => item[0]);
+  const availabilityIds = filteredRangeHours.map(item => item.AvailabilityId);
   const startTimes = filteredRangeHours.map(item => {
-    if (item[1]) return item[1][0].format("YYYY-MM-DD HH:mm:ss");
+    return item['CAST(StartTime as char)'];
   });
   const endTimes = filteredRangeHours.map(item => {
-    if (item[1]) return item[1][1].format("YYYY-MM-DD HH:mm:ss");
+    return item['CAST(EndTime as char)'];
   });
 
   await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes)
@@ -190,16 +189,15 @@ export const addAvailability = (
       // update the ids of rangeHours after getting the availbilityId from database
       for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
         if (addedAvailabilityIds.data.ids[i] !== 0)
-          filteredRangeHours[i][0] = addedAvailabilityIds.data.ids[i];
+          filteredRangeHours[i].AvailabilityId = addedAvailabilityIds.data.ids[i];
       }
-      availableDays[day] = filteredRangeHours;
-
+      availabilities[selectedDate.format('YYYY-MM-DD')] = filteredRangeHours;
       dispatch({
         type: ADD_AVAILABILITY,
         payload: {
-          availableDays,
           modalVisible: false,
-          rangeHours: filteredRangeHours
+          rangeHours: filteredRangeHours,
+          availabilities
         }
       });
     })
@@ -228,7 +226,8 @@ export const onChangeRange = (index, value, rangeHours) => {
   if (value === null) {
     newRangeHours[index] = "";
   } else {
-    newRangeHours[index] = [-1, value];
+    newRangeHours[index] = {AvailabilityId: -1, 'CAST(StartTime as char)': value[0].format('YYYY-MM-DD HH:mm:ss'), 
+  'CAST(EndTime as char)': value[1].format('YYYY-MM-DD HH:mm:ss')};
   }
 
   return {
