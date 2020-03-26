@@ -22,19 +22,9 @@ export const SELECT_MEETING_ID = "select_meeting_id";
 export const SELECT_OPTIMAL_TIME = "select_optimal_time";
 export const SET_OPTIMAL_TIME = "set_optimal_time";
 
-const NUMBER_TO_DATE = [
-  "2020-03-22",
-  "2020-03-23",
-  "2020-03-24",
-  "2020-03-25",
-  "2020-03-26",
-  "2020-03-27",
-  "2020-03-28"
-];
-
 const formatDateToString = (startTime, endTime) => {
   //starttime and endtime is in moment format
-  const day = startTime.format("dddd");
+  const day = startTime.format("YYYY-MM-DD(dddd)");
   const startTimeString = startTime.format("HH:mm");
   const endTimeString = endTime.format("HH:mm");
   const meetingAvailableString = `${day} ${startTimeString} - ${endTimeString}`;
@@ -113,8 +103,7 @@ export const setOptimalTime = (
   }
 
   const optimalTimeInfo = optimalTime[0].split(":");
-  const currentDay = optimalTimeInfo[0];
-  const date = NUMBER_TO_DATE[currentDay];
+  const date = optimalTimeInfo[0];
 
   const startEndInfo = optimalTimeInfo[1].split("_");
   let startTime =
