@@ -30,7 +30,7 @@ const { RangePicker } = TimePicker;
 
 class InputAvailabilityModal extends Component {
   onSelect = value => {
-    this.props.selectDate(value, this.props.availableDays);
+    this.props.selectDate(value, this.props.availabilities);
     if (
       value.year() === this.props.selectedDate.year() &&
       value.month() === this.props.selectedDate.month()
@@ -108,8 +108,8 @@ class InputAvailabilityModal extends Component {
   componentDidMount() {
     const groupId = parseInt(window.location.pathname.split("/")[2]);
 
-    // otherwise addAvailability button would show that date is undefined
-    if (!this.props.selectedDate) this.props.selectDate(moment());
+    // otherwise pressing addAvailability button would show that date is undefined
+    if (!this.props.selectedDate) this.props.selectDate(moment(), this.props.availabilities);
     if (!this.props.groupInformation)
       this.props.getInformation(groupId, this.props.availableDays);
   }
@@ -160,7 +160,13 @@ class InputAvailabilityModal extends Component {
           </h2>
           <h3 className="modal-header">Input availability time</h3>
           {this.props.rangeHours.map((item, index) => {
-            const value = item[1] || "";
+            let value = null;
+            
+            if (item) {
+              const startTime = moment(item['CAST(StartTime as char)']) || null;
+              const endTime = moment(item['CAST(EndTime as char)']) || null;
+              value = [startTime, endTime];
+            }
             return (
               <div key={index} className="range-picker">
                 <RangePicker

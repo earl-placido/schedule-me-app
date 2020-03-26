@@ -70,11 +70,10 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     });
 };
 
-export const selectDate = (selectedDate, availableDays) => {
-  const day = selectedDate.day();
-
+export const selectDate = (selectedDate, availabilities) => {
   let rangeHours = [""];
-  if (availableDays !== undefined) rangeHours = availableDays[day] || [""];
+  const date = selectedDate.format("YYYY-MM-DD");
+  if (availabilities[date] !== undefined) rangeHours = availabilities[date] || [""];
 
   return {
     type: SELECT_DATE,
