@@ -88,13 +88,16 @@ class CreateAccount extends Component {
       this.props.navigation.navigate('Drawer');
       this.toggleCreate();
     } else {
+      let message;
       if (this.props.message.errors) {
-        Alert.alert(this.props.message.errors[0].msg);
+        message = this.props.message.errors[0].msg;
       } else if (this.props.message.err) {
-        Alert.alert(this.props.message.err);
+        message = this.props.message.err;
       } else if (this.props.message) {
-        Alert.alert(this.props.message);
+        message = this.props.message;
       }
+
+      Alert.alert('Invalid input', message);
     }
   };
 
@@ -117,9 +120,12 @@ class CreateAccount extends Component {
 
         <Modal
           isVisible={this.state.isCreateVisible}
+          onRequestClose={this.toggleCreate}
           onBackdropPress={this.toggleCreate}
           accessibilityLabel={'CreateAccountModal'}>
-          <Card style={styles.modalStyle}>
+          <Card
+            style={styles.modalStyle}
+            accessibilityLabel={'CreateAccountForm'}>
             <Form
               ref={_form => (this.form = _form)}
               options={userOptions}

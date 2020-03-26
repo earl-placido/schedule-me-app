@@ -33,22 +33,26 @@
   * **Note**:  The ip address you put MUST be the same as the one you are using for your computer and phone.  If your two devices are using different ip addresses, you may not be able to connect to the local server.  
 
 
-  # Tests
+# Tests
 
-  ## Unit Tests
+## Unit Tests
 
-  ## System Tests
+## System Tests
 
-- How to run on Android:
+**These tests are made specifically for Android**
 
-  1. Install the following:
-      ```
-      npm install -g appium 
-      npm install -g appium-doctor
-      npm install -g webdriverio
-      ```
-  2. Run the app on your device (i.e. `npx react-native run-android`)
-  
-  3. While in `client/mobile`, run: `(appium & wdio run wdio.conf.js)`
+How to run:
 
-     - If appium takes too long to initialize, run `appium` in its own separate instance and run `wdio run wdio.conf.js` in another
+1. Install the following:
+
+    ```
+    npm install -g appium
+    ```
+
+    And make sure to do an `npm install`
+
+2. Run the app on your device (i.e. `npx react-native run-android`)
+
+3. While in `client/mobile`, run: `(appium & wdio run wdio.conf.js)`
+
+    - If appium takes too long to initialize, run `appium` in its own separate instance and run `wdio run wdio.conf.js` in another instance

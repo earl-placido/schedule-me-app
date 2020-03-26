@@ -10,14 +10,12 @@ exports.config = {
       platformName: 'Android',
       appPackage: 'com.schedulemeup',
       appActivity: '.MainActivity',
-      automationName: 'Appium',
     },
   ],
   sync: true,
   coloredLogs: true,
-  logLevel: 'warn',
+  logLevel: 'error',
   bail: 0,
-  screenshotPath: './__system_tests_errors__/',
   waitforTimeout: 10000,
   connectionRetryTimeout: 90000,
   connectionRetryCount: 3,
@@ -28,7 +26,9 @@ exports.config = {
       if (passed) {
         return;
       }
-      browser.saveScreenshot(`assertionError_${assertion.error.message}.png`);
+      browser.saveScreenshot(
+        `./__system_tests_errors__/assertionError_${assertion.error.message}.png`,
+      );
     },
   },
 };
