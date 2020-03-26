@@ -9,7 +9,7 @@ import { convertAvailabilityToDays } from "../util/date/day";
 
 export const GROUP_INFORMATION = "group_information";
 export const SELECT_DATE = "select_date";
-export const SHOW_MODAL = "show_modal";
+export const SHOW_MODAL = "show_availability_modal";
 export const GET_AVAILABILITY = "get_availability";
 export const CANCEL_AVAILABILITY = "cancel_availability";
 export const DELETE_AVAILABILITY = "delete_availability";
@@ -19,11 +19,12 @@ export const CHANGE_RANGE = "change_range";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getInformation = (groupId, availableDays) => async dispatch => {
-  await axios
+  axios
     .get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`)
     .then(groupInformation => {
       getMemberIdWithEmail(groupId, localStorage.getItem("userEmail")).then(
-        memberId => {
+        groupMember => {
+          const memberId = groupMember.GroupMemberId;
           getAvailabilityQuery(memberId).then(availability => {
             if (availability.error) {
               dispatch({
