@@ -9,7 +9,10 @@ import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
 import Modal from 'react-native-modal';
 import InputAvailabilityModal from '../../inputavailability/InputAvailabilityModal';
 
-import {getGroup} from '../../../actions/screens/GetGroup.action';
+import {
+  getGroup,
+  toggleInputAvailability,
+} from '../../../actions/screens/GetGroup.action';
 import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
 
 const actions = [
@@ -31,7 +34,6 @@ class GroupDetail extends Component {
     super(props);
     this.state = {
       dialogVisible: false,
-      isInputAvailabilityVisible: false,
       currUser: {
         UserFName: 'INVALID USER',
         UserLName: 'INVALID USER',
@@ -45,12 +47,6 @@ class GroupDetail extends Component {
 
   handleClose = () => {
     this.setState({dialogVisible: false});
-  };
-
-  toggleInputAvailability = () => {
-    this.setState({
-      isInputAvailabilityVisible: !this.state.isInputAvailabilityVisible,
-    });
   };
 
   render() {
@@ -115,13 +111,19 @@ class GroupDetail extends Component {
 
         <FloatingAction
           actions={actions}
-          onPressItem={() => this.toggleInputAvailability()}
+          onPressItem={() =>
+            this.props.toggleInputAvailability(
+              this.props.isInputAvailabilityVisible,
+            )
+          }
         />
 
         <Modal
-          isVisible={this.state.isInputAvailabilityVisible}
+          isVisible={this.props.isInputAvailabilityVisible}
           onBackdropPress={() => {
-            this.toggleInputAvailability();
+            this.props.toggleInputAvailability(
+              this.props.isInputAvailabilityVisible,
+            );
           }}>
           <InputAvailabilityModal />
         </Modal>
@@ -169,9 +171,9 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = ({GetGroupReducer, GetGroupMembersReducer}) => {
-  const {group} = GetGroupReducer;
+  const {group, isInputAvailabilityVisible} = GetGroupReducer;
   const {groupMembers} = GetGroupMembersReducer;
-  return {group, groupMembers};
+  return {group, isInputAvailabilityVisible, groupMembers};
 };
 
 GroupDetail.propTypes = {
@@ -179,11 +181,16 @@ GroupDetail.propTypes = {
   params: PropTypes.any,
   codeNum: PropTypes.any,
   group: PropTypes.any,
+  isInputAvailabilityVisible: PropTypes.any,
+
   groupMembers: PropTypes.array,
   getGroup: PropTypes.func,
   getGroupMembers: PropTypes.func,
+  toggleInputAvailability: PropTypes.func,
 };
 
-export default connect(mapStateToProps, {getGroupMembers, getGroup})(
-  GroupDetail,
-);
+export default connect(mapStateToProps, {
+  getGroupMembers,
+  getGroup,
+  toggleInputAvailability,
+})(GroupDetail);
