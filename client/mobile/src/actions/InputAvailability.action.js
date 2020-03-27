@@ -2,6 +2,7 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {getGroupMemberIdWithEmail} from '../actions/screens/GetGroupMembers.action';
+import {getAvailabilites, addAvailabilityQuery, deleteAvailabilityQuery} from '../actions/Availability.action';
 
 export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
@@ -26,13 +27,42 @@ export const setAvailabilities = groupId => async dispatch => {
   const userEmail = await AsyncStorage.getItem('userEmail');
 
   const groupMemberId = await getGroupMemberIdWithEmail(groupId, userEmail);
-  console.log(groupMemberId);
+  const availabilities = await getAvailabilites(groupMemberId);
+
+  // no availability for user
+  if (availabilities.error) {
+    dispatch({
+      type: SET_AVAILABILITIES,
+      payload: {
+        availabilities: {},
+        groupMemberId: groupMemberId
+      },
+    });
+    return;
+  }
+
+  let formattedAvailabilities = {};
+
+  for (const availability of availabilities) {
+    const date = moment(availability["CAST(StartTime as char)"]).format("YYYY-MM-DD");
+    if (formattedAvailabilities[date] === undefined)
+    {
+      formattedAvailabilities[date] = [availability];
+    } else {
+      formattedAvailabilities[date].push(availability);
+    }
+  }
+
+  dispatch(markDates(formattedAvailabilities));
+
   dispatch({
     type: SET_AVAILABILITIES,
     payload: {
-      availabilities: null,
+      availabilities: formattedAvailabilities,
+      groupMemberId: groupMemberId
     },
   });
+  return;
 };
 
 // sets the date that the user clicked on from the calendar and retrieve range of hours the user is availabile for on that date
@@ -43,8 +73,7 @@ export const selectDate = (selectedDate, availabilities) => {
 
   // retrieve range hours for date if user previously added an availability for that date
   if (availabilities !== undefined) {
-    rangeHours =
-      availabilities[date] !== undefined ? availabilities[date] : [[]];
+    rangeHours = availabilities[date] || [[]];
   }
 
   return {
@@ -81,6 +110,7 @@ export const cancelAvailability = rangeHours => {
 
 // add specified range hour to range hours array: [[-1, startTime, endTime], [-1, startTime, endTime], ...]
 export const handleChangeRangeHour = (
+  selectedTime,
   selectedDate,
   index,
   startOrEndTimeIndex,
@@ -88,18 +118,28 @@ export const handleChangeRangeHour = (
 ) => {
   let newRangeHours = [...rangeHours];
 
+  // deleted value
+  if (selectedTime === null)
+  {
+    newRangeHours[index] = []
+  } else {
   // -1 represents the group member id.  Right now, set it to -1 and will change to actual member availability later
-  newRangeHours[index][startOrEndTimeIndex] = [-1, selectedDate];
+    let availabilityId = -1;
+    let startTime = startOrEndTimeIndex == 0 ? selectedDate.dateString + " " + convertTo24Hours(selectedTime) : rangeHours[index]["CAST(StartTime as char)"];
+    let endTime = startOrEndTimeIndex == 1 ? selectedDate.dateString + " " + convertTo24Hours(selectedTime) : rangeHours[index]["CAST(EndTime as char)"];
 
-  // swap values if start time is later than end time
-  let startAndEndTimeDefined =
-    newRangeHours[index][0] && newRangeHours[index][1];
+    // swap both defined, ensure startTime is before endTime
+    if (startTime && endTime && startTime > endTime)
+    {
+      let temp = startTime;
+      startTime = endTime;
+      endTime = temp;
+    }
 
-  if (startAndEndTimeDefined) {
-    let startTime = newRangeHours[index][0][1];
-    let endTime = newRangeHours[index][1][1];
-    if (startTime > endTime) {
-      swapStartAndEndTime(newRangeHours, index);
+    newRangeHours[index] = {
+      AvailabilityId: availabilityId,
+      "CAST(StartTime as char)": startTime,
+      "CAST(EndTime as char)": endTime
     }
   }
 
@@ -109,13 +149,34 @@ export const handleChangeRangeHour = (
   };
 };
 
-const swapStartAndEndTime = (newRangeHours, index) => {
-  let startTime = newRangeHours[index][0][1];
-  let endTime = newRangeHours[index][1][1];
+const convertTo24Hours = (time) => {
+  let hours = parseInt(time.split(' ')[0].split(':')[0]);
+  let minutes = parseInt(time.split(' ')[0].split(':')[1]);
+  const abbreviation = time.split(' ')[1];
 
-  newRangeHours[index][0][1] = endTime;
-  newRangeHours[index][1][1] = startTime;
-};
+  if (abbreviation === "PM" && hours < 12)
+  {
+    hours += 12;
+  } else if (abbreviation === "AM" && hours === 12)
+  {
+    hours = 0;
+  }
+
+  let sHours = hours.toString();
+  let sMinutes = minutes.toString();
+
+  if (hours < 10)
+  {
+    sHours = '0' + sHours;
+  }
+
+  if (minutes < 10)
+  {
+    sMinutes = '0' + sMinutes;
+  }
+
+  return sHours + ':' + sMinutes;
+}
 
 // when user clicks OK, add the inputted range of hours to availabileDay object
 /*
@@ -126,6 +187,7 @@ const swapStartAndEndTime = (newRangeHours, index) => {
   }
 */
 export const addAvailability = (
+  groupMemberId,
   selectedDate,
   rangeHours,
   availabilities,
@@ -161,12 +223,32 @@ export const addAvailability = (
     });
     return;
   }
+  const availabilityIds = filteredRangeHours.map(rangeHour => rangeHour.AvailabilityId);
+  const startTimes = filteredRangeHours.map(rangeHour => {
+    return rangeHour["CAST(StartTime as char)"];
+  });
 
-  // we have at least one non empty range hour, so add it to availabilities object
+  const endTimes = filteredRangeHours.map(rangeHour => {
+    return rangeHour["CAST(EndTime as char)"];
+  });
+  
+  const addedAvailabilityIds = await addAvailabilityQuery(groupMemberId, availabilityIds, startTimes, endTimes);
+
+  // set the range hours to the correct availability ids
+  for (let i = 0; i < addedAvailabilityIds.length; i++)
+  {
+    if (addedAvailabilityIds[i] !== 0)
+    {
+      filteredRangeHours[i].AvailabilityId = addedAvailabilityIds[i];
+    }
+  }
+
   // date will act as a key and the range hours will be the values for that key
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
   availabilities[date] = filteredRangeHours;
 
+  dispatch(markDates(availabilities));
+  
   dispatch({
     type: ADD_AVAILABILITY,
     payload: {
@@ -191,56 +273,68 @@ export const deleteAvailability = (
   availabilities,
   index,
   selectedDate,
-) => {
+) => async dispatch => {
   // copy given range hours and remove entry using the given index
   let newRangeHours = [...rangeHours];
   const removedRangeHour = newRangeHours.splice(index, 1);
 
-  // if a range hour was actually removed...
+  // // if a range hour was actually removed...
   if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0) {
-    // TO DO: delete from database
+    const response = await deleteAvailabilityQuery(removedRangeHour[0].AvailabilityId);
+
+    // handle error if there is
+    if (response.error) {
+      dispatch({
+        type: DELETE_AVAILABILITY,
+        payload: newRangeHours
+      })
+      return;
+    }
 
     // check if availabilities had that range hour as a value for the selected date
     if (availabilities !== undefined) {
       if (availabilities[selectedDate.dateString] !== undefined) {
-        availabilities[selectedDate.dateString].splice(index, 1);
+        availabilities[selectedDate.dateString] = newRangeHours
 
         // if selectedDate no longer has any range hours, then completely delete the entry in the object.  This should also remove the marking from the calendar
         if (availabilities[selectedDate.dateString].length === 0) {
           delete availabilities[selectedDate.dateString];
+          dispatch(markDates(availabilities));
         }
       }
     }
   }
 
-  return {
+  dispatch ({
     type: DELETE_AVAILABILITY,
     payload: {
       rangeHours: newRangeHours,
       availabilities: availabilities,
     },
-  };
+  });
 };
 
 // mark the dates that the user is available on, which is used to render dots in the calendar
 export const markDates = availabilities => {
+  let markedDates = {};
+
   if (availabilities !== undefined) {
     // make copy of available days object
-    let markedDates = {};
+
     for (var date in availabilities) markedDates[date] = availabilities[date];
 
     // mark each date
     for (var day in availabilities) {
       markedDates[day] = {marked: true};
     }
-
-    return {
-      type: MARK_DATES,
-      payload: {
-        markedDates: markedDates,
-      },
-    };
   }
+
+  return {
+    type: MARK_DATES,
+    payload: {
+      markedDates: markedDates,
+    },
+  };
 };
 
 export default (state = INITIAL_STATE, action) => {

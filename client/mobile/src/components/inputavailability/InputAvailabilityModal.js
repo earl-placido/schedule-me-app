@@ -10,6 +10,7 @@ import {
   selectDate,
   showModal,
   setAvailabilities,
+  markDates,
 } from '../../actions/InputAvailability.action';
 import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
 
@@ -77,10 +78,12 @@ InputAvailabilityModal.propTypes = {
   markedDates: PropTypes.any,
   groupId: PropTypes.any,
   isInputAvailabilityVisible: PropTypes.any,
+
   selectDate: PropTypes.func,
   showModal: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
   setAvailabilities: PropTypes.func,
+  markDates: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
@@ -88,4 +91,5 @@ export default connect(mapStateToProps, {
   showModal,
   toggleInputAvailability,
   setAvailabilities,
+  markDates
 })(InputAvailabilityModal);
