@@ -1,4 +1,7 @@
 import moment from 'moment';
+import AsyncStorage from '@react-native-community/async-storage';
+
+import {getGroupMemberIdWithEmail} from '../actions/screens/GetGroupMembers.action';
 
 export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
@@ -8,6 +11,7 @@ export const ADD_RANGE_HOUR = 'add_range_hour';
 export const CANCEL_AVAILABILITY = 'cancel_availability';
 export const MARK_DATES = 'mark_dates';
 export const DELETE_AVAILABILITY = 'delete_availability';
+export const SET_AVAILABILITIES = 'set_availabilities';
 
 const INITIAL_STATE = {
   selectedDate: '',
@@ -15,7 +19,20 @@ const INITIAL_STATE = {
   rangeHours: [[]],
   availabilities: {},
   markedDates: {},
-  groupMemberId: ''
+  groupMemberId: '',
+};
+
+export const setAvailabilities = groupId => async dispatch => {
+  const userEmail = await AsyncStorage.getItem('userEmail');
+
+  const groupMemberId = await getGroupMemberIdWithEmail(groupId, userEmail);
+  console.log(groupMemberId);
+  dispatch({
+    type: SET_AVAILABILITIES,
+    payload: {
+      availabilities: null,
+    },
+  });
 };
 
 // sets the date that the user clicked on from the calendar and retrieve range of hours the user is availabile for on that date
@@ -26,7 +43,8 @@ export const selectDate = (selectedDate, availabilities) => {
 
   // retrieve range hours for date if user previously added an availability for that date
   if (availabilities !== undefined) {
-    rangeHours = availabilities[date] !== undefined ? availabilities[date] : [[]];
+    rangeHours =
+      availabilities[date] !== undefined ? availabilities[date] : [[]];
   }
 
   return {
@@ -249,6 +267,9 @@ export default (state = INITIAL_STATE, action) => {
       return {...state, ...action.payload};
     }
     case DELETE_AVAILABILITY: {
+      return {...state, ...action.payload};
+    }
+    case SET_AVAILABILITIES: {
       return {...state, ...action.payload};
     }
     default:

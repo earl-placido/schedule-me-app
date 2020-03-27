@@ -125,7 +125,7 @@ class GroupDetail extends Component {
               this.props.isInputAvailabilityVisible,
             );
           }}>
-          <InputAvailabilityModal groupId = {this.props.route.params.codeNum} />
+          <InputAvailabilityModal groupId={this.props.route.params.codeNum} />
         </Modal>
 
         <Dialog.Container
