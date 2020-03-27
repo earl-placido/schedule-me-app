@@ -13,19 +13,20 @@ const INITIAL_STATE = {
   selectedDate: '',
   modalVisible: false,
   rangeHours: [[]],
-  availableDays: {},
+  availabilities: {},
   markedDates: {},
+  groupMemberId: ''
 };
 
 // sets the date that the user clicked on from the calendar and retrieve range of hours the user is availabile for on that date
-export const selectDate = (selectedDate, availableDays) => {
+export const selectDate = (selectedDate, availabilities) => {
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
 
   let rangeHours = [[]];
 
   // retrieve range hours for date if user previously added an availability for that date
-  if (availableDays !== undefined) {
-    rangeHours = availableDays[date] !== undefined ? availableDays[date] : [[]];
+  if (availabilities !== undefined) {
+    rangeHours = availabilities[date] !== undefined ? availabilities[date] : [[]];
   }
 
   return {
@@ -101,7 +102,7 @@ const swapStartAndEndTime = (newRangeHours, index) => {
 // when user clicks OK, add the inputted range of hours to availabileDay object
 /*
   e.g. 
-  availableDays: {
+  availabilities: {
     "1998-31-01": [[-1, startTime, endTime], [-1, startTime, endTime]]
     "2020-03-24": [[-1, startTime, endTime], [-1, startTime, endTime], [-1, startTime, endTime], [-1, startTime, endTime]]
   }
@@ -109,7 +110,7 @@ const swapStartAndEndTime = (newRangeHours, index) => {
 export const addAvailability = (
   selectedDate,
   rangeHours,
-  availableDays,
+  availabilities,
 ) => async dispatch => {
   // TODO: Add availabilityId to range hours
 
@@ -143,15 +144,15 @@ export const addAvailability = (
     return;
   }
 
-  // we have at least one non empty range hour, so add it to availableDays object
+  // we have at least one non empty range hour, so add it to availabilities object
   // date will act as a key and the range hours will be the values for that key
   const date = moment(selectedDate.dateString).format('YYYY-MM-DD');
-  availableDays[date] = filteredRangeHours;
+  availabilities[date] = filteredRangeHours;
 
   dispatch({
     type: ADD_AVAILABILITY,
     payload: {
-      availableDays,
+      availabilities,
       modalVisible: false,
       rangeHours: filteredRangeHours,
     },
@@ -169,7 +170,7 @@ export const addRangeHour = rangeHours => {
 // delete availability from availableDay object
 export const deleteAvailability = (
   rangeHours,
-  availableDays,
+  availabilities,
   index,
   selectedDate,
 ) => {
@@ -181,14 +182,14 @@ export const deleteAvailability = (
   if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0) {
     // TO DO: delete from database
 
-    // check if availableDays had that range hour as a value for the selected date
-    if (availableDays !== undefined) {
-      if (availableDays[selectedDate.dateString] !== undefined) {
-        availableDays[selectedDate.dateString].splice(index, 1);
+    // check if availabilities had that range hour as a value for the selected date
+    if (availabilities !== undefined) {
+      if (availabilities[selectedDate.dateString] !== undefined) {
+        availabilities[selectedDate.dateString].splice(index, 1);
 
         // if selectedDate no longer has any range hours, then completely delete the entry in the object.  This should also remove the marking from the calendar
-        if (availableDays[selectedDate.dateString].length === 0) {
-          delete availableDays[selectedDate.dateString];
+        if (availabilities[selectedDate.dateString].length === 0) {
+          delete availabilities[selectedDate.dateString];
         }
       }
     }
@@ -198,20 +199,20 @@ export const deleteAvailability = (
     type: DELETE_AVAILABILITY,
     payload: {
       rangeHours: newRangeHours,
-      availableDays: availableDays,
+      availabilities: availabilities,
     },
   };
 };
 
 // mark the dates that the user is available on, which is used to render dots in the calendar
-export const markDates = availableDays => {
-  if (availableDays !== undefined) {
+export const markDates = availabilities => {
+  if (availabilities !== undefined) {
     // make copy of available days object
     let markedDates = {};
-    for (var date in availableDays) markedDates[date] = availableDays[date];
+    for (var date in availabilities) markedDates[date] = availabilities[date];
 
     // mark each date
-    for (var day in availableDays) {
+    for (var day in availabilities) {
       markedDates[day] = {marked: true};
     }
 

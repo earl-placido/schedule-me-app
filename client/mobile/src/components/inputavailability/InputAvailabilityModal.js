@@ -12,13 +12,19 @@ import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
 import {connect} from 'react-redux';
 
 class InputAvailabilityModal extends Component {
+
+  componentDidMount() {
+    const groupId = this.props.groupId;
+    
+  }
+
   render() {
     return (
       <View>
         <Calendar
           minDate={moment(new Date()).format('YYYY-MM-DD')}
           onDayPress={day => {
-            this.props.selectDate(day, this.props.availableDays);
+            this.props.selectDate(day, this.props.availabilities);
             this.props.showModal();
           }}
           markedDates={this.props.markedDates}
@@ -48,7 +54,7 @@ const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
   const {
     selectedDate,
     modalVisible,
-    availableDays,
+    availabilities,
     markedDates,
   } = InputAvailabilityReducer;
   const {isInputAvailabilityVisible} = GetGroupReducer;
@@ -56,7 +62,7 @@ const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
   return {
     selectedDate,
     modalVisible,
-    availableDays,
+    availabilities,
     markedDates,
     isInputAvailabilityVisible,
   };
@@ -65,7 +71,7 @@ const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
 InputAvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
   modalVisible: PropTypes.any,
-  availableDays: PropTypes.any,
+  availabilities: PropTypes.any,
   markedDates: PropTypes.any,
   isInputAvailabilityVisible: PropTypes.any,
   selectDate: PropTypes.func,

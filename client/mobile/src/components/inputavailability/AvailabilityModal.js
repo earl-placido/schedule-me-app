@@ -55,7 +55,7 @@ class AvailabilityModal extends Component {
     this.decreaseHeight();
     this.props.deleteAvailability(
       this.props.rangeHours,
-      this.props.availableDays,
+      this.props.availabilities,
       index,
       this.props.selectedDate,
     );
@@ -120,10 +120,10 @@ class AvailabilityModal extends Component {
     this.props.addAvailability(
       this.props.selectedDate,
       this.props.rangeHours,
-      this.props.availableDays,
+      this.props.availabilities,
     );
 
-    this.props.markDates(this.props.availableDays);
+    this.props.markDates(this.props.availabilities);
   }
 
   foundUnfilledTime(rangeHours) {
@@ -213,19 +213,19 @@ class AvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate, rangeHours, availableDays} = InputAvailabilityReducer;
+  const {selectedDate, rangeHours, availabilities} = InputAvailabilityReducer;
 
   return {
     selectedDate,
     rangeHours,
-    availableDays,
+    availabilities,
   };
 };
 
 AvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
   rangeHours: PropTypes.any,
-  availableDays: PropTypes.any,
+  availabilities: PropTypes.any,
 
   cancelAvailability: PropTypes.func,
   handleChangeRangeHour: PropTypes.func,
