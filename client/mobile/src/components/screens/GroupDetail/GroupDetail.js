@@ -1,47 +1,19 @@
 import {FloatingAction} from 'react-native-floating-action';
 import Dialog from 'react-native-dialog';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
 import {View, FlatList, StyleSheet, Text} from 'react-native';
 import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
 import Modal from 'react-native-modal';
-
-import PropTypes from 'prop-types';
-
 import InputAvailabilityModal from '../../inputavailability/InputAvailabilityModal';
 
-const userList = [
-  {
-    UserFName: 'Renz',
-    UserLName: 'Cabusas',
-    UserEmail: 'renzCabusas@gmail.com',
-  },
-  {
-    UserFName: 'Brenna',
-    UserLName: 'Epp',
-    UserEmail: 'brennaEpp@gmail.com',
-  },
-  {
-    UserFName: 'Bonnie',
-    UserLName: 'Tang',
-    UserEmail: 'bonnieTang@gmail.com',
-  },
-  {
-    UserFName: 'Daryl',
-    UserLName: 'Fung',
-    UserEmail: 'darylFung@gmail.com',
-  },
-  {
-    UserFName: 'Jennifer',
-    UserLName: 'Seo',
-    UserEmail: 'jenniferSeo@gmail.com',
-  },
-  {
-    UserFName: 'Winnie',
-    UserLName: 'The Pooh',
-    UserEmail: 'poo@gmail.com',
-  },
-];
+import {
+  getGroup,
+  toggleInputAvailability,
+} from '../../../actions/screens/GetGroup.action';
+import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
 
 const actions = [
   {
@@ -52,12 +24,16 @@ const actions = [
   },
 ];
 
-export default class GroupDetail extends Component {
+class GroupDetail extends Component {
+  componentDidMount() {
+    this.props.getGroup(this.props.route.params.codeNum);
+    this.props.getGroupMembers(this.props.route.params.codeNum);
+  }
+
   constructor(props) {
     super(props);
     this.state = {
       dialogVisible: false,
-      isInputAvailabilityVisible: false,
       currUser: {
         UserFName: 'INVALID USER',
         UserLName: 'INVALID USER',
@@ -73,46 +49,56 @@ export default class GroupDetail extends Component {
     this.setState({dialogVisible: false});
   };
 
-  toggleInputAvailability = () => {
-    this.setState({
-      isInputAvailabilityVisible: !this.state.isInputAvailabilityVisible,
-    });
-  };
-
   render() {
     return (
-      <Container style={styles.containerStyle}>
-        <View style={{flexDirection: 'column'}}>
+      <Container>
+        {/* Display Group Details */}
+        <View style={styles.headerStyle}>
           <CardItem header>
-            <Body>
+            <Body style={{alignItems: 'center'}}>
+              <View style={{paddingBottom: 10}}>
+                <Text style={styles.titleStyle}>
+                  Group: {this.props.group.GroupName}
+                </Text>
+              </View>
+
+              <Text>GroupID: {this.props.group.GroupId}</Text>
+              <Text>Meeting Duration: {this.props.group.MeetingDuration}</Text>
               <Text>
-                This is the code num: Will use when server is connected:{' '}
-                {this.props.route.params.codeNum}
+                Meeting Location:{' '}
+                {this.props.group.MeetingLocation
+                  ? this.props.group.MeetingLocation
+                  : 'Not Specified'}
               </Text>
-              <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
-                Group Equilibrium
+              <Text>
+                Meeting Frequency:{' '}
+                {this.props.group.MeetingFrequency
+                  ? this.props.group.MeetingFrequency
+                  : 'Not Specified'}
               </Text>
-              <Text style={{fontSize: 15}}>Optimal Time: 12pm - 2pm</Text>
-              <Text style={{fontSize: 15}}>Optimal Date: October 26, 1985</Text>
             </Body>
           </CardItem>
         </View>
 
+        {/* Display Group Members */}
+        <CardItem>
+          <Body style={{alignItems: 'center'}}>
+            <Text style={styles.subHeaderStyle}>Group Members</Text>
+          </Body>
+        </CardItem>
+
         <Content>
-          <Card style={{flexDirection: 'column'}}>
+          <Card>
             <FlatList
               showsHorizontalScrollIndicator={true}
-              data={userList}
+              data={this.props.groupMembers}
               renderItem={({item}) => (
                 <View>
-                  <CardItem
-                    header
-                    bordered
-                    button
-                    onPress={() => this.showDialog(item)}>
+                  <CardItem header button onPress={() => this.showDialog(item)}>
+                    <Icon name="person" />
                     <Body>
-                      <Text style={{marginLeft: 5}}>
-                        {item.UserFName} {item.UserLName}
+                      <Text>
+                        {item.UserFName} {item.UserLName}{' '}
                       </Text>
                     </Body>
                   </CardItem>
@@ -125,13 +111,19 @@ export default class GroupDetail extends Component {
 
         <FloatingAction
           actions={actions}
-          onPressItem={() => this.toggleInputAvailability()}
+          onPressItem={() =>
+            this.props.toggleInputAvailability(
+              this.props.isInputAvailabilityVisible,
+            )
+          }
         />
 
         <Modal
-          isVisible={this.state.isInputAvailabilityVisible}
+          isVisible={this.props.isInputAvailabilityVisible}
           onBackdropPress={() => {
-            this.toggleInputAvailability();
+            this.props.toggleInputAvailability(
+              this.props.isInputAvailabilityVisible,
+            );
           }}>
           <InputAvailabilityModal />
         </Modal>
@@ -146,14 +138,7 @@ export default class GroupDetail extends Component {
             onPress={this.handleClose}
           />
 
-          <Dialog.Title
-            style={{
-              borderBottomColor: 'black',
-              borderBottomWidth: 0.5,
-              fontWeight: 'bold',
-            }}>
-            {this.state.currUser.UserFName}
-          </Dialog.Title>
+          <Dialog.Title>{this.state.currUser.UserFName}</Dialog.Title>
 
           <Dialog.Description>
             <Text style={{fontWeight: 'bold'}}>Full Name: </Text>{' '}
@@ -170,25 +155,42 @@ export default class GroupDetail extends Component {
 }
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    flex: 6,
-  },
-  buttonStyle: {
-    marginTop: 20,
-    padding: 20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-
-  viewCenter: {
+  headerStyle: {
     flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    borderBottomColor: 'black',
+    borderBottomWidth: 0.5,
+  },
+  titleStyle: {
+    fontWeight: 'bold',
+    fontSize: 25,
+  },
+  subHeaderStyle: {
+    fontWeight: 'bold',
+    fontSize: 18,
   },
 });
+
+const mapStateToProps = ({GetGroupReducer, GetGroupMembersReducer}) => {
+  const {group, isInputAvailabilityVisible} = GetGroupReducer;
+  const {groupMembers} = GetGroupMembersReducer;
+  return {group, isInputAvailabilityVisible, groupMembers};
+};
 
 GroupDetail.propTypes = {
   route: PropTypes.any,
   params: PropTypes.any,
   codeNum: PropTypes.any,
+  group: PropTypes.any,
+  isInputAvailabilityVisible: PropTypes.any,
+
+  groupMembers: PropTypes.array,
+  getGroup: PropTypes.func,
+  getGroupMembers: PropTypes.func,
+  toggleInputAvailability: PropTypes.func,
 };
+
+export default connect(mapStateToProps, {
+  getGroupMembers,
+  getGroup,
+  toggleInputAvailability,
+})(GroupDetail);
