@@ -83,7 +83,7 @@ InputAvailabilityModal.propTypes = {
   showModal: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
   setAvailabilities: PropTypes.func,
-  markDates: PropTypes.func
+  markDates: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
@@ -91,5 +91,5 @@ export default connect(mapStateToProps, {
   showModal,
   toggleInputAvailability,
   setAvailabilities,
-  markDates
+  markDates,
 })(InputAvailabilityModal);

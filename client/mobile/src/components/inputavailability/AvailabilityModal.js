@@ -72,8 +72,14 @@ class AvailabilityModal extends Component {
   }
 
   availabilityRender(rangeHour, index) {
-    let startTime = rangeHour["CAST(StartTime as char)"] !== undefined ? rangeHour["CAST(StartTime as char)"].split(' ')[1] : '';
-    let endTime = rangeHour["CAST(EndTime as char)"] !== undefined ? rangeHour["CAST(EndTime as char)"].split(' ')[1] : '';
+    let startTime =
+      rangeHour['CAST(StartTime as char)'] !== undefined
+        ? rangeHour['CAST(StartTime as char)'].split(' ')[1]
+        : '';
+    let endTime =
+      rangeHour['CAST(EndTime as char)'] !== undefined
+        ? rangeHour['CAST(EndTime as char)'].split(' ')[1]
+        : '';
 
     return (
       <View
@@ -130,7 +136,11 @@ class AvailabilityModal extends Component {
 
   foundUnfilledTime(rangeHours) {
     for (let i = 0; i < rangeHours.length; i++) {
-      if (rangeHours[i]["CAST(StartTime as char)"] === undefined || rangeHours[i]["CAST(EndTime as char)"] === undefined) 
+      // ignore any range hours that are both undefined
+      if (
+        rangeHours[i]['CAST(StartTime as char)'] === undefined ^
+        rangeHours[i]['CAST(EndTime as char)'] === undefined
+      )
         return true;
     }
 
@@ -216,7 +226,12 @@ class AvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate, rangeHours, availabilities, groupMemberId} = InputAvailabilityReducer;
+  const {
+    selectedDate,
+    rangeHours,
+    availabilities,
+    groupMemberId,
+  } = InputAvailabilityReducer;
 
   return {
     selectedDate,

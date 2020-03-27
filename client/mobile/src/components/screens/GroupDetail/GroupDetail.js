@@ -118,8 +118,7 @@ class GroupDetail extends Component {
           }
         />
 
-        <Modal
-          isVisible={this.props.isInputAvailabilityVisible}>
+        <Modal isVisible={this.props.isInputAvailabilityVisible}>
           <InputAvailabilityModal groupId={this.props.route.params.codeNum} />
         </Modal>
 

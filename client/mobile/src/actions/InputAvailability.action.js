@@ -2,7 +2,11 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {getGroupMemberIdWithEmail} from '../actions/screens/GetGroupMembers.action';
-import {getAvailabilites, addAvailabilityQuery, deleteAvailabilityQuery} from '../actions/Availability.action';
+import {
+  getAvailabilites,
+  addAvailabilityQuery,
+  deleteAvailabilityQuery,
+} from '../actions/Availability.action';
 
 export const SELECT_DATE = 'select_date';
 export const SHOW_MODAL = 'show_modal';
@@ -35,7 +39,7 @@ export const setAvailabilities = groupId => async dispatch => {
       type: SET_AVAILABILITIES,
       payload: {
         availabilities: {},
-        groupMemberId: groupMemberId
+        groupMemberId: groupMemberId,
       },
     });
     return;
@@ -43,10 +47,11 @@ export const setAvailabilities = groupId => async dispatch => {
 
   let formattedAvailabilities = {};
 
-  for (const availability of availabilities) {
-    const date = moment(availability["CAST(StartTime as char)"]).format("YYYY-MM-DD");
-    if (formattedAvailabilities[date] === undefined)
-    {
+  for (var availability of availabilities) {
+    const date = moment(availability['CAST(StartTime as char)']).format(
+      'YYYY-MM-DD',
+    );
+    if (formattedAvailabilities[date] === undefined) {
       formattedAvailabilities[date] = [availability];
     } else {
       formattedAvailabilities[date].push(availability);
@@ -59,10 +64,9 @@ export const setAvailabilities = groupId => async dispatch => {
     type: SET_AVAILABILITIES,
     payload: {
       availabilities: formattedAvailabilities,
-      groupMemberId: groupMemberId
+      groupMemberId: groupMemberId,
     },
   });
-  return;
 };
 
 // sets the date that the user clicked on from the calendar and retrieve range of hours the user is availabile for on that date
@@ -119,18 +123,23 @@ export const handleChangeRangeHour = (
   let newRangeHours = [...rangeHours];
 
   // deleted value
-  if (selectedTime === null)
-  {
-    newRangeHours[index] = []
+  if (selectedTime === null) {
+    newRangeHours[index] = [];
   } else {
-  // -1 represents the group member id.  Right now, set it to -1 and will change to actual member availability later
+    // -1 represents the group member id.  Right now, set it to -1 and will change to actual member availability later
     let availabilityId = -1;
-    let startTime = startOrEndTimeIndex == 0 ? selectedDate.dateString + " " + convertTo24Hours(selectedTime) : rangeHours[index]["CAST(StartTime as char)"];
-    let endTime = startOrEndTimeIndex == 1 ? selectedDate.dateString + " " + convertTo24Hours(selectedTime) : rangeHours[index]["CAST(EndTime as char)"];
 
-    // swap both defined, ensure startTime is before endTime
-    if (startTime && endTime && startTime > endTime)
-    {
+    let startTime =
+      startOrEndTimeIndex == 0
+        ? selectedDate.dateString + ' ' + convertTo24Hours(selectedTime)
+        : rangeHours[index]['CAST(StartTime as char)'];
+    let endTime =
+      startOrEndTimeIndex == 1
+        ? selectedDate.dateString + ' ' + convertTo24Hours(selectedTime)
+        : rangeHours[index]['CAST(EndTime as char)'];
+
+    // swap startTime and endTime if defined and if ensure startTime is later than endTime
+    if (startTime && endTime && startTime > endTime) {
       let temp = startTime;
       startTime = endTime;
       endTime = temp;
@@ -138,9 +147,9 @@ export const handleChangeRangeHour = (
 
     newRangeHours[index] = {
       AvailabilityId: availabilityId,
-      "CAST(StartTime as char)": startTime,
-      "CAST(EndTime as char)": endTime
-    }
+      'CAST(StartTime as char)': startTime,
+      'CAST(EndTime as char)': endTime,
+    };
   }
 
   return {
@@ -149,34 +158,30 @@ export const handleChangeRangeHour = (
   };
 };
 
-const convertTo24Hours = (time) => {
+const convertTo24Hours = time => {
   let hours = parseInt(time.split(' ')[0].split(':')[0]);
   let minutes = parseInt(time.split(' ')[0].split(':')[1]);
   const abbreviation = time.split(' ')[1];
 
-  if (abbreviation === "PM" && hours < 12)
-  {
+  if (abbreviation === 'PM' && hours < 12) {
     hours += 12;
-  } else if (abbreviation === "AM" && hours === 12)
-  {
+  } else if (abbreviation === 'AM' && hours === 12) {
     hours = 0;
   }
 
   let sHours = hours.toString();
   let sMinutes = minutes.toString();
 
-  if (hours < 10)
-  {
+  if (hours < 10) {
     sHours = '0' + sHours;
   }
 
-  if (minutes < 10)
-  {
+  if (minutes < 10) {
     sMinutes = '0' + sMinutes;
   }
 
   return sHours + ':' + sMinutes;
-}
+};
 
 // when user clicks OK, add the inputted range of hours to availabileDay object
 /*
@@ -223,22 +228,27 @@ export const addAvailability = (
     });
     return;
   }
-  const availabilityIds = filteredRangeHours.map(rangeHour => rangeHour.AvailabilityId);
+  const availabilityIds = filteredRangeHours.map(
+    rangeHour => rangeHour.AvailabilityId,
+  );
   const startTimes = filteredRangeHours.map(rangeHour => {
-    return rangeHour["CAST(StartTime as char)"];
+    return rangeHour['CAST(StartTime as char)'];
   });
 
   const endTimes = filteredRangeHours.map(rangeHour => {
-    return rangeHour["CAST(EndTime as char)"];
+    return rangeHour['CAST(EndTime as char)'];
   });
-  
-  const addedAvailabilityIds = await addAvailabilityQuery(groupMemberId, availabilityIds, startTimes, endTimes);
+
+  const addedAvailabilityIds = await addAvailabilityQuery(
+    groupMemberId,
+    availabilityIds,
+    startTimes,
+    endTimes,
+  );
 
   // set the range hours to the correct availability ids
-  for (let i = 0; i < addedAvailabilityIds.length; i++)
-  {
-    if (addedAvailabilityIds[i] !== 0)
-    {
+  for (let i = 0; i < addedAvailabilityIds.length; i++) {
+    if (addedAvailabilityIds[i] !== 0) {
       filteredRangeHours[i].AvailabilityId = addedAvailabilityIds[i];
     }
   }
@@ -248,7 +258,7 @@ export const addAvailability = (
   availabilities[date] = filteredRangeHours;
 
   dispatch(markDates(availabilities));
-  
+
   dispatch({
     type: ADD_AVAILABILITY,
     payload: {
@@ -280,21 +290,23 @@ export const deleteAvailability = (
 
   // // if a range hour was actually removed...
   if (removedRangeHour[0] !== undefined && removedRangeHour[0].length != 0) {
-    const response = await deleteAvailabilityQuery(removedRangeHour[0].AvailabilityId);
+    const response = await deleteAvailabilityQuery(
+      removedRangeHour[0].AvailabilityId,
+    );
 
     // handle error if there is
     if (response.error) {
       dispatch({
         type: DELETE_AVAILABILITY,
-        payload: newRangeHours
-      })
+        payload: newRangeHours,
+      });
       return;
     }
 
     // check if availabilities had that range hour as a value for the selected date
     if (availabilities !== undefined) {
       if (availabilities[selectedDate.dateString] !== undefined) {
-        availabilities[selectedDate.dateString] = newRangeHours
+        availabilities[selectedDate.dateString] = newRangeHours;
 
         // if selectedDate no longer has any range hours, then completely delete the entry in the object.  This should also remove the marking from the calendar
         if (availabilities[selectedDate.dateString].length === 0) {
@@ -305,7 +317,7 @@ export const deleteAvailability = (
     }
   }
 
-  dispatch ({
+  dispatch({
     type: DELETE_AVAILABILITY,
     payload: {
       rangeHours: newRangeHours,
