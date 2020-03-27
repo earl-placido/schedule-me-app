@@ -7,6 +7,8 @@ import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 
 import {selectDate, showModal} from '../../actions/InputAvailability.action';
+import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
+
 import {connect} from 'react-redux';
 
 class InputAvailabilityModal extends Component {
@@ -27,7 +29,13 @@ class InputAvailabilityModal extends Component {
         </Modal>
 
         <View>
-          <Button block>
+          <Button
+            block
+            onPress={() =>
+              this.props.toggleInputAvailability(
+                this.props.isInputAvailabilityVisible,
+              )
+            }>
             <Text>Done</Text>
           </Button>
         </View>
@@ -36,19 +44,21 @@ class InputAvailabilityModal extends Component {
   }
 }
 
-const mapStateToProps = ({InputAvailabilityReducer}) => {
+const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
   const {
     selectedDate,
     modalVisible,
     availableDays,
     markedDates,
   } = InputAvailabilityReducer;
+  const {isInputAvailabilityVisible} = GetGroupReducer;
 
   return {
     selectedDate,
     modalVisible,
     availableDays,
     markedDates,
+    isInputAvailabilityVisible,
   };
 };
 
@@ -57,12 +67,14 @@ InputAvailabilityModal.propTypes = {
   modalVisible: PropTypes.any,
   availableDays: PropTypes.any,
   markedDates: PropTypes.any,
-
+  isInputAvailabilityVisible: PropTypes.any,
   selectDate: PropTypes.func,
   showModal: PropTypes.func,
+  toggleInputAvailability: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
   selectDate,
   showModal,
+  toggleInputAvailability,
 })(InputAvailabilityModal);
