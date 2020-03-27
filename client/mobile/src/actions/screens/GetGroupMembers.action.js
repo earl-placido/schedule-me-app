@@ -73,9 +73,13 @@ export const getGroupMemberIdWithUserId = async (groupId, userId) => {
 
   try {
     const groupMemberResponse = await axios(groupMemberOptions);
-    const groupMemberId =
+
+    if (groupMemberResponse.data.groupMembers[0] !== undefined) {
+      const groupMemberId =
       groupMemberResponse.data.groupMembers[0].GroupMemberId;
-    return groupMemberId;
+      return groupMemberId;
+    }
+    
   } catch (err) {
     console.log(err);
     return;

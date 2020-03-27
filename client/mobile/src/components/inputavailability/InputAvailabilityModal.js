@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import {
   selectDate,
   showModal,
-  setAvailabilities,
   markDates,
 } from '../../actions/InputAvailability.action';
 import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
@@ -17,9 +16,6 @@ import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
 import {connect} from 'react-redux';
 
 class InputAvailabilityModal extends Component {
-  componentDidMount() {
-    this.props.setAvailabilities(this.props.groupId);
-  }
 
   render() {
     return (
@@ -82,7 +78,6 @@ InputAvailabilityModal.propTypes = {
   selectDate: PropTypes.func,
   showModal: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
-  setAvailabilities: PropTypes.func,
   markDates: PropTypes.func,
 };
 
@@ -90,6 +85,5 @@ export default connect(mapStateToProps, {
   selectDate,
   showModal,
   toggleInputAvailability,
-  setAvailabilities,
   markDates,
 })(InputAvailabilityModal);
