@@ -1,8 +1,11 @@
 exports.config = {
+  runner: 'local',
   specs: ['./__system_tests__/specs/*.spec.js'],
   exclude: [],
   maxInstances: 10,
   port: 4723,
+  baseUrl: '',
+  services: [['appium', {command: 'appium'}]],
   capabilities: [
     {
       maxInstances: 1,
