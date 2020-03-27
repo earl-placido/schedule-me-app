@@ -119,12 +119,7 @@ class GroupDetail extends Component {
         />
 
         <Modal
-          isVisible={this.props.isInputAvailabilityVisible}
-          onBackdropPress={() => {
-            this.props.toggleInputAvailability(
-              this.props.isInputAvailabilityVisible,
-            );
-          }}>
+          isVisible={this.props.isInputAvailabilityVisible}>
           <InputAvailabilityModal groupId={this.props.route.params.codeNum} />
         </Modal>
 
