@@ -45,6 +45,7 @@ function CustomDrawerContent(props) {
           label="Groups"
           onPress={() => {
             props.navigation.navigate('Group List');
+            props.navigation.push('Group List');
           }}
         />
         <FlatList
