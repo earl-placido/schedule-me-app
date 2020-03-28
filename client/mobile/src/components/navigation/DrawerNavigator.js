@@ -1,6 +1,6 @@
 import React, {Component, useState} from 'react';
 import {StyleSheet, ScrollView, View, FlatList} from 'react-native';
-import {Button, Text} from 'native-base';
+import {Button, Text, Icon} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerActions} from '@react-navigation/native';
@@ -70,12 +70,11 @@ function CustomDrawerContent(props) {
     <View style={styles.menuStyle}>
       <ScrollView>
         <DrawerItem
-          labelStyle={{
-            ...styles.menuItemStyle,
-            fontWeight: 'bold',
-            fontSize: 30,
-          }}
+          labelStyle={styles.menuItemStyle}
           label="View Groups"
+          icon={() => (
+            <Icon type="AntDesign" name="bars" style={styles.menuItemStyle} />
+          )}
           onPress={() => {
             props.navigation.navigate('Group List');
           }}
@@ -101,7 +100,7 @@ function CustomDrawerContent(props) {
         {count < groupList.length && (
           <DrawerItem
             labelStyle={styles.menuItemStyle}
-            label="..."
+            label="... view more groups"
             onPress={() => {
               setCount(count + NUM_ITEMS);
             }}
@@ -109,7 +108,14 @@ function CustomDrawerContent(props) {
         )}
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="&#x2295; Create Group"
+          label="Create Group"
+          icon={() => (
+            <Icon
+              type="AntDesign"
+              name="plussquareo"
+              style={styles.menuItemStyle}
+            />
+          )}
           onPress={() => {
             props.navigation.push('Create Group');
             props.navigation.navigate('Create Group');
@@ -117,7 +123,14 @@ function CustomDrawerContent(props) {
         />
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="&#x2295; Join Group"
+          label="Join Group"
+          icon={() => (
+            <Icon
+              type="AntDesign"
+              name="plussquareo"
+              style={styles.menuItemStyle}
+            />
+          )}
           onPress={() => {
             props.navigation.navigate('Group Code');
           }}
