@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import moment from "moment";
 import PropTypes from "prop-types";
 
 const NUMBER_TO_DAY = [
@@ -22,9 +23,9 @@ class MeetingTimeModal extends Component {
   render() {
     const optimalTimesStrings = this.props.optimalTimes.map(optimalTime => {
       const timeInformation = optimalTime[0].split(":");
-      const currentDay = timeInformation[0];
-      const timeRange = timeInformation[1].split("_");
+      const currentDate = timeInformation[0];
 
+      const timeRange = timeInformation[1].split("_");
       const startTime = parseFloat(timeRange[0]).toFixed(2);
       const endTime = parseFloat(timeRange[1]).toFixed(2);
 
@@ -36,12 +37,14 @@ class MeetingTimeModal extends Component {
         .replace(".", ""); // format number to print
       const count = optimalTime[1];
 
+      const currentDay = moment(currentDate).day();
       const currentDayString = NUMBER_TO_DAY[currentDay];
 
-      const meetingString = `${currentDayString} ${startTimeString} - ${endTimeString}`;
+      const meetingDateString = `${currentDate}(${currentDayString})`;
+      const meetingRangeString = `${startTimeString} - ${endTimeString}`;
       const availableString = `${count} available`;
 
-      return [meetingString, availableString];
+      return [meetingDateString, meetingRangeString, availableString];
     });
     return (
       <div>
@@ -72,11 +75,13 @@ class MeetingTimeModal extends Component {
                 }}
               >
                 {optimalTimesString[0]}
+                <br />
+                {optimalTimesString[1]}
               </h3>
               <h3
                 style={{ display: "inline", width: "20%", textAlign: "right" }}
               >
-                {optimalTimesString[1]}
+                {optimalTimesString[2]}
               </h3>
             </div>
           );
