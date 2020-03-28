@@ -23,9 +23,15 @@ describe("test group", () => {
     store = mockStore({
       AddAvailabilityReducer: {
         modalVisible: false,
-        rangeHours: [[-1, [moment(), moment()]]],
+        rangeHours: [
+          {
+            AvailabilityId: -1,
+            "CAST(StartTime as char)": moment(),
+            "CAST(EndTime as char)": moment()
+          }
+        ],
         selectedDate: moment(),
-        availableDays: {},
+        availabilities: {},
         groupInformation: ""
       }
     });
@@ -41,7 +47,7 @@ describe("test group", () => {
   it("test render appropriate properties from redux", () => {
     expect(component.props().modalVisible).toEqual(false);
     expect(component.props().rangeHours.length).toEqual(1);
-    expect(component.props().availableDays).toEqual({});
+    expect(component.props().availabilities).toEqual({});
     expect(component.props().groupInformation).toEqual("");
   });
 
