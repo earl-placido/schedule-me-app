@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import {StyleSheet, Text} from 'react-native';
 import {Container, Content, Button, View, CardItem, Body} from 'native-base';
+import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
+
+import {getGroup} from '../../../actions/screens/GetGroup.action';
 
 const Form = t.form.Form;
 
@@ -19,13 +22,18 @@ const codeModel = t.struct({
   code: t.String,
 });
 
-export default class GroupCodeForm extends Component {
+class GroupCodeForm extends Component {
+  componentDidMount() {
+    this.props.getGroup(this.form.getValue());
+  }
+
   handleOnChangeValue = () => {
     this.form.getValue();
   };
 
   handleOnSubmit = () => {
     const value = this.form.getValue();
+    this.props.getGroup(this.form.getValue());
     if (value) {
       this.props.navigation.navigate('Group Detail', {codeNum: value.code});
     }
@@ -67,6 +75,11 @@ export default class GroupCodeForm extends Component {
   }
 }
 
+const mapStateToProps = ({GetGroupReducer}) => {
+  const {group} = GetGroupReducer;
+  return {group};
+};
+
 const styles = StyleSheet.create({
   buttonStyle: {
     padding: 20,
@@ -93,4 +106,8 @@ GroupCodeForm.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
+  group: PropTypes.any,
+  getGroup: PropTypes.func,
 };
+
+export default connect(mapStateToProps, {getGroup})(GroupCodeForm);

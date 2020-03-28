@@ -1,11 +1,11 @@
 import axios from "axios";
+import moment from "moment";
 
 import { getMemberIdWithEmail } from "../GroupMember.action";
 import {
   getAvailabilityQuery,
   addAvailabilityQuery
 } from "../Availability.action";
-import { convertAvailabilityToDays } from "../util/date/day";
 
 export const GROUP_INFORMATION = "group_information";
 export const SELECT_DATE = "select_date";
@@ -18,36 +18,42 @@ export const ADD_RANGE = "add_range";
 export const CHANGE_RANGE = "change_range";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 
-export const getInformation = (groupId, availableDays) => async dispatch => {
+export const getInformation = groupId => async dispatch => {
   axios
     .get(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}`)
     .then(groupInformation => {
       getMemberIdWithEmail(groupId, localStorage.getItem("userEmail")).then(
         groupMember => {
           const memberId = groupMember.GroupMemberId;
-          getAvailabilityQuery(memberId).then(availability => {
-            if (availability.error) {
+          getAvailabilityQuery(memberId).then(availabilities => {
+            if (availabilities.error) {
               dispatch({
                 type: GROUP_INFORMATION,
                 payload: {
                   memberId,
                   groupInformation: groupInformation.data,
-                  availableDays: {}
+                  availabilities: []
                 }
               });
               return;
             }
-            const newAvailableDays = convertAvailabilityToDays(
-              availableDays,
-              availability
-            );
+            // formattedAvailability: {date: [{id, starttime, endtime}, {id, starttime, endtime}, {id, starttime, endtime}, ...], date2: ..., date3: ... }
+            let formattedAvailability = {};
+            for (const availability of availabilities) {
+              const date = moment(
+                availability["CAST(StartTime as char)"]
+              ).format("YYYY-MM-DD");
+              if (formattedAvailability[date] === undefined)
+                formattedAvailability[date] = [availability];
+              else formattedAvailability[date].push(availability);
+            }
 
             dispatch({
               type: GROUP_INFORMATION,
               payload: {
                 groupInformation: groupInformation.data,
                 memberId,
-                availableDays: newAvailableDays
+                availabilities: formattedAvailability
               }
             });
           });
@@ -64,11 +70,11 @@ export const getInformation = (groupId, availableDays) => async dispatch => {
     });
 };
 
-export const selectDate = (selectedDate, availableDays) => {
-  const day = selectedDate.day();
-
+export const selectDate = (selectedDate, availabilities) => {
   let rangeHours = [""];
-  if (availableDays !== undefined) rangeHours = availableDays[day] || [""];
+  const date = selectedDate.format("YYYY-MM-DD");
+  if (availabilities[date] !== undefined)
+    rangeHours = availabilities[date] || [""];
 
   return {
     type: SELECT_DATE,
@@ -92,22 +98,20 @@ export const cancelAvailability = () => {
 
 export const deleteAvailability = (
   rangeHours,
-  availableDays
+  availabilities
 ) => async dispatch => {
   let newRangeHours = [...rangeHours];
   const removedRangeHours = newRangeHours.pop();
-  console.log(removedRangeHours);
-  console.log(removedRangeHours[0] === -1);
   // if the range hours that was removed is not empty
   if (removedRangeHours) {
     // if it is an existing id, then we query to the database to delete it
-    if (removedRangeHours[0] !== -1) {
+    if (removedRangeHours.AvailabilityId !== -1) {
       // remove from database
       await axios
         .delete(
           `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/members/availability`,
           {
-            data: { availabilityIds: [removedRangeHours[0]] }
+            data: { availabilityIds: [removedRangeHours.AvailabilityId] }
           }
         )
         .then(response => {
@@ -122,15 +126,10 @@ export const deleteAvailability = (
           }
 
           // remove from availabilityDays
-          const currentDay = removedRangeHours[1][0].day();
-
-          const currentAvailableDays = availableDays[currentDay];
-          for (let i = 0; i < currentAvailableDays.length; i++) {
-            if (currentAvailableDays[i][1] === removedRangeHours[1]) {
-              availableDays[currentDay].splice(i, 1);
-              break;
-            }
-          }
+          const selectedDate = moment(
+            removedRangeHours["CAST(StartTime as char)"]
+          ).format("YYYY-MM-DD");
+          availabilities[selectedDate] = newRangeHours;
         })
         .catch(() => {
           dispatch({
@@ -144,7 +143,7 @@ export const deleteAvailability = (
 
   dispatch({
     type: DELETE_AVAILABILITY,
-    payload: { rangeHours: newRangeHours, availableDays }
+    payload: { rangeHours: newRangeHours, availabilities }
   });
 };
 
@@ -153,7 +152,7 @@ export const addAvailability = (
   memberId,
   selectedDate,
   rangeHours,
-  availableDays
+  availabilities
 ) => async dispatch => {
   //currently doesn't check for clashing of time
 
@@ -171,13 +170,12 @@ export const addAvailability = (
     return item !== "";
   });
 
-  const day = selectedDate.day();
-  const availabilityIds = filteredRangeHours.map(item => item[0]);
+  const availabilityIds = filteredRangeHours.map(item => item.AvailabilityId);
   const startTimes = filteredRangeHours.map(item => {
-    if (item[1]) return item[1][0].format("YYYY-MM-DD HH:mm:ss");
+    return item["CAST(StartTime as char)"];
   });
   const endTimes = filteredRangeHours.map(item => {
-    if (item[1]) return item[1][1].format("YYYY-MM-DD HH:mm:ss");
+    return item["CAST(EndTime as char)"];
   });
 
   await addAvailabilityQuery(memberId, availabilityIds, startTimes, endTimes)
@@ -185,16 +183,16 @@ export const addAvailability = (
       // update the ids of rangeHours after getting the availbilityId from database
       for (let i = 0; i < addedAvailabilityIds.data.ids.length; i++) {
         if (addedAvailabilityIds.data.ids[i] !== 0)
-          filteredRangeHours[i][0] = addedAvailabilityIds.data.ids[i];
+          filteredRangeHours[i].AvailabilityId =
+            addedAvailabilityIds.data.ids[i];
       }
-      availableDays[day] = filteredRangeHours;
-
+      availabilities[selectedDate.format("YYYY-MM-DD")] = filteredRangeHours;
       dispatch({
         type: ADD_AVAILABILITY,
         payload: {
-          availableDays,
           modalVisible: false,
-          rangeHours: filteredRangeHours
+          rangeHours: filteredRangeHours,
+          availabilities
         }
       });
     })
@@ -223,7 +221,11 @@ export const onChangeRange = (index, value, rangeHours) => {
   if (value === null) {
     newRangeHours[index] = "";
   } else {
-    newRangeHours[index] = [-1, value];
+    newRangeHours[index] = {
+      AvailabilityId: -1,
+      "CAST(StartTime as char)": value[0].format("YYYY-MM-DD HH:mm:ss"),
+      "CAST(EndTime as char)": value[1].format("YYYY-MM-DD HH:mm:ss")
+    };
   }
 
   return {
@@ -243,7 +245,7 @@ const INITIAL_STATE = {
   modalVisible: false,
   rangeHours: [""],
   selectedDate: "",
-  availableDays: {},
+  availabilities: {},
   groupInformation: "",
   memberId: "",
   showErrorModal: false

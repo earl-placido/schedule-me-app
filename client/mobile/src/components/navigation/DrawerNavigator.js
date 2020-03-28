@@ -77,6 +77,7 @@ function CustomDrawerContent(props) {
           )}
           onPress={() => {
             props.navigation.navigate('Group List');
+            props.navigation.push('Group List');
           }}
         />
         <FlatList

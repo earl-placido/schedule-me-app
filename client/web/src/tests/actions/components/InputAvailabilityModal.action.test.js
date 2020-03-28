@@ -56,15 +56,25 @@ describe("test group actions", () => {
   it("test onChangeRange action", () => {
     const date = moment();
     const date2 = moment();
-    const rangeHours = [[-1, [date, date2]]];
+    const rangeHours = [
+      {
+        AvailabilityId: -1,
+        "CAST(StartTime as char)": date.format("YYYY-MM-DD HH:mm:ss"),
+        "CAST(EndTime as char)": date2.format("YYYY-MM-DD HH:mm:ss")
+      }
+    ];
     const newRangeHours = onChangeRange(
       0,
       [moment("12-25-1995", "MM-DD-YYYY"), moment("12-25-1995", "MM-DD-YYYY")],
       rangeHours
     );
     expect(newRangeHours.type).toEqual(CHANGE_RANGE);
-    expect(newRangeHours.payload[0][1][0].year()).toEqual(1995);
-    expect(newRangeHours.payload[0][1][0].month()).toEqual(11);
+    expect(
+      moment(newRangeHours.payload[0]["CAST(StartTime as char)"]).year()
+    ).toEqual(1995);
+    expect(
+      moment(newRangeHours.payload[0]["CAST(EndTime as char)"]).month()
+    ).toEqual(11);
   });
 });
 
@@ -106,9 +116,8 @@ describe("test contacting server from group", () => {
 
   it("test add availability action", async () => {
     const selectedDate = moment();
-    const day = selectedDate.day();
     const rangeHours = [[-1, [selectedDate, selectedDate]]];
-    let availableDays = {};
+    let availabilities = {};
 
     httpMock
       .onPost(
@@ -119,15 +128,22 @@ describe("test contacting server from group", () => {
         error: false,
         ids: [1]
       });
-    addAvailability(1, selectedDate, rangeHours, availableDays)(store.dispatch);
+    addAvailability(
+      1,
+      selectedDate,
+      rangeHours,
+      availabilities
+    )(store.dispatch);
     await flushAllPromises();
 
     expect(store.getActions()[0].type).toEqual(ADD_AVAILABILITY);
     // close modal, add rangeHours to availableDays, reset rangeHours to empty
     expect(store.getActions()[0].payload.modalVisible).toEqual(false);
-    expect(store.getActions()[0].payload.availableDays[day]).toEqual(
-      rangeHours
-    );
+    expect(
+      store.getActions()[0].payload.availabilities[
+        selectedDate.format("YYYY-MM-DD")
+      ]
+    ).toEqual(rangeHours);
   });
 
   it("test obtaining group information", async () => {
@@ -171,7 +187,7 @@ describe("test contacting server from group", () => {
     expect(store.getActions()[0].type).toEqual(GROUP_INFORMATION);
     expect(store.getActions()[0].payload.memberId).toEqual(1);
     expect(
-      Object.keys(store.getActions()[0].payload.availableDays).length
+      Object.keys(store.getActions()[0].payload.availabilities).length
     ).toEqual(1);
   });
 });
