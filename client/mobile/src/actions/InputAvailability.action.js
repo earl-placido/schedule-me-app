@@ -40,6 +40,8 @@ export const setAvailabilities = groupId => async dispatch => {
       payload: {
         availabilities: {},
         groupMemberId: groupMemberId,
+        markedDates: {},
+        rangeHours: [[]]
       },
     });
     return;

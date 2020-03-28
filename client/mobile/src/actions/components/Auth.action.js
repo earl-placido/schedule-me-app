@@ -2,6 +2,7 @@ import axios from 'axios';
 import responses from '../util/responses';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-community/async-storage';
+import {resetGroupList} from '../screens/GroupList.action';
 
 export const LOGIN_REQUEST = 'login_request';
 export const LOGIN_SUCCESS = 'login_success';
@@ -197,6 +198,7 @@ export const logoutUser = () => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('userName');
     await AsyncStorage.removeItem('userEmail');
+    resetGroupList();
     dispatch(logoutSuccess());
   };
 };

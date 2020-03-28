@@ -85,6 +85,7 @@ class CreateAccount extends Component {
   attemptSignup = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
+      this.props.navigation.push('Drawer');
       this.props.navigation.navigate('Drawer');
       this.toggleCreate();
     } else {
