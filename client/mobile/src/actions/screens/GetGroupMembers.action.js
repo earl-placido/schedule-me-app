@@ -76,10 +76,9 @@ export const getGroupMemberIdWithUserId = async (groupId, userId) => {
 
     if (groupMemberResponse.data.groupMembers[0] !== undefined) {
       const groupMemberId =
-      groupMemberResponse.data.groupMembers[0].GroupMemberId;
+        groupMemberResponse.data.groupMembers[0].GroupMemberId;
       return groupMemberId;
     }
-    
   } catch (err) {
     console.log(err);
     return;

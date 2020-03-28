@@ -138,8 +138,8 @@ class AvailabilityModal extends Component {
     for (let i = 0; i < rangeHours.length; i++) {
       // ignore any range hours that are both undefined
       if (
-        rangeHours[i]['CAST(StartTime as char)'] === undefined ^
-        rangeHours[i]['CAST(EndTime as char)'] === undefined
+        (rangeHours[i]['CAST(StartTime as char)'] === undefined) ^
+        (rangeHours[i]['CAST(EndTime as char)'] === undefined)
       )
         return true;
     }

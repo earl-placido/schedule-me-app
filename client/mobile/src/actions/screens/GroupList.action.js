@@ -46,7 +46,7 @@ export const resetGroupList = () => {
       groupList: [],
     },
   };
-}
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -61,10 +61,10 @@ export default (state = INITIAL_STATE, action) => {
         message: action.payload,
       };
     case RESET_GROUP_LIST:
-       return {
-         ...state,
-         ...action.payload
-       }
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

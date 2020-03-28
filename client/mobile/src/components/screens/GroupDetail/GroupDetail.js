@@ -121,7 +121,7 @@ class GroupDetail extends Component {
         />
 
         <Modal isVisible={this.props.isInputAvailabilityVisible}>
-          <InputAvailabilityModal/>
+          <InputAvailabilityModal />
         </Modal>
 
         <Dialog.Container
@@ -183,12 +183,12 @@ GroupDetail.propTypes = {
   getGroup: PropTypes.func,
   getGroupMembers: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
-  setAvailabilities: PropTypes.func
+  setAvailabilities: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
   getGroupMembers,
   getGroup,
   toggleInputAvailability,
-  setAvailabilities
+  setAvailabilities,
 })(GroupDetail);

@@ -16,7 +16,6 @@ import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
 import {connect} from 'react-redux';
 
 class InputAvailabilityModal extends Component {
-
   render() {
     return (
       <View>

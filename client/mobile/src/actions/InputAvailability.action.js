@@ -41,7 +41,7 @@ export const setAvailabilities = groupId => async dispatch => {
         availabilities: {},
         groupMemberId: groupMemberId,
         markedDates: {},
-        rangeHours: [[]]
+        rangeHours: [[]],
       },
     });
     return;
