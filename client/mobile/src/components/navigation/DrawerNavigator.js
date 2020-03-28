@@ -1,4 +1,4 @@
-import React, {Component, useState} from 'react';
+import React, {Component, useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, View, FlatList} from 'react-native';
 import {Button, Text, Icon} from 'native-base';
 
@@ -12,59 +12,20 @@ import {connect} from 'react-redux';
 import {logoutUser} from '../../actions/components/Auth.action';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
+import {getGroupList} from '../../actions/screens/GroupList.action';
+
 const Drawer = createDrawerNavigator();
 const NUM_ITEMS = 3;
 
-const groupList = [
-  {
-    GroupId: '1',
-    GroupName: 'Tallest Poppy',
-    GroupDescription: 'Hipster food',
-  },
-  {
-    GroupId: '2',
-    GroupName: 'Stellas',
-    GroupDescription: '#notMyStellas',
-  },
-  {
-    GroupId: '3',
-    GroupName: 'Dowon',
-    GroupDescription: 'Korean food',
-  },
-  {
-    GroupId: '1',
-    GroupName: 'Tallest Poppy',
-    GroupDescription: 'Hipster food',
-  },
-  {
-    GroupId: '2',
-    GroupName: 'Stellas',
-    GroupDescription: '#notMyStellas',
-  },
-  {
-    GroupId: '3',
-    GroupName: 'Dowon',
-    GroupDescription: 'Korean food',
-  },
-  {
-    GroupId: '1',
-    GroupName: 'Tallest Poppy',
-    GroupDescription: 'Hipster food',
-  },
-  {
-    GroupId: '2',
-    GroupName: 'Stellas',
-    GroupDescription: '#notMyStellas',
-  },
-  {
-    GroupId: '3',
-    GroupName: 'Dowon',
-    GroupDescription: 'Korean food',
-  },
-];
-
 function CustomDrawerContent(props) {
   const [count, setCount] = useState(NUM_ITEMS);
+
+  useEffect(() => {
+    return props.navigation.addListener('state', () => {
+      props.getGroupList();
+      setCount(NUM_ITEMS);
+    });
+  }, [props.navigation]);
 
   return (
     <View style={styles.menuStyle}>
@@ -81,7 +42,8 @@ function CustomDrawerContent(props) {
           }}
         />
         <FlatList
-          data={groupList
+          data={props.groupList
+            .concat()
             .sort((group1, group2) => {
               return group1.GroupName.localeCompare(group2.GroupName) > 0;
             })
@@ -98,7 +60,7 @@ function CustomDrawerContent(props) {
             />
           )}
         />
-        {count < groupList.length && (
+        {count < props.groupList.length && (
           <DrawerItem
             labelStyle={styles.menuItemStyle}
             label="... view more groups"
@@ -190,18 +152,23 @@ CustomDrawerContent.propTypes = {
     navigate: PropTypes.func.isRequired,
     dispatch: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
+    addListener: PropTypes.func.isRequired,
   }).isRequired,
   userName: PropTypes.any,
   logoutUser: PropTypes.func,
+  groupList: PropTypes.array,
+  getGroupList: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
   isAuthenticated: state.auth.isAuthenticated,
   userName: state.auth.userName,
+  groupList: state.GroupListReducer.groupList,
 });
 
 const mapDispatchToProps = dispatch => ({
   logoutUser: () => dispatch(logoutUser()),
+  getGroupList: () => dispatch(getGroupList()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawerNavigator);
