@@ -87,7 +87,6 @@ module.exports = router => {
         else {
           res.status(responses.SERVER_ERROR).json({ error: true });
           throw Error("error deleting availability");
-
         }
       })
       .catch(next);
