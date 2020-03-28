@@ -11,7 +11,6 @@ import GroupList from '../screens/GroupList/GroupList';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutUser} from '../../actions/components/Auth.action';
 
 const Stack = createStackNavigator();
 
@@ -73,7 +72,6 @@ StackNavigator.propTypes = {
   navigate: PropTypes.func,
   isAuthenticated: PropTypes.any,
   userName: PropTypes.any,
-  logoutUser: PropTypes.func,
 };
 
 const mapStateToProps = state => ({
@@ -81,8 +79,5 @@ const mapStateToProps = state => ({
   userName: state.auth.userName,
 });
 
-const mapDispatchToProps = dispatch => ({
-  logoutUser: () => dispatch(logoutUser()),
-});
 
-export default connect(mapStateToProps, mapDispatchToProps)(StackNavigator);
+export default connect(mapStateToProps, {})(StackNavigator);
