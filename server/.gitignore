@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Local Environment Variables
+.env
+
+# Jest
+coverage
+
+# AWS
+.elasticbeanstalk/

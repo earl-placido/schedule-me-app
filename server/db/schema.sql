@@ -1,0 +1,91 @@
+SET FOREIGN_KEY_CHECKS=0;
+
+DROP TABLE IF EXISTS `User`;
+CREATE TABLE `User` 
+(
+  UserId INT NOT NULL AUTO_INCREMENT,
+  UserFName NVARCHAR(100) NOT NULL,
+  UserLName NVARCHAR(100) NOT NULL,
+  UserEmail NVARCHAR(320) NOT NULL,
+  UserPassword NVARCHAR(320) NOT NULL DEFAULT '',
+  OAuthProvider ENUM('none', 'google') DEFAULT 'none',
+  OAuthUID NVARCHAR(64) NULL,
+  PRIMARY KEY (UserId),
+  CONSTRAINT UQ_User_UserEmail UNIQUE (UserEmail)
+);
+
+DROP TABLE IF EXISTS `Group`;
+CREATE TABLE `Group`
+(
+  GroupId INT NOT NULL AUTO_INCREMENT,
+  GroupName NVARCHAR(45) NOT NULL,
+  GroupDescription NVARCHAR(200) NULL,
+  GroupOwnerId INT NOT NULL,
+  LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (GroupId, GroupOwnerId),
+  CONSTRAINT FK_Group_UserId FOREIGN KEY (GroupOwnerId) REFERENCES `User`(UserId)
+);
+
+ALTER TABLE `Group` AUTO_INCREMENT = 1000000;
+
+DROP TABLE IF EXISTS `GroupMember`;
+CREATE TABLE `GroupMember`
+(
+  GroupMemberId INT NOT NULL AUTO_INCREMENT,
+  GroupId INT NOT NULL,
+  UserId INT NULL,
+  MemberRole NVARCHAR(2) NULL,
+  PRIMARY KEY (GroupMemberId),
+  CONSTRAINT FK_GroupMember_GroupId FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId) ON DELETE CASCADE,
+  CONSTRAINT FK_GroupMember_UserId FOREIGN KEY (UserId) REFERENCES `User`(UserId) ON DELETE CASCADE
+);
+
+DROP TABLE IF EXISTS `GroupMemberEvent`;
+CREATE TABLE `GroupMemberEvent`
+(
+  GroupMemberEventId INT NOT NULL AUTO_INCREMENT,
+  GroupMemberId INT NOT NULL,
+  EventName NVARCHAR(100) NOT NULL,
+  StartTime DATETIME NOT NULL,
+  EndTime DATETIME NOT NULL,
+  PRIMARY KEY (GroupMemberEventId),
+  CONSTRAINT FK_GroupMemberEvent_GroupMemberEventId FOREIGN KEY (GroupMemberId) REFERENCES `GroupMember` (GroupMemberId)
+);
+
+DROP TABLE IF EXISTS `Availability`;
+CREATE TABLE `Availability`
+(
+  AvailabilityId INT NOT NULL AUTO_INCREMENT,
+  GroupMemberId INT NOT NULL,
+  StartTime DATETIME NOT NULL,
+  EndTime DATETIME NOT NULL, 
+  PRIMARY KEY (AvailabilityId),
+  CONSTRAINT FK_Availability_GroupMemberId FOREIGN KEY (GroupMemberId) REFERENCES `GroupMember`(GroupMemberId)
+);
+
+DROP TABLE IF EXISTS `Meeting`;
+CREATE TABLE `Meeting`
+(
+  MeetingId INT NOT NULL AUTO_INCREMENT,
+  GroupId INT NOT NULL,
+  MeetingDuration TIME NULL,
+  MeetingFrequency NVARCHAR(2) NULL,
+  MeetingLocation NVARCHAR(100) NULL,
+  LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT FK_Meeting_GroupId FOREIGN KEY (GroupId) REFERENCES `Group`(GroupId) ON DELETE CASCADE,
+  PRIMARY KEY (MeetingId)
+);
+
+DROP TABLE IF EXISTS `OptimalAvailability`;
+CREATE TABLE `OptimalAvailability`
+(
+  OptimalAvailabilityId INT NOT NULL AUTO_INCREMENT,
+  MeetingId INT NOT NULL,
+  StartTime DATETIME NOT NULL,
+  EndTime DATETIME NOT NULL,
+  LastUpdated DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (OptimalAvailabilityId),
+  CONSTRAINT FK_OptimalAvailability_MeetingId FOREIGN KEY (MeetingId) REFERENCES `Meeting`(MeetingId)
+);
+
+SET FOREIGN_KEY_CHECKS=1;

@@ -1,0 +1,426 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "schedule-me-up API",
+      "description": "API description for schedule-me-up",
+      "version": "1.0.0"
+    },
+    "basePath": "/api/v1",
+    "schemes": [
+      "http",
+      "https"
+    ],
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "paths": {
+      "/auth/signup": {
+        "post": {
+          "tags":[
+            "Authentication"
+          ],
+          "summary": "Signup a user",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "formData",
+              "type":"string",
+              "description": "email address",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "in": "formData",
+              "description": "password",
+              "required": true
+            },
+            {
+              "name": "firstName",
+              "type": "string",
+              "in": "formData",
+              "description": "firstName",
+              "required": true
+            },
+            {
+              "name": "lastName",
+              "type": "string",
+              "in": "formData",
+              "description": "lastName",
+              "required": true
+            }
+          ],
+          "responses": {
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/auth/login": {
+        "post": {
+          "tags":[
+            "Authentication"
+          ],
+          "summary": "Login as a user",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "email",
+              "in": "formData",
+              "type":"string",
+              "description": "email address",
+              "required": true
+            },
+            {
+              "name": "password",
+              "type": "string",
+              "in": "formData",
+              "description": "password",
+              "required": true
+            }
+          ],
+          "responses": {
+            "401": {
+              "description": "Unauthorized"
+            }
+          }
+        }
+      },
+      "/users/{userId}": {
+        "get": {
+          "tags": [
+            "Users"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Get user information from a user",
+          "parameters": [
+              {
+                "name": "userId",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+          ],
+          "description": "Get user information from userId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/groups/": {
+        "get": {
+          "tags": [
+            "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Get all groups",
+          "description": "Get all groups from userId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "post": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Add a new group",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "groupName",
+              "in": "formData",
+              "type":"string",
+              "description": "Name of group",
+              "required": true
+            },
+            {
+              "name": "groupDesc",
+              "type": "string",
+              "in": "formData",
+              "description": "Description of group"
+            },
+            {
+              "name": "meetingDuration",
+              "type": "string",
+              "format": "date",
+              "in": "formData",
+              "description": "Duration of meeting"
+            },
+            {
+              "name": "meetingFrequency",
+              "type": "string",
+              "in": "formData",
+              "description": "Frequency of meetings"
+            },
+            {
+              "name": "meetingLocation",
+              "type": "string",
+              "in": "formData",
+              "description": "Location of meetings"
+            }
+          ],
+          "responses": {
+            "201": {
+              "description": "Returns the group id of newly created group"
+            }
+          }
+        }
+      },
+      "/groups/{groupId}": {
+        "get": {
+          "tags": [
+            "Groups"
+          ],
+          "summary": "Get group information from groupId",
+          "parameters": [
+              {
+                "name": "groupId",
+                "in": "path",
+                "description": "ID",
+                "required": true,
+                "type": "integer",
+                "format": "int64"
+              }
+          ],
+          "description": "Get group information from groupId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        },
+        "delete": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Delete a group with a certain groupId",
+          "description": "",
+          "consumes": [
+            "application/x-www-form-urlencoded"
+          ],
+          "produces": [
+            "application/json"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "description": "groupId of group to be deleted",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Group deleted"
+            }
+          }
+        }
+      },
+      "/groups/{groupId}/members/{userId}": {
+        "get": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Get group member Id",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "type":"integer",
+              "format": "int64",
+              "required": true
+            },
+            {
+              "name": "userId",
+              "type": "integer",
+              "format": "int64",
+              "in": "path",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the group member id"
+            }
+          }
+        }
+      },
+      "/groups/members/{groupMemberId}/availability": {
+        "get": {
+          "tags": [
+            "Availability"
+          ],
+          "summary": "Get availability information from groupMemberId",
+          "parameters": [
+            {
+              "name": "groupMemberId",
+              "in": "path",
+              "description": "the ID of group member",
+              "type": "integer",
+              "format": "int64",
+              "required": true
+            }
+          ],
+          "description": "Get availability from groupMemberId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/groups/members/availability": {
+        "post": {
+          "tags": [
+            "Availability"
+          ],
+          "summary": "Update availability information of current group member",
+          "parameters": [
+            {
+              "name": "groupMemberId",
+              "in": "formData",
+              "description": "the id of group member",
+              "type": "integer",
+              "format": "int64",
+              "required": true
+            },
+            {
+              "name": "availabilityIds",
+              "in": "formData",
+              "description": "the ID of availability",
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              },
+              "required": true
+            },
+            {
+              "name": "startTimes",
+              "in": "formData",
+              "description": "the datetime of startTimes",
+              "type": "array",
+              "items": {
+                "type": "date-time"
+              },
+              "required": true
+            },
+            {
+              "name": "endTimes",
+              "in": "formData",
+              "description": "the datetime of endTimes",
+              "type": "array",
+              "items": {
+                "type": "date-time"
+              },
+              "required": true
+            }
+          ],
+          "description": "update availability information of group member",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/groups/{groupId}/members": {
+        "get": {
+          "tags": [
+            "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "description": "groupId of groupMembers",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "summary": "Get all groupMembers from a group",
+          "description": "Get all groupMembers from groupId",
+          "produces": [
+            "application/json"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      }
+    }
+  }

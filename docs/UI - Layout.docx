@@ -1,0 +1,18 @@
+As a user, I want to be able to create a group so we can share our availability
+ Name and description of group
+ Meeting duration, meeting frequency (optional), meeting location (optional)
+ Get shareable link
+-Nasseh's sketch
+
+
+
+
+
+As a user, I want to be able to input my availability so that the application can determine the optimal meeting time.
+
+
+
+As a user, I want to be able to "log in" as a guest when inputting my availability for a group
+ People who do not log in with the application, their availability can be changed by anyone
+ Once clicking the "Input your availability" button, a pop up will appear
+
