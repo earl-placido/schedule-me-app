@@ -37,8 +37,8 @@ function CustomDrawerContent(props) {
             <Icon type="AntDesign" name="bars" style={styles.menuItemStyle} />
           )}
           onPress={() => {
-            props.navigation.navigate('Group List');
             props.navigation.push('Group List');
+            props.navigation.navigate('Group List');
           }}
         />
         <FlatList
@@ -53,9 +53,10 @@ function CustomDrawerContent(props) {
               labelStyle={styles.menuItemStyle}
               label={item.GroupName}
               onPress={() => {
-                props.navigation.navigate('Group Detail', {
+                props.navigation.push('Group Detail', {
                   codeNum: item.GroupId,
                 });
+                props.navigation.navigate('Group Detail');
               }}
             />
           )}
@@ -108,6 +109,7 @@ function CustomDrawerContent(props) {
           props.logoutUser();
           setCount(NUM_ITEMS);
           props.navigation.dispatch(DrawerActions.closeDrawer());
+          props.navigation.push('Group List');
           props.navigation.navigate('Home');
         }}>
         <Text>Log out</Text>
