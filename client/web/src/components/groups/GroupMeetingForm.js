@@ -26,9 +26,9 @@ class GroupMeetingForm extends Component {
             <Col> Meeting duration </Col>
             <Col>
               <InputNumber
-                defaultValue={5}
+                defaultValue={0}
                 value={this.props.duration}
-                min={5}
+                min={1}
                 max={1440}
                 step={5}
                 formatter={value =>
