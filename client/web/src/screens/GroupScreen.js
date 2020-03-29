@@ -261,7 +261,7 @@ const styles = {
   },
 
   cardStyle: {
-    width: 800,
+    width: 800
   },
 
   buttonStyle: {

@@ -25,7 +25,6 @@ class ScreenContainer extends Component {
     this.handleResize();
   }
 
-
   render() {
     const { contentStyle, containerStyle } = styles;
 
@@ -42,16 +41,13 @@ class ScreenContainer extends Component {
 }
 
 const styles = {
-  contentStyle: {
-
-  },
+  contentStyle: {},
 
   containerStyle: {
     background: "#fff",
     padding: 24,
-    minHeight: 500,
-
-  },
+    minHeight: 500
+  }
 };
 
 ScreenContainer.propTypes = {

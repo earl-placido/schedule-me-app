@@ -45,7 +45,7 @@ export default class LoginScreen extends Component {
                   <img
                     alt="logo"
                     aria-hidden="true"
-                    src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                    src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
                     width="100px"
                   />
                 </Row>
@@ -73,7 +73,7 @@ export default class LoginScreen extends Component {
 
 const styles = {
   backgroundStyle: {
-    backgroundColor: "#303030"
+    backgroundColor: "#001529"
   },
 
   cardStyle: {

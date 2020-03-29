@@ -1,13 +1,4 @@
-import {
-  Layout,
-  Menu,
-  Button,
-  Avatar,
-  message,
-  Col,
-  Row,
-  Modal
-} from "antd";
+import { Layout, Menu, Button, Avatar, message, Col, Row, Modal } from "antd";
 import { DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import { compose } from "redux";
@@ -74,37 +65,36 @@ export class NavigationBar extends Component {
   };
 
   userNavigation = () => {
-    const { floatRight } = styles
+    const { floatRight } = styles;
     return this.props.isAuthenticated ? (
-      <SubMenu style={floatRight} title={
-        <Row>
-          <Col pull={2}>
-            {this.props.userName}
-          </Col>
-          <Col>
-            <Avatar
-            size={32}
-            icon={<img src={this.props.displayPicURL} alt="user picture" />}
-            />
-          </Col>
-        </Row>
-      }>
-        <Menu.Item onClick={this.logoutUser}>
-          Log Out
-        </Menu.Item>
+      <SubMenu
+        id="userName"
+        style={floatRight}
+        title={
+          <Row>
+            <Col pull={2}>{this.props.userName}</Col>
+            <Col>
+              <Avatar
+                size={32}
+                icon={<img src={this.props.displayPicURL} alt="user picture" />}
+              />
+            </Col>
+          </Row>
+        }
+      >
+        <Menu.Item onClick={this.logoutUser}>Log Out</Menu.Item>
       </SubMenu>
     ) : (
       <Menu.Item
-          id="auth-button"
-          onClick={() => {
-            this.props.toggleModal(true);
-          }}
-        >
-          Login
+        id="auth-button"
+        onClick={() => {
+          this.props.toggleModal(true);
+        }}
+      >
+        Login
       </Menu.Item>
     );
   };
-
 
   renderNavMenuWeb = () => {
     const { menuStyle, noSidePadding, headerStyle } = styles;
@@ -112,32 +102,36 @@ export class NavigationBar extends Component {
       <Header style={headerStyle}>
         <Row>
           <Menu theme="dark" mode="horizontal" style={menuStyle}>
-            <Menu.Item key="iconWeb" style={noSidePadding}>
+            <Menu.Item id="icon" style={noSidePadding}>
               <a href="/main/">
                 <img
                   aria-hidden="true"
-                  src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                  src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
                   width="45px"
                   alt="user picture"
                 />
               </a>
             </Menu.Item>
             <SubMenu
-              key="groupSubMenuWeb"
+              id="groupSubMenuWeb"
               title={
                 <span>
                   Groups <DownOutlined />
                 </span>
               }
             >
-              {this.props.groupList.map(group => {
-                return this.renderGroupMenuItem(group);
-              })}
+              {this.props.groupList ? (
+                this.props.groupList.map(group => {
+                  return this.renderGroupMenuItem(group);
+                })
+              ) : (
+                <Menu.Item>You have not joined any groups</Menu.Item>
+              )}
             </SubMenu>
-            <Menu.Item key="createGroupWeb">
+            <Menu.Item id="createGroupWeb">
               <a href="/createGroup/">Create A Group</a>
             </Menu.Item>
-            <Menu.Item key="joinGroupWeb">Join A Group</Menu.Item>
+            <Menu.Item id="joinGroupWeb">Join A Group</Menu.Item>
             {this.userNavigation()}
           </Menu>
         </Row>
@@ -151,7 +145,7 @@ export class NavigationBar extends Component {
         {!this.state.showMenuMobile ? (
           <Menu theme="dark" mode="inline">
             <Menu.Item
-              key="iconMobile"
+              id="icon"
               onClick={() => {
                 this.setState({ showMenuMobile: true });
               }}
@@ -159,7 +153,7 @@ export class NavigationBar extends Component {
               <Row justify="center">
                 <img
                   aria-hidden="true"
-                  src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                  src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
                   width="40px"
                   alt="user picture"
                 />
@@ -170,7 +164,7 @@ export class NavigationBar extends Component {
           <span>
             <Menu theme="dark" mode="inline">
               <Menu.Item
-                key="iconMobile"
+                id="icon"
                 onClick={() => {
                   this.setState({ showMenuMobile: false });
                 }}
@@ -178,36 +172,36 @@ export class NavigationBar extends Component {
                 <Row justify="center">
                   <img
                     aria-hidden="true"
-                    src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                    src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
                     width="40px"
                     alt="user picture"
                   />
                 </Row>
               </Menu.Item>
-              <SubMenu
-                key="groupSubMenuMobile"
-                title={<span>Groups</span>}
-              >
-                {this.props.groupList.map(group => {
-                  return this.renderGroupMenuItem(group);
-                })}
+              <SubMenu id="groupSubMenuMobile" title={<span>Groups</span>}>
+                {this.props.groupList ? (
+                  this.props.groupList.map(group => {
+                    return this.renderGroupMenuItem(group);
+                  })
+                ) : (
+                  <Menu.Item>You have not joined any groups</Menu.Item>
+                )}
               </SubMenu>
-              <Menu.Item key="createGroupMobile">
+              <Menu.Item id="createGroupMobile">
                 <a href="/createGroup/">Create A Group</a>
               </Menu.Item>
-              <Menu.Item key="joinGroupMobile">Join A Group</Menu.Item>
-              <Menu.Item onClick={this.logoutUser} key="logOutMobile">Log Out             
-              <Row>
-                <Col pull={2}>
-                  Log Out
-                </Col>
-                <Col>
-                  <Avatar
-                  size={32}
-                  icon={<img src={this.props.displayPicURL} alt="" />}
-                  />
-                </Col>
-              </Row>
+              <Menu.Item id="joinGroupMobile">Join A Group</Menu.Item>
+              <Menu.Item onClick={this.logoutUser} id="logOutMobile">
+                Log Out
+                <Row>
+                  <Col pull={2}>Log Out</Col>
+                  <Col>
+                    <Avatar
+                      size={32}
+                      icon={<img src={this.props.displayPicURL} alt="" />}
+                    />
+                  </Col>
+                </Row>
               </Menu.Item>
             </Menu>
           </span>
