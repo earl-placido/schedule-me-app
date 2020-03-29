@@ -1,4 +1,4 @@
-import { Form, Input, TimePicker } from "antd";
+import { Form, Input, InputNumber, Row, Col } from "antd";
 import Icon from "@ant-design/icons";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
@@ -17,26 +17,38 @@ class GroupMeetingForm extends Component {
   }
 
   render() {
-    const { errorText, durationStyle } = styles;
+    const { errorText } = styles;
 
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {
-            <div>
-              <TimePicker
-                format={"HH:mm"}
-                placeholder="Duration (HH:mm)"
+        <Form.Item align="middle">
+          <Row gutter={[15, 0]} align="middle">
+            <Col> Meeting duration </Col>
+            <Col>
+              <InputNumber
+                defaultValue={5}
                 value={this.props.duration}
+                min={5}
+                max={1440}
+                step={5}
+                formatter={value =>
+                  `${Math.trunc(value / 60)}:${(value % 60)
+                    .toFixed()
+                    .toString()
+                    .padStart(2, "0")}`
+                }
+                parser={value => {
+                  value = value.replace(":", "");
+                  return Math.trunc(value / 100) * 60 + (value % 100);
+                }}
                 onChange={this.changeDuration.bind(this)}
                 id="duration"
-                style={durationStyle}
               />
-              {!this.props.success && (
-                <h1 style={errorText}>Please input meeting duration.</h1>
-              )}
-            </div>
-          }
+            </Col>
+          </Row>
+          {!this.props.success && (
+            <h1 style={errorText}>Please enter the length of your meeting</h1>
+          )}
         </Form.Item>
 
         <Form.Item>
@@ -74,10 +86,6 @@ const styles = {
     fontSize: 12,
     color: "red",
     marginLeft: 10
-  },
-
-  durationStyle: {
-    width: 200
   }
 };
 
