@@ -34,12 +34,12 @@ class LoginForm extends Component {
             name="email"
             rules={[
               { type: "email", message: "Please enter a valid email address" },
-              { required: true, message: "Please input your email!" }
+              { required: true, message: "Please enter your email!" }
             ]}
           >
             <Input
               allowClear
-              placeholder={"Enter your Email"}
+              placeholder={"Enter your email"}
               prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
             />
           </Form.Item>
@@ -47,7 +47,7 @@ class LoginForm extends Component {
           <Form.Item
             className="input-password"
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[{ required: true, message: "Please enter your password!" }]}
           >
             <Input.Password
               allowClear

@@ -1,20 +1,14 @@
 import {
   Layout,
   Menu,
-  Dropdown,
   Button,
   Avatar,
   message,
   Col,
   Row,
-  List,
   Modal
 } from "antd";
-import {
-  DownOutlined,
-  ExclamationCircleOutlined,
-  TeamOutlined
-} from "@ant-design/icons";
+import { DownOutlined, ExclamationCircleOutlined } from "@ant-design/icons";
 import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
@@ -29,17 +23,32 @@ import {
 } from "../../actions/components/layout/NavigationBar.action";
 
 const { Header } = Layout;
+const { SubMenu } = Menu;
 
 export class NavigationBar extends Component {
   constructor(props) {
     super(props);
-
     this.logoutUser = this.logoutUser.bind(this);
     this.loginUser = this.loginUser.bind(this);
+    this.state = { hideNav: false, showMenuMobile: false };
   }
+
+  handleResize = () => {
+    if (window.innerWidth <= 760) {
+      this.setState({ hideNav: true });
+    } else {
+      this.setState({ hideNav: false });
+    }
+  };
 
   componentDidMount() {
     this.props.getGroupList();
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.handleResize);
   }
 
   loginUser(response) {
@@ -52,106 +61,169 @@ export class NavigationBar extends Component {
     message.info("Logged out of account");
   }
 
-  chooseStyle(array, noDataStyle, listStyle) {
-    return array && array.length > 0 ? listStyle : noDataStyle;
-  }
-
   closeErrorModal = () => {
     this.props.closeErrorModal();
   };
 
-  render() {
-    const { headerStyle, listStyle, noDataStyle, oldAntColStyle } = styles;
-    const groupMenu = (
-      <List
-        locale={{ emptyText: "You have not joined any groups" }}
-        size="small"
-        itemLayout="horizontal"
-        dataSource={this.props.groupList}
-        selectable={"true"}
-        style={
-          this.props.groupList && this.props.groupList.length > 0
-            ? listStyle
-            : noDataStyle
-        }
-        renderItem={item => (
-          <List.Item>
-            <List.Item.Meta
-              avatar={<Avatar size={25} icon={<TeamOutlined />} />}
-              title={
-                <a href={"/groups/" + item.GroupId + "/"}>{item.GroupName}</a>
-              }
+  renderGroupMenuItem = group => {
+    return (
+      <Menu.Item key={group.GroupId}>
+        <a href={"/groups/" + group.GroupId + "/"}>{group.GroupName}</a>
+      </Menu.Item>
+    );
+  };
+
+  userNavigation = () => {
+    const { floatRight } = styles
+    return this.props.isAuthenticated ? (
+      <SubMenu style={floatRight} title={
+        <Row>
+          <Col pull={2}>
+            {this.props.userName}
+          </Col>
+          <Col>
+            <Avatar
+            size={32}
+            icon={<img src={this.props.displayPicURL} alt="user picture" />}
             />
-          </List.Item>
-        )}
-      />
-    );
-
-    const userMenu = (
-      <Menu>
-        <Menu.Item onClick={this.logoutUser}>Logout</Menu.Item>
-      </Menu>
-    );
-
-    const userNavigation = this.props.isAuthenticated ? (
-      <Dropdown.Button
-        href="/main"
-        overlay={userMenu}
-        icon={
-          <Avatar
-            size={16}
-            icon={<img src={this.props.displayPicURL} alt="" />}
-          />
-        }
-      >
-        <div id="username">{this.props.userName}</div>
-      </Dropdown.Button>
+          </Col>
+        </Row>
+      }>
+        <Menu.Item onClick={this.logoutUser}>
+          Log Out
+        </Menu.Item>
+      </SubMenu>
     ) : (
-      <div>
-        <Button
+      <Menu.Item
           id="auth-button"
           onClick={() => {
             this.props.toggleModal(true);
           }}
         >
           Login
-        </Button>
-      </div>
+      </Menu.Item>
     );
+  };
 
+
+  renderNavMenuWeb = () => {
+    const { menuStyle, noSidePadding, headerStyle } = styles;
     return (
       <Header style={headerStyle}>
-        <div id="logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["1"]}
-          style={{ lineHeight: "64px" }}
-        ></Menu>
-
-        <Row gutter={{ xs: 8, sm: 16, md: 24 }}>
-          <Col style={oldAntColStyle}>
-            <Dropdown overlay={groupMenu} placement="bottomCenter">
-              <Button id="dropdown-button">
-                Groups <DownOutlined />
-              </Button>
-            </Dropdown>
-          </Col>
-          <Col flex="100px">
-            <Button className="nav-button" type="primary" href="/createGroup">
-              Create A Group
-            </Button>
-          </Col>
-          <Col>
-            <Button className="nav-button" type="primary">
-              Join A Group
-            </Button>
-          </Col>
-          <Col flex="auto"></Col>
-          <Col flex="100px">
-            <div id="masthead-user">{userNavigation}</div>
-          </Col>
+        <Row>
+          <Menu theme="dark" mode="horizontal" style={menuStyle}>
+            <Menu.Item key="iconWeb" style={noSidePadding}>
+              <a href="/main/">
+                <img
+                  aria-hidden="true"
+                  src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                  width="45px"
+                  alt="user picture"
+                />
+              </a>
+            </Menu.Item>
+            <SubMenu
+              key="groupSubMenuWeb"
+              title={
+                <span>
+                  Groups <DownOutlined />
+                </span>
+              }
+            >
+              {this.props.groupList.map(group => {
+                return this.renderGroupMenuItem(group);
+              })}
+            </SubMenu>
+            <Menu.Item key="createGroupWeb">
+              <a href="/createGroup/">Create A Group</a>
+            </Menu.Item>
+            <Menu.Item key="joinGroupWeb">Join A Group</Menu.Item>
+            {this.userNavigation()}
+          </Menu>
         </Row>
+      </Header>
+    );
+  };
+
+  renderNavMenuMobile = () => {
+    return (
+      <span>
+        {!this.state.showMenuMobile ? (
+          <Menu theme="dark" mode="inline">
+            <Menu.Item
+              key="iconMobile"
+              onClick={() => {
+                this.setState({ showMenuMobile: true });
+              }}
+            >
+              <Row justify="center">
+                <img
+                  aria-hidden="true"
+                  src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                  width="40px"
+                  alt="user picture"
+                />
+              </Row>
+            </Menu.Item>
+          </Menu>
+        ) : (
+          <span>
+            <Menu theme="dark" mode="inline">
+              <Menu.Item
+                key="iconMobile"
+                onClick={() => {
+                  this.setState({ showMenuMobile: false });
+                }}
+              >
+                <Row justify="center">
+                  <img
+                    aria-hidden="true"
+                    src={process.env.PUBLIC_URL + "/icons/FULL4.png"}
+                    width="40px"
+                    alt="user picture"
+                  />
+                </Row>
+              </Menu.Item>
+              <SubMenu
+                key="groupSubMenuMobile"
+                title={<span>Groups</span>}
+              >
+                {this.props.groupList.map(group => {
+                  return this.renderGroupMenuItem(group);
+                })}
+              </SubMenu>
+              <Menu.Item key="createGroupMobile">
+                <a href="/createGroup/">Create A Group</a>
+              </Menu.Item>
+              <Menu.Item key="joinGroupMobile">Join A Group</Menu.Item>
+              <Menu.Item onClick={this.logoutUser} key="logOutMobile">Log Out             
+              <Row>
+                <Col pull={2}>
+                  Log Out
+                </Col>
+                <Col>
+                  <Avatar
+                  size={32}
+                  icon={<img src={this.props.displayPicURL} alt="" />}
+                  />
+                </Col>
+              </Row>
+              </Menu.Item>
+            </Menu>
+          </span>
+        )}
+      </span>
+    );
+  };
+
+  render() {
+    const { layoutStyle } = styles;
+
+    return (
+      <Layout style={layoutStyle}>
+        {!this.state.hideNav
+          ? this.renderNavMenuWeb()
+          : this.renderNavMenuMobile()}
         <Modal
           visible={this.props.showErrorModal}
           onCancel={this.closeErrorModal}
@@ -163,28 +235,49 @@ export class NavigationBar extends Component {
         >
           <ExclamationCircleOutlined /> Oops! Something went wrong!
         </Modal>
-      </Header>
+      </Layout>
     );
   }
 }
 
 const styles = {
   headerStyle: {
-    position: "fixed",
-    zIndex: 1,
-    width: "100%"
+    zIndex: 25
   },
 
-  listStyle: {
-    paddingRight: 40
+  fixedPosition: {
+    position: "fixed"
   },
 
-  noDataStyle: {
-    padding: 30
+  noSidePadding: {
+    paddingLeft: 0
   },
 
   oldAntColStyle: {
     flex: "0 1 auto"
+  },
+
+  menuStyle: {
+    margin: 0,
+    paddingTop: 10,
+    color: "#ffffff",
+    width: "100%"
+  },
+
+  layoutStyle: {
+    background: "transparent"
+  },
+
+  bottomPadding: {
+    paddingBottom: 25
+  },
+
+  floatRight: {
+    float: "right"
+  },
+
+  floatLeft: {
+    float: "left"
   }
 };
 

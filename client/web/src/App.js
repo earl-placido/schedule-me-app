@@ -79,18 +79,6 @@ class App extends Component {
 }
 
 const styles = {
-  contentStyle: {
-    padding: "0 50px",
-    marginTop: 64
-  },
-
-  containerStyle: {
-    background: "#fff",
-    padding: 24,
-    minHeight: 500,
-    marginTop: 20
-  },
-
   footerStyle: {
     textAlign: "center"
   }

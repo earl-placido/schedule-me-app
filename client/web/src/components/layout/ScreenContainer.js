@@ -7,6 +7,25 @@ import NavigationBar from "./NavigationBar";
 const { Content } = Layout;
 
 class ScreenContainer extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { lessPadding: false };
+  }
+
+  handleResize = () => {
+    if (window.innerWidth <= 760) {
+      this.setState({ lessPadding: true });
+    } else {
+      this.setState({ lessPadding: false });
+    }
+  };
+
+  componentDidMount() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  }
+
+
   render() {
     const { contentStyle, containerStyle } = styles;
 
@@ -23,27 +42,16 @@ class ScreenContainer extends Component {
 }
 
 const styles = {
-  headerStyle: {
-    position: "fixed",
-    zIndex: 1,
-    width: "100%"
-  },
-
   contentStyle: {
-    padding: "0 50px",
-    marginTop: 90
+
   },
 
   containerStyle: {
     background: "#fff",
     padding: 24,
     minHeight: 500,
-    marginTop: 20
-  },
 
-  footerStyle: {
-    textAlign: "center"
-  }
+  },
 };
 
 ScreenContainer.propTypes = {
