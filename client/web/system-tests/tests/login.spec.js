@@ -54,9 +54,9 @@ context("Test login functionality", () => {
     // empty password
     cy.get(".ant-form-item-control-input-content > .ant-btn").click();
     cy.url().should("contain", "/");
-    cy.get(".ant-form-item-explain > div").should(
+    cy.get("div.ant-form-item-explain > div").should(
       "contain",
-      "Please input your password!"
+      "Please enter your password!"
     );
 
     // incorrect password
@@ -82,7 +82,7 @@ context("Test login functionality", () => {
     cy.url().should("contain", "/");
     cy.get(".ant-form-item-explain > div").should(
       "contain",
-      "Please input your email!"
+      "Please enter your email!"
     );
 
     // invalid email format
