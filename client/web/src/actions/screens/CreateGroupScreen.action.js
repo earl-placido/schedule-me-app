@@ -52,7 +52,6 @@ export const updateMeetingLocation = location => {
   };
 };
 
-// return true if success, false if fail
 export const goNextPage = (
   groupName,
   groupDescription,
@@ -62,9 +61,54 @@ export const goNextPage = (
   currentPage
 ) => {
   // pass in meeting and share parameters once done
-  if (currentPage === 0) return groupPageLogic(groupName, currentPage);
-  else if (duration === null) {
-    return { type: SUBMIT_GROUP_CREATION, payload: { success: false } };
+  if (currentPage === 0) {
+    return inputGroupInfo(currentPage, groupName, groupDescription);
+  } else if (currentPage === 1) {
+    return inputMeetingInfo(
+      currentPage,
+      groupName,
+      groupDescription,
+      duration,
+      frequency,
+      location
+    );
+  }
+};
+
+const inputGroupInfo = (currentPage, groupName, groupDesc) => {
+  if (groupName.length === 0) {
+    // must have a value for group name
+    return { type: GO_NEXT_PAGE, payload: { success: false, hasAName: false } };
+  } else if (groupDesc.length > 225) {
+    return {
+      type: GO_NEXT_PAGE,
+      payload: { success: false, hasAName: true, descriptionTooLong: true }
+    };
+  }
+  return {
+    type: GO_NEXT_PAGE,
+    payload: {
+      success: true,
+      hasAName: true,
+      descriptionTooLong: false,
+      currentPage: currentPage + 1
+    }
+  };
+};
+
+const inputMeetingInfo = (
+  currentPage,
+  groupName,
+  groupDescription,
+  duration,
+  frequency,
+  location
+) => {
+  if (duration === null || duration === 0) {
+    return {
+      type: SUBMIT_GROUP_CREATION,
+      payload: { success: false, hasMeetingDuration: false }
+    };
   }
   return submitGroupCreation(
     groupName,
@@ -74,17 +118,6 @@ export const goNextPage = (
     location,
     currentPage
   );
-};
-
-const groupPageLogic = (groupName, currentPage) => {
-  if (groupName.length === 0)
-    // must have a value for group name
-    return { type: GO_NEXT_PAGE, payload: { success: false } };
-  else
-    return {
-      type: GO_NEXT_PAGE,
-      payload: { success: true, currentPage: currentPage + 1 }
-    };
 };
 
 /***** submit group/meeting form *****/
@@ -177,8 +210,11 @@ const INITIAL_STATE = {
   meetingLocation: null,
   link: "",
   response: null,
-  success: true,
   currentPage: 0,
+  success: true,
+  hasMeetingDuration: true,
+  hasAName: true,
+  descriptionTooLong: false,
   showErrorModal: false
 };
 

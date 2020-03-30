@@ -32,7 +32,7 @@ class GroupMeetingForm extends Component {
                 id="duration"
                 style={durationStyle}
               />
-              {!this.props.success && (
+              {!this.props.success && !this.props.hasMeetingDuration && (
                 <h1 style={errorText}>Please input meeting duration.</h1>
               )}
             </div>
@@ -85,7 +85,8 @@ GroupMeetingForm.propTypes = {
   frequency: PropTypes.any,
   duration: PropTypes.any,
   location: PropTypes.any,
-  success: PropTypes.any,
+  success: PropTypes.bool,
+  hasMeetingDuration: PropTypes.bool,
 
   updateMeetingDuration: PropTypes.func,
   updateMeetingFrequency: PropTypes.func,
