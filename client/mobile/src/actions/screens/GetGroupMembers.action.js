@@ -36,6 +36,55 @@ export const getGroupMembers = groupId => async dispatch => {
   }
 };
 
+export const getGroupMemberIdWithEmail = async (groupId, userEmail) => {
+  const token = await AsyncStorage.getItem('token');
+
+  const userOptions = {
+    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`,
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const userResponse = await axios(userOptions);
+    const userId = userResponse.data.userId;
+    const groupMemberId = await getGroupMemberIdWithUserId(groupId, userId);
+    return groupMemberId;
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
+
+export const getGroupMemberIdWithUserId = async (groupId, userId) => {
+  const token = await AsyncStorage.getItem('token');
+
+  const groupMemberOptions = {
+    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`,
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  try {
+    const groupMemberResponse = await axios(groupMemberOptions);
+
+    if (groupMemberResponse.data.groupMembers[0] !== undefined) {
+      const groupMemberId =
+        groupMemberResponse.data.groupMembers[0].GroupMemberId;
+      return groupMemberId;
+    }
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
+
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GET_GROUP_MEMBERS_SUCCESS:

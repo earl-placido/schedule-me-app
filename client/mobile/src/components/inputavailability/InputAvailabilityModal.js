@@ -6,7 +6,11 @@ import AvailabilityModal from './AvailabilityModal';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 
-import {selectDate, showModal} from '../../actions/InputAvailability.action';
+import {
+  selectDate,
+  showModal,
+  markDates,
+} from '../../actions/InputAvailability.action';
 import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
 
 import {connect} from 'react-redux';
@@ -18,7 +22,7 @@ class InputAvailabilityModal extends Component {
         <Calendar
           minDate={moment(new Date()).format('YYYY-MM-DD')}
           onDayPress={day => {
-            this.props.selectDate(day, this.props.availableDays);
+            this.props.selectDate(day, this.props.availabilities);
             this.props.showModal();
           }}
           markedDates={this.props.markedDates}
@@ -48,7 +52,7 @@ const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
   const {
     selectedDate,
     modalVisible,
-    availableDays,
+    availabilities,
     markedDates,
   } = InputAvailabilityReducer;
   const {isInputAvailabilityVisible} = GetGroupReducer;
@@ -56,7 +60,7 @@ const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
   return {
     selectedDate,
     modalVisible,
-    availableDays,
+    availabilities,
     markedDates,
     isInputAvailabilityVisible,
   };
@@ -65,16 +69,20 @@ const mapStateToProps = ({InputAvailabilityReducer, GetGroupReducer}) => {
 InputAvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
   modalVisible: PropTypes.any,
-  availableDays: PropTypes.any,
+  availabilities: PropTypes.any,
   markedDates: PropTypes.any,
+  groupId: PropTypes.any,
   isInputAvailabilityVisible: PropTypes.any,
+
   selectDate: PropTypes.func,
   showModal: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
+  markDates: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
   selectDate,
   showModal,
   toggleInputAvailability,
+  markDates,
 })(InputAvailabilityModal);
