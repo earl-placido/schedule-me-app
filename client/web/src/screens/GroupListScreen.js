@@ -77,7 +77,7 @@ const styles = {
   },
 
   cardStyle: {
-    width: 800
+    width: "90%"
   },
 
   listItem: {

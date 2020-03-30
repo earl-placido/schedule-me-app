@@ -88,27 +88,29 @@ class GroupScreen extends Component {
   currentMeetingTime = () => {
     return (
       <div>
-        {this.props.meetings &&
-          this.props.meetings.map((meeting, index) => {
-            return (
-              <div key={index}>
-                <p style={{ display: "inline", marginRight: 10 }}>
-                  {meeting.meetingAvailableString ||
-                    "Meeting time is currently empty."}
-                </p>
-                {this.props.selfMember &&
-                  this.props.selfMember.MemberRole === "AD" && (
-                    <Button
-                      type="primary"
-                      style={{ backgroundColor: "green" }}
-                      onClick={this.getOptimalTime.bind(this, meeting)}
-                    >
-                      Change
-                    </Button>
-                  )}
-              </div>
-            );
-          })}
+        <Row justify="center">
+          {this.props.meetings &&
+            this.props.meetings.map((meeting, index) => {
+              return (
+                <div key={index}>
+                  <p style={{ display: "inline", marginRight: 10 }}>
+                    {meeting.meetingAvailableString ||
+                      "Meeting time is currently empty."}
+                  </p>
+                  {this.props.selfMember &&
+                    this.props.selfMember.MemberRole === "AD" && (
+                      <Button
+                        type="primary"
+                        style={{ backgroundColor: "green" }}
+                        onClick={this.getOptimalTime.bind(this, meeting)}
+                      >
+                        Change
+                      </Button>
+                    )}
+                </div>
+              );
+            })}
+        </Row>
       </div>
     );
   };
@@ -253,7 +255,9 @@ class GroupScreen extends Component {
 const styles = {
   containerStyle: {
     display: "flex",
-    justifyContent: "center"
+    justifyContent: "center",
+    margin: 1,
+    padding: 1
   },
 
   cardStyle: {
