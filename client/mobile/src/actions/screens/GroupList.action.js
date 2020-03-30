@@ -4,7 +4,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 export const GET_GROUP_LIST_SUCCESS = 'get_group_list_success';
 export const GET_GROUP_LIST_FAILURE = 'get_group_list_failure';
-export const RESET_GROUP_LIST = 'reset_group_list';
 
 const INITIAL_STATE = {
   errored: false,
@@ -38,16 +37,6 @@ export const getGroupList = () => async dispatch => {
   }
 };
 
-export const resetGroupList = () => {
-  return {
-    type: GET_GROUP_LIST_SUCCESS,
-    payload: {
-      errored: false,
-      groupList: [],
-    },
-  };
-};
-
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case GET_GROUP_LIST_SUCCESS:
@@ -59,11 +48,6 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         message: action.payload,
-      };
-    case RESET_GROUP_LIST:
-      return {
-        ...state,
-        ...action.payload,
       };
     default:
       return state;
