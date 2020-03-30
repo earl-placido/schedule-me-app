@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Layout, Button, Divider, notification } from "antd";
+import { Button, Divider, notification, Card, Row, Col } from "antd";
 import Login from "../components/login/LoginComponent";
-
-const { Content } = Layout;
 
 export default class LoginScreen extends Component {
   constructor(props) {
@@ -34,53 +32,66 @@ export default class LoginScreen extends Component {
   render() {
     this.handleHttps(window.location.protocol);
 
-    const { containerStyle, contentStyle, logoStyle, buttonStyle } = styles;
+    const { backgroundStyle, cardStyle, primaryColorText, titleStyle } = styles;
 
     return (
-      <Content style={contentStyle}>
-        <div style={containerStyle}>
-          {/* LOGO HERE  */}
-          <h1 style={logoStyle}>Schedule Me Up</h1>
-
-          <Button href="/creategroup" size="large" style={buttonStyle}>
-            Continue as Guest
-          </Button>
-
-          <Divider orientation="center" style={{ marginBottom: 30 }}>
-            or
-          </Divider>
-
-          <Login />
-        </div>
-      </Content>
+      <div style={backgroundStyle}>
+        <Row align="middle" justify="center">
+          <Col flex="auto" />
+          <Col flex="auto">
+            <Card style={cardStyle}>
+              <div>
+                <Row justify="center">
+                  <img
+                    alt="logo"
+                    aria-hidden="true"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/icons/android-chrome-192x192.png"
+                    }
+                  />
+                </Row>
+                <Row justify="center" style={titleStyle}>
+                  <span style={primaryColorText}>Schedule&nbsp;</span>
+                  <span> Me Up</span>
+                </Row>
+                <Row justify="center">
+                  <Button href="/creategroup" size="large">
+                    Continue as Guest
+                  </Button>
+                </Row>
+                <Divider orientation="center">or</Divider>
+                <Row justify="center">
+                  <Login />
+                </Row>
+              </div>
+            </Card>
+          </Col>
+          <Col flex="auto" />
+        </Row>
+      </div>
     );
   }
 }
 
 const styles = {
-  containerStyle: {
-    background: "#fff",
-    padding: 24,
-    minHeight: 500,
-    marginTop: 20,
-    alignItems: "center"
+  backgroundStyle: {
+    backgroundColor: "#001529"
   },
 
-  contentStyle: {
-    padding: "0 50px",
-    width: "50%",
-    marginTop: 20,
-    alignSelf: "center"
+  cardStyle: {
+    margin: 25,
+    borderRadius: 25
   },
 
-  logoStyle: {
-    fontSize: 50,
-    textAlign: "center",
-    marginBottom: 40
+  titleStyle: {
+    fontSize: 30,
+    paddingBottom: 50,
+    fontWeight: "bold",
+    color: "#000000"
   },
 
-  buttonStyle: {
-    width: "100%",
-    marginBottom: 20
+  primaryColorText: {
+    color: "#1890FF"
   }
 };
