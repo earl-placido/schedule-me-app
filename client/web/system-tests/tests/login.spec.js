@@ -12,8 +12,8 @@ const createUser = user => {
   cy.url().should("contain", "/main");
 
   // logout
-  cy.get(".ant-btn-group > .ant-dropdown-trigger").trigger("mouseover");
-  cy.get(".ant-dropdown-menu-item").click();
+  cy.get("#userName").click();
+  cy.get("#logoutButton").click();
 };
 
 context("Test login functionality", () => {

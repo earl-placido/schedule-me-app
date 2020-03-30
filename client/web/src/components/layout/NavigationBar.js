@@ -21,7 +21,7 @@ export class NavigationBar extends Component {
     super(props);
     this.logoutUser = this.logoutUser.bind(this);
     this.loginUser = this.loginUser.bind(this);
-    this.state = { hideNav: false, showMenuMobile: false };
+    this.state = { hideNav: false, hideTitle: false, showMenuMobile: false };
   }
 
   handleResize = () => {
@@ -29,6 +29,12 @@ export class NavigationBar extends Component {
       this.setState({ hideNav: true });
     } else {
       this.setState({ hideNav: false });
+    }
+
+    if (window.innerWidth <= 1280) {
+      this.setState({ hideTitle: true });
+    } else {
+      this.setState({ hideTitle: false });
     }
   };
 
@@ -75,14 +81,16 @@ export class NavigationBar extends Component {
             <Col pull={2}>{this.props.userName}</Col>
             <Col>
               <Avatar
-                size={32}
-                icon={<img src={this.props.displayPicURL} alt="user picture" />}
+                size={36}
+                icon={<img src={this.props.displayPicURL} alt="user" />}
               />
             </Col>
           </Row>
         }
       >
-        <Menu.Item onClick={this.logoutUser}>Log Out</Menu.Item>
+        <Menu.Item id="logoutButton" onClick={this.logoutUser}>
+          Log Out
+        </Menu.Item>
       </SubMenu>
     ) : (
       <Menu.Item
@@ -106,9 +114,8 @@ export class NavigationBar extends Component {
               <a href="/main/">
                 <img
                   aria-hidden="true"
-                  src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
-                  width="45px"
-                  alt="user picture"
+                  src={process.env.PUBLIC_URL + "/icons/logo-circle-36x36.png"}
+                  alt="logo"
                 />
               </a>
             </Menu.Item>
@@ -153,9 +160,8 @@ export class NavigationBar extends Component {
               <Row justify="center">
                 <img
                   aria-hidden="true"
-                  src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
-                  width="40px"
-                  alt="user picture"
+                  src={process.env.PUBLIC_URL + "/icons/logo-circle-36x36.png"}
+                  alt="logo"
                 />
               </Row>
             </Menu.Item>
@@ -172,10 +178,23 @@ export class NavigationBar extends Component {
                 <Row justify="center">
                   <img
                     aria-hidden="true"
-                    src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
-                    width="40px"
-                    alt="user picture"
+                    src={
+                      process.env.PUBLIC_URL + "/icons/logo-circle-36x36.png"
+                    }
+                    alt="logo"
                   />
+                </Row>
+              </Menu.Item>
+              <Menu.Item>
+                <Row>
+                  <Col>{this.props.userName}</Col>
+                  <Col flex="auto" />
+                  <Col push={5}>
+                    <Avatar
+                      size={32}
+                      icon={<img src={this.props.displayPicURL} alt="user" />}
+                    />
+                  </Col>
                 </Row>
               </Menu.Item>
               <SubMenu id="groupSubMenuMobile" title={<span>Groups</span>}>
@@ -191,17 +210,8 @@ export class NavigationBar extends Component {
                 <a href="/createGroup/">Create A Group</a>
               </Menu.Item>
               <Menu.Item id="joinGroupMobile">Join A Group</Menu.Item>
-              <Menu.Item onClick={this.logoutUser} id="logOutMobile">
+              <Menu.Item onClick={this.logoutUser} id="logoutButton">
                 Log Out
-                <Row>
-                  <Col pull={2}>Log Out</Col>
-                  <Col>
-                    <Avatar
-                      size={32}
-                      icon={<img src={this.props.displayPicURL} alt="" />}
-                    />
-                  </Col>
-                </Row>
               </Menu.Item>
             </Menu>
           </span>
@@ -211,10 +221,10 @@ export class NavigationBar extends Component {
   };
 
   render() {
-    const { layoutStyle } = styles;
+    const { titleStyle, primaryColorText } = styles;
 
     return (
-      <Layout style={layoutStyle}>
+      <Layout>
         {!this.state.hideNav
           ? this.renderNavMenuWeb()
           : this.renderNavMenuMobile()}
@@ -229,6 +239,12 @@ export class NavigationBar extends Component {
         >
           <ExclamationCircleOutlined /> Oops! Something went wrong!
         </Modal>
+        {!this.state.hideTitle && (
+          <Row justify="center" style={titleStyle}>
+            <span style={primaryColorText}>Schedule&nbsp;</span>
+            <span> Me Up</span>
+          </Row>
+        )}
       </Layout>
     );
   }
@@ -239,39 +255,35 @@ const styles = {
     zIndex: 25
   },
 
-  fixedPosition: {
-    position: "fixed"
-  },
-
   noSidePadding: {
     paddingLeft: 0
-  },
-
-  oldAntColStyle: {
-    flex: "0 1 auto"
   },
 
   menuStyle: {
     margin: 0,
     paddingTop: 10,
-    color: "#ffffff",
     width: "100%"
-  },
-
-  layoutStyle: {
-    background: "transparent"
-  },
-
-  bottomPadding: {
-    paddingBottom: 25
   },
 
   floatRight: {
     float: "right"
   },
 
-  floatLeft: {
-    float: "left"
+  titleStyle: {
+    position: "fixed",
+    fontSize: 30,
+    paddingBottom: 50,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    zIndex: 99,
+    left: "50%",
+    width: "75%",
+    paddingTop: "7px",
+    marginLeft: "-37.5%"
+  },
+
+  primaryColorText: {
+    color: "#1890FF"
   }
 };
 

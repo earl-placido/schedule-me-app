@@ -32,7 +32,7 @@ export default class LoginScreen extends Component {
   render() {
     this.handleHttps(window.location.protocol);
 
-    const { backgroundStyle, cardStyle, titleStyle } = styles;
+    const { backgroundStyle, cardStyle, primaryColorText, titleStyle } = styles;
 
     return (
       <div style={backgroundStyle}>
@@ -45,12 +45,15 @@ export default class LoginScreen extends Component {
                   <img
                     alt="logo"
                     aria-hidden="true"
-                    src={process.env.PUBLIC_URL + "/icons/FULL-LOGO1.png"}
-                    width="100px"
+                    src={
+                      process.env.PUBLIC_URL +
+                      "/icons/android-chrome-192x192.png"
+                    }
                   />
                 </Row>
                 <Row justify="center" style={titleStyle}>
-                  Schedule Me Up
+                  <span style={primaryColorText}>Schedule&nbsp;</span>
+                  <span> Me Up</span>
                 </Row>
                 <Row justify="center">
                   <Button href="/creategroup" size="large">
@@ -84,6 +87,11 @@ const styles = {
   titleStyle: {
     fontSize: 30,
     paddingBottom: 50,
-    fontWeight: "bold"
+    fontWeight: "bold",
+    color: "#000000"
+  },
+
+  primaryColorText: {
+    color: "#1890FF"
   }
 };
