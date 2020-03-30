@@ -11,9 +11,7 @@ const createUser = user => {
   cy.get(".ant-form-item-control-input-content > .ant-btn").click();
   cy.url().should("contain", "/main");
 
-  // logout
-  cy.get("#userName").click();
-  cy.get("#logoutButton").click();
+  cy.clearLocalStorage();
 };
 
 context("Test login functionality", () => {
