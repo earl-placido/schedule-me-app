@@ -41,9 +41,12 @@ class GroupCodeForm extends Component {
 
   handleOnSubmit = () => {
     const value = this.form.getValue();
+    //  Currently only checking if there is a value.
+    //  Could change this in the future if codes require a certain format
     if (value) {
       this.props.getGroup(value.code);
       this.toggleSpinner();
+      // Timeout created to ensure enough time is given for the server to retrieve information and update local variables
       setTimeout(() => {
         this.toggleSpinner();
         this.showModal(value);
@@ -58,7 +61,7 @@ class GroupCodeForm extends Component {
   showModal = value => {
     if (this.props.errored) {
       Alert.alert(
-        'The group code does not exist. \nPlease try a different code.',
+        'The group code does not exist.\nPlease try a different code.',
       );
     } else {
       this.props.navigation.navigate('Group Detail', {codeNum: value.code});

@@ -33,6 +33,7 @@ class GroupList extends Component {
           </CardItem>
         </View>
 
+        {/* Display Groups */}
         <Content>
           {this.props.groupList.length > 0 ? (
             <Card style={{flexDirection: 'column'}}>

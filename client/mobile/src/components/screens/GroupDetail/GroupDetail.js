@@ -109,6 +109,7 @@ class GroupDetail extends Component {
           </Card>
         </Content>
 
+        {/* Pressing on a user displays a modal with more information about the user */}
         <FloatingAction
           actions={actions}
           onPressItem={() =>
@@ -133,13 +134,10 @@ class GroupDetail extends Component {
           visible={this.state.dialogVisible}>
           <Icon
             style={{padding: 10, position: 'absolute', right: 10}}
-            type="FontAwesome"
             name="close"
             onPress={this.handleClose}
           />
-
           <Dialog.Title>{this.state.currUser.UserFName}</Dialog.Title>
-
           <Dialog.Description>
             <Text style={{fontWeight: 'bold'}}>Full Name: </Text>{' '}
             {this.state.currUser.UserFName} {this.state.currUser.UserLName}{' '}
