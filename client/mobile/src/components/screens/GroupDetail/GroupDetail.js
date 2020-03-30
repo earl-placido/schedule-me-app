@@ -14,6 +14,7 @@ import {
   toggleInputAvailability,
 } from '../../../actions/screens/GetGroup.action';
 import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
+import {setAvailabilities} from '../../../actions/InputAvailability.action';
 
 const actions = [
   {
@@ -28,6 +29,7 @@ class GroupDetail extends Component {
   componentDidMount() {
     this.props.getGroup(this.props.route.params.codeNum);
     this.props.getGroupMembers(this.props.route.params.codeNum);
+    this.props.setAvailabilities(this.props.route.params.codeNum);
   }
 
   constructor(props) {
@@ -118,13 +120,7 @@ class GroupDetail extends Component {
           }
         />
 
-        <Modal
-          isVisible={this.props.isInputAvailabilityVisible}
-          onBackdropPress={() => {
-            this.props.toggleInputAvailability(
-              this.props.isInputAvailabilityVisible,
-            );
-          }}>
+        <Modal isVisible={this.props.isInputAvailabilityVisible}>
           <InputAvailabilityModal />
         </Modal>
 
@@ -187,10 +183,12 @@ GroupDetail.propTypes = {
   getGroup: PropTypes.func,
   getGroupMembers: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
+  setAvailabilities: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
   getGroupMembers,
   getGroup,
   toggleInputAvailability,
+  setAvailabilities,
 })(GroupDetail);
