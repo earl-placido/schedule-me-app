@@ -96,8 +96,8 @@ export const loginGoogle = response => {
         if (res.status === responses.SUCCESS) {
           const token = res.headers['x-auth-token'];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
-
-          setUserData(token, userName);
+          let userEmail = `${res.data.email}`;
+          setUserData(token, userName, userEmail);
 
           dispatch(loginSuccess(userName, token));
         } else {
@@ -143,8 +143,9 @@ export const signupUser = (
           if (res.status === responses.SUCCESS) {
             const token = res.headers['x-auth-token'];
             let userName = `${res.data.firstName} ${res.data.lastName}`;
+            let userEmail = `${res.data.email}`;
 
-            setUserData(token, userName);
+            setUserData(token, userName, userEmail);
 
             dispatch(signupSuccess(userName, token));
           } else {
@@ -179,8 +180,8 @@ export const loginUser = (email, password) => {
         if (res.status === responses.SUCCESS) {
           const token = res.headers['x-auth-token'];
           let userName = `${res.data.firstName} ${res.data.lastName}`;
-
-          setUserData(token, userName);
+          let userEmail = `${res.data.email}`;
+          setUserData(token, userName, userEmail);
 
           dispatch(loginSuccess(userName, token));
         } else {
@@ -195,13 +196,15 @@ export const logoutUser = () => {
   return async dispatch => {
     await AsyncStorage.removeItem('token');
     await AsyncStorage.removeItem('userName');
+    await AsyncStorage.removeItem('userEmail');
     dispatch(logoutSuccess());
   };
 };
 
-async function setUserData(token, userName) {
+async function setUserData(token, userName, userEmail) {
   await AsyncStorage.setItem('token', token);
   await AsyncStorage.setItem('userName', userName);
+  await AsyncStorage.setItem('userEmail', userEmail);
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 }
 
