@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text} from 'react-native';
+import {Alert, StyleSheet, Text} from 'react-native';
 import {Container, Content, Button, View, CardItem, Body} from 'native-base';
 import {connect} from 'react-redux';
 
@@ -23,21 +23,29 @@ const codeModel = t.struct({
 });
 
 class GroupCodeForm extends Component {
-  componentDidMount() {
-    this.props.getGroup(this.form.getValue());
-  }
-
   handleOnChangeValue = () => {
     this.form.getValue();
   };
 
   handleOnSubmit = () => {
     const value = this.form.getValue();
-    this.props.getGroup(this.form.getValue());
+    this.props.getGroup(value.code);
     if (value) {
-      this.props.navigation.navigate('Group Detail', {codeNum: value.code});
+      setTimeout(() => {
+        this.showModal();
+      }, 2000);
     }
-    //To do: Once the server is connected, will do a check to see if the group code exists
+  };
+
+  showModal = () => {
+    if (this.props.errored) {
+      Alert.alert(
+        'The group code does not exist. \nPlease try a different code.',
+      );
+    } else {
+      Alert.alert('valid');
+    }
+    //this.props.navigation.navigate('Group Detail', {codeNum: value.code});
   };
 
   render() {
@@ -76,8 +84,8 @@ class GroupCodeForm extends Component {
 }
 
 const mapStateToProps = ({GetGroupReducer}) => {
-  const {group} = GetGroupReducer;
-  return {group};
+  const {group, errored} = GetGroupReducer;
+  return {group, errored};
 };
 
 const styles = StyleSheet.create({
@@ -107,6 +115,7 @@ GroupCodeForm.propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   group: PropTypes.any,
+  errored: PropTypes.bool,
   getGroup: PropTypes.func,
 };
 
