@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text} from 'react-native';
-import {Container, Content, Button, View, CardItem, Body} from 'native-base';
+import {
+  Spinner,
+  Container,
+  Content,
+  Button,
+  View,
+  CardItem,
+  Body,
+} from 'native-base';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -23,29 +31,38 @@ const codeModel = t.struct({
 });
 
 class GroupCodeForm extends Component {
+  state = {
+    isSpinnerVisible: false,
+  };
+
   handleOnChangeValue = () => {
     this.form.getValue();
   };
 
   handleOnSubmit = () => {
     const value = this.form.getValue();
-    this.props.getGroup(value.code);
     if (value) {
+      this.props.getGroup(value.code);
+      this.toggleSpinner();
       setTimeout(() => {
-        this.showModal();
+        this.toggleSpinner();
+        this.showModal(value);
       }, 2000);
     }
   };
 
-  showModal = () => {
+  toggleSpinner = () => {
+    this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
+  };
+
+  showModal = value => {
     if (this.props.errored) {
       Alert.alert(
         'The group code does not exist. \nPlease try a different code.',
       );
     } else {
-      Alert.alert('valid');
+      this.props.navigation.navigate('Group Detail', {codeNum: value.code});
     }
-    //this.props.navigation.navigate('Group Detail', {codeNum: value.code});
   };
 
   render() {
@@ -73,11 +90,18 @@ class GroupCodeForm extends Component {
         </Content>
         <View style={styles.buttonStyle}>
           <Button
-            onPress={this.handleOnSubmit}
+            onPress={() => {
+              this.handleOnSubmit();
+            }}
             style={styles.insideButtonStyle}>
             <Text style={{color: 'white'}}> Continue </Text>
           </Button>
         </View>
+        {this.state.isSpinnerVisible && (
+          <View style={styles.loading}>
+            <Spinner color="white" />
+          </View>
+        )}
       </Container>
     );
   }
@@ -105,6 +129,17 @@ const styles = StyleSheet.create({
   titleTextStyle: {
     fontWeight: 'bold',
     fontSize: 25,
+  },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
