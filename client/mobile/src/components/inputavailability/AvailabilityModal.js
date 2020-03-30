@@ -55,15 +55,16 @@ class AvailabilityModal extends Component {
     this.decreaseHeight();
     this.props.deleteAvailability(
       this.props.rangeHours,
-      this.props.availableDays,
+      this.props.availabilities,
       index,
       this.props.selectedDate,
     );
   }
 
-  handleChange(date, index, startOrEndTimeIndex) {
+  handleChange(time, index, startOrEndTimeIndex) {
     this.props.handleChangeRangeHour(
-      date,
+      time,
+      this.props.selectedDate,
       index,
       startOrEndTimeIndex,
       this.props.rangeHours,
@@ -71,8 +72,14 @@ class AvailabilityModal extends Component {
   }
 
   availabilityRender(rangeHour, index) {
-    let startTime = rangeHour[0] ? rangeHour[0][1] : '';
-    let endTime = rangeHour[1] ? rangeHour[1][1] : '';
+    let startTime =
+      rangeHour['CAST(StartTime as char)'] !== undefined
+        ? rangeHour['CAST(StartTime as char)'].split(' ')[1]
+        : '';
+    let endTime =
+      rangeHour['CAST(EndTime as char)'] !== undefined
+        ? rangeHour['CAST(EndTime as char)'].split(' ')[1]
+        : '';
 
     return (
       <View
@@ -118,17 +125,23 @@ class AvailabilityModal extends Component {
 
     // TODO: pass in group member id
     this.props.addAvailability(
+      this.props.groupMemberId,
       this.props.selectedDate,
       this.props.rangeHours,
-      this.props.availableDays,
+      this.props.availabilities,
     );
 
-    this.props.markDates(this.props.availableDays);
+    this.props.markDates(this.props.availabilities);
   }
 
   foundUnfilledTime(rangeHours) {
     for (let i = 0; i < rangeHours.length; i++) {
-      if (rangeHours[i].length == 1) return true;
+      // ignore any range hours that are both undefined
+      if (
+        (rangeHours[i]['CAST(StartTime as char)'] === undefined) ^
+        (rangeHours[i]['CAST(EndTime as char)'] === undefined)
+      )
+        return true;
     }
 
     return false;
@@ -213,19 +226,26 @@ class AvailabilityModal extends Component {
 }
 
 const mapStateToProps = ({InputAvailabilityReducer}) => {
-  const {selectedDate, rangeHours, availableDays} = InputAvailabilityReducer;
+  const {
+    selectedDate,
+    rangeHours,
+    availabilities,
+    groupMemberId,
+  } = InputAvailabilityReducer;
 
   return {
     selectedDate,
     rangeHours,
-    availableDays,
+    availabilities,
+    groupMemberId,
   };
 };
 
 AvailabilityModal.propTypes = {
   selectedDate: PropTypes.any,
   rangeHours: PropTypes.any,
-  availableDays: PropTypes.any,
+  availabilities: PropTypes.any,
+  groupMemberId: PropTypes.any,
 
   cancelAvailability: PropTypes.func,
   handleChangeRangeHour: PropTypes.func,
