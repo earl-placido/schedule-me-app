@@ -120,21 +120,27 @@ const inputMeetingInfo = (
   );
 };
 
+function convertToServerDuration(meetingDuration) {
+  const hours = Math.trunc(meetingDuration / 60)
+    .toString()
+    .padStart(2, "0");
+  const mins = (meetingDuration % 60).toString().padStart(2, "0");
+  meetingDuration = hours + mins + "00";
+
+  return meetingDuration;
+}
+
 /***** submit group/meeting form *****/
 const submitGroupCreation = (
   groupName,
   groupDesc,
-  duration,
+  meetingDuration,
   meetingFrequency,
   meetingLocation,
   currentPage
 ) => async dispatch => {
-  const dateDuration = duration.toDate(); // to format to 2 decimals
-  const hours = ("0" + dateDuration.getHours()).slice(-2);
-  const minutes = ("0" + dateDuration.getMinutes()).slice(-2);
-  const seconds = ("0" + dateDuration.getSeconds()).slice(-2);
+  meetingDuration = convertToServerDuration(meetingDuration);
 
-  const meetingDuration = hours + minutes + seconds;
   const groupCreation = {
     groupName,
     groupDesc,

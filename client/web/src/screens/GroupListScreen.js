@@ -81,7 +81,8 @@ const styles = {
   },
 
   listItem: {
-    padding: 10
+    padding: 10,
+    paddingRight: 50
   }
 };
 
