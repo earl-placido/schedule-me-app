@@ -79,5 +79,4 @@ const mapStateToProps = state => ({
   userName: state.auth.userName,
 });
 
-
 export default connect(mapStateToProps, {})(StackNavigator);

@@ -44,11 +44,12 @@ class GroupList extends Component {
                     header
                     button
                     bordered
-                    onPress={() =>
-                      this.props.navigation.navigate('Group Detail', {
+                    onPress={() => {
+                      this.props.navigation.push('Group Detail', {
                         codeNum: item.GroupId,
-                      })
-                    }>
+                      });
+                      this.props.navigation.navigate('Group Detail');
+                    }}>
                     <Icon name="people" />
                     <Body style={{paddingLeft: 10}}>
                       <Text>{item.GroupName}</Text>
@@ -73,6 +74,7 @@ const mapStateToProps = ({GroupListReducer}) => {
 GroupList.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   }).isRequired,
   groupList: PropTypes.array,
   getGroupList: PropTypes.func,
