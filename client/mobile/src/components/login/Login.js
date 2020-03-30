@@ -98,7 +98,6 @@ class Login extends Component {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
       this.props.navigation.navigate('Drawer');
-      this.props.navigation.push('Drawer');
       this.toggleLogin();
     } else {
       if (this.props.message.errors) {
