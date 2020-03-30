@@ -24,6 +24,7 @@
     "start-server-and-test": "^1.10.10"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "start": "react-scripts start",
     "build_prod": "NODE_ENV=production react-scripts build",
     "build_dev": "NODE_ENV=development react-scripts build",
@@ -36,6 +37,9 @@
     "lint": "eslint --fix .",
     "cypress:open": "./node_modules/.bin/cypress open",
     "cypress:run": "./node_modules/.bin/cypress run"
+  },
+  "resolutions": {
+    "terser": "4.6.7"
   },
   "eslintConfig": {
     "extends": "react-app"
