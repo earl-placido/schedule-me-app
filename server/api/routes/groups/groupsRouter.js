@@ -114,11 +114,15 @@ router.post("/:groupId/members/:userId", (req, res, next) => {
   const userId = req.params.userId;
   const groupId = req.params.groupId;
   return groupsModel
-  .newMember(groupId, userId, "U")
-  .then((groupMemberId) => {
-    res.status(responses.CREATED).json({ groupMemberId: groupMemberId });
-  })
-  .catch(next);
+    .newMember(groupId, userId, "U")
+    .then(result => {
+      if (result.errno) {
+        res.status(responses.BAD_REQUEST).json({ error: result.sqlMessage });
+      } else {
+        res.status(responses.CREATED).json({ groupMemberId: result });
+      }
+    })
+    .catch(next);
 });
 
 // Delete group
