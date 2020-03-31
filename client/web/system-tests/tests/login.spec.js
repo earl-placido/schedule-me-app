@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+const userUtil = require("../util/userUtil");
 
 const createUser = user => {
   cy.visit("/");
@@ -15,25 +16,9 @@ const createUser = user => {
 };
 
 context("Test login functionality", () => {
-  var generatedUser;
+  var generatedUser = userUtil.generateUser();
 
   before(() => {
-    // generate a random user
-    generatedUser = {
-      fName: `fName_${Math.random()
-        .toString(36)
-        .slice(2)}`,
-      lName: `Name_${Math.random()
-        .toString(36)
-        .slice(2)}`,
-      email: `${Math.random()
-        .toString(36)
-        .slice(2)}@email.com`,
-      password: Math.random()
-        .toString(36)
-        .slice(2)
-    };
-
     createUser(generatedUser);
   });
 
