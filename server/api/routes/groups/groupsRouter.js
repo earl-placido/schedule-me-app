@@ -109,6 +109,18 @@ router.get("/:groupId/members", (req, res, next) => {
   }
 });
 
+// Add member to a group
+router.post("/:groupId/members/:userId", (req, res, next) => {
+  const userId = req.params.userId;
+  const groupId = req.params.groupId;
+  return groupsModel
+  .newMember(groupId, userId, "U")
+  .then((groupMemberId) => {
+    res.status(responses.CREATED).json({ groupMemberId: groupMemberId });
+  })
+  .catch(next);
+});
+
 // Delete group
 router.delete("/:groupId", authenticateToken, (req, res, next) => {
   const { groupId } = req.params;
