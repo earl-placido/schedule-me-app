@@ -17,14 +17,14 @@ class GroupMeetingForm extends Component {
   }
 
   render() {
-    const { errorText } = styles;
+    const { errorText, oldAntColStyle } = styles;
 
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
         <Form.Item align="middle">
           <Row gutter={[15, 0]} align="middle">
-            <Col> Meeting duration </Col>
-            <Col>
+            <Col style={oldAntColStyle}> Meeting duration </Col>
+            <Col style={oldAntColStyle}>
               <InputNumber
                 defaultValue={0}
                 value={this.props.duration}
@@ -86,6 +86,10 @@ const styles = {
     fontSize: 12,
     color: "red",
     marginLeft: 10
+  },
+
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 
