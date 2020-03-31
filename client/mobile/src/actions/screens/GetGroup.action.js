@@ -7,7 +7,6 @@ export const GET_GROUP_INFO_FAILURE = 'get_group_info_failure';
 export const TOGGLE_INPUT_AVAILABILITY = 'toggle_input_availability';
 
 const INITIAL_STATE = {
-  errored: false,
   isInputAvailabilityVisible: false,
   group: {
     group: {
@@ -24,12 +23,22 @@ const INITIAL_STATE = {
       location: '',
     },
   },
+  errored: false,
+};
+
+const getGroupFailure = () => {
+  return {
+    type: GET_GROUP_INFO_FAILURE,
+    payload: INITIAL_STATE.group,
+    errored: true,
+  };
 };
 
 const getGroupSuccess = group => {
   return {
     type: GET_GROUP_INFO_SUCCESS,
     payload: group,
+    errored: false,
   };
 };
 
@@ -48,7 +57,7 @@ export const getGroup = groupId => async dispatch => {
     const response = await axios(options);
     dispatch(getGroupSuccess(response.data));
   } catch (err) {
-    console.log(err);
+    dispatch(getGroupFailure());
   }
 };
 
@@ -65,11 +74,13 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         group: action.payload,
+        errored: action.errored,
       };
     case GET_GROUP_INFO_FAILURE:
       return {
         ...state,
-        message: action.payload,
+        group: action.payload,
+        errored: action.errored,
       };
     case TOGGLE_INPUT_AVAILABILITY:
       return {

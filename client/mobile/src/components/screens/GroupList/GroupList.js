@@ -33,33 +33,42 @@ class GroupList extends Component {
           </CardItem>
         </View>
 
+        {/* Display Groups */}
         <Content>
-          <Card style={{flexDirection: 'column'}}>
-            <FlatList
-              showsHorizontalScrollIndicator={true}
-              data={this.props.groupList}
-              renderItem={({item}) => (
-                <View>
-                  <CardItem
-                    header
-                    button
-                    bordered
-                    onPress={() => {
-                      this.props.navigation.push('Group Detail', {
-                        codeNum: item.GroupId,
-                      });
-                      this.props.navigation.navigate('Group Detail');
-                    }}>
-                    <Icon name="people" />
-                    <Body style={{paddingLeft: 10}}>
-                      <Text>{item.GroupName}</Text>
-                    </Body>
-                  </CardItem>
-                </View>
-              )}
-              keyExtractor={item => item.id}
-            />
-          </Card>
+          {this.props.groupList.length > 0 ? (
+            <Card style={{flexDirection: 'column'}}>
+              <FlatList
+                showsHorizontalScrollIndicator={true}
+                data={this.props.groupList}
+                renderItem={({item}) => (
+                  <View>
+                    <CardItem
+                      header
+                      button
+                      bordered
+                      onPress={() => {
+                        this.props.navigation.push('Group Detail', {
+                          codeNum: item.GroupId,
+                        });
+                        this.props.navigation.navigate('Group Detail');
+                      }}>
+                      <Icon name="people" />
+                      <Body style={{paddingLeft: 10}}>
+                        <Text>{item.GroupName}</Text>
+                      </Body>
+                    </CardItem>
+                  </View>
+                )}
+                keyExtractor={item => item.id}
+              />
+            </Card>
+          ) : (
+            <View>
+              <Body style={{alignItems: 'center'}}>
+                <Text>Your group list is empty</Text>
+              </Body>
+            </View>
+          )}
         </Content>
       </Container>
     );

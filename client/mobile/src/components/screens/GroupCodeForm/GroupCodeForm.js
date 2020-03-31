@@ -1,6 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text} from 'react-native';
-import {Container, Content, Button, View, CardItem, Body} from 'native-base';
+import {Alert, StyleSheet, Text} from 'react-native';
+import {
+  Spinner,
+  Container,
+  Content,
+  Button,
+  View,
+  CardItem,
+  Body,
+} from 'native-base';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -23,9 +31,9 @@ const codeModel = t.struct({
 });
 
 class GroupCodeForm extends Component {
-  componentDidMount() {
-    this.props.getGroup(this.form.getValue());
-  }
+  state = {
+    isSpinnerVisible: false,
+  };
 
   handleOnChangeValue = () => {
     this.form.getValue();
@@ -33,11 +41,31 @@ class GroupCodeForm extends Component {
 
   handleOnSubmit = () => {
     const value = this.form.getValue();
-    this.props.getGroup(this.form.getValue());
+    //  Currently only checking if there is a value.
+    //  Could change this in the future if codes require a certain format
     if (value) {
+      this.props.getGroup(value.code);
+      this.toggleSpinner();
+      // Timeout created to ensure enough time is given for the server to retrieve information and update local variables
+      setTimeout(() => {
+        this.toggleSpinner();
+        this.showModal(value);
+      }, 2000);
+    }
+  };
+
+  toggleSpinner = () => {
+    this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
+  };
+
+  showModal = value => {
+    if (this.props.errored) {
+      Alert.alert(
+        'The group code does not exist.\nPlease try a different code.',
+      );
+    } else {
       this.props.navigation.navigate('Group Detail', {codeNum: value.code});
     }
-    //To do: Once the server is connected, will do a check to see if the group code exists
   };
 
   render() {
@@ -65,19 +93,26 @@ class GroupCodeForm extends Component {
         </Content>
         <View style={styles.buttonStyle}>
           <Button
-            onPress={this.handleOnSubmit}
+            onPress={() => {
+              this.handleOnSubmit();
+            }}
             style={styles.insideButtonStyle}>
             <Text style={{color: 'white'}}> Continue </Text>
           </Button>
         </View>
+        {this.state.isSpinnerVisible && (
+          <View style={styles.loading}>
+            <Spinner color="white" />
+          </View>
+        )}
       </Container>
     );
   }
 }
 
 const mapStateToProps = ({GetGroupReducer}) => {
-  const {group} = GetGroupReducer;
-  return {group};
+  const {group, errored} = GetGroupReducer;
+  return {group, errored};
 };
 
 const styles = StyleSheet.create({
@@ -98,6 +133,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 25,
   },
+  loading: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
+    opacity: 0.5,
+    backgroundColor: 'black',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 GroupCodeForm.propTypes = {
@@ -107,6 +153,7 @@ GroupCodeForm.propTypes = {
     navigate: PropTypes.func.isRequired,
   }).isRequired,
   group: PropTypes.any,
+  errored: PropTypes.bool,
   getGroup: PropTypes.func,
 };
 
