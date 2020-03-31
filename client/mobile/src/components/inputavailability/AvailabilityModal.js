@@ -131,8 +131,7 @@ class AvailabilityModal extends Component {
       this.props.availabilities,
     );
 
-    if (this.props.error)
-    {
+    if (this.props.error) {
       Alert.alert(this.props.error);
       return;
     }

@@ -25,7 +25,7 @@ const INITIAL_STATE = {
   availabilities: {},
   markedDates: {},
   groupMemberId: '',
-  error: null
+  error: null,
 };
 
 export const setAvailabilities = groupId => async dispatch => {
@@ -249,13 +249,12 @@ export const addAvailability = (
     endTimes,
   );
 
-  if (addedAvailabilityIds.length === 0)
-  {
+  if (addedAvailabilityIds.length === 0) {
     dispatch({
       type: ADD_AVAILABILITY,
       payload: {
         modalVisible: false,
-        error: "An error has occurred.  Availability has not been added"
+        error: 'An error has occurred.  Availability has not been added',
       },
     });
     return;
