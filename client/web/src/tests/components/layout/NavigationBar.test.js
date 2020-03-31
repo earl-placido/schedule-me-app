@@ -2,7 +2,7 @@ import React from "react";
 import NavigationBar from "../../../components/layout/NavigationBar";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
-import { Menu, Dropdown, Row, Modal } from "antd";
+import { Menu, Row, Modal } from "antd";
 
 configure({ adapter: new Adapter() });
 
@@ -14,6 +14,7 @@ const setUp = (props = {}) => {
 describe("Testing the <NavigationBar />", () => {
   describe("When not logged in", () => {
     let component, props;
+
     beforeEach(() => {
       props = {
         authenticate: jest.fn(),
@@ -21,7 +22,8 @@ describe("Testing the <NavigationBar />", () => {
         getGroupList: jest.fn(),
         closeErrorModal: jest.fn(),
         toggleModal: jest.fn(),
-        isAuthenticated: false
+        isAuthenticated: false,
+        state: { hideNav: false, showMenuMobile: false }
       };
       component = setUp(props);
     });
@@ -30,14 +32,14 @@ describe("Testing the <NavigationBar />", () => {
       expect(component.length).toEqual(1);
     });
 
-    it("Tests if child componets render without error", () => {
-      expect(component.find("#logo")).toHaveLength(1);
+    it("Tests if child components render without error", () => {
+      expect(component.find("#icon")).toHaveLength(1);
       expect(component.find(Menu)).toHaveLength(1);
       expect(component.find(Row)).toHaveLength(1);
-      expect(component.find("#masthead-user")).toHaveLength(1);
-      expect(component.find(".nav-button")).toHaveLength(2);
-      expect(component.find(Dropdown)).toHaveLength(1);
-      expect(component.find("#dropdown-button")).toHaveLength(1);
+      expect(component.find("#auth-button")).toHaveLength(1);
+      expect(component.find("#groupSubMenuWeb")).toHaveLength(1);
+      expect(component.find("#createGroupWeb")).toHaveLength(1);
+      expect(component.find("#joinGroupWeb")).toHaveLength(1);
       expect(component.find(Modal)).toHaveLength(1);
     });
 
@@ -75,19 +77,17 @@ describe("Testing the <NavigationBar />", () => {
         isAuthenticated: true,
         userName: "myUserName",
         displayPicURL: "pic",
-        groupList: []
+        groupList: [],
+        state: { hideNav: false, showMenuMobile: false }
       };
       component = setUp(props);
     });
 
     it("Checks if user details render when logged in", () => {
       expect(component.find("#auth-button")).toHaveLength(0);
-      expect(component.find(Dropdown.Button)).toHaveLength(1);
-      expect(component.find("#username")).toHaveLength(1);
-      expect(component.find("#username").text()).toEqual(props.userName);
-      expect(component.find(Dropdown).prop("overlay").props.dataSource).toEqual(
-        props.groupList
-      );
+      expect(component.find("#icon")).toHaveLength(1);
+      expect(component.find("#userName")).toHaveLength(1);
+      expect(props.getGroupList.mock.calls.length).toBe(1);
     });
 
     it("Testing logoutUser function", () => {

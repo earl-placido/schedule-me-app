@@ -47,11 +47,13 @@ class CreateGroupScreen extends Component {
       case 0: {
         return (
           <GroupInfoForm
+            success={this.props.success}
+            hasAName={this.props.hasAName}
+            descriptionTooLong={this.props.descriptionTooLong}
             handleGroupName={this.props.updateGroupName}
             handleGroupDescription={this.props.updateGroupDescription}
             groupName={this.props.groupName}
             groupDescription={this.props.groupDescription}
-            success={this.props.success}
           />
         );
       }
@@ -59,6 +61,7 @@ class CreateGroupScreen extends Component {
         return (
           <GroupMeetingForm
             success={this.props.success}
+            hasMeetingDuration={this.props.hasMeetingDuration}
             updateMeetingDuration={this.props.updateMeetingDuration}
             updateMeetingFrequency={this.props.updateMeetingFrequency}
             updateMeetingLocation={this.props.updateMeetingLocation}
@@ -97,7 +100,7 @@ class CreateGroupScreen extends Component {
   };
 
   componentDidUpdate() {
-    // update the navigatino bar group list
+    // update the navigation bar group list
     if (this.props.currentPage === 2) {
       this.props.getGroupList();
     }
@@ -193,6 +196,9 @@ const mapStateToProps = ({ CreateGroupScreenReducer }) => {
     location,
     link,
     success,
+    hasAName,
+    descriptionTooLong,
+    hasMeetingDuration,
     currentPage,
     showErrorModal
   } = CreateGroupScreenReducer;
@@ -204,6 +210,9 @@ const mapStateToProps = ({ CreateGroupScreenReducer }) => {
     location,
     link,
     success,
+    hasAName,
+    descriptionTooLong,
+    hasMeetingDuration,
     currentPage,
     showErrorModal
   };
@@ -219,7 +228,11 @@ CreateGroupScreen.propTypes = {
 
   link: PropTypes.any,
 
-  success: PropTypes.any,
+  success: PropTypes.bool,
+  hasAName: PropTypes.bool,
+  descriptionTooLong: PropTypes.bool,
+  hasMeetingDuration: PropTypes.bool,
+
   currentPage: PropTypes.any,
 
   showErrorModal: PropTypes.any,
