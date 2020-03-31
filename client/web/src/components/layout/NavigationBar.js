@@ -79,12 +79,14 @@ export class NavigationBar extends Component {
         title={
           <Row>
             <Col pull={2}>{this.props.userName}</Col>
-            <Col>
-              <Avatar
-                size={36}
-                icon={<img src={this.props.displayPicURL} alt="user" />}
-              />
-            </Col>
+            {this.props.displayPicURL && (
+              <Col>
+                <Avatar
+                  size={36}
+                  icon={<img src={this.props.displayPicURL} alt="user" />}
+                />
+              </Col>
+            )}
           </Row>
         }
       >
@@ -276,8 +278,8 @@ const styles = {
     fontWeight: "bold",
     color: "#FFFFFF",
     zIndex: 99,
-    left: "50%",
-    width: "75%",
+    left: "75%",
+    width: "25%",
     paddingTop: "7px",
     marginLeft: "-37.5%"
   },
