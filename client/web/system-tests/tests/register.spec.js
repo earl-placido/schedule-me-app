@@ -1,25 +1,8 @@
 /// <reference types="cypress" />
+const userUtil = require("../util/userUtil");
 
 context("Test register functionality", () => {
-  var generatedUser;
-
-  before(() => {
-    // generate a random user
-    generatedUser = {
-      fName: `fName_${Math.random()
-        .toString(36)
-        .slice(2)}`,
-      lName: `Name_${Math.random()
-        .toString(36)
-        .slice(2)}`,
-      email: `${Math.random()
-        .toString(36)
-        .slice(2)}@email.com`,
-      password: Math.random()
-        .toString(36)
-        .slice(2)
-    };
-  });
+  var generatedUser = userUtil.generateUser();
 
   it("Cannot create user with invalid email", () => {
     let invalidEmails = [

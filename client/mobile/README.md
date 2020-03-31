@@ -40,3 +40,33 @@
   `http://<IP Address>:8000/`
   
   * **Note**:  The ip address you put MUST be the same as the one you are using for your computer and phone.  If your two devices are using different ip addresses, you may not be able to connect to the local server.  
+
+
+# Tests
+
+## Unit Tests
+
+## System Tests
+
+**These tests are made specifically for Android**
+
+How to run:
+
+1. Install the following:
+
+    ```
+    npm install -g appium
+    npm install -g appium-doctor
+    ```
+
+    And make sure to do an `npm install`
+
+    - Verify that all of Appium's dependencies are all set by running `appium-doctor --android`
+
+      Should look like this in the end:
+
+      ![](https://i.imgur.com/79VjRIX.png)
+
+2. Run the app on your device (i.e. `npx react-native run-android`)
+
+3. While in `client/mobile`, run: `npm run test:system`

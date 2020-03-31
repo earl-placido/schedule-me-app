@@ -28,6 +28,7 @@ class StackNavigator extends Component {
                     <Left>
                       <Button
                         transparent
+                        accessibilityLabel={'DrawerButton'}
                         onPress={() =>
                           props.navigation.dispatch(
                             DrawerActions.toggleDrawer(),
@@ -42,7 +43,9 @@ class StackNavigator extends Component {
                         onPress={() => {
                           props.navigation.navigate('Group List');
                         }}>
-                        <Text>{this.props.userName}</Text>
+                        <Text accessibilityLabel={'HeaderUsername'}>
+                          {this.props.userName}
+                        </Text>
                       </Button>
                     </Right>
                   </>

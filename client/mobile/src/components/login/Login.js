@@ -127,7 +127,8 @@ class Login extends Component {
           small
           block
           primary
-          onPress={() => this.userLogin()}>
+          onPress={() => this.userLogin()}
+          accessibilityLabel={'LoginButton'}>
           <Text>Log In</Text>
           {this.state.isSpinnerVisible && <Spinner color="white" />}
         </Button>
