@@ -25,6 +25,7 @@ const INITIAL_STATE = {
   availabilities: {},
   markedDates: {},
   groupMemberId: '',
+  error: null,
 };
 
 export const setAvailabilities = groupId => async dispatch => {
@@ -248,6 +249,17 @@ export const addAvailability = (
     endTimes,
   );
 
+  if (addedAvailabilityIds.length === 0) {
+    dispatch({
+      type: ADD_AVAILABILITY,
+      payload: {
+        modalVisible: false,
+        error: 'An error has occurred.  Availability has not been added',
+      },
+    });
+    return;
+  }
+
   // set the range hours to the correct availability ids
   for (let i = 0; i < addedAvailabilityIds.length; i++) {
     if (addedAvailabilityIds[i] !== 0) {
@@ -266,6 +278,7 @@ export const addAvailability = (
     payload: {
       availabilities,
       modalVisible: false,
+      error: null,
       rangeHours: filteredRangeHours,
     },
   });

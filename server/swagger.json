@@ -303,6 +303,37 @@
               "description": "Returns the group member id"
             }
           }
+        },
+        "post": {
+          "tags":[
+            "Groups"
+          ],
+          "summary": "Add user to group",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "type":"integer",
+              "format": "int64",
+              "required": true
+            },
+            {
+              "name": "userId",
+              "type": "integer",
+              "format": "int64",
+              "in": "path",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the group member id"
+            }
+          }
         }
       },
       "/groups/members/{groupMemberId}/availability": {
