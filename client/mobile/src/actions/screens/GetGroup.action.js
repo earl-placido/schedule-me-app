@@ -56,9 +56,7 @@ export const getGroup = groupId => async dispatch => {
   try {
     const response = await axios(options);
     dispatch(getGroupSuccess(response.data));
-    console.log('pass' + groupId);
   } catch (err) {
-    console.log('failure' + groupId);
     dispatch(getGroupFailure());
   }
 };
