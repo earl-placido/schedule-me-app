@@ -1,3 +1,7 @@
+.ant-layout-header .ant-menu {
+  line-height: inherit;
+}
+
 .ant-picker-calendar-mode-switch {
   display: none; 
 }
@@ -50,4 +54,8 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 2vh; 
+}
+
+ul.ant-menu.ant-menu-horizontal {
+  line-height: 46px;
 }
