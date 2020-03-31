@@ -29,7 +29,7 @@ export const addAvailabilityQuery = async (
     const response = await axios(options);
     return response.data.ids;
   } catch (err) {
-    console.log(err);
+    return [];
   }
 };
 

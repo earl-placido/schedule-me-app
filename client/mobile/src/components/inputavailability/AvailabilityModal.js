@@ -117,19 +117,25 @@ class AvailabilityModal extends Component {
     );
   }
 
-  addAvailability() {
+  async addAvailability() {
     if (this.foundUnfilledTime(this.props.rangeHours)) {
       Alert.alert('A start time or end time has not been filled in!');
       return;
     }
 
     // TODO: pass in group member id
-    this.props.addAvailability(
+    await this.props.addAvailability(
       this.props.groupMemberId,
       this.props.selectedDate,
       this.props.rangeHours,
       this.props.availabilities,
     );
+
+    if (this.props.error)
+    {
+      Alert.alert(this.props.error);
+      return;
+    }
 
     this.props.markDates(this.props.availabilities);
   }
@@ -231,6 +237,7 @@ const mapStateToProps = ({InputAvailabilityReducer}) => {
     rangeHours,
     availabilities,
     groupMemberId,
+    error,
   } = InputAvailabilityReducer;
 
   return {
@@ -238,6 +245,7 @@ const mapStateToProps = ({InputAvailabilityReducer}) => {
     rangeHours,
     availabilities,
     groupMemberId,
+    error,
   };
 };
 
@@ -246,6 +254,7 @@ AvailabilityModal.propTypes = {
   rangeHours: PropTypes.any,
   availabilities: PropTypes.any,
   groupMemberId: PropTypes.any,
+  error: PropTypes.any,
 
   cancelAvailability: PropTypes.func,
   handleChangeRangeHour: PropTypes.func,
