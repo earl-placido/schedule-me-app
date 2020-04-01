@@ -71,20 +71,25 @@ export class NavigationBar extends Component {
   };
 
   userNavigation = () => {
-    const { floatRight } = styles;
+    const { floatRight, oldAntColStyle } = styles;
     return this.props.isAuthenticated ? (
       <SubMenu
         id="userName"
         style={floatRight}
         title={
           <Row>
-            <Col pull={2}>{this.props.userName}</Col>
+            <Col style={oldAntColStyle} pull={2}>
+              {this.props.userName}
+            </Col>
             {this.props.displayPicURL && (
-              <Col>
-                <Avatar
-                  size={36}
-                  icon={<img src={this.props.displayPicURL} alt="user" />}
-                />
+              <Col style={oldAntColStyle}>
+                {this.props.displayPicURL &&
+                  this.props.displayPicURL !== "null" && (
+                    <Avatar
+                      size={36}
+                      icon={<img src={this.props.displayPicURL} alt="user" />}
+                    />
+                  )}
               </Col>
             )}
           </Row>
@@ -129,7 +134,7 @@ export class NavigationBar extends Component {
                 </span>
               }
             >
-              {this.props.groupList ? (
+              {this.props.groupList && this.props.groupList.length > 0 ? (
                 this.props.groupList.map(group => {
                   return this.renderGroupMenuItem(group);
                 })
@@ -149,6 +154,8 @@ export class NavigationBar extends Component {
   };
 
   renderNavMenuMobile = () => {
+    const { oldAntColStyle } = styles;
+
     return (
       <span>
         {!this.state.showMenuMobile ? (
@@ -189,18 +196,23 @@ export class NavigationBar extends Component {
               </Menu.Item>
               <Menu.Item>
                 <Row>
-                  <Col>{this.props.userName}</Col>
-                  <Col flex="auto" />
-                  <Col push={5}>
-                    <Avatar
-                      size={32}
-                      icon={<img src={this.props.displayPicURL} alt="user" />}
-                    />
+                  <Col style={oldAntColStyle}>{this.props.userName}</Col>
+                  <Col style={oldAntColStyle} flex="auto" />
+                  <Col style={oldAntColStyle}>
+                    {this.props.displayPicURL &&
+                      this.props.displayPicURL !== "null" && (
+                        <Avatar
+                          size={32}
+                          icon={
+                            <img src={this.props.displayPicURL} alt="user" />
+                          }
+                        />
+                      )}
                   </Col>
                 </Row>
               </Menu.Item>
               <SubMenu id="groupSubMenuMobile" title={<span>Groups</span>}>
-                {this.props.groupList ? (
+                {this.props.groupList && this.props.groupList.length > 0 ? (
                   this.props.groupList.map(group => {
                     return this.renderGroupMenuItem(group);
                   })
@@ -286,6 +298,10 @@ const styles = {
 
   primaryColorText: {
     color: "#1890FF"
+  },
+
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 
