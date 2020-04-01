@@ -1,25 +1,43 @@
 const express = require("express");
 const router = express.Router();
+const { check, validationResult } = require("express-validator");
 
 const userModel = require("../model/userModel");
 const { authenticateToken } = require("../util/tokenHelper");
 const responses = require("../util/responses");
 
 // Get user information from userId
-router.get("/:userId", authenticateToken, (req, res, next) => {
-  const { userId } = req.params;
-  return userModel
-    .getUserByUserId(userId)
-    .then(result => {
-      if (result.length > 0) {
-        res.status(responses.SUCCESS).json(result[0]);
-      } else {
-        res.status(responses.NOT_FOUND);
-        res.send({ error: `UserId ${userId} does not exist.` });
-      }
-    })
-    .catch(next);
-});
+router.get(
+  "/:userId",
+  authenticateToken,
+  [
+    check("userId")
+      .exists({ checkNull: true })
+      .withMessage("Group name is required.")
+      .isInt()
+  ],
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res
+        .status(responses.UNPROCESSABLE)
+        .json({ errors: errors.array() });
+    }
+
+    const { userId } = req.params;
+    return userModel
+      .getUserByUserId(userId)
+      .then(result => {
+        if (result.length > 0) {
+          res.status(responses.SUCCESS).json(result[0]);
+        } else {
+          res.status(responses.NOT_FOUND);
+          res.send({ error: `UserId ${userId} does not exist.` });
+        }
+      })
+      .catch(next);
+  }
+);
 
 router.get("/email/:userEmail", (req, res, next) => {
   const { userEmail } = req.params;

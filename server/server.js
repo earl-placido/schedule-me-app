@@ -16,7 +16,6 @@ const swaggerDocument = require("./swagger.json");
 const api = require("./api/api");
 
 const app = initApp();
-initServer(app, process.env.SERVER_PORT || 8000);
 
 function initApp() {
   let app = express();
@@ -47,4 +46,8 @@ function initServer(app, port) {
   server.listen();
   server.handleOnError();
   server.handleOnListening();
+  
+  return server;
 }
+
+module.exports = initServer(app, process.env.SERVER_PORT || 8000);
