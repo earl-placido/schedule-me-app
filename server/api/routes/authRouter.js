@@ -25,11 +25,11 @@ router.route("/google").post(
 
     userModel
       .getUserByEmail(userEmail)
-      .then(user => {
+      .then(async user => {
         let userID;
         // create new google login user
         if (user === undefined || user.length == 0) {
-          return userModel
+          await userModel
             .createGoogleUser(
               userEmail,
               userFirstName,
