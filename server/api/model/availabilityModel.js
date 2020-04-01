@@ -30,14 +30,28 @@ module.exports = {
     });
   },
   addAvailability(groupMemberId, availabilityIds, startTimes, endTimes) {
-    let query = "";
     // check is made in router to ensure they are all same length
-    for (let index = 0; index < availabilityIds.length; index++) {
-      query +=
-        availabilityIds[index] === -1
-          ? `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (${groupMemberId}, '${startTimes[index]}', '${endTimes[index]}');`
-          : `UPDATE \`Availability\` SET StartTime='${startTimes[index]}', EndTime='${endTimes[index]}' WHERE AvailabilityId=${availabilityIds[index]};`;
-    }
+    let query = `
+      ${availabilityIds
+        .map((availabilityId, index) => {
+          let availabilityQuery;
+          if (availabilityId === -1) {
+            availabilityQuery = mysql.format(
+              `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (?, ?, ?);`,
+              [groupMemberId, startTimes[index], endTimes[index]]
+            );
+          } else {
+            availabilityQuery = mysql.format(
+              `UPDATE \`Availability\` SET StartTime=?, EndTime=? WHERE AvailabilityId=?;`,
+              [startTimes[index], endTimes[index], availabilityId]
+            );
+          }
+
+          return availabilityQuery;
+        })
+        .join(`\n`)}
+      `;
+
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn
         .query(query)
@@ -53,11 +67,16 @@ module.exports = {
   },
 
   deleteAvailability(availabilityIds) {
-    let query = "";
     // check is made in router to ensure they are all same length
-    for (let index = 0; index < availabilityIds.length; index++) {
-      query += `DELETE FROM \`Availability\` WHERE AvailabilityId=${availabilityIds[index]};`;
-    }
+    let query = `
+      ${availabilityIds
+        .map(availabilityId =>
+          mysql.format(`DELETE FROM \`Availability\` WHERE AvailabilityId=?;`, [
+            availabilityId
+          ])
+        )
+        .join(`\n`)}`;
+
     return mysql.createConnection(MYSQLDB).then(conn => {
       return conn
         .query(query)
