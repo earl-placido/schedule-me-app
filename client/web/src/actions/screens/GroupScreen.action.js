@@ -164,6 +164,7 @@ export const getMeetings = groupId => async dispatch => {
 
           const meetingAvailableString = formatDateToString(startTime, endTime);
           meetings[index].meetingAvailableString = meetingAvailableString;
+          return null;
         });
 
         dispatch({
