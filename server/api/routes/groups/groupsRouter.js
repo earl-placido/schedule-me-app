@@ -110,24 +110,20 @@ router.get("/:groupId/members", (req, res, next) => {
 });
 
 // Add member to a group
-router.post(
-  "/:groupId/members",
-  authenticateToken,
-  (req, res, next) => {
-    const userId = req.user.userID;
-    const groupId = req.params.groupId;
-    return groupsModel
-      .newMember(groupId, userId, "U")
-      .then(result => {
-        if (result.errno) {
-          res.status(responses.BAD_REQUEST).json({ error: result.sqlMessage });
-        } else {
-          res.status(responses.CREATED).json({ groupMemberId: result });
-        }
-      })
-      .catch(next);
-  }
-);
+router.post("/:groupId/members", authenticateToken, (req, res, next) => {
+  const userId = req.user.userID;
+  const groupId = req.params.groupId;
+  return groupsModel
+    .newMember(groupId, userId, "U")
+    .then(result => {
+      if (result.errno) {
+        res.status(responses.BAD_REQUEST).json({ error: result.sqlMessage });
+      } else {
+        res.status(responses.CREATED).json({ groupMemberId: result });
+      }
+    })
+    .catch(next);
+});
 
 // Delete group
 router.delete("/:groupId", authenticateToken, (req, res, next) => {
