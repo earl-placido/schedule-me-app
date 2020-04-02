@@ -161,6 +161,7 @@
           "tags":[
             "Groups"
           ],
+          
           "summary": "Add a new group",
           "description": "",
           "produces": [
@@ -307,6 +308,11 @@
         "post": {
           "tags":[
             "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
           ],
           "summary": "Add user to group",
           "description": "",
