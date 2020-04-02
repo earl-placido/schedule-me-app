@@ -110,8 +110,8 @@ router.get("/:groupId/members", (req, res, next) => {
 });
 
 // Add member to a group
-router.post("/:groupId/members/:userId", (req, res, next) => {
-  const userId = req.params.userId;
+router.post("/:groupId/members", authenticateToken, (req, res, next) => {
+  const userId = req.user.userID;
   const groupId = req.params.groupId;
   return groupsModel
     .newMember(groupId, userId, "U")
