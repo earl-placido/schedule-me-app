@@ -447,7 +447,7 @@
           ],
           "responses": {
             "200": {
-              "description": "Returns the group member id"
+              "description": "Returns the group member id.  It will return 0 if the user has already joined the group, otherwise it will return a positive non-zero number."
             }
           }
         }
