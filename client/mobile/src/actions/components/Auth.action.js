@@ -153,11 +153,10 @@ export const signupUser = (
           }
         })
         .catch(err => {
-          if (!err.response)
-          {
-            dispatch(signupError("Cannot connect to server", signupFields))
+          if (!err.response) {
+            dispatch(signupError('Cannot connect to server', signupFields));
           } else {
-            dispatch(signupError(err.response.data, signupFields))
+            dispatch(signupError(err.response.data, signupFields));
           }
         });
     } else {
@@ -196,11 +195,10 @@ export const loginUser = (email, password) => {
         }
       })
       .catch(err => {
-        if (!err.response)
-        {
-          dispatch(loginError("Cannot connect to server", loginFields))
+        if (!err.response) {
+          dispatch(loginError('Cannot connect to server', loginFields));
         } else {
-          dispatch(loginError(err.response.data, loginFields))
+          dispatch(loginError(err.response.data, loginFields));
         }
       });
   };
