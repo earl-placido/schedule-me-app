@@ -176,7 +176,7 @@ class AvailabilityModal extends Component {
                 this.state.height < maxHeight ? this.state.height : maxHeight,
             }}>
             <View style={{flexDirection: 'column', justifyContent: 'center'}}>
-              {this.props.rangeHours.map((rangeHour, index) => {
+              {this.props.rangeHours && this.props.rangeHours.map((rangeHour, index) => {
                 return this.availabilityRender(rangeHour, index);
               })}
             </View>
