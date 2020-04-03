@@ -1,7 +1,7 @@
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {getGroupMemberIdWithEmail} from '../actions/screens/GetGroupMembers.action';
+import {getGroupMemberWithEmail} from '../actions/screens/GetGroupMembers.action';
 import {
   getAvailabilites,
   addAvailabilityQuery,
@@ -31,7 +31,8 @@ const INITIAL_STATE = {
 export const setAvailabilities = groupId => async dispatch => {
   const userEmail = await AsyncStorage.getItem('userEmail');
 
-  const groupMemberId = await getGroupMemberIdWithEmail(groupId, userEmail);
+  const groupMemberResponse = await getGroupMemberWithEmail(groupId, userEmail);
+  const groupMemberId = groupMemberResponse.GroupMemberId;
   const availabilities = await getAvailabilites(groupMemberId);
 
   // no availability for user

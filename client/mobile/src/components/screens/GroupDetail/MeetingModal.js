@@ -31,31 +31,33 @@ class MeetingModal extends Component {
   }
 
   getOptimalTimeStrings() {
-    return this.props.optimalTimes.map(optimalTime => {
-      const timeInformation = optimalTime[0].split(':');
-      const currentDate = timeInformation[0];
+    return this.props.optimalTimes
+      ? this.props.optimalTimes.map(optimalTime => {
+          const timeInformation = optimalTime[0].split(':');
+          const currentDate = timeInformation[0];
 
-      const timeRange = timeInformation[1].split('_');
-      const startTime = parseFloat(timeRange[0]).toFixed(2);
-      const endTime = parseFloat(timeRange[1]).toFixed(2);
+          const timeRange = timeInformation[1].split('_');
+          const startTime = parseFloat(timeRange[0]).toFixed(2);
+          const endTime = parseFloat(timeRange[1]).toFixed(2);
 
-      const startTimeString = ('0' + startTime.toString())
-        .substr(startTime.length + 1 - 5)
-        .replace('.', ':'); // format number to print
-      const endTimeString = ('0' + endTime.toString())
-        .substr(endTime.length + 1 - 5)
-        .replace('.', ':'); // format number to print
-      const count = optimalTime[1];
+          const startTimeString = ('0' + startTime.toString())
+            .substr(startTime.length + 1 - 5)
+            .replace('.', ':'); // format number to print
+          const endTimeString = ('0' + endTime.toString())
+            .substr(endTime.length + 1 - 5)
+            .replace('.', ':'); // format number to print
+          const count = optimalTime[1];
 
-      const currentDay = moment(currentDate).day();
-      const currentDayString = NUMBER_TO_DAY[currentDay];
+          const currentDay = moment(currentDate).day();
+          const currentDayString = NUMBER_TO_DAY[currentDay];
 
-      const meetingDateString = `Date: ${currentDate} \nDay: ${currentDayString}`;
-      const meetingRangeString = `Time: ${startTimeString} - ${endTimeString}`;
-      const availableString = `${count} available`;
+          const meetingDateString = `Date: ${currentDate} \nDay: ${currentDayString}`;
+          const meetingRangeString = `Time: ${startTimeString} - ${endTimeString}`;
+          const availableString = `${count} available`;
 
-      return [meetingDateString, meetingRangeString, availableString];
-    });
+          return [meetingDateString, meetingRangeString, availableString];
+        })
+      : null;
   }
 
   optimalTimeRender(optimalTime, index) {
@@ -91,18 +93,19 @@ class MeetingModal extends Component {
             <CardItem header bordered>
               <Text>Choose a meeting time</Text>
             </CardItem>
-            {optimalTimeStrings && optimalTimeStrings.map((optimalTimeString, index) => {
-              return this.optimalTimeRender(optimalTimeString, index);
-            })}
+            {optimalTimeStrings &&
+              optimalTimeStrings.map((optimalTimeString, index) => {
+                return this.optimalTimeRender(optimalTimeString, index);
+              })}
           </Card>
-        </ScrollView>
-                  <Button
+          <Button
             block
             onPress={() =>
               this.props.toggleMeetingModal(this.props.isMeetingModalVisible)
             }>
             <Text>Cancel</Text>
           </Button>
+        </ScrollView>
       </View>
     );
   }
