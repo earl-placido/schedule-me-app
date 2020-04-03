@@ -1,4 +1,3 @@
-
 import {
   toggleModal,
   TOGGLE_MODAL
@@ -13,7 +12,5 @@ describe("test modal actions", () => {
     returnedValue = toggleModal(false);
     expect(returnedValue.type).toEqual(TOGGLE_MODAL);
     expect(returnedValue.payload).toEqual(false);
-
-    
   });
 });
