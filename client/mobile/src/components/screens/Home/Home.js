@@ -13,17 +13,6 @@ class Home extends Component {
     return (
       <Container style={styles.container} accessibilityLabel={'HomeContainer'}>
         <Text style={styles.title}>Schedule Me Up</Text>
-
-        <Button
-          block
-          primary
-          style={styles.buttonStyle}
-          onPress={() => Alert.alert('This feature is not yet available')}>
-          <Text>Continue as Guest</Text>
-        </Button>
-
-        <Divider message="or"> </Divider>
-
         <Login navigation={this.props.navigation} />
         <CreateAccount navigation={this.props.navigation} />
       </Container>

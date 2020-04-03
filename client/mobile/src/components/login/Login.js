@@ -14,6 +14,7 @@ import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import Divider from '../styles/Divider';
+import { Alert } from 'react-native';
 
 GoogleSignin.configure({
   webClientId: Config.REACT_APP_GOOGLE_CLIENT_ID,
@@ -70,14 +71,15 @@ class Login extends Component {
   googleLogin = () => {
     GoogleSignin.signIn().then(() => {
       this.toggleSignInProgress();
-
       GoogleSignin.getTokens().then(response => {
         this.props.loginGoogle(response);
         setTimeout(() => {
           this.attemptLogin();
         }, 3000);
       });
-    });
+    }).catch(() => {
+      Alert.alert("Cannot connect to google login");
+    })
   };
 
   userLogin = () => {
