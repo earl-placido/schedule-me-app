@@ -237,7 +237,6 @@ class GroupDetail extends Component {
                 <Text style={{fontWeight: 'bold'}}>Email: </Text>
                 {this.state.currUser.UserEmail}
               </Dialog.Description>
-              <Dialog.Button label="ChangeAvailability" />
             </Dialog.Container>
           </Container>
         )}
