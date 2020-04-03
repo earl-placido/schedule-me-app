@@ -90,3 +90,17 @@ export const getMeetingIdsQuery = async groupId => {
   );
   return response.data.meetingIds;
 };
+
+export const addUserToGroupQuery = async groupId => {
+  const authToken = localStorage.getItem("token");
+  const response = await axios.get(
+    `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`,
+    {
+      headers: {
+        accept: "application/json",
+        Authorization: `${authToken}`
+      }
+    }
+  );
+  return response;
+};
