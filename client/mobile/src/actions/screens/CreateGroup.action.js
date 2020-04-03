@@ -59,7 +59,7 @@ export const submitMeetingCreation = (
   const dateDuration = duration; // to format to 2 decimals
   const hours = ('0' + dateDuration.getHours()).slice(-2);
   const minutes = ('0' + dateDuration.getMinutes()).slice(-2);
-  const seconds = ('0' + dateDuration.getSeconds()).slice(-2);
+  const seconds = '00';
 
   const meetingDuration = hours + minutes + seconds;
   const groupCreation = {
