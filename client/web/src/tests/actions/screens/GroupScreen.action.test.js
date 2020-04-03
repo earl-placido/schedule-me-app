@@ -12,7 +12,7 @@ import GroupDetailReducer, {
   selectMeeting,
   selectOptimalTime,
   showModal,
-  closeModal,
+  closeModal
 } from "../../../actions/screens/GroupScreen.action";
 import { closeErrorModal } from "../../../actions/screens/GroupListScreen.action";
 
@@ -29,7 +29,7 @@ describe("GroupDetail action", () => {
     store = mockStore({});
   });
 
-  it("test getGroupMembers", async() => {
+  it("test getGroupMembers", async () => {
     const payload = {
       type: GROUP_MEMBERS,
       payload: { groupMembers: ["Johnny"] }
@@ -38,71 +38,80 @@ describe("GroupDetail action", () => {
     expect(reducerItem.groupMembers[0]).toEqual("Johnny");
 
     const groupId = 1;
-    const groupMembers = ['1', '2'];
-    httpMock.onGet(`${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`).reply(200,{groupMembers});
+    const groupMembers = ["1", "2"];
+    httpMock
+      .onGet(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`
+      )
+      .reply(200, { groupMembers });
 
     await getGroupMembers(groupId)(store.dispatch);
     expect(store.getActions()[0].type).toEqual(GROUP_MEMBERS);
-    expect(store.getActions()[0].payload).toEqual({groupMembers});
+    expect(store.getActions()[0].payload).toEqual({ groupMembers });
 
     // handle bad path
     store.clearActions();
     await getGroupMembers(2)(store.dispatch); // wrong group id
     expect(store.getActions()[0].type).toEqual(GROUP_MEMBERS);
-    expect(store.getActions()[0].payload).toEqual({ groupMembers: [], showErrorModal: true });
+    expect(store.getActions()[0].payload).toEqual({
+      groupMembers: [],
+      showErrorModal: true
+    });
   });
 
-  it("test get group actions", async() => {
+  it("test get group actions", async () => {
     const groupId = 1;
     await getGroup()(store.dispatch);
   });
 
-  it("test getSelfMember actions", async() => {
+  it("test getSelfMember actions", async () => {
     const groupId = 1;
     await getSelfMember(groupId)(store.dispatch);
   });
 
-  it("test getOptimalTime actions", async() => {
+  it("test getOptimalTime actions", async () => {
     const groupId = 1;
     await getOptimalTime(groupId)(store.dispatch);
   });
 
-  it("test setOptimalTime actions", async() => {
+  it("test setOptimalTime actions", async () => {
     const groupId = 1;
     const meetings = [];
     const selectedMeeting = 1;
     const optimalTime = 1;
 
-    await setOptimalTime(meetings, selectedMeeting, optimalTime)(store.dispatch);
+    await setOptimalTime(
+      meetings,
+      selectedMeeting,
+      optimalTime
+    )(store.dispatch);
   });
 
-  it("test getMeetings actions", async() => {
+  it("test getMeetings actions", async () => {
     const groupId = 1;
     await getMeetings(groupId)(store.dispatch);
   });
 
-  it("test selectMeeting actions", async() => {
+  it("test selectMeeting actions", async () => {
     const selectedMeeting = 1;
     await selectMeeting(selectedMeeting)(store.dispatch);
   });
 
-  it("test selectOptimalTime actions", async() => {
+  it("test selectOptimalTime actions", async () => {
     const selectedOptimalTime = 1;
     await selectOptimalTime(selectedOptimalTime)(store.dispatch);
   });
 
-  it("test showModal actions", async() => {
-    const type = 'meeting'; // meeting or availability
+  it("test showModal actions", async () => {
+    const type = "meeting"; // meeting or availability
     await showModal(type)(store.dispatch);
   });
 
-  it("test closeModal actions", async() => {
+  it("test closeModal actions", async () => {
     await closeModal()(store.dispatch);
   });
 
-  it("test closeErrorModal actions", async() => {
+  it("test closeErrorModal actions", async () => {
     await closeErrorModal()(store.dispatch);
   });
-
-  
 });
