@@ -104,6 +104,8 @@ class Login extends Component {
         this.showToast(this.props.message.errors[0].msg);
       } else if (this.props.message.err) {
         this.showToast(this.props.message.err);
+      } else {
+        this.showToast(this.props.message);
       }
     }
     this.toggleSignInProgress();

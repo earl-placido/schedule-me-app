@@ -97,7 +97,7 @@ class CreateAccount extends Component {
         message = this.props.message;
       }
 
-      Alert.alert('Invalid input', message);
+      Alert.alert("Signup failed:", message);
     }
   };
 
