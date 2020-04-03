@@ -4,10 +4,21 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 
 import React, {Component} from 'react';
-import {View, FlatList, StyleSheet, Text} from 'react-native';
-import {Body, Container, Content, Card, CardItem, Icon} from 'native-base';
+import {FlatList, StyleSheet} from 'react-native';
+import {
+  View,
+  Body,
+  Container,
+  Content,
+  Card,
+  CardItem,
+  Icon,
+  Button,
+  Text,
+} from 'native-base';
 import Modal from 'react-native-modal';
 import InputAvailabilityModal from '../../inputavailability/InputAvailabilityModal';
+import MeetingModal from './MeetingModal';
 
 import {
   getGroup,
@@ -15,6 +26,12 @@ import {
 } from '../../../actions/screens/GetGroup.action';
 import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
 import {setAvailabilities} from '../../../actions/InputAvailability.action';
+import {
+  getGroupOptimalTime,
+  selectMeeting,
+  getAllOptimalTimes,
+  toggleMeetingModal,
+} from '../../../actions/GetOptimalMeetingTime.action';
 
 const actions = [
   {
@@ -30,6 +47,7 @@ class GroupDetail extends Component {
     this.props.getGroup(this.props.route.params.codeNum);
     this.props.getGroupMembers(this.props.route.params.codeNum);
     this.props.setAvailabilities(this.props.route.params.codeNum);
+    this.props.getGroupOptimalTime(this.props.route.params.codeNum);
   }
 
   constructor(props) {
@@ -50,6 +68,42 @@ class GroupDetail extends Component {
   handleClose = () => {
     this.setState({dialogVisible: false});
   };
+
+  currentMeetingTime() {
+    return (
+      <View>
+        <Text style={{textAlign: 'center', fontWeight: "bold", paddingBottom: 5}}>
+          Meeting Time
+        </Text>
+        {this.props.meetings &&
+          this.props.meetings.map((meeting, index) => {
+            return (
+              <View key={index}>
+                <Text style={styles.timeStyle}>
+                  {meeting.meetingTimeString ||
+                    'Meeting time is currently empty'}
+                </Text>
+                <Button
+                  small
+                  block
+                  style={{justifyContent: 'center', marginTop: 10}}
+                  onPress={() => this.getOptimalTime(meeting)}>
+                  <Text>
+                    {meeting.meetingTimeString ? 'Change time' : 'Pick a time'}
+                  </Text>
+                </Button>
+              </View>
+            );
+          })}
+      </View>
+    );
+  }
+
+  getOptimalTime(selectedMeeting) {
+    this.props.selectMeeting(selectedMeeting);
+    this.props.getAllOptimalTimes(this.props.route.params.codeNum);
+    this.props.toggleMeetingModal(this.props.isMeetingModalVisible);
+  }
 
   render() {
     return (
@@ -81,6 +135,18 @@ class GroupDetail extends Component {
             </Body>
           </CardItem>
         </View>
+
+        <View>
+          <CardItem>
+            <Body style={{alignItems: 'center'}}>
+              {this.currentMeetingTime()}
+            </Body>
+          </CardItem>
+        </View>
+
+        <Modal isVisible={this.props.isMeetingModalVisible}>
+          <MeetingModal />
+        </Modal>
 
         {/* Display Group Members */}
         <CardItem>
@@ -158,16 +224,31 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 25,
   },
+  timeStyle: {
+    // fontWeight: 'bold',
+    fontSize: 15,
+  },
   subHeaderStyle: {
     fontWeight: 'bold',
     fontSize: 18,
   },
 });
 
-const mapStateToProps = ({GetGroupReducer, GetGroupMembersReducer}) => {
+const mapStateToProps = ({
+  GetGroupReducer,
+  GetGroupMembersReducer,
+  GetOptimalMeetingTimeReducer,
+}) => {
   const {group, isInputAvailabilityVisible} = GetGroupReducer;
   const {groupMembers} = GetGroupMembersReducer;
-  return {group, isInputAvailabilityVisible, groupMembers};
+  const {meetings, isMeetingModalVisible} = GetOptimalMeetingTimeReducer;
+  return {
+    group,
+    isInputAvailabilityVisible,
+    groupMembers,
+    meetings,
+    isMeetingModalVisible,
+  };
 };
 
 GroupDetail.propTypes = {
@@ -176,12 +257,18 @@ GroupDetail.propTypes = {
   codeNum: PropTypes.any,
   group: PropTypes.any,
   isInputAvailabilityVisible: PropTypes.any,
+  meetings: PropTypes.any,
+  isMeetingModalVisible: PropTypes.any,
 
   groupMembers: PropTypes.array,
   getGroup: PropTypes.func,
   getGroupMembers: PropTypes.func,
   toggleInputAvailability: PropTypes.func,
   setAvailabilities: PropTypes.func,
+  getGroupOptimalTime: PropTypes.func,
+  selectMeeting: PropTypes.func,
+  getAllOptimalTimes: PropTypes.func,
+  toggleMeetingModal: PropTypes.func,
 };
 
 export default connect(mapStateToProps, {
@@ -189,4 +276,8 @@ export default connect(mapStateToProps, {
   getGroup,
   toggleInputAvailability,
   setAvailabilities,
+  getGroupOptimalTime,
+  selectMeeting,
+  getAllOptimalTimes,
+  toggleMeetingModal,
 })(GroupDetail);
