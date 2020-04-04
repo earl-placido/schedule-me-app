@@ -1,9 +1,8 @@
-import axios from 'axios';
-import Config from 'react-native-config';
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {getGroupMemberWithEmail} from './screens/GetGroupMembers.action';
+import {setCurrentOptimalTimeQuery, formatDateToString, getMeetingIdsQuery, getMeetingCurrentOptimalTimeQuery,getOptimalTimes} from './OptimalMeetingTime.action';
 
 export const GET_OPTIMAL_TIMES = 'get_optimal_time';
 export const SELECT_MEETING = 'select_meeting';
@@ -19,6 +18,7 @@ const INITIAL_STATE = {
   selectedMeeting: null,
   isMeetingModalVisible: false,
   selfMember: null,
+  selectedSameOptimalTime: false,
 };
 
 export const getGroupOptimalTime = groupId => async dispatch => {
@@ -32,7 +32,8 @@ export const getGroupOptimalTime = groupId => async dispatch => {
   meetingsOptimalTimes.map((optimalTime, index) => {
     const startTime = moment(optimalTime['CAST(StartTime as char)']);
     const endTime = moment(optimalTime['CAST(EndTime as char)']);
-    const meetingTimeString = formatDateToString(startTime, endTime);
+    const lastUpdatedTime = moment(optimalTime['LastUpdated']);
+    const meetingTimeString = formatDateToString(startTime, endTime, lastUpdatedTime);
     meetings[index].meetingTimeString = meetingTimeString;
   });
 
@@ -106,17 +107,31 @@ export const setOptimalTime = (
   endTime =
     date + ' ' + endTime.substr(endTime.length - 5).replace('.', ':') + ':00';
 
-  await setCurrentOptimalTimeQuery(
+  const response = await setCurrentOptimalTimeQuery(
     selectedMeeting.MeetingId,
     startTime,
     endTime,
   );
+
+  // if user picks the same time, don't change updated time
+  if (!response["changedTime"])
+  {
+    dispatch({
+      type: SET_OPTIMAL_TIME,
+      payload: {
+        selectedSameOptimalTime: true,
+        meetingModalVisible: false,
+      },
+    });
+    return;
+  }
 
   for (let i = 0; i < meetings.length; i++) {
     if (meetings[i].MeetingId === selectedMeeting.MeetingId) {
       const meetingTimeString = formatDateToString(
         moment(startTime),
         moment(endTime),
+        moment(new Date())
       );
       meetings[i].meetingTimeString = meetingTimeString;
     }
@@ -125,6 +140,7 @@ export const setOptimalTime = (
   dispatch({
     type: SET_OPTIMAL_TIME,
     payload: {
+      selectedSameOptimalTime: false,
       meetings: meetings,
       meetingModalVisible: false,
     },
@@ -151,88 +167,6 @@ export const getSelfMember = groupId => async dispatch => {
   }
 };
 
-const setCurrentOptimalTimeQuery = async (meetingId, startTime, endTime) => {
-  const optimalTime = {
-    startTime,
-    endTime,
-  };
-  const options = {
-    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${meetingId}/optimaltime/`,
-    method: 'POST',
-    data: optimalTime,
-    headers: {
-      accept: 'application/json',
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const formatDateToString = (startTime, endTime) => {
-  //starttime and endtime is in moment format
-  const day = startTime.format('YYYY-MM-DD (dddd)');
-  const startTimeString = startTime.format('HH:mm');
-  const endTimeString = endTime.format('HH:mm');
-  const meetingAvailableString = `Date: ${day} ${'\nTime: '}${startTimeString} - ${endTimeString}`;
-  return meetingAvailableString;
-};
-
-const getMeetingIdsQuery = async groupId => {
-  const options = {
-    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/meetings`,
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data.meetingIds;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getMeetingCurrentOptimalTimeQuery = async meetingIds => {
-  const stringMeetingIds = meetingIds.toString();
-  const options = {
-    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/meetings/${stringMeetingIds}/optimaltime/`,
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data;
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-const getOptimalTimes = async groupId => {
-  const options = {
-    url: `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/optimaltime/`,
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-    },
-  };
-
-  try {
-    const response = await axios(options);
-    return response.data.optimalTime;
-  } catch (err) {
-    console.log(err);
-  }
-};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {

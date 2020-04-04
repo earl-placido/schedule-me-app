@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import {connect} from 'react-redux';
 import moment from 'moment';
-import {ScrollView, Dimensions} from 'react-native';
+import {ScrollView, Dimensions, Alert} from 'react-native';
 import {
   toggleMeetingModal,
   setOptimalTime,
@@ -27,6 +27,9 @@ class MeetingModal extends Component {
       this.props.selectedMeeting,
       this.props.optimalTimes[index],
     );
+    if (this.props.selectedSameOptimalTime) {
+      Alert.alert('Meeting time not changed');
+    }
     this.props.toggleMeetingModal(this.props.isMeetingModalVisible);
   }
 
@@ -91,12 +94,20 @@ class MeetingModal extends Component {
           }}>
           <Card style={{padding: 20}}>
             <CardItem header bordered>
-              <Text>Choose a meeting time</Text>
+              {optimalTimeStrings && optimalTimeStrings.length > 0 ? (<Text>
+                Choose a different meeting time
+              </Text>): (<Text>
+                Choose a meeting time
+              </Text>)}
             </CardItem>
-            {optimalTimeStrings &&
-              optimalTimeStrings.map((optimalTimeString, index) => {
+            {optimalTimeStrings && optimalTimeStrings.length > 0 ? 
+              (optimalTimeStrings.map((optimalTimeString, index) => {
                 return this.optimalTimeRender(optimalTimeString, index);
-              })}
+              })) : <Body style ={{padding: 10}}>
+                <Text>
+                  No meeting times are available
+                </Text>
+                </Body>}
           </Card>
           <Button
             block
@@ -118,6 +129,7 @@ const mapStateToProps = ({GetOptimalMeetingTimeReducer}) => {
     selectedMeeting,
     selectedOptimalTime,
     meetings,
+    selectedSameOptimalTime
   } = GetOptimalMeetingTimeReducer;
 
   return {
@@ -126,6 +138,7 @@ const mapStateToProps = ({GetOptimalMeetingTimeReducer}) => {
     selectedMeeting,
     selectedOptimalTime,
     meetings,
+    selectedSameOptimalTime
   };
 };
 
@@ -135,6 +148,7 @@ MeetingModal.propTypes = {
   selectedMeeting: PropTypes.any,
   selectedOptimalTime: PropTypes.any,
   meetings: PropTypes.any,
+  selectedSameOptimalTime: PropTypes.any,
 
   toggleMeetingModal: PropTypes.func,
   setOptimalTime: PropTypes.func,
