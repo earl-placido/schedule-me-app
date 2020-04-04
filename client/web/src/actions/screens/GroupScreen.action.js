@@ -66,32 +66,35 @@ export const getGroup = groupId => async dispatch => {
 
 export const getSelfMember = groupId => async dispatch => {
   try {
-  const selfMember = await getMemberIdWithEmail(groupId, localStorage.getItem("userEmail"));
-  dispatch({
-    type: GROUP_MEMBER,
-    payload: { selfMember }
-  });
-} catch (err) {
-  dispatch({
-    type: GROUP_MEMBER,
-    payload: { selfMember: null, showErrorModal: true }
-  });
-}
+    const selfMember = await getMemberIdWithEmail(
+      groupId,
+      localStorage.getItem("userEmail")
+    );
+    dispatch({
+      type: GROUP_MEMBER,
+      payload: { selfMember }
+    });
+  } catch (err) {
+    dispatch({
+      type: GROUP_MEMBER,
+      payload: { selfMember: null, showErrorModal: true }
+    });
+  }
 };
 
 export const getOptimalTime = groupId => async dispatch => {
   try {
-  const optimalTimes = await getOptimalTimeQuery(groupId);
-  dispatch({
-    type: OPTIMAL_TIME,
-    payload: { optimalTimes }
-  });
-} catch(err) {
-  dispatch({
-    type: OPTIMAL_TIME,
-    payload: { optimalTimes: null, showErrorModal: true}
-  });
-}
+    const optimalTimes = await getOptimalTimeQuery(groupId);
+    dispatch({
+      type: OPTIMAL_TIME,
+      payload: { optimalTimes }
+    });
+  } catch (err) {
+    dispatch({
+      type: OPTIMAL_TIME,
+      payload: { optimalTimes: null, showErrorModal: true }
+    });
+  }
 };
 
 export const setOptimalTime = (
@@ -132,10 +135,10 @@ export const setOptimalTime = (
       ":00";
     endTime =
       date + " " + endTime.substr(endTime.length - 5).replace(".", ":") + ":00";
-  } catch(err) {
+  } catch (err) {
     dispatch({
       type: SET_OPTIMAL_TIME,
-      payload: {meetingModalVisible: false}
+      payload: { meetingModalVisible: false }
     });
     return;
   }
@@ -170,11 +173,11 @@ export const getMeetings = groupId => async dispatch => {
   const meetings = await getMeetingIdsQuery(groupId);
   const meetingIds = meetings.map(meeting => meeting.MeetingId);
 
-  const optimalAvailabilities = await getMeetingCurrentOptimalTimeQuery(meetingIds);
+  const optimalAvailabilities = await getMeetingCurrentOptimalTimeQuery(
+    meetingIds
+  );
   optimalAvailabilities.map((optimalAvailability, index) => {
-    const startTime = moment(
-      optimalAvailability["CAST(StartTime as char)"]
-    );
+    const startTime = moment(optimalAvailability["CAST(StartTime as char)"]);
     const endTime = moment(optimalAvailability["CAST(EndTime as char)"]);
 
     const meetingAvailableString = formatDateToString(startTime, endTime);
