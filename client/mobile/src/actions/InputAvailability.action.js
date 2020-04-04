@@ -55,6 +55,14 @@ export const setAvailabilities = groupId => async dispatch => {
     const date = moment(availability['CAST(StartTime as char)']).format(
       'YYYY-MM-DD',
     );
+
+    const currDate = moment(new Date()).format('YYYY-MM-DD');
+    if (date < currDate)
+    {
+      await deleteAvailabilityQuery(availability.AvailabilityId);
+      continue;
+    }
+
     if (formattedAvailabilities[date] === undefined) {
       formattedAvailabilities[date] = [availability];
     } else {
