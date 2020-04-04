@@ -57,8 +57,7 @@ export const setAvailabilities = groupId => async dispatch => {
     );
 
     const currDate = moment(new Date()).format('YYYY-MM-DD');
-    if (date < currDate)
-    {
+    if (date < currDate) {
       await deleteAvailabilityQuery(availability.AvailabilityId);
       continue;
     }

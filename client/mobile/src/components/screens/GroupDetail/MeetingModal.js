@@ -109,15 +109,14 @@ class MeetingModal extends Component {
                 <Text>No meeting times are available</Text>
               </Body>
             )}
-                    <Button 
-            block
-            onPress={() =>
-              this.props.toggleMeetingModal(this.props.isMeetingModalVisible)
-            }
-            style = {{margin: 20}}
-            >
-            <Text>Cancel</Text>
-          </Button>
+            <Button
+              block
+              onPress={() =>
+                this.props.toggleMeetingModal(this.props.isMeetingModalVisible)
+              }
+              style={{margin: 20}}>
+              <Text>Cancel</Text>
+            </Button>
           </Card>
         </ScrollView>
       </View>
