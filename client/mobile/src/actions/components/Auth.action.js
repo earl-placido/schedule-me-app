@@ -104,8 +104,8 @@ export const loginGoogle = response => {
           throw new Error(res.err);
         }
       })
-      .catch(err => {
-        dispatch(loginError(err.message));
+      .catch(() => {
+        dispatch(loginError('Cannot connect to server', loginFields));
       });
   };
 };
