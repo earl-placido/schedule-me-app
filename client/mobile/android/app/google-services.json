@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "35978716829-r77u7kb0se7f4v6auf2c0i923t5qgb08.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.schedulemeup",
+            "certificate_hash": "f984a1f2f07eae2f41b9240e31e012250f167894"
+          }
+        },
+        {
           "client_id": "35978716829-ruk75qh6li0cq038kglmd70uegqdaue7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
