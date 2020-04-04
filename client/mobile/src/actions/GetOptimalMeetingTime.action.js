@@ -2,7 +2,13 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import {getGroupMemberWithEmail} from './screens/GetGroupMembers.action';
-import {setCurrentOptimalTimeQuery, formatDateToString, getMeetingIdsQuery, getMeetingCurrentOptimalTimeQuery,getOptimalTimes} from './OptimalMeetingTime.action';
+import {
+  setCurrentOptimalTimeQuery,
+  formatDateToString,
+  getMeetingIdsQuery,
+  getMeetingCurrentOptimalTimeQuery,
+  getOptimalTimes,
+} from './OptimalMeetingTime.action';
 
 export const GET_OPTIMAL_TIMES = 'get_optimal_time';
 export const SELECT_MEETING = 'select_meeting';
@@ -33,7 +39,11 @@ export const getGroupOptimalTime = groupId => async dispatch => {
     const startTime = moment(optimalTime['CAST(StartTime as char)']);
     const endTime = moment(optimalTime['CAST(EndTime as char)']);
     const lastUpdatedTime = moment(optimalTime['LastUpdated']);
-    const meetingTimeString = formatDateToString(startTime, endTime, lastUpdatedTime);
+    const meetingTimeString = formatDateToString(
+      startTime,
+      endTime,
+      lastUpdatedTime,
+    );
     meetings[index].meetingTimeString = meetingTimeString;
   });
 
@@ -114,8 +124,7 @@ export const setOptimalTime = (
   );
 
   // if user picks the same time, don't change updated time
-  if (!response["changedTime"])
-  {
+  if (!response['changedTime']) {
     dispatch({
       type: SET_OPTIMAL_TIME,
       payload: {
@@ -131,7 +140,7 @@ export const setOptimalTime = (
       const meetingTimeString = formatDateToString(
         moment(startTime),
         moment(endTime),
-        moment(new Date())
+        moment(new Date()),
       );
       meetings[i].meetingTimeString = meetingTimeString;
     }
@@ -166,7 +175,6 @@ export const getSelfMember = groupId => async dispatch => {
     });
   }
 };
-
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
