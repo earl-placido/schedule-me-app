@@ -15,7 +15,7 @@ class GroupCodeModal extends Component {
   };
 
   redirect() {
-    return <Redirect to={`/groups/${this.props.groupId}`} />;
+    return <Redirect to={`/groups/${this.props.groupId}/`} />;
   }
 
   onEnter = () => {

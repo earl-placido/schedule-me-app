@@ -57,7 +57,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, ...action.payload };
     }
     default: {
-      return state;
+      return INITIAL_STATE;
     }
   }
 };
