@@ -87,7 +87,6 @@ export const setOptimalTime = (
   selectedMeeting,
   optimalTime,
 ) => async dispatch => {
-  console.log(optimalTime);
   if (!optimalTime) {
     dispatch({
       type: SET_OPTIMAL_TIME,
@@ -123,8 +122,6 @@ export const setOptimalTime = (
     startTime,
     endTime,
   );
-
-  console.log(response);
   // if user picks the same time, don't change updated time
   if (!response['changedTime']) {
     dispatch({
