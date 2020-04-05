@@ -7,6 +7,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import t from 'tcomb-form-native';
 import {Button} from 'native-base';
 import {GoogleSigninButton} from '@react-native-community/google-signin';
+
 const Form = t.form.Form;
 
 configure({adapter: new Adapter()});
