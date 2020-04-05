@@ -36,7 +36,7 @@ export const getGroupMembers = groupId => async dispatch => {
   }
 };
 
-export const getGroupMemberIdWithEmail = async (groupId, userEmail) => {
+export const getGroupMemberWithEmail = async (groupId, userEmail) => {
   const token = await AsyncStorage.getItem('token');
 
   const userOptions = {
@@ -51,15 +51,15 @@ export const getGroupMemberIdWithEmail = async (groupId, userEmail) => {
   try {
     const userResponse = await axios(userOptions);
     const userId = userResponse.data.userId;
-    const groupMemberId = await getGroupMemberIdWithUserId(groupId, userId);
-    return groupMemberId;
+    const groupMember = await getGroupMemberIdWithUserId(groupId, userId);
+    return groupMember;
   } catch (err) {
     console.log(err);
     return;
   }
 };
 
-export const getGroupMemberIdWithUserId = async (groupId, userId) => {
+const getGroupMemberIdWithUserId = async (groupId, userId) => {
   const token = await AsyncStorage.getItem('token');
 
   const groupMemberOptions = {
@@ -75,9 +75,8 @@ export const getGroupMemberIdWithUserId = async (groupId, userId) => {
     const groupMemberResponse = await axios(groupMemberOptions);
 
     if (groupMemberResponse.data.groupMembers[0] !== undefined) {
-      const groupMemberId =
-        groupMemberResponse.data.groupMembers[0].GroupMemberId;
-      return groupMemberId;
+      const groupmember = groupMemberResponse.data.groupMembers[0];
+      return groupmember;
     }
   } catch (err) {
     console.log(err);

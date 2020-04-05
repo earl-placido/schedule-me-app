@@ -1,29 +1,17 @@
 import React, {Component} from 'react';
-import {StyleSheet, Alert} from 'react-native';
-import {Button, Text, Container} from 'native-base';
+import {StyleSheet} from 'react-native';
+import {Text, Container} from 'native-base';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import Login from '../../login/Login';
 import CreateAccount from '../../login/CreateAccount';
-import Divider from '../../styles/Divider';
 
 class Home extends Component {
   render() {
     return (
       <Container style={styles.container} accessibilityLabel={'HomeContainer'}>
         <Text style={styles.title}>Schedule Me Up</Text>
-
-        <Button
-          block
-          primary
-          style={styles.buttonStyle}
-          onPress={() => Alert.alert('This feature is not yet available')}>
-          <Text>Continue as Guest</Text>
-        </Button>
-
-        <Divider message="or"> </Divider>
-
         <Login navigation={this.props.navigation} />
         <CreateAccount navigation={this.props.navigation} />
       </Container>
