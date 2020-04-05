@@ -171,6 +171,7 @@ GroupCodeForm.propTypes = {
   code: PropTypes.any,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   }).isRequired,
   group: PropTypes.any,
   getGroupErrored: PropTypes.bool,
