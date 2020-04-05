@@ -209,7 +209,7 @@ class InputAvailabilityModal extends Component {
             </Button>
           ]}
         >
-          <ExclamationCircleOutlined /> Oops! Something went wrong!
+          <ExclamationCircleOutlined /> {this.props.errorMessage}
         </Modal>
       </div>
     );
@@ -238,7 +238,8 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     availabilities,
     groupInformation,
     memberId,
-    showErrorModal
+    showErrorModal,
+    errorMessage
   } = AddAvailabilityReducer;
   return {
     modalVisible,
@@ -247,7 +248,8 @@ const mapStateToProps = ({ AddAvailabilityReducer }) => {
     availabilities,
     groupInformation,
     memberId,
-    showErrorModal
+    showErrorModal,
+    errorMessage
   };
 };
 
@@ -263,6 +265,7 @@ InputAvailabilityModal.propTypes = {
   groupInformation: PropTypes.any,
   memberId: PropTypes.any,
   showErrorModal: PropTypes.any,
+  errorMessage: PropTypes.any,
 
   handleAdd: PropTypes.func,
   selectDate: PropTypes.func,
