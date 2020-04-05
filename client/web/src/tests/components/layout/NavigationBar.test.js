@@ -20,6 +20,7 @@ describe("Testing the <NavigationBar />", () => {
         authenticate: jest.fn(),
         logout: jest.fn(),
         getGroupList: jest.fn(),
+        resetState: jest.fn(),
         closeErrorModal: jest.fn(),
         toggleModal: jest.fn(),
         isAuthenticated: false,
@@ -74,6 +75,7 @@ describe("Testing the <NavigationBar />", () => {
       props = {
         logout: jest.fn(),
         getGroupList: jest.fn(),
+        resetState: jest.fn(),
         isAuthenticated: true,
         userName: "myUserName",
         displayPicURL: "pic",

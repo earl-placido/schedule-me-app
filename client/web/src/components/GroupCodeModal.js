@@ -8,7 +8,16 @@ import {
   setCode,
   resetState
 } from "../actions/components/GroupCodeModal.action";
-import { closeJoinGroupModal } from "../actions/components/layout/NavigationBar.action";
+import {
+  closeJoinGroupModal,
+  getGroupList
+} from "../actions/components/layout/NavigationBar.action";
+import {
+  getGroup,
+  getGroupMembers,
+  getSelfMember,
+  getMeetings
+} from "../actions/screens/GroupScreen.action";
 
 class GroupCodeModal extends Component {
   handleChange = value => {
@@ -22,6 +31,17 @@ class GroupCodeModal extends Component {
   onEnter = () => {
     this.props.addUserToGroup(this.props.code);
   };
+
+  getInformationAndClose() {
+    this.props.getGroup(this.props.groupId);
+    this.props.getGroupMembers(this.props.groupId);
+    this.props.getSelfMember(this.props.groupId);
+    this.props.getMeetings(this.props.groupId);
+    this.props.getGroupList();
+    this.props.closeJoinGroupModal() &&
+      this.props.resetState() &&
+      this.redirect();
+  }
 
   render() {
     const {
@@ -53,7 +73,7 @@ class GroupCodeModal extends Component {
             </Row>
           </span>
         ) : (
-          this.props.closeJoinGroupModal() && this.redirect()
+          this.getInformationAndClose()
         )}
       </div>
     );
@@ -101,12 +121,22 @@ GroupCodeModal.propTypes = {
   addUserToGroup: PropTypes.func,
   setCode: PropTypes.func,
   closeJoinGroupModal: PropTypes.func,
-  resetState: PropTypes.func
+  resetState: PropTypes.func,
+  getGroup: PropTypes.func,
+  getGroupMembers: PropTypes.func,
+  getSelfMember: PropTypes.func,
+  getMeetings: PropTypes.func,
+  getGroupList: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
   addUserToGroup,
   setCode,
   closeJoinGroupModal,
-  resetState
+  resetState,
+  getGroup,
+  getGroupMembers,
+  getSelfMember,
+  getMeetings,
+  getGroupList
 })(GroupCodeModal);
