@@ -230,9 +230,10 @@ router.post("/meetings/:meetingId/optimaltime/", (req, res, next) => {
     return groupsModel
       .setOptimalTimeForMeeting(meetingId, startTime, endTime)
       .then(result => {
-        res
-          .status(responses.SUCCESS)
-          .json({ success: true, changedTime: result.changedRows != 0 });
+        res.status(responses.SUCCESS).json({
+          success: true,
+          changedTime: result.changedRows != 0 || result.insertId > 0
+        });
       })
       .catch(next);
   }
