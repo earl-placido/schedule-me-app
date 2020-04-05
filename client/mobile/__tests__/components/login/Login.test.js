@@ -51,20 +51,24 @@ describe('Testing <Login />', () => {
     component.instance()['form'] = {
       getValue: () => jest.fn(),
     };
+    jest.useFakeTimers();
     component.find('[accessibilityLabel="LoginButton"]').simulate('press');
 
     expect(component.state().isSigninInProgress).toEqual(true);
     expect(component.state().isSpinnerVisible).toEqual(true);
+    jest.advanceTimersByTime(1000);
   });
 
   it('Test login without values', () => {
     component.instance()['form'] = {
       getValue: () => null,
     };
+    jest.useFakeTimers();
     component.find('[accessibilityLabel="LoginButton"]').simulate('press');
 
     expect(component.state().isSigninInProgress).toEqual(false);
     expect(component.state().isSpinnerVisible).toEqual(false);
+    jest.advanceTimersByTime(1000);
   });
 
   it('Test login success', () => {
