@@ -122,7 +122,6 @@ export const setOptimalTime = (
     startTime,
     endTime,
   );
-
   // if user picks the same time, don't change updated time
   if (!response['changedTime']) {
     dispatch({
