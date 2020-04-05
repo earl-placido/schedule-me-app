@@ -11,11 +11,9 @@ const Form = t.form.Form;
 
 configure({adapter: new Adapter()});
 
-const setUp = (
-  props = {loginFields: {}, loginUser: jest.fn(), message: {}},
-  store = {},
-) => {
-  const component = shallow(<Login.WrappedComponent {...props} {...store} />);
+const props = {loginFields: {}, loginUser: jest.fn(), message: {}};
+const setUp = (prop = props, store = {}) => {
+  const component = shallow(<Login.WrappedComponent {...prop} {...store} />);
   return component;
 };
 
@@ -42,23 +40,96 @@ describe('Testing <Login />', () => {
     expect(component.find(GoogleSigninButton)).toHaveLength(1);
   });
 
-  it('Test Login button press', () => {
+  it('Test login button press', () => {
+    component.instance().userLogin = jest.fn();
+    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    expect(component.instance().userLogin).toHaveBeenCalled();
+  });
+
+  it('Test login with values', () => {
     component.instance()['form'] = {
       getValue: () => jest.fn(),
     };
     component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+
     expect(component.state().isSigninInProgress).toEqual(true);
     expect(component.state().isSpinnerVisible).toEqual(true);
   });
 
-  it('Test Login button success', () => {
+  it('Test login without values', () => {
+    component.instance()['form'] = {
+      getValue: () => null,
+    };
+    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+
+    expect(component.state().isSigninInProgress).toEqual(false);
+    expect(component.state().isSpinnerVisible).toEqual(false);
+  });
+
+  it('Test login success', () => {
     component.instance()['form'] = {
       getValue: () => jest.fn(),
     };
     jest.useFakeTimers();
     component.find('[accessibilityLabel="LoginButton"]').simulate('press');
     jest.advanceTimersByTime(1000);
+
     expect(component.state().isSigninInProgress).toEqual(false);
     expect(component.state().isSpinnerVisible).toEqual(false);
+  });
+
+  it('Test login fail', () => {
+    component.instance()['form'] = {
+      getValue: () => null,
+    };
+    jest.useFakeTimers();
+    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    jest.advanceTimersByTime(1000);
+
+    expect(component.state().isSigninInProgress).toEqual(false);
+    expect(component.state().isSpinnerVisible).toEqual(false);
+  });
+
+  it('Test login authenticated', () => {
+    component = setUp({
+      ...props,
+      isAuthenticated: true,
+      navigation: {navigate: () => jest.fn()},
+    });
+    component.instance().showToast = jest.fn();
+    component.instance().attemptLogin();
+    expect(component.instance().showToast).toHaveBeenCalled();
+  });
+
+  it('Test login errors', () => {
+    component = setUp({
+      ...props,
+      isAuthenticated: false,
+      message: {
+        errors: [{msg: 'msg'}],
+      },
+    });
+    component.instance().showToast = jest.fn();
+    component.instance().attemptLogin();
+    expect(component.instance().showToast).toHaveBeenCalled();
+  });
+
+  it('Test login more errors', () => {
+    component = setUp({
+      ...props,
+      isAuthenticated: false,
+      message: {
+        err: 'msg',
+      },
+    });
+    component.instance().showToast = jest.fn();
+    component.instance().attemptLogin();
+    expect(component.instance().showToast).toHaveBeenCalled();
+  });
+
+  it('Test google login button press', () => {
+    component.instance().googleLogin = jest.fn();
+    component.find(GoogleSigninButton).simulate('press');
+    expect(component.instance().googleLogin).toHaveBeenCalled();
   });
 });
