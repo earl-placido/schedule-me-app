@@ -2,6 +2,7 @@ import { addUserToGroupQuery } from "../Group.action";
 
 export const ADD_USER = "add_user";
 export const SET_CODE = "set_code";
+export const RESET_STATE = "reset_state";
 
 export const setCode = value => async dispatch => {
   dispatch({
@@ -13,8 +14,7 @@ export const setCode = value => async dispatch => {
 export const addUserToGroup = groupId => async dispatch => {
   await addUserToGroupQuery(groupId)
     .then(response => {
-      const groupId = response.data.groupMembers[0].GroupId;
-      if (response.data.groupMembers.length > 0) {
+      if (response.data.groupMemberId > 0) {
         dispatch({
           type: ADD_USER,
           payload: { groupId: groupId, success: true }
@@ -24,8 +24,7 @@ export const addUserToGroup = groupId => async dispatch => {
           type: ADD_USER,
           payload: {
             success: false,
-            errorGroupCodeMessage:
-              "You have entered a group that does not exist"
+            errorGroupCodeMessage: "You are already in this group"
           }
         });
       }
@@ -39,6 +38,18 @@ export const addUserToGroup = groupId => async dispatch => {
         }
       });
     });
+};
+
+export const resetState = () => async dispatch => {
+  dispatch({
+    type: RESET_STATE,
+    payload: {
+      code: "",
+      groupId: "",
+      success: false,
+      errorGroupCodeMessage: ""
+    }
+  });
 };
 
 const INITIAL_STATE = {
@@ -56,8 +67,11 @@ export default (state = INITIAL_STATE, action) => {
     case SET_CODE: {
       return { ...state, ...action.payload };
     }
+    case RESET_STATE: {
+      return { ...state, ...action.payload };
+    }
     default: {
-      return INITIAL_STATE;
+      return state;
     }
   }
 };

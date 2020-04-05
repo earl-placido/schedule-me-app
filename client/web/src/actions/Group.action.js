@@ -93,7 +93,8 @@ export const getMeetingIdsQuery = async groupId => {
 
 export const addUserToGroupQuery = async groupId => {
   const authToken = localStorage.getItem("token");
-  const response = await axios.get(
+
+  const response = await axios.post(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`,
     {
       headers: {

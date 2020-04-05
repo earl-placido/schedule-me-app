@@ -5,7 +5,8 @@ import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   addUserToGroup,
-  setCode
+  setCode,
+  resetState
 } from "../actions/components/GroupCodeModal.action";
 import { closeJoinGroupModal } from "../actions/components/layout/NavigationBar.action";
 
@@ -46,7 +47,7 @@ class GroupCodeModal extends Component {
               {this.props.errorGroupCodeMessage}
             </Row>
             <Row justify="center" style={okayButtonStyle}>
-              <Button type="primary" onClick={() => this.onEnter()}>
+              <Button type="primary" onClick={this.onEnter}>
                 Okay
               </Button>
             </Row>
@@ -99,11 +100,13 @@ GroupCodeModal.propTypes = {
   code: PropTypes.any,
   addUserToGroup: PropTypes.func,
   setCode: PropTypes.func,
-  closeJoinGroupModal: PropTypes.func
+  closeJoinGroupModal: PropTypes.func,
+  resetState: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
   addUserToGroup,
   setCode,
-  closeJoinGroupModal
+  closeJoinGroupModal,
+  resetState
 })(GroupCodeModal);
