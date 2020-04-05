@@ -197,7 +197,7 @@ module.exports = {
       return conn
         .query(
           `
-        SELECT MeetingId, CAST(StartTime as char), CAST(EndTime as char) FROM OptimalAvailability WHERE ${meetingIds
+        SELECT MeetingId, CAST(StartTime as char), CAST(EndTime as char), LastUpdated FROM OptimalAvailability WHERE ${meetingIds
           .map(meetingId => `MeetingId=${meetingId}`)
           .join(" OR ")};
         `,
