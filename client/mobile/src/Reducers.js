@@ -6,6 +6,7 @@ import GroupListReducer from './actions/screens/GroupList.action';
 import GetGroupReducer from './actions/screens/GetGroup.action';
 import GetGroupMembersReducer from './actions/screens/GetGroupMembers.action';
 import InputAvailabilityReducer from './actions/InputAvailability.action';
+import GetOptimalMeetingTimeReducer from './actions/GetOptimalMeetingTime.action';
 
 const appReducer = combineReducers({
   CreateGroupReducer,
@@ -13,6 +14,7 @@ const appReducer = combineReducers({
   GroupListReducer,
   GetGroupReducer,
   GetGroupMembersReducer,
+  GetOptimalMeetingTimeReducer,
   auth: AuthReducer,
 });
 
