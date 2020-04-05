@@ -34,9 +34,11 @@ describe("test optimal time algorithm", () => {
   it("returns the correct optimal time algorithm", async () => {
     const optimalAvailabilities = findOptimalTime(availabilities);
     expect(optimalAvailabilities).toEqual([
-      ["2020-03-12:2_3", 3],
-      ["2020-03-12:1_4", 1],
-      ["2020-03-14:2_3", 1]
+      ["2020-03-12:1_4", 2],
+      ["2020-03-12:2_3", 2],
+      ["2020-03-14:2_3", 2],
+      ["2020-03-11:5_7", 1],
+      ["2020-03-14:1_3", 1]
     ]);
   });
 });

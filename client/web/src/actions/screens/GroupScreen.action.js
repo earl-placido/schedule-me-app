@@ -82,9 +82,18 @@ export const getSelfMember = groupId => async dispatch => {
 
 export const getOptimalTime = groupId => async dispatch => {
   getOptimalTimeQuery(groupId).then(optimalTimes => {
+    const todayDate = moment();
+    // remove dates that are past today
+    let filteredOptimalTimes = [];
+    for (let optimalTime of optimalTimes) {
+      const currentDate = moment(optimalTime[0].split(":")[0]);
+      if (currentDate.isAfter(todayDate))
+        filteredOptimalTimes.push(optimalTime);
+    }
+
     dispatch({
       type: OPTIMAL_TIME,
-      payload: { optimalTimes }
+      payload: { optimalTimes: filteredOptimalTimes }
     });
   });
 };
