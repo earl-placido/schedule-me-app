@@ -79,7 +79,8 @@ class GroupCodeForm extends Component {
       if (this.props.groupMemberId <= 0) {
         Alert.alert('You are already in this group!');
       } else {
-        this.props.navigation.navigate('Group Detail', {codeNum: value.code});
+        this.props.navigation.push('Group Detail', {codeNum: value.code});
+        this.props.navigation.navigate('Group Detail');
       }
     }
   };
