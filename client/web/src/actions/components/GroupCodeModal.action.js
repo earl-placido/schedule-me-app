@@ -29,14 +29,24 @@ export const addUserToGroup = groupId => async dispatch => {
         });
       }
     })
-    .catch(() => {
-      dispatch({
-        type: ADD_USER,
-        payload: {
-          success: false,
-          errorGroupCodeMessage: "An error has occured."
-        }
-      });
+    .catch(e => {
+      if (e.response.status === 400) {
+        dispatch({
+          type: ADD_USER,
+          payload: {
+            success: false,
+            errorGroupCodeMessage: "The group code does not exist."
+          }
+        });
+      } else {
+        dispatch({
+          type: ADD_USER,
+          payload: {
+            success: false,
+            errorGroupCodeMessage: "An error has occured."
+          }
+        });
+      }
     });
 };
 
