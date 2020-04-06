@@ -51,7 +51,7 @@ export default class LoginScreen extends Component {
                     }
                   />
                 </Row>
-                <Row justify="center" style={titleStyle}>
+                <Row justify="center" style={titleStyle} id="LoginTitle">
                   <span style={primaryColorText}>Schedule&nbsp;</span>
                   <span> Me Up</span>
                 </Row>
