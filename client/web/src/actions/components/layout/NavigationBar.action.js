@@ -6,19 +6,18 @@ export const CLOSE_JOIN_GROUP_MODAL = "close_join_group_modal";
 export const SHOW_JOIN_GROUP_MODAL = "show_join_group_modal";
 
 export const getGroupList = () => async dispatch => {
-  await getGroupListQuery()
-    .then(response => {
-      dispatch({
-        type: GROUP_LIST,
-        payload: { groupList: response.data.groups }
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: GROUP_LIST,
-        payload: { groupList: [], showErrorModal: true }
-      });
+  try {
+    const response = await getGroupListQuery();
+    dispatch({
+      type: GROUP_LIST,
+      payload: { groupList: response.data.groups }
     });
+  } catch (err) {
+    dispatch({
+      type: GROUP_LIST,
+      payload: { groupList: [], showErrorModal: true }
+    });
+  }
 };
 
 export const closeErrorModal = () => async dispatch => {
