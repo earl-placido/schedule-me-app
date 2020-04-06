@@ -4,20 +4,16 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import {
   addUserToGroup,
-  setCode
+  setCode,
+  resetState
 } from "../actions/components/GroupCodeModal.action";
-import {
-  closeJoinGroupModal,
-  getGroupList
-} from "../actions/components/layout/NavigationBar.action";
-import {
-  getGroup,
-  getGroupMembers,
-  getSelfMember,
-  getMeetings
-} from "../actions/screens/GroupScreen.action";
+import { closeJoinGroupModal } from "../actions/components/layout/NavigationBar.action";
 
 class GroupCodeModal extends Component {
+  componentWillUnmount() {
+    this.props.resetState();
+  }
+
   handleChange = value => {
     this.props.setCode(value);
   };
@@ -58,7 +54,9 @@ class GroupCodeModal extends Component {
           </span>
         ) : (
           <span>
-            <Row justify="center">You have successfully joined this group!</Row>
+            <Row justify="center">
+              You have successfully joined {this.props.groupName}!
+            </Row>
             <Row justify="center" style={goToGroupButtonStyle}>
               <Button type="primary" href={this.props.link}>
                 Go to Group
@@ -103,36 +101,28 @@ const mapStateToProps = ({ GroupCodeModalReducer }) => {
   const {
     success,
     errorGroupCodeMessage,
-    groupId,
+    groupName,
     link,
     code
   } = GroupCodeModalReducer;
-  return { success, errorGroupCodeMessage, groupId, link, code };
+  return { success, errorGroupCodeMessage, groupName, link, code };
 };
 
 GroupCodeModal.propTypes = {
   success: PropTypes.any,
-  groupId: PropTypes.any,
+  groupName: PropTypes.any,
   link: PropTypes.any,
   errorGroupCodeMessage: PropTypes.any,
   code: PropTypes.any,
   addUserToGroup: PropTypes.func,
   setCode: PropTypes.func,
   closeJoinGroupModal: PropTypes.func,
-  getGroup: PropTypes.func,
-  getGroupMembers: PropTypes.func,
-  getSelfMember: PropTypes.func,
-  getMeetings: PropTypes.func,
-  getGroupList: PropTypes.func
+  resetState: PropTypes.func
 };
 
 export default connect(mapStateToProps, {
   addUserToGroup,
   setCode,
   closeJoinGroupModal,
-  getGroup,
-  getGroupMembers,
-  getSelfMember,
-  getMeetings,
-  getGroupList
+  resetState
 })(GroupCodeModal);

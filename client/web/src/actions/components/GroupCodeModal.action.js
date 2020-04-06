@@ -1,7 +1,8 @@
-import { addUserToGroupQuery } from "../Group.action";
+import { addUserToGroupQuery, getGroupQuery } from "../Group.action";
 
 export const ADD_USER = "add_user";
 export const SET_CODE = "set_code";
+export const RESET_STATE = "reset_state";
 
 export const setCode = value => async dispatch => {
   dispatch({
@@ -14,11 +15,27 @@ export const addUserToGroup = groupId => async dispatch => {
   await addUserToGroupQuery(groupId)
     .then(response => {
       if (response.data.groupMemberId > 0) {
-        const link = `${window.location.origin}/groups/${groupId}/`;
-        dispatch({
-          type: ADD_USER,
-          payload: { groupId: groupId, link: link, success: true }
-        });
+        getGroupQuery(groupId)
+          .then(response => {
+            const link = `${window.location.origin}/groups/${groupId}/`;
+            dispatch({
+              type: ADD_USER,
+              payload: {
+                groupName: response.data.GroupName,
+                link: link,
+                success: true
+              }
+            });
+          })
+          .catch(() => {
+            dispatch({
+              type: ADD_USER,
+              payload: {
+                success: false,
+                errorGroupCodeMessage: "An error has occured."
+              }
+            });
+          });
       } else {
         dispatch({
           type: ADD_USER,
@@ -50,9 +67,22 @@ export const addUserToGroup = groupId => async dispatch => {
     });
 };
 
+export const resetState = () => async dispatch => {
+  dispatch({
+    type: RESET_STATE,
+    payload: {
+      code: "",
+      groupName: "",
+      link: "",
+      success: false,
+      errorGroupCodeMessage: ""
+    }
+  });
+};
+
 const INITIAL_STATE = {
   code: "",
-  groupId: "",
+  groupName: "",
   link: "",
   success: false,
   errorGroupCodeMessage: ""
@@ -66,7 +96,9 @@ export default (state = INITIAL_STATE, action) => {
     case SET_CODE: {
       return { ...state, ...action.payload };
     }
-
+    case RESET_STATE: {
+      return { ...state, ...action.payload };
+    }
     default: {
       return state;
     }
