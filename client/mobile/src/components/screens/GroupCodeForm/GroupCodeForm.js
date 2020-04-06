@@ -79,8 +79,23 @@ class GroupCodeForm extends Component {
       if (this.props.groupMemberId <= 0) {
         Alert.alert('You are already in this group!');
       } else {
-        this.props.navigation.push('Group Detail', {codeNum: value.code});
-        this.props.navigation.navigate('Group Detail');
+        Alert.alert(
+          'You have successfully joined ' + this.props.group.GroupName + '!',
+          '',
+          [
+            {text: 'Close'},
+            {
+              text: 'Go To Group',
+              onPress: () => {
+                this.props.navigation.push('Group Detail', {
+                  codeNum: value.code,
+                });
+                this.props.navigation.navigate('Group Detail');
+              },
+            },
+          ],
+          {cancelable: true},
+        );
       }
     }
   };
