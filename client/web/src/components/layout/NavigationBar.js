@@ -14,7 +14,6 @@ import {
   showJoinGroupModal,
   closeJoinGroupModal
 } from "../../actions/components/layout/NavigationBar.action";
-import { resetState } from "../../actions/components/GroupCodeModal.action";
 
 import GroupCodeModal from "../GroupCodeModal";
 
@@ -44,7 +43,6 @@ export class NavigationBar extends Component {
   };
 
   componentDidMount() {
-    this.props.resetState();
     this.props.getGroupList();
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
@@ -360,8 +358,7 @@ const mapDispatchToProps = dispatch => ({
   getGroupList: () => dispatch(getGroupList()),
   closeErrorModal: () => dispatch(closeErrorModal()),
   showJoinGroupModal: () => dispatch(showJoinGroupModal()),
-  closeJoinGroupModal: () => dispatch(closeJoinGroupModal()),
-  resetState: () => dispatch(resetState())
+  closeJoinGroupModal: () => dispatch(closeJoinGroupModal())
 });
 
 NavigationBar.propTypes = {
@@ -379,8 +376,7 @@ NavigationBar.propTypes = {
   getGroupList: PropTypes.func,
   closeErrorModal: PropTypes.func,
   showJoinGroupModal: PropTypes.func,
-  closeJoinGroupModal: PropTypes.func,
-  resetState: PropTypes.func
+  closeJoinGroupModal: PropTypes.func
 };
 
 export default compose(

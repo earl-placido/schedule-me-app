@@ -1,12 +1,10 @@
 import { Input, Button, Row } from "antd";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 import {
   addUserToGroup,
-  setCode,
-  resetState
+  setCode
 } from "../actions/components/GroupCodeModal.action";
 import {
   closeJoinGroupModal,
@@ -24,31 +22,17 @@ class GroupCodeModal extends Component {
     this.props.setCode(value);
   };
 
-  redirect() {
-    return <Redirect to={`/groups/${this.props.groupId}/`} />;
-  }
-
   onEnter = () => {
     this.props.addUserToGroup(this.props.code);
   };
-
-  getInformationAndClose() {
-    this.props.getGroup(this.props.groupId);
-    this.props.getGroupMembers(this.props.groupId);
-    this.props.getSelfMember(this.props.groupId);
-    this.props.getMeetings(this.props.groupId);
-    this.props.getGroupList();
-    this.props.closeJoinGroupModal() &&
-      this.props.resetState() &&
-      this.redirect();
-  }
 
   render() {
     const {
       errorMessageStyle,
       groupCodeStyle,
       inputStyle,
-      okayButtonStyle
+      okayButtonStyle,
+      goToGroupButtonStyle
     } = styles;
     return (
       <div>
@@ -73,7 +57,14 @@ class GroupCodeModal extends Component {
             </Row>
           </span>
         ) : (
-          this.getInformationAndClose()
+          <span>
+            <Row justify="center">You have successfully joined this group!</Row>
+            <Row justify="center" style={goToGroupButtonStyle}>
+              <Button type="primary" href={this.props.link}>
+                Go to Group
+              </Button>
+            </Row>
+          </span>
         )}
       </div>
     );
@@ -100,6 +91,11 @@ const styles = {
   okayButtonStyle: {
     paddingTop: 20,
     paddingBottom: 15
+  },
+
+  goToGroupButtonStyle: {
+    paddingTop: 20,
+    paddingBottom: 5
   }
 };
 
@@ -108,20 +104,21 @@ const mapStateToProps = ({ GroupCodeModalReducer }) => {
     success,
     errorGroupCodeMessage,
     groupId,
+    link,
     code
   } = GroupCodeModalReducer;
-  return { success, errorGroupCodeMessage, groupId, code };
+  return { success, errorGroupCodeMessage, groupId, link, code };
 };
 
 GroupCodeModal.propTypes = {
   success: PropTypes.any,
   groupId: PropTypes.any,
+  link: PropTypes.any,
   errorGroupCodeMessage: PropTypes.any,
   code: PropTypes.any,
   addUserToGroup: PropTypes.func,
   setCode: PropTypes.func,
   closeJoinGroupModal: PropTypes.func,
-  resetState: PropTypes.func,
   getGroup: PropTypes.func,
   getGroupMembers: PropTypes.func,
   getSelfMember: PropTypes.func,
@@ -133,7 +130,6 @@ export default connect(mapStateToProps, {
   addUserToGroup,
   setCode,
   closeJoinGroupModal,
-  resetState,
   getGroup,
   getGroupMembers,
   getSelfMember,
