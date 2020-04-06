@@ -39,8 +39,8 @@ import {Alert} from 'react-native';
 const actions = [
   {
     text: 'Input Your Availability',
-    icon: require('../../../assets/personIcon.png'),
-    name: 'inputAvalibility',
+    icon: <Icon style={{color: 'white'}} name="person"></Icon>,
+    name: 'inputAvailability',
     position: 1,
   },
 ];
