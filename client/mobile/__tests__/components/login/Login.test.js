@@ -51,6 +51,7 @@ describe('Testing <Login />', () => {
     component.instance()['form'] = {
       getValue: () => jest.fn(),
     };
+    component.instance().showToast = jest.fn();
     jest.useFakeTimers();
     component.find('[accessibilityLabel="LoginButton"]').simulate('press');
 
@@ -75,6 +76,7 @@ describe('Testing <Login />', () => {
     component.instance()['form'] = {
       getValue: () => jest.fn(),
     };
+    component.instance().showToast = jest.fn();
     jest.useFakeTimers();
     component.find('[accessibilityLabel="LoginButton"]').simulate('press');
     jest.advanceTimersByTime(1000);

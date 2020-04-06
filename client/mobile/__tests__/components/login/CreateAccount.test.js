@@ -41,7 +41,7 @@ describe('Testing <CreateAccount />', () => {
   });
 
   it('Test if button renders', () => {
-    expect(component.find(Button)).toHaveLength(1);
+    expect(component.find(Button)).toHaveLength(2);
   });
 
   it('Test signup button press', () => {
@@ -127,7 +127,7 @@ describe('Testing <CreateAccount />', () => {
       },
     });
     component.instance().attemptSignup();
-    expect(Alert.alert).toHaveBeenCalledWith('Invalid input', msg);
+    expect(Alert.alert).toHaveBeenCalledWith('Signup failed:', msg);
   });
 
   it('Test signup more errors', () => {
@@ -141,7 +141,7 @@ describe('Testing <CreateAccount />', () => {
       },
     });
     component.instance().attemptSignup();
-    expect(Alert.alert).toHaveBeenCalledWith('Invalid input', msg);
+    expect(Alert.alert).toHaveBeenCalledWith('Signup failed:', msg);
   });
 
   it('Test signup even more errors', () => {
@@ -153,6 +153,6 @@ describe('Testing <CreateAccount />', () => {
       message: msg,
     });
     component.instance().attemptSignup();
-    expect(Alert.alert).toHaveBeenCalledWith('Invalid input', msg);
+    expect(Alert.alert).toHaveBeenCalledWith('Signup failed:', msg);
   });
 });

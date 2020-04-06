@@ -5,8 +5,6 @@ import {shallow, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 
-import {Alert} from 'react-native';
-import {Button} from 'native-base';
 import Login from '../../../../src/components/login/Login';
 import CreateAccount from '../../../../src/components/login/CreateAccount';
 
@@ -33,20 +31,5 @@ describe('Testing <Home />', () => {
 
   it('Test if <CreateAccount /> renders', () => {
     expect(component.dive().find(CreateAccount)).toHaveLength(1);
-  });
-
-  it('Test if button renders', () => {
-    expect(component.dive().find(Button)).toHaveLength(1);
-  });
-
-  it('Test if button works', () => {
-    Alert.alert = jest.fn();
-    component
-      .dive()
-      .find(Button)
-      .simulate('press');
-    expect(Alert.alert).toHaveBeenCalledWith(
-      'This feature is not yet available',
-    );
   });
 });
