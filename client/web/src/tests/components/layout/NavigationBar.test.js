@@ -40,7 +40,7 @@ describe("Testing the <NavigationBar />", () => {
       expect(component.find("#groupSubMenuWeb")).toHaveLength(1);
       expect(component.find("#createGroupWeb")).toHaveLength(1);
       expect(component.find("#joinGroupWeb")).toHaveLength(1);
-      expect(component.find(Modal)).toHaveLength(1);
+      expect(component.find(Modal)).toHaveLength(2);
     });
 
     it("Testing if getGroupsList is called", () => {

@@ -10,8 +10,12 @@ import { toggleModal } from "../../actions/components/login/Modal.action";
 import { authenticate, logout } from "../../actions/Auth.action";
 import {
   getGroupList,
-  closeErrorModal
+  closeErrorModal,
+  showJoinGroupModal,
+  closeJoinGroupModal
 } from "../../actions/components/layout/NavigationBar.action";
+
+import GroupCodeModal from "../GroupCodeModal";
 
 const { Header } = Layout;
 const { SubMenu } = Menu;
@@ -45,6 +49,7 @@ export class NavigationBar extends Component {
   }
 
   componentWillUnmount() {
+    this.props.closeJoinGroupModal();
     window.removeEventListener("resize", this.handleResize);
   }
 
@@ -60,6 +65,14 @@ export class NavigationBar extends Component {
 
   closeErrorModal = () => {
     this.props.closeErrorModal();
+  };
+
+  closeJoinGroupModal = () => {
+    this.props.closeJoinGroupModal();
+  };
+
+  showJoinGroupModal = () => {
+    this.props.showJoinGroupModal();
   };
 
   renderGroupMenuItem = group => {
@@ -145,7 +158,9 @@ export class NavigationBar extends Component {
             <Menu.Item id="createGroupWeb">
               <a href="/createGroup/">Create A Group</a>
             </Menu.Item>
-            <Menu.Item id="joinGroupWeb">Join A Group</Menu.Item>
+            <Menu.Item id="joinGroupWeb" onClick={this.showJoinGroupModal}>
+              Join A Group
+            </Menu.Item>
             {this.userNavigation()}
           </Menu>
         </Row>
@@ -223,7 +238,9 @@ export class NavigationBar extends Component {
               <Menu.Item id="createGroupMobile">
                 <a href="/createGroup/">Create A Group</a>
               </Menu.Item>
-              <Menu.Item id="joinGroupMobile">Join A Group</Menu.Item>
+              <Menu.Item id="joinGroupMobile" onClick={this.showJoinGroupModal}>
+                Join A Group
+              </Menu.Item>
               <Menu.Item onClick={this.logoutUser} id="logoutButton">
                 Log Out
               </Menu.Item>
@@ -235,13 +252,26 @@ export class NavigationBar extends Component {
   };
 
   render() {
-    const { titleStyle, primaryColorText } = styles;
+    const { titleStyle, primaryColorText, joinGroupStyle } = styles;
 
     return (
       <Layout>
         {!this.state.hideNav
           ? this.renderNavMenuWeb()
           : this.renderNavMenuMobile()}
+        <Modal
+          destroyOnClose={true}
+          title={
+            <Row justify="center" style={joinGroupStyle}>
+              Enter Group Code
+            </Row>
+          }
+          visible={this.props.showGroupCodeModal}
+          onCancel={this.closeJoinGroupModal}
+          footer={[]}
+        >
+          <GroupCodeModal />
+        </Modal>
         <Modal
           visible={this.props.showErrorModal}
           onCancel={this.closeErrorModal}
@@ -302,6 +332,12 @@ const styles = {
 
   oldAntColStyle: {
     flex: "0 1 auto"
+  },
+
+  joinGroupStyle: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 32
   }
 };
 
@@ -311,7 +347,8 @@ const mapStateToProps = state => ({
   displayPicURL: state.auth.displayPicURL,
   modalVisible: state.modalVisible,
   groupList: state.NavigationBarReducer.groupList,
-  showErrorModal: state.NavigationBarReducer.showErrorModal
+  showErrorModal: state.NavigationBarReducer.showErrorModal,
+  showGroupCodeModal: state.NavigationBarReducer.showGroupCodeModal
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -319,7 +356,9 @@ const mapDispatchToProps = dispatch => ({
   authenticate: (type, response) => dispatch(authenticate(type, response)),
   toggleModal: value => dispatch(toggleModal(value)),
   getGroupList: () => dispatch(getGroupList()),
-  closeErrorModal: () => dispatch(closeErrorModal())
+  closeErrorModal: () => dispatch(closeErrorModal()),
+  showJoinGroupModal: () => dispatch(showJoinGroupModal()),
+  closeJoinGroupModal: () => dispatch(closeJoinGroupModal())
 });
 
 NavigationBar.propTypes = {
@@ -328,13 +367,16 @@ NavigationBar.propTypes = {
   displayPicURL: PropTypes.any,
   isAuthenticated: PropTypes.any,
   showErrorModal: PropTypes.any,
+  showGroupCodeModal: PropTypes.any,
   authenticate: PropTypes.func,
   logout: PropTypes.func,
   modalVisible: PropTypes.any,
   groupList: PropTypes.any,
   toggleModal: PropTypes.func,
   getGroupList: PropTypes.func,
-  closeErrorModal: PropTypes.func
+  closeErrorModal: PropTypes.func,
+  showJoinGroupModal: PropTypes.func,
+  closeJoinGroupModal: PropTypes.func
 };
 
 export default compose(
