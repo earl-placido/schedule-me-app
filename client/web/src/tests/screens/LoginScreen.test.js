@@ -21,7 +21,6 @@ describe("Testing the <Home/>", () => {
   it("Checks if core child components rendered", () => {
     expect(wrapper.find(Login)).toHaveLength(1);
     expect(wrapper.find(Card)).toHaveLength(1);
-    expect(wrapper.find(Button)).toHaveLength(1);
   });
 
   it("Testing the `handleHttps` function", () => {

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Divider, notification, Card, Row, Col } from "antd";
+import { notification, Card, Row, Col } from "antd";
 import Login from "../components/login/LoginComponent";
 
 export default class LoginScreen extends Component {
@@ -55,12 +55,6 @@ export default class LoginScreen extends Component {
                   <span style={primaryColorText}>Schedule&nbsp;</span>
                   <span> Me Up</span>
                 </Row>
-                <Row justify="center">
-                  <Button href="/creategroup" size="large">
-                    Continue as Guest
-                  </Button>
-                </Row>
-                <Divider orientation="center">or</Divider>
                 <Row justify="center">
                   <Login />
                 </Row>
