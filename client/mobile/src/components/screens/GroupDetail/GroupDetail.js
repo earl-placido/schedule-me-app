@@ -207,7 +207,6 @@ class GroupDetail extends Component {
               </Card>
             </Content>
 
-            {/* Pressing on a user displays a modal with more information about the user */}
             <FloatingAction
               actions={actions}
               onPressItem={() =>
@@ -216,11 +215,11 @@ class GroupDetail extends Component {
                 )
               }
             />
-
             <Modal isVisible={this.props.isInputAvailabilityVisible}>
               <InputAvailabilityModal />
             </Modal>
 
+            {/* Pressing on a user displays a modal with more information about the user */}
             <Dialog.Container
               onBackdropPress={this.handleClose}
               visible={this.state.dialogVisible}>
