@@ -45,7 +45,9 @@ describe('Testing <CreateAccount />', () => {
   });
 
   it('Test signup button press', () => {
-    component.find('[accessibilityLabel="SignupButton"]').simulate('press');
+    component
+      .findWhere(node => node.prop('accessibilityLabel') === 'SignupButton')
+      .simulate('press');
     expect(component.state().isCreateVisible).toEqual(true);
   });
 
@@ -55,7 +57,9 @@ describe('Testing <CreateAccount />', () => {
     };
     jest.useFakeTimers();
     component
-      .find('[accessibilityLabel="SignupSubmitButton"]')
+      .findWhere(
+        node => node.prop('accessibilityLabel') === 'SignupSubmitButton',
+      )
       .simulate('press');
 
     expect(component.state().isCreateVisible).toEqual(false);
@@ -69,7 +73,9 @@ describe('Testing <CreateAccount />', () => {
     };
     jest.useFakeTimers();
     component
-      .find('[accessibilityLabel="SignupSubmitButton"]')
+      .findWhere(
+        node => node.prop('accessibilityLabel') === 'SignupSubmitButton',
+      )
       .simulate('press');
 
     expect(component.state().isCreateVisible).toEqual(false);
@@ -83,7 +89,9 @@ describe('Testing <CreateAccount />', () => {
     };
     jest.useFakeTimers();
     component
-      .find('[accessibilityLabel="SignupSubmitButton"]')
+      .findWhere(
+        node => node.prop('accessibilityLabel') === 'SignupSubmitButton',
+      )
       .simulate('press');
     jest.advanceTimersByTime(1000);
 
@@ -97,7 +105,9 @@ describe('Testing <CreateAccount />', () => {
     };
     jest.useFakeTimers();
     component
-      .find('[accessibilityLabel="SignupSubmitButton"]')
+      .findWhere(
+        node => node.prop('accessibilityLabel') === 'SignupSubmitButton',
+      )
       .simulate('press');
     jest.advanceTimersByTime(1000);
 

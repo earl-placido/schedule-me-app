@@ -43,7 +43,9 @@ describe('Testing <Login />', () => {
 
   it('Test login button press', () => {
     component.instance().userLogin = jest.fn();
-    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    component
+      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .simulate('press');
     expect(component.instance().userLogin).toHaveBeenCalled();
   });
 
@@ -53,7 +55,9 @@ describe('Testing <Login />', () => {
     };
     component.instance().showToast = jest.fn();
     jest.useFakeTimers();
-    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    component
+      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .simulate('press');
 
     expect(component.state().isSigninInProgress).toEqual(true);
     expect(component.state().isSpinnerVisible).toEqual(true);
@@ -65,7 +69,9 @@ describe('Testing <Login />', () => {
       getValue: () => null,
     };
     jest.useFakeTimers();
-    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    component
+      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .simulate('press');
 
     expect(component.state().isSigninInProgress).toEqual(false);
     expect(component.state().isSpinnerVisible).toEqual(false);
@@ -78,7 +84,9 @@ describe('Testing <Login />', () => {
     };
     component.instance().showToast = jest.fn();
     jest.useFakeTimers();
-    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    component
+      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .simulate('press');
     jest.advanceTimersByTime(1000);
 
     expect(component.state().isSigninInProgress).toEqual(false);
@@ -90,7 +98,9 @@ describe('Testing <Login />', () => {
       getValue: () => null,
     };
     jest.useFakeTimers();
-    component.find('[accessibilityLabel="LoginButton"]').simulate('press');
+    component
+      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .simulate('press');
     jest.advanceTimersByTime(1000);
 
     expect(component.state().isSigninInProgress).toEqual(false);
