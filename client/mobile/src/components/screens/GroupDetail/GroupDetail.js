@@ -171,7 +171,7 @@ class GroupDetail extends Component {
               </CardItem>
             </View>
 
-            <Modal isVisible={this.props.isMeetingModalVisible}>
+            <Modal isVisible={this.props.isMeetingModalVisible} onBackdropPress={() => this.props.toggleMeetingModal(this.props.isMeetingModalVisible)} >
               <MeetingModal />
             </Modal>
 
