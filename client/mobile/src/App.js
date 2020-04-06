@@ -6,8 +6,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import DrawerNavigator from './navigation/DrawerNavigator';
-import Home from './components/screens/Home/Home';
-
+import Home from './components/screens/LoginScreen';
 import {NativeRouter} from 'react-router-native';
 
 import PropTypes from 'prop-types';

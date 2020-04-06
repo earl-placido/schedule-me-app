@@ -4,10 +4,10 @@ import {Header, Button, Text, Icon, Left, Right} from 'native-base';
 import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerActions} from '@react-navigation/native';
 
-import CreateGroup from '../components/screens/CreateGroup/CreateGroup';
-import GroupDetail from '../components/screens/GroupDetail/GroupDetail';
-import GroupCode from '../components/screens/GroupCodeForm/GroupCodeForm';
-import GroupList from '../components/screens/GroupList/GroupList';
+import CreateGroup from '../components/screens/CreateGroupScreen';
+import GroupDetail from '../components/screens/GroupScreen';
+import GroupCode from '../components/screens/JoinGroupScreen';
+import GroupList from '../components/screens/GroupListScreen';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';

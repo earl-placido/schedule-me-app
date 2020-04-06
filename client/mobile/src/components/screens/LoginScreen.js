@@ -4,8 +4,8 @@ import {Text, Container} from 'native-base';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
-import Login from '../../login/Login';
-import CreateAccount from '../../login/CreateAccount';
+import Login from '../login/Login';
+import CreateAccount from '../login/CreateAccount';
 
 class Home extends Component {
   render() {
