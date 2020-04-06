@@ -24,15 +24,33 @@ function currentDateOptimalTime(startTimes, endTimes) {
       // if intersect
       const intersected_value =
         intersections[`${max_start_time}_${min_end_time}`];
-      if (intersected_value)
-        intersections[`${max_start_time}_${min_end_time}`] += 1;
-      else intersections[`${max_start_time}_${min_end_time}`] = 2;
+      if (!intersected_value)
+        intersections[`${max_start_time}_${min_end_time}`] = new Set();
+
+      // iwe get all the users that current time is intersected and add the users to the current intersected time
+      intersections[`${max_start_time}_${min_end_time}`].add(i);
+      const intersectedUsers = intersections[keys[j]].values();
+      let nextUser = intersectedUsers.next();
+      while (!nextUser.done) {
+        intersections[`${max_start_time}_${min_end_time}`].add(nextUser.value);
+        nextUser = intersectedUsers.next();
+      }
     }
+    // if there is no existing time for the current start and end, then we add it
     if (
       intersections[`${current_start_time}_${current_end_time}`] === undefined
-    )
-      intersections[`${current_start_time}_${current_end_time}`] = 1;
+    ) {
+      intersections[`${current_start_time}_${current_end_time}`] = new Set();
+      intersections[`${current_start_time}_${current_end_time}`].add(i);
+    }
   }
+
+  // count only the length of each set (the number of users) instead of returning the whole set
+  const keys = Object.keys(intersections) || [];
+  for (const key of keys) {
+    intersections[key] = intersections[key].size;
+  }
+
   return intersections;
 }
 
