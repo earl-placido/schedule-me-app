@@ -4,19 +4,18 @@ export const GROUP_LIST = "group_list";
 export const CLOSE_ERROR_MODAL = "close_error_modal";
 
 export const getGroupList = () => async dispatch => {
-  await getGroupListQuery()
-    .then(response => {
-      dispatch({
-        type: GROUP_LIST,
-        payload: { groupList: response.data.groups }
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: GROUP_LIST,
-        payload: { groupList: [], showErrorModal: true }
-      });
+  try {
+    const response = await getGroupListQuery();
+    dispatch({
+      type: GROUP_LIST,
+      payload: { groupList: response.data.groups }
     });
+  } catch (err) {
+    dispatch({
+      type: GROUP_LIST,
+      payload: { groupList: [], showErrorModal: true }
+    });
+  }
 };
 
 export const closeErrorModal = () => async dispatch => {
