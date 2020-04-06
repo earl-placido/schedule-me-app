@@ -68,18 +68,12 @@ module.exports = router => {
     (req, res, next) => {
       const { availabilityIds } = req.body;
 
-      if (availabilityIds.length == 0) {
-        res.status(responses.SERVER_ERROR);
-        res.send({ error: "No availability Id to delete provided" });
-      }
-
       AvailabilityModel.deleteAvailability(availabilityIds)
         .then(result => {
           if (!result.errno)
             res.status(responses.SUCCESS).json({ success: true });
           else {
             res.status(responses.SERVER_ERROR).json({ error: true });
-            throw Error("error deleting availability");
           }
         })
         .catch(next);

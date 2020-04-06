@@ -11,21 +11,20 @@ describe("Groups Router Tests", () => {
   let generatedGroup = generateGroup();
   let ownerToken, nonOwnerToken, testGroupId, testMeetingId;
 
-  beforeAll(done => {
-    request(server)
-      .post("/api/v1/auth/signup")
-      .send({
-        email: generatedOwner.email,
-        password: generatedOwner.password,
-        firstName: generatedOwner.fName,
-        lastName: generatedOwner.lName
-      })
-      .end((err, res) => {
-        if (err) return done(err);
+  beforeAll(async done => {
+    ownerToken = (
+      await request(server)
+        .post("/api/v1/auth/signup")
+        .send({
+          email: generatedOwner.email,
+          password: generatedOwner.password,
+          firstName: generatedOwner.fName,
+          lastName: generatedOwner.lName
+        })
+    ).headers["x-auth-token"];
 
-        ownerToken = res.headers["x-auth-token"];
-
-        request(server)
+    nonOwnerToken = (
+      await request(server)
         .post("/api/v1/auth/signup")
         .send({
           email: generatedNonOwner.email,
@@ -33,12 +32,9 @@ describe("Groups Router Tests", () => {
           firstName: generatedNonOwner.fName,
           lastName: generatedNonOwner.lName
         })
-        .end((err, res) => {
-          if (err) return done(err);
-          nonOwnerToken = res.headers["x-auth-token"];
-          done();
-        });
-      });
+    ).headers["x-auth-token"];
+
+    done();
   });
 
   describe("POST /groups/", () => {
@@ -130,7 +126,7 @@ describe("Groups Router Tests", () => {
           done();
         });
     });
-  });  
+  });
 
   describe("POST /groups/:groupId/members", () => {
     test("should add user to group and return a group member id", done => {
@@ -188,11 +184,11 @@ describe("Groups Router Tests", () => {
     });
   });
 
-  describe("GET /groups/:groupId/optimaltime", () => { 
+  describe("GET /groups/:groupId/optimaltime", () => {
     beforeAll(async done => {
-      let res = await request(server)
-        .get(`/api/v1/groups/${testGroupId}/members`);
-      let groupMembers = res.body.groupMembers;
+      let groupMembers = (
+        await request(server).get(`/api/v1/groups/${testGroupId}/members`)
+      ).body.groupMembers;
 
       for (const groupMember of groupMembers) {
         await request(server)
@@ -202,8 +198,8 @@ describe("Groups Router Tests", () => {
             availabilityIds: [-1],
             startTimes: ["2020-04-08 08:00:00"],
             endTimes: ["2020-04-08 09:00:00"]
-          })
-      };
+          });
+      }
       done();
     });
 
@@ -213,7 +209,7 @@ describe("Groups Router Tests", () => {
         .expect(responses.SUCCESS)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.body.optimalTime[0][0]).toEqual('2020-04-08:8_9');
+          expect(res.body.optimalTime[0][0]).toEqual("2020-04-08:8_9");
           done();
         });
     });
@@ -226,7 +222,9 @@ describe("Groups Router Tests", () => {
         .expect(responses.SUCCESS)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.body.meetingIds[0].MeetingDuration.replace(/:/g, "")).toEqual(generatedGroup.meetingDuration);
+          expect(
+            res.body.meetingIds[0].MeetingDuration.replace(/:/g, "")
+          ).toEqual(generatedGroup.meetingDuration);
           testMeetingId = res.body.meetingIds[0].MeetingId;
           done();
         });
@@ -257,8 +255,12 @@ describe("Groups Router Tests", () => {
         .expect(responses.SUCCESS)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.body[0]['CAST(StartTime as char)']).toEqual('2020-04-08 08:00:00');
-          expect(res.body[0]['CAST(EndTime as char)']).toEqual('2020-04-08 09:00:00');
+          expect(res.body[0]["CAST(StartTime as char)"]).toEqual(
+            "2020-04-08 08:00:00"
+          );
+          expect(res.body[0]["CAST(EndTime as char)"]).toEqual(
+            "2020-04-08 09:00:00"
+          );
           done();
         });
     });

@@ -119,6 +119,34 @@ const emailRules = () => {
   ];
 };
 
+const getOptimalTimeRules = () => {
+  return [
+    check("stringMeetingIds").custom(stringMeetingIds => {
+      const meetingIds = stringMeetingIds
+        .split(",")
+        .map(stringMeetingId => parseInt(stringMeetingId));
+      if (meetingIds && meetingIds.length === 0) {
+        throw new Error("meetingIds length cannot be 0!");
+      }
+      return true;
+    })
+  ];
+};
+
+const setOptimalTimeRules = () => {
+  return [
+    check("meetingId")
+      .exists({ checkNull: true })
+      .withMessage("Meeting Id is required."),
+    check("startTime")
+      .exists({ checkNull: true })
+      .withMessage("Start time is required."),
+    check("endTime")
+      .exists({ checkNull: true })
+      .withMessage("End time is required.")
+  ];
+};
+
 const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -138,5 +166,7 @@ module.exports = {
   groupMemberIdRules,
   userIdRules,
   emailRules,
+  getOptimalTimeRules,
+  setOptimalTimeRules,
   validate
 };

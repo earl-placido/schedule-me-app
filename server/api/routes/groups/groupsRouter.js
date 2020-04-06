@@ -9,6 +9,8 @@ const {
   groupRules,
   groupIdRules,
   userIdRules,
+  getOptimalTimeRules,
+  setOptimalTimeRules,
   validate
 } = require("../../middleware/validationMiddleware");
 
@@ -194,32 +196,32 @@ router.get(
   }
 );
 
-router.get("/meetings/:stringMeetingIds/optimaltime/", (req, res, next) => {
-  const { stringMeetingIds } = req.params;
-  const meetingIds = stringMeetingIds
-    .split(",")
-    .map(stringMeetingId => parseInt(stringMeetingId));
+router.get(
+  "/meetings/:stringMeetingIds/optimaltime/",
+  getOptimalTimeRules(),
+  validate,
+  (req, res, next) => {
+    const { stringMeetingIds } = req.params;
+    const meetingIds = stringMeetingIds
+      .split(",")
+      .map(stringMeetingId => parseInt(stringMeetingId));
 
-  if (meetingIds && meetingIds.length === 0) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: "meetingIds length cannot be 0!" });
+    return groupsModel
+      .getOptimalTimeForMeeting(meetingIds)
+      .then(result => {
+        res.status(responses.SUCCESS).json(result);
+      })
+      .catch(next);
   }
+);
 
-  return groupsModel
-    .getOptimalTimeForMeeting(meetingIds)
-    .then(result => {
-      res.status(responses.SUCCESS).json(result);
-    })
-    .catch(next);
-});
-
-router.post("/meetings/:meetingId/optimaltime/", (req, res, next) => {
-  const { startTime, endTime } = req.body;
-  const { meetingId } = req.params;
-  if (!meetingId || !startTime || !endTime) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: "meetingId/startTime/endTime is required!" });
-  } else {
+router.post(
+  "/meetings/:meetingId/optimaltime/",
+  setOptimalTimeRules(),
+  validate,
+  (req, res, next) => {
+    const { startTime, endTime } = req.body;
+    const { meetingId } = req.params;
     return groupsModel
       .setOptimalTimeForMeeting(meetingId, startTime, endTime)
       .then(result => {
@@ -230,7 +232,7 @@ router.post("/meetings/:meetingId/optimaltime/", (req, res, next) => {
       })
       .catch(next);
   }
-});
+);
 
 // add availability router
 require("./availabilityRouter")(router);

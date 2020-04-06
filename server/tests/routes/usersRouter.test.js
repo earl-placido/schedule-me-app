@@ -1,11 +1,11 @@
 require("dotenv").config();
 const request = require("supertest");
 const server = require("../../server");
-const userUtil = require("../test-utils/userUtil");
+const { generateUser } = require("../test-utils/userUtil");
 const responses = require("../test-utils/responses");
 
 describe("User Router Tests", () => {
-  let generatedUser = userUtil.generateUser();
+  let generatedUser = generateUser();
   let testToken, testUserId;
 
   beforeAll(done => {
