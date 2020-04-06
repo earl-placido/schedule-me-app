@@ -11,7 +11,7 @@ import {
   showModal,
   markDates,
 } from '../../actions/InputAvailability.action';
-import {toggleInputAvailability} from '../../actions/screens/GetGroup.action';
+import {toggleInputAvailability} from '../../actions/GetGroup.action';
 
 import {connect} from 'react-redux';
 
