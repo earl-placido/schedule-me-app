@@ -2,7 +2,7 @@ import React from "react";
 import Home from "../../screens/LoginScreen";
 import Login from "../../components/login/LoginComponent";
 import Adapter from "enzyme-adapter-react-16";
-import { Button, Card } from "antd";
+import { Card } from "antd";
 import { shallow, configure } from "enzyme";
 
 configure({ adapter: new Adapter() });
