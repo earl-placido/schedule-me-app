@@ -1,10 +1,17 @@
 const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
 
 const groupsModel = require("../../model/groupsModel");
 const groupMemberModel = require("../../model/groupMemberModel");
-const { authenticateToken } = require("../../util/tokenHelper");
+
+const { authenticateToken } = require("../../middleware/tokenMiddleware");
+const {
+  groupRules,
+  groupIdRules,
+  userIdRules,
+  validate
+} = require("../../middleware/validationMiddleware");
+
 const responses = require("../../util/responses");
 const findOptimalTime = require("../../util/optimalAlgorithm");
 
@@ -12,23 +19,9 @@ const findOptimalTime = require("../../util/optimalAlgorithm");
 router.post(
   "/",
   authenticateToken,
-  [
-    check("groupName")
-      .exists({ checkNull: true })
-      .withMessage("Group name is required."),
-    check("groupDesc")
-      .optional({ checkFalsy: true })
-      .isLength({ max: 225 })
-      .withMessage("Group description cannot exceed 225 characters")
-  ],
+  groupRules(),
+  validate,
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res
-        .status(responses.UNPROCESSABLE)
-        .json({ errors: errors.array() });
-    }
-
     const newGroup = req.body;
     const groupOwnerId = req.user.userID;
 
@@ -65,19 +58,14 @@ router.post(
 // Get all groups
 router.get("/", authenticateToken, (req, res, next) => {
   const userId = req.user.userID;
-  if (!userId) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: `userId is required.` });
-  } else {
-    return groupsModel
-      .getGroupsFromUserId(userId)
-      .then(result => res.status(responses.SUCCESS).json({ groups: result }))
-      .catch(next);
-  }
+  return groupsModel
+    .getGroupsFromUserId(userId)
+    .then(result => res.status(responses.SUCCESS).json({ groups: result }))
+    .catch(next);
 });
 
 //  group information from groupId
-router.get("/:groupId", (req, res, next) => {
+router.get("/:groupId", groupIdRules(), validate, (req, res, next) => {
   const { groupId } = req.params;
   return groupsModel
     .getGroupFromGroupId(groupId)
@@ -93,8 +81,8 @@ router.get("/:groupId", (req, res, next) => {
 });
 
 // Get group members from groupId
-router.get("/:groupId/members", (req, res, next) => {
-  const groupId = req.params.groupId;
+router.get("/:groupId/members", groupIdRules(), validate, (req, res, next) => {
+  const { groupId } = req.params;
 
   if (!groupId) {
     res.status(responses.NOT_FOUND);
@@ -110,71 +98,89 @@ router.get("/:groupId/members", (req, res, next) => {
 });
 
 // Add member to a group
-router.post("/:groupId/members", authenticateToken, (req, res, next) => {
-  const userId = req.user.userID;
-  const groupId = req.params.groupId;
-  return groupsModel
-    .newMember(groupId, userId, "U")
-    .then(result => {
-      if (result.errno) {
-        res.status(responses.BAD_REQUEST).json({ error: result.sqlMessage });
-      } else {
-        res.status(responses.CREATED).json({ groupMemberId: result });
-      }
-    })
-    .catch(next);
-});
-
-// Delete group
-router.delete("/:groupId", authenticateToken, (req, res, next) => {
-  const { groupId } = req.params;
-  const userID = req.user.userID;
-  return groupsModel
-    .getGroupFromGroupId(groupId)
-    .then(result => {
-      if (result.length > 0) {
-        if (result[0].GroupOwnerId != userID) {
-          res.status(responses.FORBIDDEN);
-          res.send({ error: `Need to be group owner to delete group.` });
+router.post(
+  "/:groupId/members",
+  authenticateToken,
+  groupIdRules(),
+  validate,
+  (req, res, next) => {
+    const userId = req.user.userID;
+    const groupId = req.params.groupId;
+    return groupsModel
+      .newMember(groupId, userId, "U")
+      .then(result => {
+        if (result.errno) {
+          res.status(responses.BAD_REQUEST).json({ error: result.sqlMessage });
         } else {
-          return groupsModel.deleteGroup(groupId).then(() => {
-            res.status(responses.SUCCESS).json({ deletedGroup: result[0] });
-          });
+          res.status(responses.CREATED).json({ groupMemberId: result });
         }
-      } else {
-        res.status(responses.NOT_FOUND);
-        res.send({ error: `GroupId ${groupId} does not exist.` });
-      }
-    })
-    .catch(next);
-});
-
-// get group member id
-router.get("/:groupId/members/:userId", (req, res, next) => {
-  const { groupId, userId } = req.params;
-  if (!groupId) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: "groupId is required!" });
-  } else if (!userId) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: "userId is required!" });
-  } else {
-    return groupMemberModel
-      .getGroupMemberId(groupId, userId)
-      .then(result =>
-        res.status(responses.SUCCESS).json({ groupMembers: result })
-      )
+      })
       .catch(next);
   }
-});
+);
+
+// Delete group
+router.delete(
+  "/:groupId",
+  authenticateToken,
+  groupIdRules(),
+  validate,
+  (req, res, next) => {
+    const { groupId } = req.params;
+    const userID = req.user.userID;
+    return groupsModel
+      .getGroupFromGroupId(groupId)
+      .then(result => {
+        if (result.length > 0) {
+          if (result[0].GroupOwnerId != userID) {
+            res.status(responses.FORBIDDEN);
+            res.send({ error: `Need to be group owner to delete group.` });
+          } else {
+            return groupsModel.deleteGroup(groupId).then(() => {
+              res.status(responses.SUCCESS).json({ deletedGroup: result[0] });
+            });
+          }
+        } else {
+          res.status(responses.NOT_FOUND);
+          res.send({ error: `GroupId ${groupId} does not exist.` });
+        }
+      })
+      .catch(next);
+  }
+);
+
+// get group member id
+router.get(
+  "/:groupId/members/:userId",
+  groupIdRules(),
+  userIdRules(),
+  validate,
+  (req, res, next) => {
+    const { groupId, userId } = req.params;
+    if (!groupId) {
+      res.status(responses.NOT_FOUND);
+      res.send({ error: "groupId is required!" });
+    } else if (!userId) {
+      res.status(responses.NOT_FOUND);
+      res.send({ error: "userId is required!" });
+    } else {
+      return groupMemberModel
+        .getGroupMemberId(groupId, userId)
+        .then(result =>
+          res.status(responses.SUCCESS).json({ groupMembers: result })
+        )
+        .catch(next);
+    }
+  }
+);
 
 // group optimal time route
-router.get("/:groupId/optimaltime/", (req, res, next) => {
-  const { groupId } = req.params;
-  if (!groupId) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: "groupId is required!" });
-  } else {
+router.get(
+  "/:groupId/optimaltime/",
+  groupIdRules(),
+  validate,
+  (req, res, next) => {
+    const { groupId } = req.params;
     return groupsModel
       .getGroupMemberAvailabilities(groupId)
       .then(result => {
@@ -183,15 +189,15 @@ router.get("/:groupId/optimaltime/", (req, res, next) => {
       })
       .catch(next);
   }
-});
+);
 
 // get meeting information
-router.get("/:groupId/meetings/", (req, res, next) => {
-  const { groupId } = req.params;
-  if (!groupId) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: "groupId is required!" });
-  } else {
+router.get(
+  "/:groupId/meetings/",
+  groupIdRules(),
+  validate,
+  (req, res, next) => {
+    const { groupId } = req.params;
     return groupsModel
       .getMeetingByGroupId(groupId)
       .then(result => {
@@ -199,7 +205,7 @@ router.get("/:groupId/meetings/", (req, res, next) => {
       })
       .catch(next);
   }
-});
+);
 
 router.get("/meetings/:stringMeetingIds/optimaltime/", (req, res, next) => {
   const { stringMeetingIds } = req.params;

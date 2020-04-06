@@ -1,6 +1,6 @@
 var moment = require("moment");
 
-function tune_intersection(intersections) {
+const tune_intersection = intersections => {
   const keys = Object.keys(intersections);
   for (let i = 0; i < keys.length - 1; i++) {
     const current_intersection = keys[i].split("_");
@@ -23,9 +23,9 @@ function tune_intersection(intersections) {
         intersections[keys[j]] += 1;
     }
   }
-}
+};
 
-function currentDateOptimalTime(startTimes, endTimes) {
+const currentDateOptimalTime = (startTimes, endTimes) => {
   const intersections = {};
   // find intersections between all time slots (O(n^2))
   for (let i = 0; i < startTimes.length - 1; i++) {
@@ -58,9 +58,9 @@ function currentDateOptimalTime(startTimes, endTimes) {
   // find intersected intersections
   tune_intersection(intersections);
   return intersections;
-}
+};
 
-module.exports = function findOptimalTime(availabilities) {
+const findOptimalTime = availabilities => {
   let availabilityPerDates = {};
   let optimalAvailabilityPerDate = [];
 
@@ -105,4 +105,8 @@ module.exports = function findOptimalTime(availabilities) {
 
   return optimalAvailabilityPerDate; // [[date:starthours.startminute_endhours.endminute],
   //   date:starthours.startminute_endhours.endminute ...]]
+};
+
+module.exports = {
+  findOptimalTime
 };

@@ -1,30 +1,24 @@
 const express = require("express");
 const router = express.Router();
-const { check, validationResult } = require("express-validator");
 
 const userModel = require("../model/userModel");
-const { authenticateToken } = require("../util/tokenHelper");
+const { authenticateToken } = require("../middleware/tokenMiddleware");
+const {
+  userIdRules,
+  emailRules,
+  validate
+} = require("../middleware/validationMiddleware");
 const responses = require("../util/responses");
 
 // Get user information from userId
 router.get(
   "/:userId",
   authenticateToken,
-  [
-    check("userId")
-      .exists({ checkNull: true })
-      .withMessage("Group name is required.")
-      .isInt()
-  ],
+  userIdRules(),
+  validate,
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res
-        .status(responses.UNPROCESSABLE)
-        .json({ errors: errors.array() });
-    }
-
     const { userId } = req.params;
+
     return userModel
       .getUserByUserId(userId)
       .then(result => {
@@ -39,8 +33,9 @@ router.get(
   }
 );
 
-router.get("/email/:userEmail", (req, res, next) => {
+router.get("/email/:userEmail", emailRules(), validate, (req, res, next) => {
   const { userEmail } = req.params;
+
   return userModel
     .getUserByEmail(userEmail)
     .then(result => {

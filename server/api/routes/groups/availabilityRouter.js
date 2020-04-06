@@ -1,14 +1,19 @@
 const responses = require("../../util/responses");
-
+const {
+  availabilityRules,
+  availabilityIdRules,
+  groupMemberIdRules,
+  validate
+} = require("../../middleware/validationMiddleware");
 const AvailabilityModel = require("../../model/availabilityModel");
 
 module.exports = router => {
-  router.get("/members/:groupMemberId/availability", (req, res, next) => {
-    const { groupMemberId } = req.params;
-    if (!groupMemberId) {
-      res.status(responses.NOT_FOUND);
-      res.send({ error: "groupId is required!" });
-    } else {
+  router.get(
+    "/members/:groupMemberId/availability",
+    groupMemberIdRules(),
+    validate,
+    (req, res, next) => {
+      const { groupMemberId } = req.params;
       return AvailabilityModel.getAvailability(groupMemberId)
         .then(result => {
           if (result.length > 0) {
@@ -22,30 +27,14 @@ module.exports = router => {
         })
         .catch(next);
     }
-  });
+  );
 
-  router.post("/members/availability", (req, res, next) => {
-    const { groupMemberId, availabilityIds, startTimes, endTimes } = req.body;
-    if (availabilityIds.length === 0) {
-      res.status(responses.NOT_FOUND);
-      res.send({ error: "availabilityIds is empty" });
-    } else if (startTimes.length === 0) {
-      res.status(responses.NOT_FOUND);
-      res.send({ error: "startTimes is empty" });
-    } else if (endTimes.length === 0) {
-      res.status(responses.NOTFOUND);
-      res.send({ error: "endTimes is empty" });
-    } else if (
-      availabilityIds.length !== startTimes.length ||
-      availabilityIds.length !== endTimes.length ||
-      startTimes.length !== endTimes.length
-    ) {
-      res.status(responses.NOT_FOUND);
-      res.send({
-        error:
-          "avilabilityIds and startTime and endTime lengths are not the same"
-      });
-    } else {
+  router.post(
+    "/members/availability",
+    availabilityRules(),
+    validate,
+    (req, res, next) => {
+      const { groupMemberId, availabilityIds, startTimes, endTimes } = req.body;
       return AvailabilityModel.addAvailability(
         groupMemberId,
         availabilityIds,
@@ -70,25 +59,30 @@ module.exports = router => {
         })
         .catch(next);
     }
-  });
+  );
 
-  router.delete("/members/availability", (req, res, next) => {
-    const { availabilityIds } = req.body;
+  router.delete(
+    "/members/availability",
+    availabilityIdRules(),
+    validate,
+    (req, res, next) => {
+      const { availabilityIds } = req.body;
 
-    if (availabilityIds.length == 0) {
-      res.status(responses.SERVER_ERROR);
-      res.send({ error: "No availability Id to delete provided" });
+      if (availabilityIds.length == 0) {
+        res.status(responses.SERVER_ERROR);
+        res.send({ error: "No availability Id to delete provided" });
+      }
+
+      AvailabilityModel.deleteAvailability(availabilityIds)
+        .then(result => {
+          if (!result.errno)
+            res.status(responses.SUCCESS).json({ success: true });
+          else {
+            res.status(responses.SERVER_ERROR).json({ error: true });
+            throw Error("error deleting availability");
+          }
+        })
+        .catch(next);
     }
-
-    AvailabilityModel.deleteAvailability(availabilityIds)
-      .then(result => {
-        if (!result.errno)
-          res.status(responses.SUCCESS).json({ success: true });
-        else {
-          res.status(responses.SERVER_ERROR).json({ error: true });
-          throw Error("error deleting availability");
-        }
-      })
-      .catch(next);
-  });
+  );
 };

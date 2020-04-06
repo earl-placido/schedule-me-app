@@ -1,6 +1,6 @@
 const mysql = require("promise-mysql");
 
-function insertUsersQuery(users) {
+const insertUsersQuery = users => {
   return `
     INSERT INTO \`User\`
     (UserEmail,
@@ -23,9 +23,9 @@ function insertUsersQuery(users) {
       )
       .join(`, `)}; 
   `;
-}
+};
 
-function insertGroupsQuery(groups) {
+const insertGroupsQuery = groups => {
   return `
         ${groups
           .map(group =>
@@ -56,9 +56,9 @@ function insertGroupsQuery(groups) {
           )
           .join(`\n`)}
         `;
-}
+};
 
-function insertGroupMembersQuery(groupMembers) {
+const insertGroupMembersQuery = groupMembers => {
   return `
     INSERT INTO \`GroupMember\` (GroupId, UserId, MemberRole) VALUES
     ${groupMembers
@@ -71,9 +71,9 @@ function insertGroupMembersQuery(groupMembers) {
       )
       .join(`, `)};
   `;
-}
+};
 
-function insertAvailabilityQuery(availabilities) {
+const insertAvailabilityQuery = availabilities => {
   return `
   INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES 
   ${availabilities
@@ -86,7 +86,7 @@ function insertAvailabilityQuery(availabilities) {
     )
     .join(`, `)};
   `;
-}
+};
 
 const resetUsersQuery = `
   TRUNCATE TABLE \`User\`;

@@ -1,4 +1,4 @@
-function generateUser() {
+const generateUser = () => {
   let generatedUser = {
     fName: `fName_${Math.random()
       .toString(36)
@@ -15,7 +15,7 @@ function generateUser() {
   };
 
   return generatedUser;
-}
+};
 
 module.exports = {
   generateUser
