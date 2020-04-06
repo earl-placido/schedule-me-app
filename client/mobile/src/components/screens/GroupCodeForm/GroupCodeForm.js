@@ -14,8 +14,8 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {getGroup} from '../../../actions/screens/GetGroup.action';
-import {addGroupMember} from '../../../actions/screens/AddGroupMember.action';
+import {getGroup} from '../../../actions/GetGroup.action';
+import {addGroupMember} from '../../../actions/AddGroupMember.action';
 
 const Form = t.form.Form;
 

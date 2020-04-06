@@ -1,7 +1,7 @@
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {getGroupMemberWithEmail} from '../actions/screens/GetGroupMembers.action';
+import {getGroupMemberWithEmail} from './GetGroupMembers.action';
 import {
   getAvailabilites,
   addAvailabilityQuery,

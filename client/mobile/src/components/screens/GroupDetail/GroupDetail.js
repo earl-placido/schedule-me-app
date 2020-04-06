@@ -24,8 +24,8 @@ import MeetingModal from './MeetingModal';
 import {
   getGroup,
   toggleInputAvailability,
-} from '../../../actions/screens/GetGroup.action';
-import {getGroupMembers} from '../../../actions/screens/GetGroupMembers.action';
+} from '../../../actions/GetGroup.action';
+import {getGroupMembers} from '../../../actions/GetGroupMembers.action';
 import {setAvailabilities} from '../../../actions/InputAvailability.action';
 import {
   getGroupOptimalTime,
