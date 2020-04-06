@@ -7,6 +7,7 @@ import AddAvailabilityReducer from "./actions/components/InputAvailabilityModal.
 import GroupListScreenReducer from "./actions/screens/GroupListScreen.action";
 import GroupScreenReducer from "./actions/screens/GroupScreen.action";
 import NavigationBarReducer from "./actions/components/layout/NavigationBar.action";
+import GroupCodeModalReducer from "./actions/components/GroupCodeModal.action";
 
 export default combineReducers({
   CreateGroupScreenReducer,
@@ -15,5 +16,6 @@ export default combineReducers({
   GroupListScreenReducer,
   GroupScreenReducer,
   AddAvailabilityReducer,
-  NavigationBarReducer
+  NavigationBarReducer,
+  GroupCodeModalReducer
 });
