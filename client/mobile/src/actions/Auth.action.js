@@ -1,5 +1,5 @@
 import axios from 'axios';
-import responses from '../util/responses';
+import responses from './util/responses';
 import Config from 'react-native-config';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -104,8 +104,8 @@ export const loginGoogle = response => {
           throw new Error(res.err);
         }
       })
-      .catch(err => {
-        dispatch(loginError(err.message));
+      .catch(() => {
+        dispatch(loginError('Cannot connect to server', loginFields));
       });
   };
 };
@@ -152,7 +152,13 @@ export const signupUser = (
             throw new Error(res.err);
           }
         })
-        .catch(err => dispatch(signupError(err.response.data, signupFields)));
+        .catch(err => {
+          if (!err.response) {
+            dispatch(signupError('Cannot connect to server', signupFields));
+          } else {
+            dispatch(signupError(err.response.data, signupFields));
+          }
+        });
     } else {
       dispatch(signupError('Password mismatch', signupFields));
     }
@@ -188,7 +194,13 @@ export const loginUser = (email, password) => {
           throw new Error(res.err);
         }
       })
-      .catch(err => dispatch(loginError(err.response.data, loginFields)));
+      .catch(err => {
+        if (!err.response) {
+          dispatch(loginError('Cannot connect to server', loginFields));
+        } else {
+          dispatch(loginError(err.response.data, loginFields));
+        }
+      });
   };
 };
 

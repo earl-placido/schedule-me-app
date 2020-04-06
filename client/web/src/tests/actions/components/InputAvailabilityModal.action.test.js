@@ -53,7 +53,13 @@ describe("test group actions", () => {
     expect(newRangeHours.payload[1]).toEqual("");
   });
 
-  it("test onChangeRange action", () => {
+  it("test onChangeRange action", async () => {
+    let store;
+    const flushAllPromises = () =>
+      new Promise(resolve => setImmediate(resolve));
+    const mockStore = configureMockStore();
+    store = mockStore({});
+
     const date = moment();
     const date2 = moment();
     const rangeHours = [
@@ -63,17 +69,23 @@ describe("test group actions", () => {
         "CAST(EndTime as char)": date2.format("YYYY-MM-DD HH:mm:ss")
       }
     ];
-    const newRangeHours = onChangeRange(
+    onChangeRange(
       0,
       [moment("12-25-1995", "MM-DD-YYYY"), moment("12-25-1995", "MM-DD-YYYY")],
       rangeHours
-    );
-    expect(newRangeHours.type).toEqual(CHANGE_RANGE);
+    )(store.dispatch);
+    await flushAllPromises();
+    expect(store.getActions()[0].type).toEqual(CHANGE_RANGE);
+    console.log(store.getActions()[0]);
     expect(
-      moment(newRangeHours.payload[0]["CAST(StartTime as char)"]).year()
+      moment(
+        store.getActions()[0].payload.rangeHours[0]["CAST(StartTime as char)"]
+      ).year()
     ).toEqual(1995);
     expect(
-      moment(newRangeHours.payload[0]["CAST(EndTime as char)"]).month()
+      moment(
+        store.getActions()[0].payload.rangeHours[0]["CAST(EndTime as char)"]
+      ).month()
     ).toEqual(11);
   });
 });

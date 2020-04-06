@@ -12,7 +12,7 @@ import {NativeRouter} from 'react-router-native';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutUser} from './actions/components/Auth.action';
+import {logoutUser} from './actions/Auth.action';
 
 const AuthStack = createStackNavigator();
 

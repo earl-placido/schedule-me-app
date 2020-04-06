@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import {StyleSheet, Alert} from 'react-native';
-import {View, Button, Text, Card, Spinner, Toast} from 'native-base';
+import {
+  View,
+  Button,
+  Text,
+  Card,
+  Spinner,
+  Toast,
+  Left,
+  Right,
+} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {signupUser} from '../../actions/components/Auth.action';
+import {signupUser} from '../../actions/Auth.action';
 import {connect} from 'react-redux';
 
 const Form = t.form.Form;
@@ -97,7 +106,7 @@ class CreateAccount extends Component {
         message = this.props.message;
       }
 
-      Alert.alert('Invalid input', message);
+      Alert.alert('Signup failed:', message);
     }
   };
 
@@ -120,8 +129,7 @@ class CreateAccount extends Component {
 
         <Modal
           isVisible={this.state.isCreateVisible}
-          onRequestClose={this.toggleCreate}
-          onBackdropPress={this.toggleCreate}
+          onRequestClose={() => this.toggleCreate()}
           accessibilityLabel={'CreateAccountModal'}>
           <Card
             style={styles.modalStyle}
@@ -138,15 +146,29 @@ class CreateAccount extends Component {
                 confirmPassword: this.props.signupFields.confirmPassword,
               }}
             />
-            <Button
-              small
-              block
-              primary
-              onPress={() => this.userSignup()}
-              accessibilityLabel={'SignupSubmitButton'}>
-              <Text>Submit</Text>
-              {this.state.isSpinnerVisible && <Spinner color="white" />}
-            </Button>
+            <View style={{flexDirection: 'row'}}>
+              <Left>
+                <Button
+                  small
+                  block
+                  primary
+                  onPress={() => this.toggleCreate()}
+                  style={{margin: 10}}>
+                  <Text>Cancel</Text>
+                </Button>
+              </Left>
+              <Right>
+                <Button
+                  small
+                  block
+                  primary
+                  onPress={() => this.userSignup()}
+                  accessibilityLabel={'SignupSubmitButton'}>
+                  <Text>Submit</Text>
+                  {this.state.isSpinnerVisible && <Spinner color="white" />}
+                </Button>
+              </Right>
+            </View>
           </Card>
         </Modal>
       </View>

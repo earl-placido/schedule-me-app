@@ -14,7 +14,8 @@ import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {getGroup} from '../../../actions/screens/GetGroup.action';
+import {getGroup} from '../../../actions/GetGroup.action';
+import {addGroupMember} from '../../../actions/AddGroupMember.action';
 
 const Form = t.form.Form;
 
@@ -40,16 +41,18 @@ class GroupCodeForm extends Component {
   };
 
   handleOnSubmit = () => {
-    const value = this.form.getValue();
     //  Currently only checking if there is a value.
     //  Could change this in the future if codes require a certain format
+    const value = this.form.getValue();
     if (value) {
       this.props.getGroup(value.code);
+      this.props.addGroupMember(value.code);
       this.toggleSpinner();
+
       // Timeout created to ensure enough time is given for the server to retrieve information and update local variables
       setTimeout(() => {
         this.toggleSpinner();
-        this.showModal(value);
+        this.findGroup(value);
       }, 2000);
     }
   };
@@ -58,13 +61,42 @@ class GroupCodeForm extends Component {
     this.setState({isSpinnerVisible: !this.state.isSpinnerVisible});
   };
 
-  showModal = value => {
-    if (this.props.errored) {
+  findGroup = value => {
+    if (this.props.getGroupErrored) {
       Alert.alert(
         'The group code does not exist.\nPlease try a different code.',
       );
     } else {
-      this.props.navigation.navigate('Group Detail', {codeNum: value.code});
+      this.addGroupMember(value);
+    }
+  };
+
+  addGroupMember = value => {
+    if (this.props.addGroupMemberErrored) {
+      Alert.alert('There was an error.\nYou were unable to join the group.');
+      console.log("The group exists but the user wasn't able to join.");
+    } else {
+      if (this.props.groupMemberId <= 0) {
+        Alert.alert('You are already in this group!');
+      } else {
+        Alert.alert(
+          'You have successfully joined ' + this.props.group.GroupName + '!',
+          '',
+          [
+            {text: 'Close'},
+            {
+              text: 'Go To Group',
+              onPress: () => {
+                this.props.navigation.push('Group Detail', {
+                  codeNum: value.code,
+                });
+                this.props.navigation.navigate('Group Detail');
+              },
+            },
+          ],
+          {cancelable: true},
+        );
+      }
     }
   };
 
@@ -110,9 +142,12 @@ class GroupCodeForm extends Component {
   }
 }
 
-const mapStateToProps = ({GetGroupReducer}) => {
-  const {group, errored} = GetGroupReducer;
-  return {group, errored};
+const mapStateToProps = ({GetGroupReducer, AddGroupMemberReducer}) => {
+  const group = GetGroupReducer.group;
+  const getGroupErrored = GetGroupReducer.errored;
+  const groupMemberId = AddGroupMemberReducer.groupMemberId;
+  const addGroupMemberErrored = AddGroupMemberReducer.errored;
+  return {group, getGroupErrored, groupMemberId, addGroupMemberErrored};
 };
 
 const styles = StyleSheet.create({
@@ -151,10 +186,16 @@ GroupCodeForm.propTypes = {
   code: PropTypes.any,
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
   }).isRequired,
   group: PropTypes.any,
-  errored: PropTypes.bool,
+  getGroupErrored: PropTypes.bool,
   getGroup: PropTypes.func,
+  groupMemberId: PropTypes.any,
+  addGroupMember: PropTypes.func,
+  addGroupMemberErrored: PropTypes.bool,
 };
 
-export default connect(mapStateToProps, {getGroup})(GroupCodeForm);
+export default connect(mapStateToProps, {getGroup, addGroupMember})(
+  GroupCodeForm,
+);
