@@ -13,7 +13,7 @@ const {
 } = require("../../middleware/validationMiddleware");
 
 const responses = require("../../util/responses");
-const findOptimalTime = require("../../util/optimalAlgorithm");
+const { findOptimalTime } = require("../../util/optimalAlgorithm");
 
 // Create a new group
 router.post(
@@ -73,8 +73,9 @@ router.get("/:groupId", groupIdRules(), validate, (req, res, next) => {
       if (result.length > 0) {
         res.status(responses.SUCCESS).json(result[0]);
       } else {
-        res.status(responses.NOT_FOUND);
-        res.send({ error: `GroupId ${groupId} does not exist.` });
+        res
+          .status(responses.NOT_FOUND)
+          .send({ error: `GroupId ${groupId} does not exist.` });
       }
     })
     .catch(next);
@@ -83,18 +84,12 @@ router.get("/:groupId", groupIdRules(), validate, (req, res, next) => {
 // Get group members from groupId
 router.get("/:groupId/members", groupIdRules(), validate, (req, res, next) => {
   const { groupId } = req.params;
-
-  if (!groupId) {
-    res.status(responses.NOT_FOUND);
-    res.send({ error: `groupId is required.` });
-  } else {
-    return groupsModel
-      .getGroupMembers(groupId)
-      .then(result =>
-        res.status(responses.SUCCESS).json({ groupMembers: result })
-      )
-      .catch(next);
-  }
+  return groupsModel
+    .getGroupMembers(groupId)
+    .then(result =>
+      res.status(responses.SUCCESS).json({ groupMembers: result })
+    )
+    .catch(next);
 });
 
 // Add member to a group
@@ -157,20 +152,12 @@ router.get(
   validate,
   (req, res, next) => {
     const { groupId, userId } = req.params;
-    if (!groupId) {
-      res.status(responses.NOT_FOUND);
-      res.send({ error: "groupId is required!" });
-    } else if (!userId) {
-      res.status(responses.NOT_FOUND);
-      res.send({ error: "userId is required!" });
-    } else {
-      return groupMemberModel
-        .getGroupMemberId(groupId, userId)
-        .then(result =>
-          res.status(responses.SUCCESS).json({ groupMembers: result })
-        )
-        .catch(next);
-    }
+    return groupMemberModel
+      .getGroupMemberId(groupId, userId)
+      .then(result =>
+        res.status(responses.SUCCESS).json({ groupMembers: result })
+      )
+      .catch(next);
   }
 );
 

@@ -9,7 +9,19 @@ const groupRules = () => {
     check("groupDesc")
       .optional({ checkFalsy: true })
       .isLength({ max: 225 })
-      .withMessage("Group description cannot exceed 225 characters")
+      .withMessage("Group description cannot exceed 225 characters"),
+    check("meetingDuration")
+      .optional({ checkFalsy: true })
+      .matches(/^(?:(?:([01]?\d|2[0-3]))?([0-5]?\d))?([0-5]?\d)$/, "i")
+      .withMessage("Invalid meeting duration format, needs to be HHMMSS"),
+    check("meetingFrequency")
+      .optional({ checkFalsy: true })
+      .isLength({ max: 2 })
+      .withMessage("Meeting frequency cannot exceed 2 characters"),
+    check("meetingLocation")
+      .optional({ checkFalsy: true })
+      .isLength({ max: 100 })
+      .withMessage("Meeting location cannot exceed 100 characters")
   ];
 };
 
@@ -54,9 +66,9 @@ const availabilityRules = () => {
       .withMessage("availabilityIds is empty")
       .custom((availabilityIds, { req }) => {
         if (
-          availabilityIds.length !== req.startTimes.length ||
-          availabilityIds.length !== req.endTimes.length ||
-          req.startTimes.length !== req.endTimes.length
+          availabilityIds.length !== req.body.startTimes.length ||
+          availabilityIds.length !== req.body.endTimes.length ||
+          req.body.startTimes.length !== req.body.endTimes.length
         ) {
           throw new Error(
             "availabilityIds and startTime and endTime lengths are not the same"
@@ -64,7 +76,6 @@ const availabilityRules = () => {
         }
         return true;
       })
-    // .withMessage("availabilityIds and startTime and endTime lengths are not the same"),
   ];
 };
 

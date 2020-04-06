@@ -2,23 +2,26 @@ require("dotenv").config();
 const request = require("supertest");
 const server = require("../../server");
 const userUtil = require("../test-utils/userUtil");
+const responses = require("../test-utils/responses");
 
 describe("User Router Tests", () => {
   let generatedUser = userUtil.generateUser();
-  let token;
-  let testID;
+  let testToken, testUserId;
 
   beforeAll(done => {
     request(server)
       .post("/api/v1/auth/signup")
-      .send(
-        `email=${generatedUser.email}&password=${generatedUser.password}&firstName=${generatedUser.fName}&lastName=${generatedUser.lName}`
-      )
+      .send({
+        email: generatedUser.email,
+        password: generatedUser.password,
+        firstName: generatedUser.fName,
+        lastName: generatedUser.lName
+      })
       .set("Accept", "application/json")
       .end((err, res) => {
         if (err) return done(err);
 
-        token = res.headers["x-auth-token"];
+        testToken = res.headers["x-auth-token"];
         done();
       });
   });
@@ -27,23 +30,25 @@ describe("User Router Tests", () => {
     test("should get userID", done => {
       request(server)
         .get(`/api/v1/users/email/${generatedUser.email}`)
-        .send()
-        .expect(200)
+        .expect(responses.SUCCESS)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.body.userId).toEqual(expect.any(Number));
-          expect(res.body.userId).toBeGreaterThan(1);
-          testID = res.body.userId;
+          expect(res.body.userId).toBeGreaterThan(0);
+          testUserId = res.body.userId;
           done();
         });
     });
 
-    test("should require email address", done => {
+    test("email address not found", done => {
       request(server)
-        .get(`/api/v1/users/email/`)
+        .get(`/api/v1/users/email/123${generatedUser.email}`)
+        .expect(responses.NOT_FOUND)
         .end((err, res) => {
           if (err) return done(err);
-          console.log(res.error.status);
+          expect(JSON.parse(res.error.text).error).toMatch(
+            `user with 123${generatedUser.email} not found.`
+          );
           done();
         });
     });
@@ -52,13 +57,28 @@ describe("User Router Tests", () => {
   describe("GET /:userId", () => {
     test("should get user information", done => {
       request(server)
-        .get(`/api/v1/users/${testID}`)
-        .set("Authorization", `Bearer ${token}`)
+        .get(`/api/v1/users/${testUserId}`)
+        .set("Authorization", `Bearer ${testToken}`)
         .end((err, res) => {
           if (err) return done(err);
           expect(res.body.UserFName).toMatch(generatedUser.fName);
           expect(res.body.UserLName).toMatch(generatedUser.lName);
           expect(res.body.UserEmail).toMatch(generatedUser.email);
+          done();
+        });
+    });
+
+    test("user does not exist", done => {
+      let invalidUserId = 9999999;
+      request(server)
+        .get(`/api/v1/users/${invalidUserId}`)
+        .set("Authorization", `Bearer ${testToken}`)
+        .expect(responses.NOT_FOUND)
+        .end((err, res) => {
+          if (err) return done(err);
+          expect(JSON.parse(res.error.text).error).toMatch(
+            `UserId ${invalidUserId} does not exist.`
+          );
           done();
         });
     });

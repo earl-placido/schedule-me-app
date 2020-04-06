@@ -1,5 +1,5 @@
 require("dotenv").config();
-const findOptimalTime = require("../../api/util/optimalAlgorithm");
+const { findOptimalTime } = require("../../api/util/optimalAlgorithm");
 
 describe("test optimal time algorithm", () => {
   const availabilities = [

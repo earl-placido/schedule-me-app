@@ -3,8 +3,8 @@ const GoogleTokenStrategy = require("passport-google-token").Strategy;
 const passport = require("passport");
 
 const GOOGLE_CONFIG = {
-  clientID: process.env.GOOGLE_CLIENT_ID || "test",
-  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "test"
+  clientID: process.env.GOOGLE_CLIENT_ID || "test_client",
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET || "test_secret"
 };
 
 module.exports = () => {
