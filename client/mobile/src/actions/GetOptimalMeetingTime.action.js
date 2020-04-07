@@ -145,6 +145,7 @@ export const setOptimalTime = (
     }
   }
 
+  console.log(meetings);
   dispatch({
     type: SET_OPTIMAL_TIME,
     payload: {
