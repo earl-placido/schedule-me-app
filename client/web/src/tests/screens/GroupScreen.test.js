@@ -3,8 +3,6 @@ import { Card, List } from "antd";
 import GroupScreen from "../../screens/GroupScreen";
 import MeetingTimeModal from "../../screens/MeetingTimeModal";
 import InputAvailability from "../../components/InputAvailabilityModal";
-
-import configureStore from "redux-mock-store";
 import Adapter from "enzyme-adapter-react-16";
 import { shallow, configure } from "enzyme";
 
@@ -15,7 +13,7 @@ const setUp = (props = {}) => {
   return component;
 };
 
-describe("GroupScreen, test groupDetailReducer", () => {
+describe("Testing the Group Details Screen", () => {
   let component, props;
   beforeEach(() => {
     props = {
@@ -32,9 +30,13 @@ describe("GroupScreen, test groupDetailReducer", () => {
       selectMeeting: jest.fn(),
       inputModalVisible: false,
       meetingModalVisible: false,
+      meetings: [1],
       showErrorModal: false,
       group: {
         Groupname: 'Lorem Ipsum'
+      },
+      selfMember:{
+        MemberRole: "AD"
       },
       match: {
         params: {
@@ -135,11 +137,15 @@ describe("GroupScreen, test groupDetailReducer", () => {
 
   it("Tests group members list", () => {
     expect(component.find(List)).toHaveLength(1)
+    const groupMembers = component.find(List).dive().dive().find(".ant-list-items");
+    expect(groupMembers.find("Item")).toHaveLength(props.groupMembers.length);
   });
 
   it("Tests currentMeetingTime", () => {
-    const data = component.instance().currentMeetingTime();
-    console.log(component.debug());
+    const meetingTime = shallow(component.instance().currentMeetingTime());
+    expect(meetingTime.find("#meeting-time-panel")).toHaveLength(1)
+    expect(meetingTime.find("#meeting-time"))
+    expect(meetingTime.find("#change-meeting-time"))
   });
 });
 

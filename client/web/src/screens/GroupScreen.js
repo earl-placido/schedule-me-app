@@ -87,12 +87,12 @@ class GroupScreen extends Component {
 
   currentMeetingTime = () => {
     return (
-      <div>
+      <div id="meeting-time-panel">
         <Row justify="center">
           {this.props.meetings &&
             this.props.meetings.map((meeting, index) => {
               return (
-                <div key={index}>
+                <div key={index} id="metting-time">
                   <p style={{ display: "inline", marginRight: 10 }}>
                     {meeting.meetingAvailableString ||
                       "Meeting time is currently empty."}
@@ -100,6 +100,7 @@ class GroupScreen extends Component {
                   {this.props.selfMember &&
                     this.props.selfMember.MemberRole === "AD" && (
                       <Button
+                        id="change-meeting-time"
                         type="primary"
                         style={{ backgroundColor: "green" }}
                         onClick={this.getOptimalTime.bind(this, meeting)}
