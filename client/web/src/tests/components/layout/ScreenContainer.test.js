@@ -10,11 +10,11 @@ const setUp = (props = {}) => {
   return component;
 };
 
-describe("GroupScreen, test groupDetailReducer", () => {
+describe("ScreenContainer tests", () => {
   let component, props;
   beforeEach(() => {
     props = {
-      children: "i am kid"
+      children: "I am child"
     };
     component = setUp(props);
   });

@@ -10,7 +10,7 @@ const setUp = (props = {}) => {
   return component;
 };
 
-describe("GroupScreen, test groupDetailReducer", () => {
+describe("MeetingTimeModal tests", () => {
   let component, props;
   beforeEach(() => {
     props = {
