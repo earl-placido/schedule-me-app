@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store';
 import { getGroup, GET_GROUP_INFO_SUCCESS, GET_GROUP_INFO_FAILURE, toggleInputAvailability, TOGGLE_INPUT_AVAILABILITY } from '../../src/actions/GetGroup.action';
 
 
-describe('test availability action', () => {
+describe('test get group action', () => {
   let httpMock, store;
 
   beforeEach(() => {
