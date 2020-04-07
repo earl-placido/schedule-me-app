@@ -1,7 +1,6 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Config from 'react-native-config';
-import configureMockStore from 'redux-mock-store';
 import { addAvailabilityQuery, getAvailabilites, deleteAvailabilityQuery } from '../../src/actions/Availability.action';
 
 
@@ -10,8 +9,6 @@ describe('test availability action', () => {
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
-    const mockStore = configureMockStore();
-    store = mockStore({});
   });
 
   it('test add availability query', async () => {
