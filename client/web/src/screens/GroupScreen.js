@@ -115,6 +115,12 @@ class GroupScreen extends Component {
     );
   };
 
+  removeSeconds(timeString) {
+    if (timeString) {
+      return timeString.substring(0, timeString.lastIndexOf(":"));
+    }
+  }
+
   render() {
     const { Title } = Typography;
 
@@ -124,6 +130,9 @@ class GroupScreen extends Component {
       buttonStyle,
       noMarginStyle,
       marginTop5,
+      marginTop15,
+      marginTop25,
+      marginBottom10,
       oldAntColStyle
     } = styles;
 
@@ -136,10 +145,30 @@ class GroupScreen extends Component {
             </Title>
           </Row>
           <Row justify="center">
-            <h4>{this.props.group.GroupDescription}</h4>
+            <h4>
+              {this.props.group.GroupDescription
+                ? this.props.group.GroupDescription
+                : "No description"}
+            </h4>
+          </Row>
+          <Row justify="center" style={marginTop15}>
+            <b>Meeting Duration:&nbsp;</b>{" "}
+            {this.removeSeconds(this.props.group.MeetingDuration)}
+          </Row>
+          <Row justify="center" style={noMarginStyle}>
+            <b>Meeting Frequency:&nbsp;</b>{" "}
+            {this.props.group.MeetingFrequency !== null
+              ? this.props.group.MeetingFrequency
+              : "Not Specified"}
+          </Row>
+          <Row justify="center" style={marginBottom10}>
+            <b>Meeting Location:&nbsp;</b>
+            {this.props.group.MeetingLocation !== null
+              ? this.props.group.MeetingLocation
+              : "Not Specified"}
           </Row>
           {!this.state.showCode ? (
-            <Row justify="center">
+            <Row justify="center" style={marginTop25}>
               <Button
                 onClick={() => {
                   this.setState({ showCode: true });
@@ -150,7 +179,7 @@ class GroupScreen extends Component {
             </Row>
           ) : (
             <div>
-              <Row justify="center" style={marginTop5}>
+              <Row justify="center" style={marginTop25}>
                 <h3>Share this code for others to join the group:</h3>
               </Row>
               <Row justify="center">
@@ -275,6 +304,18 @@ const styles = {
 
   marginTop5: {
     marginTop: 5
+  },
+
+  marginTop15: {
+    marginTop: 15
+  },
+
+  marginTop25: {
+    marginTop: 25
+  },
+
+  marginBottom10: {
+    marginBottom: 10
   },
 
   oldAntColStyle: {
