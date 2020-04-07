@@ -131,7 +131,7 @@ class GroupScreen extends Component {
       <div style={containerStyle}>
         <Card style={cardStyle}>
           <Row justify="center">
-            <Title level={2} style={noMarginStyle}>
+            <Title id="group-name" level={2} style={noMarginStyle}>
               Group: {this.props.group.GroupName}
             </Title>
           </Row>
@@ -141,6 +141,7 @@ class GroupScreen extends Component {
           {!this.state.showCode ? (
             <Row justify="center">
               <Button
+                id="show-code-button"
                 onClick={() => {
                   this.setState({ showCode: true });
                 }}
@@ -149,7 +150,7 @@ class GroupScreen extends Component {
               </Button>
             </Row>
           ) : (
-            <div>
+            <div id="group-code-panel">
               <Row justify="center" style={marginTop5}>
                 <h3>Share this code for others to join the group:</h3>
               </Row>
@@ -191,6 +192,7 @@ class GroupScreen extends Component {
             />
           </Row>
           <Button
+            id="input-availability-button"
             type="primary"
             onClick={this.showModal.bind(this, "availability")}
             style={{ float: "right" }}
@@ -198,6 +200,7 @@ class GroupScreen extends Component {
             Input Your Availability
           </Button>
           <Modal
+            id="input-availability-modal"
             width={"60%"}
             visible={this.props.inputModalVisible}
             onCancel={this.handleCancel}
@@ -216,6 +219,7 @@ class GroupScreen extends Component {
           </Modal>
 
           <Modal
+            id="meeting-time-modal"
             width={"60%"}
             visible={this.props.meetingModalVisible}
             onCancel={this.handleCancel}
@@ -237,6 +241,7 @@ class GroupScreen extends Component {
           </Modal>
         </Card>
         <Modal
+          id="error-modal"
           visible={this.props.showErrorModal}
           onCancel={this.closeErrorModal}
           footer={[
