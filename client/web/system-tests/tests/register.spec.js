@@ -19,9 +19,7 @@ context("Test register functionality", () => {
 
     cy.visit("/");
 
-    cy.contains("Schedule Me Up");
-    cy.contains("Continue as Guest");
-    cy.contains("Sign Up");
+    cy.get('#LoginTitle').should('be.visible');
 
     cy.get("p > .ant-btn").click();
 
@@ -49,9 +47,7 @@ context("Test register functionality", () => {
 
     cy.visit("/");
 
-    cy.contains("Schedule Me Up");
-    cy.contains("Continue as Guest");
-    cy.contains("Sign Up");
+    cy.get('#LoginTitle').should('be.visible');
 
     cy.get("p > .ant-btn").click();
 
@@ -97,9 +93,7 @@ context("Test register functionality", () => {
   it("Can register", () => {
     cy.visit("/");
 
-    cy.contains("Schedule Me Up");
-    cy.contains("Continue as Guest");
-    cy.contains("Sign Up");
+    cy.get('#LoginTitle').should('be.visible');
 
     cy.get("p > .ant-btn").click();
 
@@ -118,9 +112,7 @@ context("Test register functionality", () => {
   it("Cannot create user with same email", () => {
     cy.visit("/");
 
-    cy.contains("Schedule Me Up");
-    cy.contains("Continue as Guest");
-    cy.contains("Sign Up");
+    cy.get('#LoginTitle').should('be.visible');
 
     cy.get("p > .ant-btn").click();
 
