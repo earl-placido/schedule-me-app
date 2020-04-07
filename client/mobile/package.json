@@ -6,8 +6,8 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
-    "test:ci": "set CI=true && jest",
+    "test": "jest --config jest.config.js",
+    "test:ci": "set CI=true && jest --config jest.config.js",
     "test:system": "node launchSystemTests",
     "lint": "eslint --fix src",
     "precommit": "lint-staged"
@@ -31,6 +31,7 @@
     "@react-navigation/stack": "^5.1.1",
     "axios": "^0.19.2",
     "axios-mock-adapter": "^1.18.1",
+    "mock-async-storage": "^2.2.0",
     "moment": "^2.24.0",
     "native-base": "^2.13.8",
     "prettier": "^1.19.1",
