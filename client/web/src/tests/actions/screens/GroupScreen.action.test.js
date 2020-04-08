@@ -181,7 +181,7 @@ describe("GroupDetail action", () => {
     await getOptimalTime(groupId)(store.dispatch);
     expect(store.getActions()[0].type).toEqual(OPTIMAL_TIME);
     expect(store.getActions()[0].payload).toEqual({
-      optimalTimes: [[]]
+      optimalTimes: []
     });
 
     // handle bad path
