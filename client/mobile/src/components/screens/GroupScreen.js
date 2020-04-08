@@ -18,29 +18,26 @@ import {
   Spinner,
 } from 'native-base';
 import Modal from 'react-native-modal';
-import InputAvailabilityModal from '../../inputavailability/InputAvailabilityModal';
-import MeetingModal from './MeetingModal';
+import InputAvailabilityModal from '../inputavailability/InputAvailabilityModal';
+import MeetingModal from '../meeting/MeetingModal';
 
-import {
-  getGroup,
-  toggleInputAvailability,
-} from '../../../actions/GetGroup.action';
-import {getGroupMembers} from '../../../actions/GetGroupMembers.action';
-import {setAvailabilities} from '../../../actions/InputAvailability.action';
+import {getGroup, toggleInputAvailability} from '../../actions/GetGroup.action';
+import {getGroupMembers} from '../../actions/GetGroupMembers.action';
+import {setAvailabilities} from '../../actions/InputAvailability.action';
 import {
   getGroupOptimalTime,
   selectMeeting,
   getAllOptimalTimes,
   toggleMeetingModal,
   getSelfMember,
-} from '../../../actions/GetOptimalMeetingTime.action';
+} from '../../actions/GetOptimalMeetingTime.action';
 import {Alert} from 'react-native';
 
 const actions = [
   {
     text: 'Input Your Availability',
-    icon: require('../../../assets/personIcon.png'),
-    name: 'inputAvalibility',
+    icon: <Icon style={{color: 'white'}} name="person"></Icon>,
+    name: 'inputAvailability',
     position: 1,
   },
 ];
