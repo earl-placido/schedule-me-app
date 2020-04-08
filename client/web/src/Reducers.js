@@ -12,7 +12,7 @@ import GroupCodeModalReducer from "./actions/components/GroupCodeModal.action";
 export default combineReducers({
   CreateGroupScreenReducer,
   LoginReducer,
-  auth: AuthReducer,
+  AuthReducer: AuthReducer,
   GroupListScreenReducer,
   GroupScreenReducer,
   AddAvailabilityReducer,

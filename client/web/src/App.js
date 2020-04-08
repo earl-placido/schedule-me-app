@@ -85,7 +85,7 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.AuthReducer.isAuthenticated
 });
 
 App.propTypes = {

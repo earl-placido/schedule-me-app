@@ -96,7 +96,7 @@ class LoginComponent extends Component {
 }
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated
+  isAuthenticated: state.AuthReducer.isAuthenticated
 });
 
 const mapDispatchToProps = dispatch => ({
