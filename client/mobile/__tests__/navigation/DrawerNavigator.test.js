@@ -1,5 +1,5 @@
 import React from 'react';
-import DrawerNavigator from '../../../src/components/navigation/DrawerNavigator';
+import DrawerNavigator from '../../src/navigation/DrawerNavigator';
 
 import {shallow, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';

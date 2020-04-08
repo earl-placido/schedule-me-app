@@ -1,12 +1,12 @@
 import React from 'react';
-import Home from '../../../../src/components/screens/Home/Home';
+import Home from '../../../src/components/screens/LoginScreen';
 
 import {shallow, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import configureStore from 'redux-mock-store';
 
-import Login from '../../../../src/components/login/Login';
-import CreateAccount from '../../../../src/components/login/CreateAccount';
+import Login from '../../../src/components/login/Login';
+import CreateAccount from '../../../src/components/login/CreateAccount';
 
 configure({adapter: new Adapter()});
 

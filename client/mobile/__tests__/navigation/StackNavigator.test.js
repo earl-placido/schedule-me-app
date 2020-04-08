@@ -1,5 +1,5 @@
 import React from 'react';
-import StackNavigator from '../../../src/components/navigation/StackNavigator';
+import StackNavigator from '../../src/navigation/DrawerNavigator';
 
 import {shallow, configure} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
