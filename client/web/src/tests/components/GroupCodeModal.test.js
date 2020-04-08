@@ -28,7 +28,6 @@ describe("Testing GroupCodeModal", () => {
     expect(component.length).toEqual(1);
     component.instance().componentWillUnmount();
     expect(props.resetState.mock.calls.length).toBe(1);
-    console.log(component.debug())
   });
 
   it("tests functions", () =>{

@@ -21,7 +21,6 @@ describe("GroupShareComponent tests", () => {
 
   it("should render ScreenContainer", () => {
     expect(component.length).toEqual(1);
-    console.log(component.debug())
   });
 
   it("Test functions calls", () => {
