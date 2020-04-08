@@ -13,7 +13,7 @@ import {
   Icon,
 } from 'native-base';
 
-import {getGroupList} from '../../../actions/GetGroupList.action';
+import {getGroupList} from '../../actions/GetGroupList.action';
 
 class GroupList extends Component {
   componentDidMount() {
