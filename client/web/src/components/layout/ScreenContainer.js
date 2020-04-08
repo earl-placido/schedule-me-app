@@ -12,8 +12,8 @@ class ScreenContainer extends Component {
     this.state = { lessPadding: false };
   }
 
-  handleResize = () => {
-    if (window.innerWidth <= 760) {
+  handleResize = windowWidth => {
+    if (windowWidth <= 760) {
       this.setState({ lessPadding: true });
     } else {
       this.setState({ lessPadding: false });
@@ -21,8 +21,8 @@ class ScreenContainer extends Component {
   };
 
   componentDidMount() {
-    window.addEventListener("resize", this.handleResize);
-    this.handleResize();
+    window.addEventListener("resize", this.handleResize(window.innerWidth));
+    this.handleResize(window.innerWidth);
   }
 
   render() {
