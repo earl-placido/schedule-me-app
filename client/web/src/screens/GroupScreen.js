@@ -92,7 +92,7 @@ class GroupScreen extends Component {
           {this.props.meetings &&
             this.props.meetings.map((meeting, index) => {
               return (
-                <div key={index} id="metting-time">
+                <div key={index} id="meeting-time">
                   <p style={{ display: "inline", marginRight: 10 }}>
                     {meeting.meetingAvailableString ||
                       "Meeting time is currently empty."}
