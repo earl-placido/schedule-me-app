@@ -54,6 +54,7 @@ class MeetingTimeModal extends Component {
         {optimalTimesStrings.map((optimalTimesString, index) => {
           return (
             <div
+              id="meeting-time-display"
               key={index}
               style={{
                 display: "flex",
@@ -67,6 +68,7 @@ class MeetingTimeModal extends Component {
               onClick={this.handleClick.bind(this, index)}
             >
               <h3
+                className="optimal-time-display"
                 style={{
                   display: "inline",
                   textAlign: "left",
@@ -79,6 +81,7 @@ class MeetingTimeModal extends Component {
                 {optimalTimesString[1]}
               </h3>
               <h3
+                className="optimal-time-display"
                 style={{ display: "inline", width: "20%", textAlign: "right" }}
               >
                 {optimalTimesString[2]}
