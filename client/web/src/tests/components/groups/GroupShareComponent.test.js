@@ -32,5 +32,3 @@ describe("GroupShareComponent tests", () => {
     expect(successSpy).toBeCalled();
   });
 });
-
-

@@ -12,7 +12,7 @@ class ScreenContainer extends Component {
     this.state = { lessPadding: false };
   }
 
-  handleResize = (windowWidth) => {
+  handleResize = windowWidth => {
     if (windowWidth <= 760) {
       this.setState({ lessPadding: true });
     } else {

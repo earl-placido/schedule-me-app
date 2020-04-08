@@ -25,15 +25,11 @@ describe("ScreenContainer tests", () => {
 
   it("tests handleResize", () => {
     const handleResizeSpy = jest.spyOn(component.instance(), "handleResize");
-    component.setState({ lessPadding: false })
+    component.setState({ lessPadding: false });
     component.instance().handleResize(200);
-    expect(component.state('lessPadding')).toEqual(true);
+    expect(component.state("lessPadding")).toEqual(true);
     component.instance().handleResize(800);
-    expect(component.state('lessPadding')).toEqual(false);
+    expect(component.state("lessPadding")).toEqual(false);
     expect(handleResizeSpy).toBeCalled();
   });
-
-
 });
-
-
