@@ -8,7 +8,7 @@ import {ScrollView, Dimensions, Alert} from 'react-native';
 import {
   toggleMeetingModal,
   setOptimalTime,
-} from '../../../actions/GetOptimalMeetingTime.action';
+} from '../../actions/GetOptimalMeetingTime.action';
 
 const NUMBER_TO_DAY = [
   'Sunday',
