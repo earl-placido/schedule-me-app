@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mysql = require("promise-mysql");
-const testUtil = require("../test-utils/testUtil");
+const queryUtil = require("../test-utils/queryUtil");
 const groupsModel = require("../../api/model/groupsModel");
 const data = require("../test-utils/testdata/groupsModel.testdata");
 
@@ -17,10 +17,10 @@ const INITIAL_GROUP_ID = 1000000;
 beforeAll(() => {
   return mysql.createConnection(MYSQLDB).then(conn => {
     const query =
-      testUtil.insertUsersQuery(data.users) +
-      testUtil.insertGroupsQuery(data.groups) +
-      testUtil.insertGroupMembersQuery(data.groupMembers) +
-      testUtil.insertAvailabilityQuery(data.availabilities);
+      queryUtil.insertUsersQuery(data.users) +
+      queryUtil.insertGroupsQuery(data.groups) +
+      queryUtil.insertGroupMembersQuery(data.groupMembers) +
+      queryUtil.insertAvailabilityQuery(data.availabilities);
     const result = conn.query(query);
 
     conn.end();
@@ -32,12 +32,12 @@ afterAll(() => {
   return mysql.createConnection(MYSQLDB).then(conn => {
     const query = `
             SET FOREIGN_KEY_CHECKS=0;
-            ${testUtil.resetUsersQuery}
-            ${testUtil.resetGroupsQuery}
-            ${testUtil.resetGroupMembersQuery}
-            ${testUtil.resetAvailabilityQuery}
-            ${testUtil.resetOptimalAvailabilityQuery}
-            ${testUtil.resetMeetingQuery}
+            ${queryUtil.resetUsersQuery}
+            ${queryUtil.resetGroupsQuery}
+            ${queryUtil.resetGroupMembersQuery}
+            ${queryUtil.resetAvailabilityQuery}
+            ${queryUtil.resetOptimalAvailabilityQuery}
+            ${queryUtil.resetMeetingQuery}
             SET FOREIGN_KEY_CHECKS=1;
         `;
     const result = conn.query(query);
@@ -162,7 +162,7 @@ describe("getGroupMemberAvailabilities tests", () => {
         mysql.createConnection(MYSQLDB).then(conn => {
           const query = `
                 SET FOREIGN_KEY_CHECKS=0;
-                ${testUtil.resetAvailabilityQuery}
+                ${queryUtil.resetAvailabilityQuery}
                 SET FOREIGN_KEY_CHECKS=1;
             `;
           const result = conn.query(query);

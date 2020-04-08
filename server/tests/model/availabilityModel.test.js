@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mysql = require("promise-mysql");
-const testUtil = require("../test-utils/testUtil");
+const queryUtil = require("../test-utils/queryUtil");
 const availabilityModel = require("../../api/model/availabilityModel");
 const data = require("../test-utils/testdata/availabilityModel.testdata");
 
@@ -16,10 +16,10 @@ describe("test availability model", () => {
   beforeAll(async () => {
     const conn = await mysql.createConnection(MYSQLDB);
     const query =
-      testUtil.insertUsersQuery(data.users) +
-      testUtil.insertGroupsQuery(data.groups) +
-      testUtil.insertGroupMembersQuery(data.groupMembers) +
-      testUtil.insertAvailabilityQuery(data.availabilities);
+      queryUtil.insertUsersQuery(data.users) +
+      queryUtil.insertGroupsQuery(data.groups) +
+      queryUtil.insertGroupMembersQuery(data.groupMembers) +
+      queryUtil.insertAvailabilityQuery(data.availabilities);
     const result = conn.query(query);
     conn.end();
     return result;
@@ -29,12 +29,12 @@ describe("test availability model", () => {
     const conn = await mysql.createConnection(MYSQLDB);
     const query = `
                 SET FOREIGN_KEY_CHECKS=0;
-                ${testUtil.resetUsersQuery}
-                ${testUtil.resetGroupsQuery}
-                ${testUtil.resetGroupMembersQuery}
-                ${testUtil.resetAvailabilityQuery}
-                ${testUtil.resetOptimalAvailabilityQuery}
-                ${testUtil.resetMeetingQuery}
+                ${queryUtil.resetUsersQuery}
+                ${queryUtil.resetGroupsQuery}
+                ${queryUtil.resetGroupMembersQuery}
+                ${queryUtil.resetAvailabilityQuery}
+                ${queryUtil.resetOptimalAvailabilityQuery}
+                ${queryUtil.resetMeetingQuery}
                 SET FOREIGN_KEY_CHECKS=1;
             `;
     const result = conn.query(query);
