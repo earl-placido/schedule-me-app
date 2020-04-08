@@ -75,7 +75,7 @@ context("Test register functionality", () => {
     cy.url().should("contain", "/");
     cy.get(
       ".ant-form-item-has-error > .ant-col > .ant-form-item-explain > div"
-    ).should("contain", "Password must be atleast 8 characters");
+    ).should("contain", "Password must be at least 8 characters");
 
     cy.get("#signup_password").clear();
     cy.get("#signup_confirm").clear();
