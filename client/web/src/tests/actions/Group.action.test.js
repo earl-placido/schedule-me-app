@@ -112,9 +112,11 @@ describe("test availability action", () => {
   it("test add user to group query", async () => {
     const groupId = 1;
 
-    httpMock.onPost(
-      `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`
-    ).reply(200, {groupMemberId: 1});
+    httpMock
+      .onPost(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members`
+      )
+      .reply(200, { groupMemberId: 1 });
 
     const response = await addUserToGroupQuery(groupId);
     expect(response.data.groupMemberId).toEqual(1);
