@@ -24,6 +24,7 @@ class App extends Component {
           <Container>
             <NavigationContainer>
               <AuthStack.Navigator
+                accessibilityLabel={'AuthStack'}
                 initialRouteName={
                   !this.props.isAuthenticated ? 'Home' : 'Drawer'
                 }>
