@@ -1,6 +1,7 @@
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import Config from 'react-native-config';
+import AsyncStorage from '@react-native-community/async-storage';
 import configureMockStore from 'redux-mock-store';
 import {
   getGroupOptimalTime,
@@ -14,6 +15,8 @@ import {
   TOGGLE_MEETING_MODAL,
   setOptimalTime,
   SET_OPTIMAL_TIME,
+  getSelfMember,
+  GET_GROUP_MEMBER,
 } from '../../src/actions/GetOptimalMeetingTime.action';
 
 describe('test get optimal meeting time action', () => {
@@ -164,5 +167,35 @@ describe('test get optimal meeting time action', () => {
     expect(store.getActions()[0].payload.meetings[0].MeetingId).toEqual(1);
   });
 
-  it('test getSelfMember action', async () => {});
+  it('test getSelfMember action', async () => {
+    const groupId = 1;
+    const userId = 1;
+    const groupMember = 1;
+    const userEmail = 'email';
+
+    // handle bad path (no email)
+    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`).reply(200, {userId});
+    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`).reply(200, {groupMembers: [groupMember]});
+    await getSelfMember(groupId)(store.dispatch);
+    expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
+    expect(store.getActions()[0].payload).toEqual({
+      "selfMember": undefined   });
+
+    // handle error response 
+    store.clearActions();
+    AsyncStorage.setItem('userEmail', userEmail);
+    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`).reply(200, {userId});
+    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`).reply(500, {groupMembers: [groupMember]});
+    await getSelfMember(groupId)(store.dispatch);
+    expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
+    expect(store.getActions()[0].payload).toEqual({selfMember: undefined});
+
+    // handle good path
+    store.clearActions();
+    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`).reply(200, {userId});
+    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`).reply(200, {groupMembers: [groupMember]});
+    await getSelfMember(groupId)(store.dispatch);
+    expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
+    expect(store.getActions()[0].payload).toEqual({selfMember: groupMember});
+  });
 });
