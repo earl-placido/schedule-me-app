@@ -174,26 +174,51 @@ describe('test get optimal meeting time action', () => {
     const userEmail = 'email';
 
     // handle bad path (no email)
-    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`).reply(200, {userId});
-    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`).reply(200, {groupMembers: [groupMember]});
+    httpMock
+      .onGet(
+        `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`,
+      )
+      .reply(200, {userId});
+    httpMock
+      .onGet(
+        `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`,
+      )
+      .reply(200, {groupMembers: [groupMember]});
     await getSelfMember(groupId)(store.dispatch);
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
     expect(store.getActions()[0].payload).toEqual({
-      "selfMember": undefined   });
+      selfMember: undefined,
+    });
 
-    // handle error response 
+    // handle error response
     store.clearActions();
     AsyncStorage.setItem('userEmail', userEmail);
-    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`).reply(200, {userId});
-    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`).reply(500, {groupMembers: [groupMember]});
+    httpMock
+      .onGet(
+        `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`,
+      )
+      .reply(200, {userId});
+    httpMock
+      .onGet(
+        `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`,
+      )
+      .reply(500, {groupMembers: [groupMember]});
     await getSelfMember(groupId)(store.dispatch);
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
     expect(store.getActions()[0].payload).toEqual({selfMember: undefined});
 
     // handle good path
     store.clearActions();
-    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`).reply(200, {userId});
-    httpMock.onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`).reply(200, {groupMembers: [groupMember]});
+    httpMock
+      .onGet(
+        `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/users/email/${userEmail}`,
+      )
+      .reply(200, {userId});
+    httpMock
+      .onGet(
+        `${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`,
+      )
+      .reply(200, {groupMembers: [groupMember]});
     await getSelfMember(groupId)(store.dispatch);
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
     expect(store.getActions()[0].payload).toEqual({selfMember: groupMember});
