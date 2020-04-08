@@ -2,27 +2,40 @@ const express = require("express");
 const router = express.Router();
 
 const userModel = require("../model/userModel");
-const { authenticateToken } = require("../util/tokenHelper");
+const { authenticateToken } = require("../middleware/tokenMiddleware");
+const {
+  userIdRules,
+  emailRules,
+  validate
+} = require("../middleware/validationMiddleware");
 const responses = require("../util/responses");
 
 // Get user information from userId
-router.get("/:userId", authenticateToken, (req, res, next) => {
-  const { userId } = req.params;
-  return userModel
-    .getUserByUserId(userId)
-    .then(result => {
-      if (result.length > 0) {
-        res.status(responses.SUCCESS).json(result[0]);
-      } else {
-        res.status(responses.NOT_FOUND);
-        res.send({ error: `UserId ${userId} does not exist.` });
-      }
-    })
-    .catch(next);
-});
+router.get(
+  "/:userId",
+  authenticateToken,
+  userIdRules(),
+  validate,
+  (req, res, next) => {
+    const { userId } = req.params;
 
-router.get("/email/:userEmail", (req, res, next) => {
+    return userModel
+      .getUserByUserId(userId)
+      .then(result => {
+        if (result.length > 0) {
+          res.status(responses.SUCCESS).json(result[0]);
+        } else {
+          res.status(responses.NOT_FOUND);
+          res.send({ error: `UserId ${userId} does not exist.` });
+        }
+      })
+      .catch(next);
+  }
+);
+
+router.get("/email/:userEmail", emailRules(), validate, (req, res, next) => {
   const { userEmail } = req.params;
+
   return userModel
     .getUserByEmail(userEmail)
     .then(result => {

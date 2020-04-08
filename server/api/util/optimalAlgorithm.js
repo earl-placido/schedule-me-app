@@ -1,6 +1,6 @@
 var moment = require("moment");
 
-function currentDateOptimalTime(startTimes, endTimes) {
+const currentDateOptimalTime = (startTimes, endTimes) => {
   let intersections = {};
   for (let i = 0; i < startTimes.length; i++) {
     const current_start_time = startTimes[i];
@@ -52,9 +52,9 @@ function currentDateOptimalTime(startTimes, endTimes) {
   }
 
   return intersections;
-}
+};
 
-module.exports = function findOptimalTime(availabilities) {
+const findOptimalTime = availabilities => {
   let availabilityPerDates = {};
   let optimalAvailabilityPerDate = [];
 
@@ -99,4 +99,8 @@ module.exports = function findOptimalTime(availabilities) {
 
   return optimalAvailabilityPerDate; // [[date:starthours.startminute_endhours.endminute],
   //   date:starthours.startminute_endhours.endminute ...]]
+};
+
+module.exports = {
+  findOptimalTime
 };
