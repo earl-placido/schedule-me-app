@@ -15,14 +15,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import getTheme from '../native-base-theme/components';
 import commonColor from '../native-base-theme/variables/commonColor';
 
-import DrawerNavigator from './components/navigation/DrawerNavigator';
-import Home from './components/screens/Home/Home';
-
+import DrawerNavigator from './navigation/DrawerNavigator';
+import Home from './components/screens/LoginScreen';
 import {NativeRouter} from 'react-router-native';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutUser} from './actions/components/Auth.action';
+import {logoutUser} from './actions/Auth.action';
 
 const AuthStack = createStackNavigator();
 

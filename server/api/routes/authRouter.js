@@ -1,8 +1,13 @@
 const express = require("express");
 const passport = require("passport");
-const { check, validationResult } = require("express-validator");
 
-const tokenHelper = require("../util/tokenHelper");
+const { createToken, sendToken } = require("../middleware/tokenMiddleware");
+const {
+  signUpRules,
+  loginRules,
+  validate
+} = require("../middleware/validationMiddleware");
+
 const userModel = require("../model/userModel");
 const responses = require("../util/responses");
 
@@ -43,7 +48,7 @@ router.route("/google").post(
           userID = user[0].UserId;
         }
 
-        // transform auth & user objects for tokenHelper
+        // transform auth & user objects for tokenMiddleware
         req.auth = { id: userID };
         req.user = {
           email: userEmail,
@@ -56,34 +61,15 @@ router.route("/google").post(
       })
       .catch(next);
   },
-  tokenHelper.createToken,
-  tokenHelper.sendToken
+  createToken,
+  sendToken
 );
 
 router.post(
   "/signup",
-  [
-    check("email")
-      .isEmail()
-      .withMessage("Must follow email format"),
-    check("password")
-      .isLength({ min: 8, max: 100 })
-      .withMessage("Password must be between 8 and 100 characters"),
-    check("firstName")
-      .isLength({ min: 1, max: 100 })
-      .withMessage("First name must be between 1 and 100 characters"),
-    check("lastName")
-      .isLength({ min: 1, max: 100 })
-      .withMessage("Last name must be between 1 and 100 characters")
-  ],
+  signUpRules(),
+  validate,
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res
-        .status(responses.UNPROCESSABLE)
-        .json({ errors: errors.array() });
-    }
-
     let newUser = req.body;
     userModel
       .getUserByEmail(newUser.email)
@@ -98,7 +84,7 @@ router.post(
               newUser.lastName
             )
             .then(userID => {
-              // transform auth & user objects for tokenHelper
+              // transform auth & user objects for tokenMiddleware
               req.auth = { id: userID };
               req.user = {
                 email: newUser.email,
@@ -117,28 +103,15 @@ router.post(
       })
       .catch(next);
   },
-  tokenHelper.createToken,
-  tokenHelper.sendToken
+  createToken,
+  sendToken
 );
 
 router.post(
   "/login",
-  [
-    check("email")
-      .isEmail()
-      .withMessage("Must follow email format"),
-    check("password")
-      .isLength({ min: 8, max: 100 })
-      .withMessage("Password must be between 8 and 100 characters")
-  ],
+  loginRules(),
+  validate,
   (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res
-        .status(responses.UNPROCESSABLE)
-        .json({ errors: errors.array() });
-    }
-
     let user = req.body;
     userModel
       .validateUser(user.email, user.password)
@@ -149,7 +122,7 @@ router.post(
 
         req.auth = { id: result.userId };
 
-        // transform auth & user objects for tokenHelper
+        // transform auth & user objects for tokenMiddleware
         req.auth = { id: result.userId };
         req.user = {
           email: result.email,
@@ -162,8 +135,8 @@ router.post(
       })
       .catch(next);
   },
-  tokenHelper.createToken,
-  tokenHelper.sendToken
+  createToken,
+  sendToken
 );
 
 module.exports = router;

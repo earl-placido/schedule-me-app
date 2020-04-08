@@ -1,6 +1,6 @@
 require("dotenv").config();
 const mysql = require("promise-mysql");
-const testUtil = require("../test-utils/testUtil");
+const queryUtil = require("../test-utils/queryUtil");
 const userModel = require("../../api/model/userModel");
 const data = require("../test-utils/testdata/userModel.testdata");
 
@@ -16,7 +16,7 @@ let numOfUsersAdded = 0;
 
 beforeAll(() => {
   return mysql.createConnection(MYSQLDB).then(conn => {
-    const query = testUtil.insertUsersQuery(data.users);
+    const query = queryUtil.insertUsersQuery(data.users);
     const result = conn.query(query);
     conn.end();
     return result;
@@ -27,7 +27,7 @@ afterAll(() => {
   return mysql.createConnection(MYSQLDB).then(conn => {
     const query = `
       SET FOREIGN_KEY_CHECKS=0;
-      ${testUtil.resetUsersQuery}
+      ${queryUtil.resetUsersQuery}
       SET FOREIGN_KEY_CHECKS=1;
     `;
     const result = conn.query(query);

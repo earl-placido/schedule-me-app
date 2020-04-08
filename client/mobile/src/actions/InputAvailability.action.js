@@ -1,7 +1,7 @@
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {getGroupMemberWithEmail} from '../actions/screens/GetGroupMembers.action';
+import {getGroupMemberWithEmail} from './GetGroupMembers.action';
 import {
   getAvailabilites,
   addAvailabilityQuery,
@@ -137,8 +137,8 @@ export const handleChangeRangeHour = (
   if (selectedTime === null) {
     newRangeHours[index] = [];
   } else {
-    // -1 represents the group member id.  Right now, set it to -1 and will change to actual member availability later
-    let availabilityId = -1;
+    // -1 represents that a new avaibility will be added
+    let availabilityId = newRangeHours[index].AvailabilityId || -1;
 
     let startTime =
       startOrEndTimeIndex == 0

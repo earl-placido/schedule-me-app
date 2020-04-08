@@ -1,66 +1,60 @@
 var moment = require("moment");
 
-function tune_intersection(intersections) {
-  const keys = Object.keys(intersections);
-  for (let i = 0; i < keys.length - 1; i++) {
-    const current_intersection = keys[i].split("_");
-    const current_intersection_start = parseFloat(current_intersection[0]);
-    const current_intersection_end = parseFloat(current_intersection[1]);
-    for (let j = i + 1; j < keys.length; j++) {
-      const next_intersection = keys[j].split("_");
-      const next_intersection_start = parseFloat(next_intersection[0]);
-      const next_intersection_end = parseFloat(next_intersection[1]);
+const currentDateOptimalTime = (startTimes, endTimes) => {
+  let intersections = {};
+  for (let i = 0; i < startTimes.length; i++) {
+    const current_start_time = startTimes[i];
+    const current_end_time = endTimes[i];
 
-      if (
-        current_intersection_start >= next_intersection_start &&
-        current_intersection_end <= next_intersection_end
-      )
-        intersections[keys[i]] += 1;
-      else if (
-        next_intersection_start >= current_intersection_start &&
-        next_intersection_end <= current_intersection_end
-      )
-        intersections[keys[j]] += 1;
+    const keys = Object.keys(intersections) || [];
+    for (let j = 0; j < keys.length; j++) {
+      const current_intersection = keys[j].split("_");
+      const intersected_start_time = parseFloat(current_intersection[0]);
+      const intersected_end_time = parseFloat(current_intersection[1]);
+
+      const max_start_time = Math.max(
+        current_start_time,
+        intersected_start_time
+      );
+      const min_end_time = Math.min(current_end_time, intersected_end_time);
+
+      // does not intersect with the current availability
+      if (max_start_time >= min_end_time) continue;
+
+      // if intersect
+      const intersected_value =
+        intersections[`${max_start_time}_${min_end_time}`];
+      if (!intersected_value)
+        intersections[`${max_start_time}_${min_end_time}`] = new Set();
+
+      // iwe get all the users that current time is intersected and add the users to the current intersected time
+      intersections[`${max_start_time}_${min_end_time}`].add(i);
+      const intersectedUsers = intersections[keys[j]].values();
+      let nextUser = intersectedUsers.next();
+      while (!nextUser.done) {
+        intersections[`${max_start_time}_${min_end_time}`].add(nextUser.value);
+        nextUser = intersectedUsers.next();
+      }
+    }
+    // if there is no existing time for the current start and end, then we add it
+    if (
+      intersections[`${current_start_time}_${current_end_time}`] === undefined
+    ) {
+      intersections[`${current_start_time}_${current_end_time}`] = new Set();
+      intersections[`${current_start_time}_${current_end_time}`].add(i);
     }
   }
-}
 
-function currentDateOptimalTime(startTimes, endTimes) {
-  const intersections = {};
-  // find intersections between all time slots (O(n^2))
-  for (let i = 0; i < startTimes.length - 1; i++) {
-    const startTime = startTimes[i];
-    const endTime = endTimes[i];
-
-    for (let j = i + 1; j < startTimes.length; j++) {
-      const next_start_time = startTimes[j];
-      const next_end_time = endTimes[j];
-
-      const current_intersection_start = Math.max(startTime, next_start_time);
-      const current_intersection_end = Math.min(endTime, next_end_time);
-
-      if (current_intersection_start >= current_intersection_end) continue;
-
-      if (
-        intersections[
-          `${current_intersection_start}_${current_intersection_end}`
-        ] !== undefined
-      )
-        intersections[
-          `${current_intersection_start}_${current_intersection_end}`
-        ] += 1;
-      else
-        intersections[
-          `${current_intersection_start}_${current_intersection_end}`
-        ] = 1;
-    }
+  // count only the length of each set (the number of users) instead of returning the whole set
+  const keys = Object.keys(intersections) || [];
+  for (const key of keys) {
+    intersections[key] = intersections[key].size;
   }
-  // find intersected intersections
-  tune_intersection(intersections);
+
   return intersections;
-}
+};
 
-module.exports = function findOptimalTime(availabilities) {
+const findOptimalTime = availabilities => {
   let availabilityPerDates = {};
   let optimalAvailabilityPerDate = [];
 
@@ -105,4 +99,8 @@ module.exports = function findOptimalTime(availabilities) {
 
   return optimalAvailabilityPerDate; // [[date:starthours.startminute_endhours.endminute],
   //   date:starthours.startminute_endhours.endminute ...]]
+};
+
+module.exports = {
+  findOptimalTime
 };

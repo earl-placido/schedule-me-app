@@ -10,10 +10,10 @@ import StackNavigator from './StackNavigator';
 
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {logoutUser} from '../../actions/components/Auth.action';
+import {logoutUser} from '../actions/Auth.action';
 import {GoogleSignin} from '@react-native-community/google-signin';
 
-import {getGroupList} from '../../actions/screens/GroupList.action';
+import {getGroupList} from '../actions/GetGroupList.action';
 
 const Drawer = createDrawerNavigator();
 const NUM_ITEMS = 3;

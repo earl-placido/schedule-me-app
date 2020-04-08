@@ -1,7 +1,7 @@
 import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import {getGroupMemberWithEmail} from './screens/GetGroupMembers.action';
+import {getGroupMemberWithEmail} from './GetGroupMembers.action';
 import {
   setCurrentOptimalTimeQuery,
   formatDateToString,
@@ -122,7 +122,6 @@ export const setOptimalTime = (
     startTime,
     endTime,
   );
-
   // if user picks the same time, don't change updated time
   if (!response['changedTime']) {
     dispatch({

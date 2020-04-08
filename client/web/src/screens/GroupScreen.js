@@ -87,12 +87,12 @@ class GroupScreen extends Component {
 
   currentMeetingTime = () => {
     return (
-      <div>
+      <div id="meeting-time-panel">
         <Row justify="center">
           {this.props.meetings &&
             this.props.meetings.map((meeting, index) => {
               return (
-                <div key={index}>
+                <div key={index} id="meeting-time">
                   <p style={{ display: "inline", marginRight: 10 }}>
                     {meeting.meetingAvailableString ||
                       "Meeting time is currently empty."}
@@ -100,6 +100,7 @@ class GroupScreen extends Component {
                   {this.props.selfMember &&
                     this.props.selfMember.MemberRole === "AD" && (
                       <Button
+                        id="change-meeting-time"
                         type="primary"
                         style={{ backgroundColor: "green" }}
                         onClick={this.getOptimalTime.bind(this, meeting)}
@@ -115,6 +116,12 @@ class GroupScreen extends Component {
     );
   };
 
+  removeSeconds(timeString) {
+    if (timeString) {
+      return timeString.substring(0, timeString.lastIndexOf(":"));
+    }
+  }
+
   render() {
     const { Title } = Typography;
 
@@ -124,6 +131,9 @@ class GroupScreen extends Component {
       buttonStyle,
       noMarginStyle,
       marginTop5,
+      marginTop15,
+      marginTop25,
+      marginBottom10,
       oldAntColStyle
     } = styles;
 
@@ -131,16 +141,37 @@ class GroupScreen extends Component {
       <div style={containerStyle}>
         <Card style={cardStyle}>
           <Row justify="center">
-            <Title level={2} style={noMarginStyle}>
+            <Title id="group-name" level={2} style={noMarginStyle}>
               Group: {this.props.group.GroupName}
             </Title>
           </Row>
           <Row justify="center">
-            <h4>{this.props.group.GroupDescription}</h4>
+            <h4>
+              {this.props.group.GroupDescription
+                ? this.props.group.GroupDescription
+                : "No description"}
+            </h4>
+          </Row>
+          <Row justify="center" style={marginTop15}>
+            <b>Meeting Duration:&nbsp;</b>{" "}
+            {this.removeSeconds(this.props.group.MeetingDuration)}
+          </Row>
+          <Row justify="center" style={noMarginStyle}>
+            <b>Meeting Frequency:&nbsp;</b>{" "}
+            {this.props.group.MeetingFrequency !== null
+              ? this.props.group.MeetingFrequency
+              : "Not Specified"}
+          </Row>
+          <Row justify="center" style={marginBottom10}>
+            <b>Meeting Location:&nbsp;</b>
+            {this.props.group.MeetingLocation !== null
+              ? this.props.group.MeetingLocation
+              : "Not Specified"}
           </Row>
           {!this.state.showCode ? (
-            <Row justify="center">
+            <Row justify="center" style={marginTop25}>
               <Button
+                id="show-code-button"
                 onClick={() => {
                   this.setState({ showCode: true });
                 }}
@@ -149,8 +180,8 @@ class GroupScreen extends Component {
               </Button>
             </Row>
           ) : (
-            <div>
-              <Row justify="center" style={marginTop5}>
+            <div id="group-code-panel">
+              <Row justify="center" style={marginTop25}>
                 <h3>Share this code for others to join the group:</h3>
               </Row>
               <Row justify="center">
@@ -191,6 +222,7 @@ class GroupScreen extends Component {
             />
           </Row>
           <Button
+            id="input-availability-button"
             type="primary"
             onClick={this.showModal.bind(this, "availability")}
             style={{ float: "right" }}
@@ -198,6 +230,7 @@ class GroupScreen extends Component {
             Input Your Availability
           </Button>
           <Modal
+            id="input-availability-modal"
             width={"60%"}
             visible={this.props.inputModalVisible}
             onCancel={this.handleCancel}
@@ -216,6 +249,7 @@ class GroupScreen extends Component {
           </Modal>
 
           <Modal
+            id="meeting-time-modal"
             width={"60%"}
             visible={this.props.meetingModalVisible}
             onCancel={this.handleCancel}
@@ -237,6 +271,7 @@ class GroupScreen extends Component {
           </Modal>
         </Card>
         <Modal
+          id="error-modal"
           visible={this.props.showErrorModal}
           onCancel={this.closeErrorModal}
           footer={[
@@ -275,6 +310,18 @@ const styles = {
 
   marginTop5: {
     marginTop: 5
+  },
+
+  marginTop15: {
+    marginTop: 15
+  },
+
+  marginTop25: {
+    marginTop: 25
+  },
+
+  marginBottom10: {
+    marginBottom: 10
   },
 
   oldAntColStyle: {
