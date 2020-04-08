@@ -121,10 +121,10 @@ export default (variables /* : * */ = variable) => {
           fontWeight: '600',
         },
         'NativeBase.Icon': {
-          color: variables.toolbarBtnColor,
+          color: variables.toolbarBtnTextColor,
         },
         'NativeBase.IconNB': {
-          color: variables.toolbarBtnColor,
+          color: variables.toolbarBtnTextColor,
         },
         paddingHorizontal: variables.buttonPadding,
       },
@@ -186,7 +186,7 @@ export default (variables /* : * */ = variable) => {
           marginLeft: -10,
           height: 30,
           'NativeBase.Icon': {
-            color: variables.toolbarBtnColor,
+            color: variables.toolbarBtnTextColor,
             fontSize: variables.iconHeaderSize,
             marginTop: 2,
             marginRight: 5,
@@ -212,7 +212,7 @@ export default (variables /* : * */ = variable) => {
               ? -3
               : 0,
           'NativeBase.Icon': {
-            color: variables.toolbarBtnColor,
+            color: variables.toolbarBtnTextColor,
             fontSize:
               platform === PLATFORM.IOS &&
               variables.platformStyle !== PLATFORM.MATERIAL
@@ -224,7 +224,7 @@ export default (variables /* : * */ = variable) => {
             paddingTop: 1,
           },
           'NativeBase.IconNB': {
-            color: variables.toolbarBtnColor,
+            color: variables.toolbarBtnTextColor,
             fontSize:
               platform === PLATFORM.IOS &&
               variables.platformStyle !== PLATFORM.MATERIAL
@@ -257,10 +257,10 @@ export default (variables /* : * */ = variable) => {
           shadowOpacity: null,
         },
         'NativeBase.Icon': {
-          color: variables.toolbarBtnColor,
+          color: variables.toolbarBtnTextColor,
         },
         'NativeBase.IconNB': {
-          color: variables.toolbarBtnColor,
+          color: variables.toolbarBtnTextColor,
         },
         alignSelf: null,
         paddingRight: variables.buttonPadding,

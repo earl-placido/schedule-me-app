@@ -28,7 +28,6 @@ class StackNavigator extends Component {
                     <Left>
                       <Button
                         transparent
-                        hasText
                         accessibilityLabel={'Menu'}
                         onPress={() =>
                           props.navigation.dispatch(

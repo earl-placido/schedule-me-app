@@ -4,7 +4,7 @@ import {Button, Text, Icon} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerActions} from '@react-navigation/native';
-import commonColor from '../../../native-base-theme/variables/commonColor';
+import commonColor from '../../native-base-theme/variables/commonColor';
 
 import StackNavigator from './StackNavigator';
 

@@ -67,6 +67,7 @@ class Login extends Component {
       text: message,
       buttonText: 'OK',
       duration: 3000,
+      position: 'top',
     });
   };
 

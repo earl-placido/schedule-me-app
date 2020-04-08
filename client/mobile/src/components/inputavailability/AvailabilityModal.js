@@ -193,16 +193,16 @@ class AvailabilityModal extends Component {
           <View style={{paddingRight: 10, paddingTop: 10}}>
             <Button
               small
-              light
+              danger
               rounded
               onPress={() =>
                 this.deleteAvailability(this.props.rangeHours.length - 1)
               }>
-              <Text>Delete</Text>
+              <Text>Remove</Text>
             </Button>
           </View>
           <View style={{paddingTop: 10}}>
-            <Button small rounded onPress={() => this.addRangeHour()}>
+            <Button small success rounded onPress={() => this.addRangeHour()}>
               <Text>Add</Text>
             </Button>
           </View>

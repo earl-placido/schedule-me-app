@@ -136,8 +136,8 @@ export default {
   brandDanger: '#ff0000',
   brandWarning: '#f0ad4e',
   brandDark: '#001529',
-  brandLight: '#001F54',
-  brandMedium: '#011638',
+  brandLight: '#9197AE',
+  brandMedium: '#001F54',
 
   // Container
   containerBgColor: '#fff',
@@ -166,7 +166,7 @@ export default {
   // Footer
   footerHeight: 55,
   get footerDefaultBg() {
-    return this.brandLight;
+    return this.brandMedium;
   },
   footerPaddingBottom: 0,
 
@@ -180,10 +180,10 @@ export default {
 
   // Header
   get toolbarBtnColor() {
-    return this.brandLight;
+    return this.brandMedium;
   },
   get toolbarDefaultBg() {
-    return this.brandLight;
+    return this.brandMedium;
   },
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: platform === PLATFORM.IOS ? 20 : 23,
