@@ -162,9 +162,9 @@ module.exports = {
   }
 };
 
-async function comparePasswordAsync(password, saltedPassword) {
-  return new Promise(function(resolve, reject) {
-    bcrypt.compare(password, saltedPassword, function(err, res) {
+const comparePasswordAsync = async (password, saltedPassword) => {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(password, saltedPassword, (err, res) => {
       if (err) {
         reject(err);
       } else {
@@ -172,4 +172,4 @@ async function comparePasswordAsync(password, saltedPassword) {
       }
     });
   });
-}
+};

@@ -342,9 +342,9 @@ const styles = {
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  userName: state.auth.userName,
-  displayPicURL: state.auth.displayPicURL,
+  isAuthenticated: state.AuthReducer.isAuthenticated,
+  userName: state.AuthReducer.userName,
+  displayPicURL: state.AuthReducer.displayPicURL,
   modalVisible: state.modalVisible,
   groupList: state.NavigationBarReducer.groupList,
   showErrorModal: state.NavigationBarReducer.showErrorModal,

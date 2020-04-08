@@ -79,8 +79,8 @@ LoginForm.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  errored: state.auth.errored,
-  message: state.auth.message
+  errored: state.AuthReducer.errored,
+  message: state.AuthReducer.message
 });
 
 const mapDispatchToProps = dispatch => ({
