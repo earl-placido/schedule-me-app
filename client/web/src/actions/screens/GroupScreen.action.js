@@ -95,7 +95,7 @@ export const getOptimalTime = groupId => async dispatch => {
     }
     dispatch({
       type: OPTIMAL_TIME,
-      payload: { optimalTimes: [filteredOptimalTimes] }
+      payload: { optimalTimes: filteredOptimalTimes }
     });
   } catch (err) {
     dispatch({
