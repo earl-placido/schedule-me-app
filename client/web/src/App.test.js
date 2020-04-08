@@ -22,7 +22,7 @@ describe("test app", () => {
   it("Renders", () => {
     const mockStore = configureStore();
     const store = mockStore({
-      auth: {}
+      AuthReducer: {}
     });
     const wrapper = shallow(<App store={store} />).dive();
     expect(wrapper.dive().find(".app")).toHaveLength(1);
