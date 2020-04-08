@@ -9,6 +9,9 @@ import {
 
 describe('test get group list action', () => {
   let httpMock, store;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -22,6 +25,7 @@ describe('test get group list action', () => {
       .onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/`)
       .reply(500);
     await getGroupList()(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0]).toEqual(undefined);
 
     // handle happy path
@@ -30,6 +34,7 @@ describe('test get group list action', () => {
       .onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/`)
       .reply(200, {groups: [1, 2]});
     await getGroupList()(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_LIST_SUCCESS);
     expect(store.getActions()[0].payload).toEqual([1, 2]);
   });

@@ -10,6 +10,9 @@ import {
 
 describe('test get group members action', () => {
   let httpMock, store;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -26,6 +29,7 @@ describe('test get group members action', () => {
       )
       .reply(500);
     await getGroupMembers(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0]).toEqual(undefined);
 
     // handle happy path
@@ -36,6 +40,7 @@ describe('test get group members action', () => {
       )
       .reply(200, {groupMembers: [1]});
     await getGroupMembers(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBERS_SUCCESS);
     expect(store.getActions()[0].payload).toEqual([1]);
   });
@@ -51,6 +56,7 @@ describe('test get group members action', () => {
       )
       .reply(500);
     let response = await getGroupMemberWithEmail(groupId, userEmail);
+    await flushAllPromises();
     expect(response).toEqual(undefined);
 
     // handle error response from userid and groupid to get group member
@@ -66,6 +72,7 @@ describe('test get group members action', () => {
       )
       .reply(500, {groupMembers: [1]});
     response = await getGroupMemberWithEmail(groupId, userEmail);
+    await flushAllPromises();
     expect(response).toEqual(undefined);
 
     // handle happy path
@@ -81,6 +88,7 @@ describe('test get group members action', () => {
       )
       .reply(200, {groupMembers: [1]});
     response = await getGroupMemberWithEmail(groupId, userEmail);
+    await flushAllPromises();
     expect(response).toEqual(1);
   });
 });

@@ -12,6 +12,9 @@ import {
 
 describe('test get group action', () => {
   let httpMock, store;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -27,6 +30,7 @@ describe('test get group action', () => {
       .onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/`)
       .reply(500, 'failed');
     await getGroup(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_INFO_FAILURE);
     expect(store.getActions()[0].errored).toEqual(true);
 
@@ -36,6 +40,7 @@ describe('test get group action', () => {
       .onGet(`${Config.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/`)
       .reply(200, 'success');
     await getGroup(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_INFO_SUCCESS);
     expect(store.getActions()[0].payload).toEqual('success');
   });

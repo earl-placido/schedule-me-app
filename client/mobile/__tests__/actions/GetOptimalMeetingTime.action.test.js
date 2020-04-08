@@ -21,6 +21,9 @@ import {
 
 describe('test get optimal meeting time action', () => {
   let httpMock, store;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -77,6 +80,7 @@ describe('test get optimal meeting time action', () => {
   it('test selectMeeting action', async () => {
     const selectedMeeting = 1;
     await selectMeeting(selectedMeeting)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SELECT_MEETING);
     expect(store.getActions()[0].payload).toEqual({selectedMeeting});
   });
@@ -84,6 +88,7 @@ describe('test get optimal meeting time action', () => {
   it('test selectOptimalTime action', async () => {
     const selectedOptimalTime = 1;
     await selectOptimalTime(selectedOptimalTime)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SELECT_OPTIMAL_TIME);
     expect(store.getActions()[0].payload).toEqual({selectedOptimalTime});
   });
@@ -96,6 +101,7 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {optimalTime: 1});
     await getAllOptimalTimes(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SELECT_MEETING);
     expect(store.getActions()[0].payload).toEqual({optimalTimes: 1});
   });
@@ -118,6 +124,7 @@ describe('test get optimal meeting time action', () => {
       selectedMeeting,
       optimalTime,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SET_OPTIMAL_TIME);
     expect(store.getActions()[0].payload).toEqual({
       isMeetingModalVisible: false,
@@ -137,6 +144,7 @@ describe('test get optimal meeting time action', () => {
       selectedMeeting,
       optimalTime,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SET_OPTIMAL_TIME);
     expect(store.getActions()[0].payload).toEqual({
       selectedSameOptimalTime: true,
@@ -158,6 +166,7 @@ describe('test get optimal meeting time action', () => {
       selectedMeeting,
       optimalTime,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SET_OPTIMAL_TIME);
     expect(store.getActions()[0].payload.selectedSameOptimalTime).toEqual(
       false,
@@ -185,6 +194,7 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {groupMembers: [groupMember]});
     await getSelfMember(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
     expect(store.getActions()[0].payload).toEqual({
       selfMember: undefined,
@@ -204,6 +214,7 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(500, {groupMembers: [groupMember]});
     await getSelfMember(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
     expect(store.getActions()[0].payload).toEqual({selfMember: undefined});
 
@@ -220,6 +231,7 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {groupMembers: [groupMember]});
     await getSelfMember(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(GET_GROUP_MEMBER);
     expect(store.getActions()[0].payload).toEqual({selfMember: groupMember});
   });

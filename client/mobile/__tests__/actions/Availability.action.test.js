@@ -9,6 +9,9 @@ import {
 
 describe('test availability action', () => {
   let httpMock;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -33,6 +36,7 @@ describe('test availability action', () => {
       startTimes,
       endTimes,
     );
+    await flushAllPromises();
     expect(response).toEqual([]);
 
     // handle happy path
@@ -48,6 +52,7 @@ describe('test availability action', () => {
       startTimes,
       endTimes,
     );
+    await flushAllPromises();
     expect(response).toEqual([1, 2]);
   });
 
@@ -59,6 +64,7 @@ describe('test availability action', () => {
       )
       .reply(200, 'success');
     const response = await getAvailabilites(groupMemberId);
+    await flushAllPromises();
     expect(response).toEqual('success');
   });
   it('test deleteAvailabilityQuery query', async () => {
@@ -69,6 +75,7 @@ describe('test availability action', () => {
       )
       .reply(200, 'success');
     const response = await deleteAvailabilityQuery(availabilityId);
+    await flushAllPromises();
     expect(response).toEqual('success');
   });
 });

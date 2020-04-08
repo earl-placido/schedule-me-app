@@ -20,6 +20,10 @@ import {
 } from '../../src/actions/CreateGroup.action';
 
 describe('test create group action', () => {
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
+
   it('updateGroupName action test', () => {
     const groupName = 'name';
     const response = updateGroupName(groupName);
@@ -79,6 +83,7 @@ describe('test create group action', () => {
       meetingFrequency,
       meetingLocation,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0]).toEqual(undefined);
 
     // response 500
@@ -99,6 +104,8 @@ describe('test create group action', () => {
       meetingFrequency,
       meetingLocation,
     )(store.dispatch);
+    await flushAllPromises();
+
     expect(store.getActions()[0]).toEqual(undefined);
 
     // happy path
@@ -124,6 +131,8 @@ describe('test create group action', () => {
       meetingFrequency,
       meetingLocation,
     )(store.dispatch);
+    await flushAllPromises();
+
     expect(store.getActions()[0].type).toEqual(SUBMIT_MEETING_CREATION);
     expect(store.getActions()[0].payload).toEqual({code: '1'});
   });

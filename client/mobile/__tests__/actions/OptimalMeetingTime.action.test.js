@@ -12,6 +12,9 @@ import {
 
 describe('test get optimal meeting time action', () => {
   let httpMock;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -32,6 +35,7 @@ describe('test get optimal meeting time action', () => {
       startTime,
       endTime,
     );
+    await flushAllPromises();
     expect(response).toEqual(undefined);
 
     // handle happy path
@@ -41,6 +45,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {success: true});
     response = await setCurrentOptimalTimeQuery(meetingId, startTime, endTime);
+    await flushAllPromises();
+
     expect(response).toEqual({success: true});
   });
 
@@ -67,6 +73,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(500);
     let response = await getMeetingIdsQuery(groupId);
+    await flushAllPromises();
+
     expect(response).toEqual(undefined);
 
     httpMock
@@ -75,6 +83,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {meetingIds: [1, 2, 3]});
     response = await getMeetingIdsQuery(groupId);
+    await flushAllPromises();
+
     expect(response).toEqual([1, 2, 3]);
   });
 
@@ -89,6 +99,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(500);
     let response = await getMeetingCurrentOptimalTimeQuery(meetingIds);
+    await flushAllPromises();
+
     expect(response).toEqual(undefined);
 
     // handle happy path
@@ -98,6 +110,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {success: true});
     response = await getMeetingCurrentOptimalTimeQuery(meetingIds);
+    await flushAllPromises();
+
     expect(response).toEqual({success: true});
   });
   it('test getOptimalTimes action', async () => {
@@ -108,6 +122,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(500);
     let response = await getOptimalTimes(groupId);
+    await flushAllPromises();
+
     expect(response).toEqual(undefined);
 
     httpMock
@@ -116,6 +132,8 @@ describe('test get optimal meeting time action', () => {
       )
       .reply(200, {optimalTime: [1, 2, 3]});
     response = await getOptimalTimes(groupId);
+    await flushAllPromises();
+
     expect(response).toEqual([1, 2, 3]);
   });
 });

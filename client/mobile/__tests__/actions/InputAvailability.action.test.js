@@ -26,6 +26,9 @@ import {
 
 describe('test input availability action', () => {
   let httpMock, store;
+  const flushAllPromises = () => {
+    return new Promise(resolve => setImmediate(resolve));
+  };
 
   beforeEach(() => {
     httpMock = new MockAdapter(axios);
@@ -57,6 +60,7 @@ describe('test input availability action', () => {
       )
       .reply(200, {error: true});
     await setAvailabilities(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(SET_AVAILABILITIES);
     expect(store.getActions()[0].payload).toEqual({
       availabilities: {},
@@ -87,6 +91,7 @@ describe('test input availability action', () => {
         {'CAST(StartTime as char)': date.format('YYYY-MM-DD HH:mm:ss')},
       ]);
     await setAvailabilities(groupId)(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(MARK_DATES);
     expect(store.getActions()[0].payload).toEqual({
       markedDates: {[dateFormat]: {marked: true}},
@@ -212,6 +217,7 @@ describe('test input availability action', () => {
       rangeHours,
       availabilities,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(ADD_AVAILABILITY);
     expect(store.getActions()[0].payload).toEqual({
       modalVisible: false,
@@ -227,6 +233,7 @@ describe('test input availability action', () => {
       rangeHours,
       availabilities,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(ADD_AVAILABILITY);
     expect(store.getActions()[0].payload).toEqual({
       modalVisible: false,
@@ -250,6 +257,7 @@ describe('test input availability action', () => {
       rangeHours,
       availabilities,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(ADD_AVAILABILITY);
     expect(store.getActions()[0].payload).toEqual({
       modalVisible: false,
@@ -273,6 +281,7 @@ describe('test input availability action', () => {
       rangeHours,
       availabilities,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(MARK_DATES);
     expect(store.getActions()[0].payload).toEqual({
       markedDates: {[dateInString]: {marked: true}},
@@ -320,6 +329,7 @@ describe('test input availability action', () => {
       index,
       selectedDate,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(DELETE_AVAILABILITY);
     expect(store.getActions()[0].payload).toEqual({
       rangeHours: [],
@@ -341,6 +351,7 @@ describe('test input availability action', () => {
       index,
       selectedDate,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(DELETE_AVAILABILITY);
     expect(store.getActions()[0].payload).toEqual({
       rangeHours: [],
@@ -363,6 +374,7 @@ describe('test input availability action', () => {
       index,
       selectedDate,
     )(store.dispatch);
+    await flushAllPromises();
     expect(store.getActions()[0].type).toEqual(DELETE_AVAILABILITY);
     expect(store.getActions()[0].payload).toEqual({
       rangeHours: [],
