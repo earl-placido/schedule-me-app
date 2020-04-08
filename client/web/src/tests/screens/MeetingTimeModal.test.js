@@ -22,29 +22,26 @@ describe("MeetingTimeModal tests", () => {
 
   it("should render MeetingTimeModal", () => {
     expect(component.length).toEqual(1);
-    expect(component.find(".optimal-time-display")).toHaveLength(2)
+    expect(component.find(".optimal-time-display")).toHaveLength(2);
   });
 
   it("Tests handleClick function", () => {
-    const data = "test"
+    const data = "test";
     const handleClickSpy = jest.spyOn(component.instance(), "handleClick");
-    component.setState({ currentSelected: null })
-    expect(component.state('currentSelected')).toEqual(null)
+    component.setState({ currentSelected: null });
+    expect(component.state("currentSelected")).toEqual(null);
     component.instance().handleClick(data);
     expect(props.selectOptimalTime.mock.calls.length).toBe(1);
     expect(handleClickSpy).toBeCalled();
-    expect(component.state('currentSelected')).toEqual(data)
+    expect(component.state("currentSelected")).toEqual(data);
   });
 
   it("Tests meeting time display", () => {
     const handleClickSpy = jest.spyOn(component.instance(), "handleClick");
-    const meetingTimeDisplay = component.find("#meeting-time-display")
+    const meetingTimeDisplay = component.find("#meeting-time-display");
     expect(meetingTimeDisplay).toHaveLength(1);
-    meetingTimeDisplay.simulate('click')
+    meetingTimeDisplay.simulate("click");
     component.instance().handleClick();
     expect(handleClickSpy).toBeCalled();
   });
-
 });
-
-

@@ -18,7 +18,7 @@ describe("Testing GroupCodeModal", () => {
       resetState: jest.fn(),
       setCode: jest.fn(),
       addUserToGroup: jest.fn(),
-      success: false, 
+      success: false,
       code: "1234"
     };
     component = setUp(props);
@@ -30,7 +30,7 @@ describe("Testing GroupCodeModal", () => {
     expect(props.resetState.mock.calls.length).toBe(1);
   });
 
-  it("tests functions", () =>{
+  it("tests functions", () => {
     const handleChangeSpy = jest.spyOn(component.instance(), "handleChange");
     const onEnterSpy = jest.spyOn(component.instance(), "onEnter");
     component.instance().handleChange("test");
@@ -43,7 +43,7 @@ describe("Testing GroupCodeModal", () => {
 
   it("tests Input component", () => {
     expect(component.find(Input)).toHaveLength(1);
-    component.find(Input).simulate('change', {
+    component.find(Input).simulate("change", {
       target: {
         value: "test"
       }
@@ -58,7 +58,5 @@ it("Test if join message displays", () => {
     success: true
   };
   let component = setUp(props);
-  expect(component.find("#join-message")).toHaveLength(1);;
+  expect(component.find("#join-message")).toHaveLength(1);
 });
-
-

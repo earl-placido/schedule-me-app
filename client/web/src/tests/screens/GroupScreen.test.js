@@ -33,9 +33,9 @@ describe("Testing the Group Details Screen", () => {
       meetings: [1],
       showErrorModal: false,
       group: {
-        Groupname: 'Lorem Ipsum'
+        Groupname: "Lorem Ipsum"
       },
-      selfMember:{
+      selfMember: {
         MemberRole: "AD"
       },
       match: {
@@ -110,16 +110,18 @@ describe("Testing the Group Details Screen", () => {
   });
 
   it("Test show group code functionality", () => {
-    component.setState({showCode : false})
+    component.setState({ showCode: false });
     component.find("#show-code-button").simulate("click");
-    expect(component.state('showCode')).toEqual(true);
+    expect(component.state("showCode")).toEqual(true);
     expect(component.find("#group-code-panel")).toHaveLength(1);
   });
 
   it("Test input availability modal", () => {
     const inputAvailabilityModal = component.find("#input-availability-modal");
     expect(inputAvailabilityModal.find(InputAvailability)).toHaveLength(1);
-    expect(inputAvailabilityModal.prop("visible")).toEqual(props.inputModalVisible);
+    expect(inputAvailabilityModal.prop("visible")).toEqual(
+      props.inputModalVisible
+    );
     component.find("#input-availability-button").simulate("click");
     expect(props.showModal.mock.calls.length).toBe(1);
   });
@@ -136,17 +138,19 @@ describe("Testing the Group Details Screen", () => {
   });
 
   it("Tests group members list", () => {
-    expect(component.find(List)).toHaveLength(1)
-    const groupMembers = component.find(List).dive().dive().find(".ant-list-items");
+    expect(component.find(List)).toHaveLength(1);
+    const groupMembers = component
+      .find(List)
+      .dive()
+      .dive()
+      .find(".ant-list-items");
     expect(groupMembers.find("Item")).toHaveLength(props.groupMembers.length);
   });
 
   it("Tests currentMeetingTime", () => {
     const meetingTime = shallow(component.instance().currentMeetingTime());
-    expect(meetingTime.find("#meeting-time-panel")).toHaveLength(1)
-    expect(meetingTime.find("#meeting-time"))
-    expect(meetingTime.find("#change-meeting-time"))
+    expect(meetingTime.find("#meeting-time-panel")).toHaveLength(1);
+    expect(meetingTime.find("#meeting-time"));
+    expect(meetingTime.find("#change-meeting-time"));
   });
 });
-
-
