@@ -167,7 +167,10 @@ describe("GroupDetail action", () => {
 
   it("test getOptimalTime actions", async () => {
     const groupId = 1;
-    const optimalTime = { bestTime: 1 };
+    let optimalTime = [
+      ["2020-03-01:3_5", 3],
+      ["2020-03-02:3_3", 5]
+    ];
 
     httpMock
       .onGet(
@@ -178,7 +181,22 @@ describe("GroupDetail action", () => {
     await getOptimalTime(groupId)(store.dispatch);
     expect(store.getActions()[0].type).toEqual(OPTIMAL_TIME);
     expect(store.getActions()[0].payload).toEqual({
-      optimalTimes: optimalTime
+      optimalTimes: []
+    });
+
+    // handle bad path
+    optimalTime = { bestTime: 1 }; // when optimalTime is not array
+    httpMock
+      .onGet(
+        `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/optimaltime/`
+      )
+      .reply(200, { optimalTime });
+    store.clearActions();
+    await getOptimalTime(groupId)(store.dispatch);
+    expect(store.getActions()[0].type).toEqual(OPTIMAL_TIME);
+    expect(store.getActions()[0].payload).toEqual({
+      optimalTimes: null,
+      showErrorModal: true
     });
   });
 
