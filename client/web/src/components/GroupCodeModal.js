@@ -53,7 +53,7 @@ class GroupCodeModal extends Component {
             </Row>
           </span>
         ) : (
-          <span>
+          <span id="join-message">
             <Row justify="center">
               You have successfully joined {this.props.groupName}!
             </Row>
