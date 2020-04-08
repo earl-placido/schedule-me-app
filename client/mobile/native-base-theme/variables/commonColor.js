@@ -136,7 +136,8 @@ export default {
   brandDanger: '#ff0000',
   brandWarning: '#f0ad4e',
   brandDark: '#001529',
-  brandLight: '#334454',
+  brandLight: '#001F54',
+  brandMedium: '#011638',
 
   // Container
   containerBgColor: '#fff',
@@ -165,7 +166,7 @@ export default {
   // Footer
   footerHeight: 55,
   get footerDefaultBg() {
-    return this.brandPrimary;
+    return this.brandLight;
   },
   footerPaddingBottom: 0,
 
@@ -179,10 +180,10 @@ export default {
 
   // Header
   get toolbarBtnColor() {
-    return this.brandPrimary;
+    return this.brandLight;
   },
   get toolbarDefaultBg() {
-    return this.brandPrimary;
+    return this.brandLight;
   },
   toolbarHeight: platform === PLATFORM.IOS ? 64 : 56,
   toolbarSearchIconSize: platform === PLATFORM.IOS ? 20 : 23,
@@ -190,16 +191,16 @@ export default {
   searchBarHeight: platform === PLATFORM.IOS ? 30 : 40,
   searchBarInputHeight: platform === PLATFORM.IOS ? 30 : 50,
   toolbarBtnTextColor: platform === PLATFORM.IOS ? '#007aff' : '#fff',
-  iosStatusbar: 'dark-content',
+  iosStatusbar: 'light-content',
   toolbarDefaultBorder: platform === PLATFORM.IOS ? '#a7a6ab' : '#3F51B5',
   get statusBarColor() {
     return color(this.toolbarDefaultBg)
-      .darken(0.2)
+      .darken(0.5)
       .hex();
   },
   get darkenHeader() {
     return color(this.tabBgColor)
-      .darken(0.03)
+      .darken(0.4)
       .hex();
   },
 
@@ -212,7 +213,9 @@ export default {
   inputFontSize: 17,
   inputBorderColor: '#D9D5DC',
   inputSuccessBorderColor: '#2b8339',
-  inputErrorBorderColor: '#ed2f2f',
+  get inputErrorBorderColor() {
+    return this.brandDanger;
+  },
   inputHeightBase: 50,
   get inputColor() {
     return this.textColor;

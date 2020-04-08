@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    backgroundColor: commonColor.brandPrimary,
+    backgroundColor: commonColor.brandMedium,
     paddingVertical: 20,
     paddingHorizontal: 10,
   },

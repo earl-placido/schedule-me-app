@@ -28,7 +28,7 @@ const CodeForm = t.struct({
 export default class GroupShareCodeForm extends Component {
   onPress = () => {
     Clipboard.setString(this.props.meetingCode);
-    ToastAndroid.show('Code Copied to Clipboard!', ToastAndroid.SHORT);
+    ToastAndroid.show('Code copied to your clipboard!', ToastAndroid.SHORT);
   };
 
   render() {
