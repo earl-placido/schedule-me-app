@@ -118,7 +118,10 @@ class GroupScreen extends Component {
             this.props.meetings.map((meeting, index) => {
               return (
                 <div key={index} id="meeting-time">
-                  <p style={{ display: "inline", marginRight: 10 }} id="meeting-time-detail">
+                  <p
+                    style={{ display: "inline", marginRight: 10 }}
+                    id="meeting-time-detail"
+                  >
                     {meeting.meetingAvailableString
                       ? this.formatDate(meeting.meetingAvailableString)
                       : "No meeting time is selected"}
