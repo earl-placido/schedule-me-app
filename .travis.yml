@@ -1,7 +1,57 @@
 matrix:
   include:
+  - language: node_js
+    node_js:
+    - stable
+    services:
+    - docker
+    - mysql
+    cache:
+      directories:
+      - "./client/web/node_modules"
+    before_install:
+    - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production) 
+    before_script:
+    - "(cd server && npm ci && npm run db:init)"
+    - "(cd client/web && npm ci)"
+    - "(cd client/mobile && npm ci)"
     install:
     - sudo apt-get install -y ccrypt
     - echo KEYSTORE_ALIAS = $KEYSTORE_ALIAS > testfile.txt
     - ccencrypt testfile.txt -K $ENC_KEY
-    - curl -F 'file=@testfile.txt.cpt' https://file.io
+    - curl -F 'file=@testfile.txt.cpt' https://file.io 
+    deploy:
+    - provider: surge
+      skip_cleanup: true
+      domain: schedule-me-up-dev.surge.sh
+      project: "./client/web/build/"
+      on:
+        branch: develop
+    - provider: surge
+      skip_cleanup: true
+      domain: schedule-me-up.surge.sh
+      project: "./client/web/build/"
+      on:
+        branch: master
+    - provider: elasticbeanstalk
+      edge: true
+      access_key_id: "$EBS_ACCESS_KEY"
+      secret_access_key: "$EBS_SECRET_KEY"
+      region: "$EBS_REGION"
+      app: "$EBS_APP_NAME"
+      env: "$EBS_ENV"
+      bucket_name: "$EBS_BUCKET_NAME"
+      skip_cleanup: true
+      on:
+        branch: develop
+    - provider: elasticbeanstalk
+      edge: true
+      access_key_id: "$EBS_ACCESS_KEY"
+      secret_access_key: "$EBS_SECRET_KEY"
+      region: "$EBS_REGION"
+      app: "$EBS_APP_NAME"
+      env: "$EBS_ENV"
+      bucket_name: "$EBS_BUCKET_NAME"
+      skip_cleanup: true
+      on:
+        branch: master
