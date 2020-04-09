@@ -35,7 +35,7 @@ function CustomDrawerContent(props) {
           labelStyle={styles.menuItemStyle}
           label="View Groups"
           icon={() => (
-            <Icon type="AntDesign" name="bars" style={styles.menuItemStyle} />
+            <Icon type="AntDesign" name="bars" style={styles.iconStyle} />
           )}
           onPress={() => {
             props.navigation.push('Group List');
@@ -78,7 +78,7 @@ function CustomDrawerContent(props) {
             <Icon
               type="AntDesign"
               name="plussquareo"
-              style={styles.menuItemStyle}
+              style={styles.iconStyle}
             />
           )}
           onPress={() => {
@@ -93,7 +93,7 @@ function CustomDrawerContent(props) {
             <Icon
               type="AntDesign"
               name="plussquareo"
-              style={styles.menuItemStyle}
+              style={styles.iconStyle}
             />
           )}
           onPress={() => {
@@ -139,6 +139,10 @@ const styles = StyleSheet.create({
     backgroundColor: commonColor.brandMedium,
     paddingVertical: 20,
     paddingHorizontal: 10,
+  },
+  iconStyle: {
+    color: 'white',
+    fontSize: 22,
   },
   menuItemStyle: {
     color: 'white',

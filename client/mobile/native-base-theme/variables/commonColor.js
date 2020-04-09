@@ -205,7 +205,7 @@ export default {
   },
 
   // Icon
-  iconFamily: 'Ionicons',
+  iconFamily: 'Ionicons', // I don't think we have any other choice -.-
   iconFontSize: platform === PLATFORM.IOS ? 30 : 28,
   iconHeaderSize: platform === PLATFORM.IOS ? 33 : 24,
 
@@ -285,7 +285,7 @@ export default {
   },
 
   // Title
-  titleFontfamily: platform === PLATFORM.IOS ? 'System' : 'Roboto_medium',
+  titleFontfamily: platform === PLATFORM.IOS ? 'System' : 'AntDesign',
   titleFontSize: platform === PLATFORM.IOS ? 17 : 19,
   subTitleFontSize: platform === PLATFORM.IOS ? 11 : 14,
   subtitleColor: platform === PLATFORM.IOS ? '#000' : '#fff',
