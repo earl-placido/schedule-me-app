@@ -1,28 +1,35 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text} from 'react-native';
-import {
-  Spinner,
-  Container,
-  Content,
-  Button,
-  View,
-  CardItem,
-  Body,
-} from 'native-base';
+import {Body, Button, CardItem, Container, Spinner, View} from 'native-base';
 import {connect} from 'react-redux';
 
 import PropTypes from 'prop-types';
-import t from 'tcomb-form-native';
+// import t from 'tcomb-form-native';
 
 import {getGroup} from '../../actions/GetGroup.action';
 import {addGroupMember} from '../../actions/AddGroupMember.action';
 
-const Form = t.form.Form;
+var t = require('tcomb-form-native/lib');
+var _ = require('lodash');
+
+// clone the default stylesheet
+const stylesheet = _.cloneDeep(t.form.Form.stylesheet);
+
+// overriding the text color
+stylesheet.textbox.normal.fontSize = 42;
+stylesheet.textbox.error.fontSize = 42;
+stylesheet.textbox.normal.height = 70;
+stylesheet.textbox.error.height = 70;
+stylesheet.textbox.normal.paddingHorizontal = 20;
+stylesheet.textbox.error.paddingHorizontal = 20;
 
 const codeOptions = {
   fields: {
     code: {
-      error: 'Please input a code number',
+      error: 'Please enter a code',
+      placeholder: '0000000',
+      maxLength: 7,
+      stylesheet: stylesheet,
     },
   },
 };
@@ -106,15 +113,16 @@ class GroupCodeForm extends Component {
         <View>
           <CardItem header boardered>
             <Body style={{alignItems: 'center'}}>
-              <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
+              <Text style={({fontWeight: 'bold'}, {fontSize: 30})}>
                 Enter Group Code
               </Text>
             </Body>
           </CardItem>
         </View>
-        <Content padder>
-          <Form
-            id="input-form"
+
+        <View style={styles.codeStyle}>
+          <t.form.Form
+            style={styles.innerCodeStyle}
             ref={_form => (this.form = _form)}
             options={codeOptions}
             type={codeModel}
@@ -123,7 +131,7 @@ class GroupCodeForm extends Component {
               code: this.props.code,
             }}
           />
-        </Content>
+        </View>
         <View style={styles.buttonStyle}>
           <Button
             id="join-group-button"
@@ -161,6 +169,12 @@ const styles = StyleSheet.create({
   insideButtonStyle: {
     padding: 15,
     alignItems: 'center',
+  },
+  codeStyle: {
+    alignItems: 'center',
+  },
+  innerCodeStyle: {
+    width: 400,
   },
   titleStyle: {
     padding: 20,

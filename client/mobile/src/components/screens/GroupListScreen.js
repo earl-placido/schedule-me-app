@@ -26,7 +26,7 @@ class GroupList extends Component {
         <View>
           <CardItem header boardered accessibilityLabel={'YourGroupsTitle'}>
             <Body style={{alignItems: 'center'}}>
-              <Text style={({fontWeight: 'bold'}, {fontSize: 20})}>
+              <Text style={({fontWeight: 'bold'}, {fontSize: 30})}>
                 Your Groups
               </Text>
             </Body>
@@ -65,7 +65,7 @@ class GroupList extends Component {
           ) : (
             <View>
               <Body style={{alignItems: 'center'}}>
-                <Text id="no-groups-text">Your group list is empty</Text>
+                <Text id="no-groups-text">Your group list is empty 😞</Text>
               </Body>
             </View>
           )}
