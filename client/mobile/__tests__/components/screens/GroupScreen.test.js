@@ -13,7 +13,7 @@ const setUp = (props = {}) => {
   return component;
 };
 
-describe('Testing AvailabilityModal', () => {
+describe('Testing Group Screen', () => {
   let component, props;
   beforeEach(() => {
     const getGroup = jest.fn();
@@ -107,7 +107,7 @@ describe('Testing AvailabilityModal', () => {
     });
   });
 
-  it('Tests if component and children', () => {
+  it('Tests component and children', () => {
     const meetingTimeSpy = jest.spyOn(
       component.instance(),
       'currentMeetingTime',

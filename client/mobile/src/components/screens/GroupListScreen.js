@@ -65,7 +65,7 @@ class GroupList extends Component {
           ) : (
             <View>
               <Body style={{alignItems: 'center'}}>
-                <Text>Your group list is empty</Text>
+                <Text id="no-groups-text">Your group list is empty</Text>
               </Body>
             </View>
           )}
