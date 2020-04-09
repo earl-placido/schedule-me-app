@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Content, Button, Text} from 'native-base';
+import {Content, Button, Text, Toast} from 'native-base';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import t from 'tcomb-form-native';
-import {Clipboard, StyleSheet, ToastAndroid} from 'react-native';
+import {Clipboard, StyleSheet} from 'react-native';
 
 const Form = t.form.Form;
 
@@ -24,7 +24,9 @@ const CodeForm = t.struct({
 class GroupShareCodeForm extends Component {
   copyCode = () => {
     Clipboard.setString(this.props.meetingCode);
-    ToastAndroid.show('Code Copied to Clipboard!', ToastAndroid.SHORT);
+    Toast.show({
+      text: "Code copied to your clipboard!"
+    });
   };
 
   goToGroup = () => {
