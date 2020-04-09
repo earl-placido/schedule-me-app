@@ -10,7 +10,7 @@ import CreateAccount from '../login/CreateAccount';
 class Home extends Component {
   render() {
     return (
-      <Container style={styles.container} accessibilityLabel={'HomeContainer'}>
+      <Container style={styles.container} accessibilityLabel={'Home'}>
         <Text style={styles.title}>Schedule Me Up</Text>
         <Login navigation={this.props.navigation} />
         <CreateAccount navigation={this.props.navigation} />

@@ -69,4 +69,4 @@ How to run:
 
 2. Run the app on your device (i.e. `npx react-native run-android`)
 
-3. While in `client/mobile`, run: `npm run test:system`
+3. While in `client/mobile`, run: `npm run test:integration`

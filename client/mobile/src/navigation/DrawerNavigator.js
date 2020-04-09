@@ -103,7 +103,7 @@ function CustomDrawerContent(props) {
       </ScrollView>
       <Button
         style={styles.logoutStyle}
-        accessibilityLabel={'LogoutButton'}
+        accessibilityLabel={'Logout Button'}
         onPress={() => {
           GoogleSignin.revokeAccess();
           GoogleSignin.signOut();

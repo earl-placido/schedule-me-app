@@ -66,7 +66,7 @@ class Login extends Component {
     Toast.show({
       text: message,
       buttonText: 'OK',
-      duration: 3000,
+      duration: 4000,
       position: 'top',
     });
   };
@@ -137,7 +137,7 @@ class Login extends Component {
           block
           primary
           onPress={() => this.userLogin()}
-          accessibilityLabel={'LoginButton'}>
+          accessibilityLabel={'Login Button'}>
           <Text>Log In</Text>
           {this.state.isSpinnerVisible && <Spinner color="white" />}
         </Button>

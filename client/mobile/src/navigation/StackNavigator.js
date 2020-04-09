@@ -44,7 +44,7 @@ class StackNavigator extends Component {
                         onPress={() => {
                           props.navigation.navigate('Group List');
                         }}>
-                        <Text accessibilityLabel={'HeaderUsername'}>
+                        <Text accessibilityLabel={'User Name'}>
                           {this.props.userName}
                         </Text>
                       </Button>

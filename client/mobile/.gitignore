@@ -61,5 +61,5 @@ buck-out/
 # env
 .env
 
-# system tests output
-__system_tests_errors__
+# integration tests output
+__integration_tests_errors__
