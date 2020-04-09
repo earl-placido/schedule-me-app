@@ -98,7 +98,6 @@ export const loginGoogle = response => {
           let userName = `${res.data.firstName} ${res.data.lastName}`;
           let userEmail = `${res.data.email}`;
           setUserData(token, userName, userEmail);
-
           dispatch(loginSuccess(userName, token));
         } else {
           throw new Error(res.err);
