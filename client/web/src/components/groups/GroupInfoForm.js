@@ -1,11 +1,7 @@
-import React, { Component } from "react";
 import { Form, Input } from "antd";
 import Icon from "@ant-design/icons";
-
+import React, { Component } from "react";
 import PropTypes from "prop-types";
-
-import "antd/dist/antd.css";
-import "../../css/app.css";
 
 const { TextArea } = Input;
 
@@ -35,11 +31,11 @@ export default class GroupInfoForm extends Component {
                     style={{ color: "rgba(0,0,0,.25)" }}
                   />
                 }
-                placeholder={"Enter Group Names"}
+                placeholder={"Enter a group name"}
                 value={this.props.groupName}
               />
-              {!this.props.success && (
-                <h1 style={errorText}>Please input group name</h1>
+              {!this.props.success && !this.props.hasAName && (
+                <h1 style={errorText}>Please enter a name for your group</h1>
               )}
             </div>
           }
@@ -47,14 +43,19 @@ export default class GroupInfoForm extends Component {
 
         <Form.Item>
           {
-            <TextArea
-              id="groupDescriptionInput"
-              onChange={this.handleGroupDescriptionChange.bind(this)}
-              placeholder="Enter group description (Optional)"
-              rows={7}
-              allowClear
-              value={this.props.groupDescription}
-            />
+            <div>
+              <TextArea
+                id="groupDescriptionInput"
+                onChange={this.handleGroupDescriptionChange.bind(this)}
+                placeholder="Enter a description for your group (optional)"
+                rows={7}
+                allowClear
+                value={this.props.groupDescription}
+              />
+              {!this.props.success && this.props.descriptionTooLong && (
+                <h1 style={errorText}>Description is too long</h1>
+              )}
+            </div>
           }
         </Form.Item>
       </Form>
@@ -73,7 +74,11 @@ const styles = {
 GroupInfoForm.propTypes = {
   handleGroupName: PropTypes.func,
   handleGroupDescription: PropTypes.func,
-  groupName: PropTypes.any,
-  success: PropTypes.any,
-  groupDescription: PropTypes.any
+
+  groupName: PropTypes.string,
+  groupDescription: PropTypes.string,
+
+  success: PropTypes.bool,
+  descriptionTooLong: PropTypes.bool,
+  hasAName: PropTypes.bool
 };

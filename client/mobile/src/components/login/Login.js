@@ -9,14 +9,12 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import {
-  loginGoogle,
-  loginUser,
-} from '../../actions/components/screens/Auth.action';
+import {loginGoogle, loginUser} from '../../actions/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import Divider from '../styles/Divider';
+import {Alert} from 'react-native';
 
 GoogleSignin.configure({
   webClientId: Config.REACT_APP_GOOGLE_CLIENT_ID,
@@ -71,16 +69,19 @@ class Login extends Component {
   };
 
   googleLogin = () => {
-    GoogleSignin.signIn().then(() => {
-      this.toggleSignInProgress();
-
-      GoogleSignin.getTokens().then(response => {
-        this.props.loginGoogle(response);
-        setTimeout(() => {
-          this.attemptLogin();
-        }, 3000);
+    GoogleSignin.signIn()
+      .then(() => {
+        this.toggleSignInProgress();
+        GoogleSignin.getTokens().then(response => {
+          this.props.loginGoogle(response);
+          setTimeout(() => {
+            this.attemptLogin();
+          }, 3000);
+        });
+      })
+      .catch(() => {
+        Alert.alert('Cannot connect to google login');
       });
-    });
   };
 
   userLogin = () => {
@@ -100,13 +101,15 @@ class Login extends Component {
   attemptLogin = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
-      this.props.navigation.navigate('Create Group');
+      this.props.navigation.navigate('Drawer');
       this.toggleLogin();
     } else {
       if (this.props.message.errors) {
         this.showToast(this.props.message.errors[0].msg);
       } else if (this.props.message.err) {
         this.showToast(this.props.message.err);
+      } else {
+        this.showToast(this.props.message);
       }
     }
     this.toggleSignInProgress();
@@ -130,7 +133,8 @@ class Login extends Component {
           small
           block
           primary
-          onPress={() => this.userLogin()}>
+          onPress={() => this.userLogin()}
+          accessibilityLabel={'LoginButton'}>
           <Text>Log In</Text>
           {this.state.isSpinnerVisible && <Spinner color="white" />}
         </Button>

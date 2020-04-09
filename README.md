@@ -46,14 +46,14 @@ A scheduler application for a group project in COMP 4350 at the University of Ma
 
 
 
-## Wiki/Docs
+## Documentation
 
 - [Wiki](https://github.com/Syndrical/scheduler-app/wiki)
   - [CI/CD](https://github.com/Syndrical/scheduler-app/wiki/CI-CD-Introduction)
   - [Linting](https://github.com/Syndrical/scheduler-app/wiki/Linting)
   - [How to setup Input Availability on LocalHost](https://github.com/Syndrical/scheduler-app/wiki/How-to-setup-Input-Availability-on-LocalHost)
-
-- [Docs](https://github.com/Syndrical/scheduler-app/tree/develop/Docs)
-  - [Technologies used](https://github.com/Syndrical/scheduler-app/blob/develop/Docs/technologies-used.md)
-  - [Retrospective](https://github.com/Syndrical/scheduler-app/blob/develop/Docs/retrospective.md)
-  - [Information on Version Control Flow/Contributing](https://github.com/Syndrical/scheduler-app/blob/develop/Docs/contributing.md)
+- [Docs](docs)
+  - [Architecture](docs/architecture.md)
+  - [Technologies used](docs/technologies-used.md)
+  - [Retrospective](docs/retrospective.md)
+  - [Information on Version Control Flow/Contributing](docs/contributing.md)

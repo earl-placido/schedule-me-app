@@ -1,10 +1,10 @@
 {
-  "baseUrl": "http://localhost:3000",
-  "integrationFolder": "system_tests/tests",
+  "baseUrl": "http://localhost:3001",
+  "integrationFolder": "system-tests/tests",
   "supportFile": false,
   "pluginsFile": false,
   "fixturesFolder": false,
-  "videosFolder": "system_tests/videos",
-  "screenshotsFolder:": "system_tests/images",
+  "videosFolder": "system-tests/videos",
+  "screenshotsFolder:": "system-tests/images",
   "projectId": "hrvwfk"
 }

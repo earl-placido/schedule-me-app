@@ -11,14 +11,14 @@ import {
   UPDATE_MEETING_LOCATION,
   UPDATE_MEETING_FREQUENCY,
   UPDATE_GROUP_NAME
-} from "../../actions/components/screens/CreateGroup.action";
-import CreateGroup from "../../components/screens/CreateGroup/CreateGroup";
+} from "../../actions/screens/CreateGroupScreen.action";
+import CreateGroup from "../../screens/CreateGroupScreen";
 
 configure({ adapter: new Adapter() });
 
 describe("CreateGroup, test groupInfoForm", () => {
   const initialState = {
-    CreateGroupReducer: {
+    CreateGroupScreenReducer: {
       groupName: "groupName",
       groupDescription: "groupDescription",
       duration: "duration",
@@ -89,7 +89,7 @@ describe("CreateGroup, test groupInfoForm", () => {
 
 describe("Create group test GroupMeetingForm", () => {
   const initialState = {
-    CreateGroupReducer: {
+    CreateGroupScreenReducer: {
       groupName: "groupName",
       groupDescription: "groupDescription",
       duration: "duration",

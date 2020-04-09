@@ -1,19 +1,21 @@
 import { combineReducers } from "redux";
 
-import CreateGroupReducer from "./actions/components/screens/CreateGroup.action";
+import CreateGroupScreenReducer from "./actions/screens/CreateGroupScreen.action";
 import LoginReducer from "./actions/components/login/Modal.action";
-import AuthReducer from "./actions/components/screens/Auth.action";
-import AddAvailabilityReducer from "./actions/components/screens/InputAvailability.action";
-import MainPageReducer from "./actions/components/screens/MainPage.action";
-import GroupDetailReducer from "./actions/components/screens/GroupDetail.action";
+import AuthReducer from "./actions/Auth.action";
+import AddAvailabilityReducer from "./actions/components/InputAvailabilityModal.action";
+import GroupListScreenReducer from "./actions/screens/GroupListScreen.action";
+import GroupScreenReducer from "./actions/screens/GroupScreen.action";
 import NavigationBarReducer from "./actions/components/layout/NavigationBar.action";
+import GroupCodeModalReducer from "./actions/components/GroupCodeModal.action";
 
 export default combineReducers({
-  CreateGroupReducer,
+  CreateGroupScreenReducer,
   LoginReducer,
-  auth: AuthReducer,
-  MainPageReducer,
-  GroupDetailReducer,
+  AuthReducer: AuthReducer,
+  GroupListScreenReducer,
+  GroupScreenReducer,
   AddAvailabilityReducer,
-  NavigationBarReducer
+  NavigationBarReducer,
+  GroupCodeModalReducer
 });

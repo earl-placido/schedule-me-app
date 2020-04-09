@@ -1,9 +1,10 @@
-import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
 import Icon from "@ant-design/icons";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { authenticate } from "../../actions/components/screens/Auth.action";
+
+import { authenticate } from "../../actions/Auth.action";
 
 class LoginForm extends Component {
   constructor(props) {
@@ -15,41 +16,38 @@ class LoginForm extends Component {
     this.props.authenticate("login", values);
   }
 
-  loginFail(errorinfo) {
-    console.log("Failed", errorinfo);
-  }
-
   render() {
     return (
-      <div>
+      <div className="login-form">
         {this.props.errored ? (
-          <p style={{ textAlign: "center", color: "Red" }}>
+          <p
+            className="error-message"
+            style={{ textAlign: "center", color: "Red" }}
+          >
             {this.props.message}
           </p>
         ) : null}
 
-        <Form
-          name="login"
-          onFinish={this.loginWithEmail}
-          onFinishFailed={this.loginFail}
-        >
+        <Form name="login" onFinish={this.loginWithEmail}>
           <Form.Item
+            className="input-email"
             name="email"
             rules={[
               { type: "email", message: "Please enter a valid email address" },
-              { required: true, message: "Please input your email!" }
+              { required: true, message: "Please enter your email!" }
             ]}
           >
             <Input
               allowClear
-              placeholder={"Enter your Email"}
+              placeholder={"Enter your email"}
               prefix={<Icon type="mail" style={{ color: "rgba(0,0,0,.25)" }} />}
             />
           </Form.Item>
 
           <Form.Item
+            className="input-password"
             name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
+            rules={[{ required: true, message: "Please enter your password!" }]}
           >
             <Input.Password
               allowClear
@@ -58,7 +56,7 @@ class LoginForm extends Component {
             />
           </Form.Item>
 
-          <Form.Item>
+          <Form.Item className="input-submit">
             <Button
               type="primary"
               htmlType="submit"
@@ -76,15 +74,13 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   authenticate: PropTypes.func,
-  isAuthenticated: PropTypes.any,
   errored: PropTypes.any,
   message: PropTypes.any
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  errored: state.auth.errored,
-  message: state.auth.message
+  errored: state.AuthReducer.errored,
+  message: state.AuthReducer.message
 });
 
 const mapDispatchToProps = dispatch => ({

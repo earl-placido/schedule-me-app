@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-import { Form, Input, TimePicker } from "antd";
+import { Form, Input, InputNumber, Row, Col } from "antd";
 import Icon from "@ant-design/icons";
-
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 class GroupMeetingForm extends Component {
@@ -18,26 +17,38 @@ class GroupMeetingForm extends Component {
   }
 
   render() {
-    const { errorText, durationStyle } = styles;
+    const { errorText, oldAntColStyle } = styles;
 
     return (
       <Form onSubmit={this.handleSubmit} className="login-form">
-        <Form.Item>
-          {
-            <div>
-              <TimePicker
-                format={"HH:mm"}
-                placeholder="Duration (HH:mm)"
+        <Form.Item align="middle">
+          <Row gutter={[15, 0]} align="middle">
+            <Col style={oldAntColStyle}> Meeting duration </Col>
+            <Col style={oldAntColStyle}>
+              <InputNumber
+                defaultValue={0}
                 value={this.props.duration}
+                min={1}
+                max={1440}
+                step={5}
+                formatter={value =>
+                  `${Math.trunc(value / 60)}:${(value % 60)
+                    .toFixed()
+                    .toString()
+                    .padStart(2, "0")}`
+                }
+                parser={value => {
+                  value = value.replace(":", "");
+                  return Math.trunc(value / 100) * 60 + (value % 100);
+                }}
                 onChange={this.changeDuration.bind(this)}
                 id="duration"
-                style={durationStyle}
               />
-              {!this.props.success && (
-                <h1 style={errorText}>Please input meeting duration.</h1>
-              )}
-            </div>
-          }
+            </Col>
+          </Row>
+          {!this.props.success && !this.props.hasMeetingDuration && (
+            <h1 style={errorText}>Please enter the length of your meeting</h1>
+          )}
         </Form.Item>
 
         <Form.Item>
@@ -46,7 +57,7 @@ class GroupMeetingForm extends Component {
               prefix={
                 <Icon type="calendar" style={{ color: "rgba(0,0,0,.25)" }} />
               }
-              placeholder="Meeting Frequency (Optional)"
+              placeholder="Meeting frequency (optional)"
               value={this.props.frequency}
               onChange={this.changeFrequency.bind(this)}
               id="frequency"
@@ -58,7 +69,7 @@ class GroupMeetingForm extends Component {
           {
             <Input
               prefix={<Icon type="home" style={{ color: "rgba(0,0,0,.25)" }} />}
-              placeholder="Meeting Location (Optional)"
+              placeholder="Meeting location (optional)"
               value={this.props.location}
               onChange={this.changeLocation.bind(this)}
               id="location"
@@ -77,8 +88,8 @@ const styles = {
     marginLeft: 10
   },
 
-  durationStyle: {
-    width: 200
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 
@@ -86,7 +97,8 @@ GroupMeetingForm.propTypes = {
   frequency: PropTypes.any,
   duration: PropTypes.any,
   location: PropTypes.any,
-  success: PropTypes.any,
+  success: PropTypes.bool,
+  hasMeetingDuration: PropTypes.bool,
 
   updateMeetingDuration: PropTypes.func,
   updateMeetingFrequency: PropTypes.func,

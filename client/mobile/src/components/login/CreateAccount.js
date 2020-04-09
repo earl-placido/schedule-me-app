@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
 import {StyleSheet, Alert} from 'react-native';
-import {View, Button, Text, Card, Spinner, Toast} from 'native-base';
+import {
+  View,
+  Button,
+  Text,
+  Card,
+  Spinner,
+  Toast,
+  Left,
+  Right,
+} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {signupUser} from '../../actions/components/screens/Auth.action';
+import {signupUser} from '../../actions/Auth.action';
 import {connect} from 'react-redux';
 
 const Form = t.form.Form;
@@ -85,16 +94,19 @@ class CreateAccount extends Component {
   attemptSignup = () => {
     if (this.props.isAuthenticated) {
       this.showToast(this.props.message);
-      this.props.navigation.navigate('Create Group');
+      this.props.navigation.navigate('Drawer');
       this.toggleCreate();
     } else {
+      let message;
       if (this.props.message.errors) {
-        Alert.alert(this.props.message.errors[0].msg);
+        message = this.props.message.errors[0].msg;
       } else if (this.props.message.err) {
-        Alert.alert(this.props.message.err);
+        message = this.props.message.err;
       } else if (this.props.message) {
-        Alert.alert(this.props.message);
+        message = this.props.message;
       }
+
+      Alert.alert('Signup failed:', message);
     }
   };
 
@@ -108,7 +120,8 @@ class CreateAccount extends Component {
           <View>
             <Text
               style={{color: '#3F51B5'}}
-              onPress={() => this.toggleCreate()}>
+              onPress={() => this.toggleCreate()}
+              accessibilityLabel={'SignupButton'}>
               Sign Up
             </Text>
           </View>
@@ -116,8 +129,11 @@ class CreateAccount extends Component {
 
         <Modal
           isVisible={this.state.isCreateVisible}
-          onBackdropPress={this.toggleCreate}>
-          <Card style={styles.modalStyle}>
+          onRequestClose={() => this.toggleCreate()}
+          accessibilityLabel={'CreateAccountModal'}>
+          <Card
+            style={styles.modalStyle}
+            accessibilityLabel={'CreateAccountForm'}>
             <Form
               ref={_form => (this.form = _form)}
               options={userOptions}
@@ -130,10 +146,29 @@ class CreateAccount extends Component {
                 confirmPassword: this.props.signupFields.confirmPassword,
               }}
             />
-            <Button small block primary onPress={() => this.userSignup()}>
-              <Text>Submit</Text>
-              {this.state.isSpinnerVisible && <Spinner color="white" />}
-            </Button>
+            <View style={{flexDirection: 'row'}}>
+              <Left>
+                <Button
+                  small
+                  block
+                  primary
+                  onPress={() => this.toggleCreate()}
+                  style={{margin: 10}}>
+                  <Text>Cancel</Text>
+                </Button>
+              </Left>
+              <Right>
+                <Button
+                  small
+                  block
+                  primary
+                  onPress={() => this.userSignup()}
+                  accessibilityLabel={'SignupSubmitButton'}>
+                  <Text>Submit</Text>
+                  {this.state.isSpinnerVisible && <Spinner color="white" />}
+                </Button>
+              </Right>
+            </View>
           </Card>
         </Modal>
       </View>

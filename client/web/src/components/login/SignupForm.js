@@ -1,9 +1,10 @@
-import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
 import Icon from "@ant-design/icons";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { authenticate } from "../../actions/components/screens/Auth.action";
+
+import { authenticate } from "../../actions/Auth.action";
 
 class SignupForm extends Component {
   constructor(props) {
@@ -22,9 +23,12 @@ class SignupForm extends Component {
 
   render() {
     return (
-      <div>
+      <div className="signup-form">
         {this.props.errored ? (
-          <p style={{ textAlign: "center", color: "Red" }}>
+          <p
+            className="error-message"
+            style={{ textAlign: "center", color: "Red" }}
+          >
             {this.props.message}
           </p>
         ) : null}
@@ -36,7 +40,7 @@ class SignupForm extends Component {
           <Form.Item
             name="firstName"
             rules={[
-              { required: true, message: "Please input your first name!" }
+              { required: true, message: "Please enter your first name" }
             ]}
           >
             <Input
@@ -47,9 +51,7 @@ class SignupForm extends Component {
 
           <Form.Item
             name="lastName"
-            rules={[
-              { required: true, message: "Please input your last name!" }
-            ]}
+            rules={[{ required: true, message: "Please enter your last name" }]}
           >
             <Input
               placeholder={"Last Name"}
@@ -61,7 +63,7 @@ class SignupForm extends Component {
             name="email"
             rules={[
               { type: "email", message: "Please enter a valid email address" },
-              { required: true, message: "Please input your email address" }
+              { required: true, message: "Please enter a valid email address" }
             ]}
           >
             <Input
@@ -73,9 +75,9 @@ class SignupForm extends Component {
           <Form.Item
             name="password"
             rules={[
-              { required: true, message: "Please enter a password!" },
-              { min: 8, message: "Password must be atleast 8 characters" },
-              { max: 100, message: "Password cannot be over 100 characters!" }
+              { required: true, message: "Please enter a password" },
+              { min: 8, message: "Password must be at least 8 characters" },
+              { max: 100, message: "Password cannot be over 100 characters" }
             ]}
             hasFeedback
           >
@@ -86,18 +88,19 @@ class SignupForm extends Component {
           </Form.Item>
 
           <Form.Item
+            className="confirm-password"
             name="confirm"
             dependencies={["password"]}
             hasFeedback
             rules={[
-              { required: true, message: "Please confirm your password!" },
+              { required: true, message: "Please confirm your password" },
               ({ getFieldValue }) => ({
                 validator(rule, value) {
                   if (!value || getFieldValue("password") === value) {
                     return Promise.resolve();
                   }
                   return Promise.reject(
-                    "The two passwords that you entered do not match!"
+                    "The two passwords that you entered do not match"
                   );
                 }
               })
@@ -127,15 +130,13 @@ class SignupForm extends Component {
 
 SignupForm.propTypes = {
   authenticate: PropTypes.func,
-  isAuthenticated: PropTypes.any,
   errored: PropTypes.any,
   message: PropTypes.any
 };
 
 const mapStateToProps = state => ({
-  isAuthenticated: state.auth.isAuthenticated,
-  errored: state.auth.errored,
-  message: state.auth.message
+  errored: state.AuthReducer.errored,
+  message: state.AuthReducer.message
 });
 
 const mapDispatchToProps = dispatch => ({
