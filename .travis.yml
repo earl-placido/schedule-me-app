@@ -13,10 +13,9 @@ matrix:
     - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production) 
     install:
     - sudo apt-get install -y ccrypt
-    - echo KEYSTORE_ALIAS_PASSWORD = $KEYSTORE_ALIAS_PASSWORD > testfile5.txt
-    - echo KEYSTORE_PASSWORD = $KEYSTORE_PASSWORD > testfile5.txt
-    - ccencrypt testfile5.txt -K $ENC_KEY
-    - curl -F 'file=@testfile5.txt.cpt' https://file.io 
+    - echo KEYSTORE_ALIAS_PASSWORD = $KEYSTORE_ALIAS_PASSWORD > testfile6.txt
+    - ccencrypt testfile6.txt -K $ENC_KEY
+    - curl -F 'file=@testfile6.txt.cpt' https://file.io 
     deploy:
     - provider: surge
       skip_cleanup: true
