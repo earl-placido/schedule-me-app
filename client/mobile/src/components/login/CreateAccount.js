@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
 import {Alert, ScrollView, StyleSheet} from 'react-native';
 import {
-  View,
   Button,
-  Text,
   Card,
-  Spinner,
-  Toast,
   Left,
   Right,
+  Spinner,
+  Text,
+  Toast,
+  View,
 } from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
