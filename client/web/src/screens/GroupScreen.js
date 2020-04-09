@@ -95,7 +95,7 @@ class GroupScreen extends Component {
                 <div key={index} id="meeting-time">
                   <p style={{ display: "inline", marginRight: 10 }}>
                     {meeting.meetingAvailableString ||
-                      "Meeting time is currently empty."}
+                      "No meeting time is selected"}
                   </p>
                   {this.props.selfMember &&
                     this.props.selfMember.MemberRole === "AD" && (
@@ -145,13 +145,11 @@ class GroupScreen extends Component {
               Group: {this.props.group.GroupName}
             </Title>
           </Row>
-          <Row justify="center">
-            <h4>
-              {this.props.group.GroupDescription
-                ? this.props.group.GroupDescription
-                : "No description"}
-            </h4>
-          </Row>
+          {this.props.group.GroupDescription && (
+            <Row justify="center">
+              <h4>{this.props.group.GroupDescription}</h4>
+            </Row>
+          )}
           <Row justify="center" style={marginTop15}>
             <b>Meeting Duration:&nbsp;</b>{" "}
             {this.removeSeconds(this.props.group.MeetingDuration)}
