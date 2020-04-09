@@ -53,6 +53,7 @@ describe('Testing GroupListScreen', () => {
 });
 
 it('Tests no groups', () => {
+  // navigation prop is useless. It's only here to get rid of the missing prop warning
   const props = {
     getGroupList: jest.fn(),
     groupList: [],

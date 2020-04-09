@@ -114,6 +114,7 @@ class GroupCodeForm extends Component {
         </View>
         <Content padder>
           <Form
+            id="input-form"
             ref={_form => (this.form = _form)}
             options={codeOptions}
             type={codeModel}
@@ -125,6 +126,7 @@ class GroupCodeForm extends Component {
         </Content>
         <View style={styles.buttonStyle}>
           <Button
+            id="join-group-button"
             onPress={() => {
               this.handleOnSubmit();
             }}
