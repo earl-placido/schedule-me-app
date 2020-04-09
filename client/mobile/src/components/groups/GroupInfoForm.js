@@ -9,7 +9,7 @@ const Form = t.form.Form;
 const groupOptions = {
   fields: {
     name: {
-      error: 'Please input group name',
+      error: 'Please enter a name for your group',
     },
     description: {
       multiline: true,
