@@ -169,6 +169,7 @@ class GroupDetail extends Component {
             </View>
 
             <Modal
+              id="meeting-modal"
               isVisible={this.props.isMeetingModalVisible}
               onBackdropPress={() =>
                 this.props.toggleMeetingModal(this.props.isMeetingModalVisible)
@@ -216,7 +217,9 @@ class GroupDetail extends Component {
                 )
               }
             />
-            <Modal isVisible={this.props.isInputAvailabilityVisible}>
+            <Modal
+              id="availability-modal"
+              isVisible={this.props.isInputAvailabilityVisible}>
               <InputAvailabilityModal />
             </Modal>
 
