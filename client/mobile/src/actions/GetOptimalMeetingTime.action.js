@@ -157,8 +157,8 @@ export const setOptimalTime = (
 
 export const getSelfMember = groupId => async dispatch => {
   const userEmail = await AsyncStorage.getItem('userEmail');
-  const groupMember = await getGroupMemberWithEmail(groupId, userEmail);
   try {
+    const groupMember = await getGroupMemberWithEmail(groupId, userEmail);
     dispatch({
       type: GET_GROUP_MEMBER,
       payload: {
