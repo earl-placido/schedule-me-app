@@ -87,7 +87,7 @@ export class NavigationBar extends Component {
     const { floatRight, oldAntColStyle } = styles;
     return this.props.isAuthenticated ? (
       <SubMenu
-        id="userName"
+        id="username"
         style={floatRight}
         title={
           <Row>
@@ -108,7 +108,7 @@ export class NavigationBar extends Component {
           </Row>
         }
       >
-        <Menu.Item id="logoutButton" onClick={this.logoutUser}>
+        <Menu.Item id="logout-button" onClick={this.logoutUser}>
           Log Out
         </Menu.Item>
       </SubMenu>
@@ -155,10 +155,10 @@ export class NavigationBar extends Component {
                 <Menu.Item>You have not joined any groups</Menu.Item>
               )}
             </SubMenu>
-            <Menu.Item id="createGroupWeb">
+            <Menu.Item id="create-group-web">
               <a href="/createGroup/">Create A Group</a>
             </Menu.Item>
-            <Menu.Item id="joinGroupWeb" onClick={this.showJoinGroupModal}>
+            <Menu.Item id="join-group-web" onClick={this.showJoinGroupModal}>
               Join A Group
             </Menu.Item>
             {this.userNavigation()}
@@ -226,7 +226,7 @@ export class NavigationBar extends Component {
                   </Col>
                 </Row>
               </Menu.Item>
-              <SubMenu id="groupSubMenuMobile" title={<span>Groups</span>}>
+              <SubMenu id="group-submenu-mobile" title={<span>Groups</span>}>
                 {this.props.groupList && this.props.groupList.length > 0 ? (
                   this.props.groupList.map(group => {
                     return this.renderGroupMenuItem(group);
@@ -235,13 +235,16 @@ export class NavigationBar extends Component {
                   <Menu.Item>You have not joined any groups</Menu.Item>
                 )}
               </SubMenu>
-              <Menu.Item id="createGroupMobile">
+              <Menu.Item id="create-group-mobile">
                 <a href="/createGroup/">Create A Group</a>
               </Menu.Item>
-              <Menu.Item id="joinGroupMobile" onClick={this.showJoinGroupModal}>
+              <Menu.Item
+                id="join-group-mobile"
+                onClick={this.showJoinGroupModal}
+              >
                 Join A Group
               </Menu.Item>
-              <Menu.Item onClick={this.logoutUser} id="logoutButton">
+              <Menu.Item onClick={this.logoutUser} id="logout-button">
                 Log Out
               </Menu.Item>
             </Menu>

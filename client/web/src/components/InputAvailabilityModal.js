@@ -126,7 +126,7 @@ class InputAvailabilityModal extends Component {
     return (
       <div style={availabilityStyle}>
         <Row justify="center">
-          <Title level={2}>
+          <Title level={2} id="availability-group-name">
             {this.props.groupInformation &&
               this.props.groupInformation.GroupName}
           </Title>

@@ -48,7 +48,10 @@ class MeetingTimeModal extends Component {
     });
     return (
       <div>
-        <h2 style={{ textAlign: "center", marginTop: 10, marginBottom: 30 }}>
+        <h2
+          id="meeting-modal-title"
+          style={{ textAlign: "center", marginTop: 10, marginBottom: 30 }}
+        >
           Choose a meeting time
         </h2>
         {optimalTimesStrings.map((optimalTimesString, index) => {
