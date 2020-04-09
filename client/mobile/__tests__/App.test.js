@@ -49,7 +49,7 @@ describe('Test app', () => {
 
     expect(
       component
-        .findWhere(node => node.prop('accessibilityLabel') === 'AuthStack')
+        .findWhere(node => node.prop('id') === 'AuthStack')
         .prop('initialRouteName'),
     ).toEqual('Home');
   });
@@ -63,7 +63,7 @@ describe('Test app', () => {
 
     expect(
       component
-        .findWhere(node => node.prop('accessibilityLabel') === 'AuthStack')
+        .findWhere(node => node.prop('id') === 'AuthStack')
         .prop('initialRouteName'),
     ).toEqual('Drawer');
   });

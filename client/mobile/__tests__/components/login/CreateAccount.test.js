@@ -137,7 +137,7 @@ describe('Testing <CreateAccount />', () => {
       },
     });
     component.instance().attemptSignup();
-    expect(Alert.alert).toHaveBeenCalledWith('Signup failed:', msg);
+    expect(Alert.alert).toHaveBeenCalledWith("Couldn't sign you up\n", msg);
   });
 
   it('Test signup more errors', () => {
@@ -151,7 +151,7 @@ describe('Testing <CreateAccount />', () => {
       },
     });
     component.instance().attemptSignup();
-    expect(Alert.alert).toHaveBeenCalledWith('Signup failed:', msg);
+    expect(Alert.alert).toHaveBeenCalledWith("Couldn't sign you up\n", msg);
   });
 
   it('Test signup even more errors', () => {
@@ -163,6 +163,6 @@ describe('Testing <CreateAccount />', () => {
       message: msg,
     });
     component.instance().attemptSignup();
-    expect(Alert.alert).toHaveBeenCalledWith('Signup failed:', msg);
+    expect(Alert.alert).toHaveBeenCalledWith("Couldn't sign you up\n", msg);
   });
 });
