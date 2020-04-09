@@ -19,7 +19,7 @@ context("Test register functionality", () => {
 
     cy.visit("/");
 
-    cy.get('#LoginTitle').should('be.visible');
+    cy.get("#LoginTitle").should("be.visible");
 
     cy.get("p > .ant-btn").click();
 
@@ -47,7 +47,7 @@ context("Test register functionality", () => {
 
     cy.visit("/");
 
-    cy.get('#LoginTitle').should('be.visible');
+    cy.get("#LoginTitle").should("be.visible");
 
     cy.get("p > .ant-btn").click();
 
@@ -62,7 +62,7 @@ context("Test register functionality", () => {
     cy.url().should("contain", "/");
     cy.get(".ant-form-item-explain > div").should(
       "contain",
-      "Password cannot be over 100 characters!"
+      "Password cannot be over 100 characters"
     );
 
     cy.get("#signup_password").clear();
@@ -87,13 +87,13 @@ context("Test register functionality", () => {
     cy.url().should("contain", "/");
     cy.get(
       ".ant-form-item-with-help.ant-form-item-has-feedback > .ant-col > .ant-form-item-explain > div"
-    ).should("contain", "The two passwords that you entered do not match!");
+    ).should("contain", "The two passwords that you entered do not match");
   });
 
   it("Can register", () => {
     cy.visit("/");
 
-    cy.get('#LoginTitle').should('be.visible');
+    cy.get("#LoginTitle").should("be.visible");
 
     cy.get("p > .ant-btn").click();
 
@@ -112,7 +112,7 @@ context("Test register functionality", () => {
   it("Cannot create user with same email", () => {
     cy.visit("/");
 
-    cy.get('#LoginTitle').should('be.visible');
+    cy.get("#LoginTitle").should("be.visible");
 
     cy.get("p > .ant-btn").click();
 

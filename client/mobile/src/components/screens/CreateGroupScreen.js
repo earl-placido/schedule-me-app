@@ -97,14 +97,17 @@ class CreateGroup extends Component {
                 meetingLocation={this.props.meetingLocation}
               />
             </ProgressStep>
-
+      
             <ProgressStep
               label="Share"
               finishBtnText="Continue"
               scrollViewProps={this.defaultScrollViewProps}
               nextBtnStyle={hideButton}
               previousBtnStyle={hideButton}>
-              <GroupShareCodeForm meetingCode={this.props.meetingCode} />
+              <GroupShareCodeForm
+                meetingCode={this.props.meetingCode}
+                navigation={this.props.navigation}
+              />
             </ProgressStep>
           </ProgressSteps>
         </ScrollView>
@@ -146,6 +149,10 @@ CreateGroup.propTypes = {
   updateMeetingLocation: PropTypes.func,
   submitMeetingCreation: PropTypes.func,
   resetCreateGroup: PropTypes.func,
+  navigation: PropTypes.shape({
+    navigate: PropTypes.func.isRequired,
+    push: PropTypes.func.isRequired,
+  }).isRequired,
 };
 
 export default connect(mapStateToProps, {
