@@ -101,6 +101,6 @@ matrix:
       prerelease: true
       overwrite: true
       file_glob: true
-      tag_name: testing
+      tag_name: $TRAVIS_TAG
       on: 
         all_branches: true
