@@ -11,10 +11,6 @@ matrix:
       - "./client/web/node_modules"
     before_install:
     - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production) 
-    before_script:
-    - "(cd server && npm ci && npm run db:init)"
-    - "(cd client/web && npm ci)"
-    - "(cd client/mobile && npm ci)"
     install:
     - sudo apt-get install -y ccrypt
     - echo KEYSTORE_ALIAS = $KEYSTORE_ALIAS > testfile.txt
