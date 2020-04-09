@@ -4,6 +4,7 @@ import {Button, Text, Icon} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerActions} from '@react-navigation/native';
+import commonColor from '../../native-base-theme/variables/commonColor';
 
 import StackNavigator from './StackNavigator';
 
@@ -32,9 +33,9 @@ function CustomDrawerContent(props) {
       <ScrollView>
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="View Groups"
+          label="View your Groups"
           icon={() => (
-            <Icon type="AntDesign" name="bars" style={styles.menuItemStyle} />
+            <Icon type="AntDesign" name="bars" style={styles.iconStyle} />
           )}
           onPress={() => {
             props.navigation.push('Group List');
@@ -72,12 +73,12 @@ function CustomDrawerContent(props) {
         )}
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="Create Group"
+          label="Create a Group"
           icon={() => (
             <Icon
               type="AntDesign"
               name="plussquareo"
-              style={styles.menuItemStyle}
+              style={styles.iconStyle}
             />
           )}
           onPress={() => {
@@ -87,12 +88,12 @@ function CustomDrawerContent(props) {
         />
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="Join Group"
+          label="Join a Group"
           icon={() => (
             <Icon
               type="AntDesign"
               name="plussquareo"
-              style={styles.menuItemStyle}
+              style={styles.iconStyle}
             />
           )}
           onPress={() => {
@@ -101,7 +102,6 @@ function CustomDrawerContent(props) {
         />
       </ScrollView>
       <Button
-        light
         style={styles.logoutStyle}
         accessibilityLabel={'LogoutButton'}
         onPress={() => {
@@ -136,9 +136,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    backgroundColor: '#3F51B5',
+    backgroundColor: commonColor.brandMedium,
     paddingVertical: 20,
     paddingHorizontal: 10,
+  },
+  iconStyle: {
+    color: 'white',
+    fontSize: 22,
   },
   menuItemStyle: {
     color: 'white',

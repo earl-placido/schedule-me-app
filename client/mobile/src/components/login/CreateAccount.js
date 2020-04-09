@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import {StyleSheet, Alert} from 'react-native';
+import {Alert, ScrollView, StyleSheet} from 'react-native';
 import {
-  View,
   Button,
-  Text,
   Card,
-  Spinner,
-  Toast,
   Left,
   Right,
+  Spinner,
+  Text,
+  Toast,
+  View,
 } from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
@@ -22,21 +22,24 @@ const Form = t.form.Form;
 const userOptions = {
   fields: {
     firstName: {
-      error: 'Please input first name',
+      autoFocus: true,
+      error: 'Please enter your first name',
     },
     lastName: {
-      error: 'Please input last name',
+      error: 'Please enter your last name',
     },
     email: {
-      error: 'Please input email',
+      error: 'Please enter a valid email address',
+      keyboardType: 'email-address',
+      textContentType: 'emailAddress',
     },
     password: {
-      error: 'Please input password',
+      error: 'Please enter a password',
       password: true,
       secureTextEntry: true,
     },
     confirmPassword: {
-      error: 'Please confirm password',
+      error: 'Please confirm your password',
       password: true,
       secureTextEntry: true,
     },
@@ -106,7 +109,7 @@ class CreateAccount extends Component {
         message = this.props.message;
       }
 
-      Alert.alert('Signup failed:', message);
+      Alert.alert("Couldn't sign you up\n", message);
     }
   };
 
@@ -131,45 +134,47 @@ class CreateAccount extends Component {
           isVisible={this.state.isCreateVisible}
           onRequestClose={() => this.toggleCreate()}
           accessibilityLabel={'CreateAccountModal'}>
-          <Card
-            style={styles.modalStyle}
-            accessibilityLabel={'CreateAccountForm'}>
-            <Form
-              ref={_form => (this.form = _form)}
-              options={userOptions}
-              type={user}
-              value={{
-                firstName: this.props.signupFields.firstName,
-                lastName: this.props.signupFields.lastName,
-                email: this.props.signupFields.email,
-                password: this.props.signupFields.password,
-                confirmPassword: this.props.signupFields.confirmPassword,
-              }}
-            />
-            <View style={{flexDirection: 'row'}}>
-              <Left>
-                <Button
-                  small
-                  block
-                  primary
-                  onPress={() => this.toggleCreate()}
-                  style={{margin: 10}}>
-                  <Text>Cancel</Text>
-                </Button>
-              </Left>
-              <Right>
-                <Button
-                  small
-                  block
-                  primary
-                  onPress={() => this.userSignup()}
-                  accessibilityLabel={'SignupSubmitButton'}>
-                  <Text>Submit</Text>
-                  {this.state.isSpinnerVisible && <Spinner color="white" />}
-                </Button>
-              </Right>
-            </View>
-          </Card>
+          <ScrollView>
+            <Card
+              style={styles.modalStyle}
+              accessibilityLabel={'CreateAccountForm'}>
+              <Form
+                ref={_form => (this.form = _form)}
+                options={userOptions}
+                type={user}
+                value={{
+                  firstName: this.props.signupFields.firstName,
+                  lastName: this.props.signupFields.lastName,
+                  email: this.props.signupFields.email,
+                  password: this.props.signupFields.password,
+                  confirmPassword: this.props.signupFields.confirmPassword,
+                }}
+              />
+              <View style={{flexDirection: 'row'}}>
+                <Left>
+                  <Button
+                    small
+                    block
+                    primary
+                    onPress={() => this.toggleCreate()}
+                    style={{margin: 10}}>
+                    <Text>Cancel</Text>
+                  </Button>
+                </Left>
+                <Right>
+                  <Button
+                    small
+                    block
+                    primary
+                    onPress={() => this.userSignup()}
+                    accessibilityLabel={'SignupSubmitButton'}>
+                    <Text>Submit</Text>
+                    {this.state.isSpinnerVisible && <Spinner color="white" />}
+                  </Button>
+                </Right>
+              </View>
+            </Card>
+          </ScrollView>
         </Modal>
       </View>
     );
