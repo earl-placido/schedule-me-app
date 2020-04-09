@@ -33,7 +33,7 @@ function CustomDrawerContent(props) {
       <ScrollView>
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="View Groups"
+          label="View your Groups"
           icon={() => (
             <Icon type="AntDesign" name="bars" style={styles.iconStyle} />
           )}
@@ -73,7 +73,7 @@ function CustomDrawerContent(props) {
         )}
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="Create Group"
+          label="Create a Group"
           icon={() => (
             <Icon
               type="AntDesign"
@@ -88,7 +88,7 @@ function CustomDrawerContent(props) {
         />
         <DrawerItem
           labelStyle={styles.menuItemStyle}
-          label="Join Group"
+          label="Join a Group"
           icon={() => (
             <Icon
               type="AntDesign"

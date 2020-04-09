@@ -34,7 +34,7 @@ class StackNavigator extends Component {
                             DrawerActions.toggleDrawer(),
                           )
                         }>
-                        <Icon type="AntDesign" name="menuunfold" />
+                        <Icon name="menu" />
                       </Button>
                     </Left>
 

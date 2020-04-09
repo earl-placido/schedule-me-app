@@ -17,6 +17,7 @@ import {
   resetCreateGroup,
 } from '../../actions/CreateGroup.action';
 import {connect} from 'react-redux';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const progressStepsStyle = {
   activeStepIconBorderColor: '#686868',
@@ -60,51 +61,53 @@ class CreateGroup extends Component {
   render() {
     return (
       <View style={{flex: 10}}>
-        <ProgressSteps {...progressStepsStyle}>
-          <ProgressStep
-            label="Group"
-            onNext={this.onNextStep}
-            previousBtnDisabled
-            nextBtnDisabled={!this.props.groupName}
-            scrollViewProps={defaultScrollViewProps}
-            nextBtnTextStyle={buttonTextStyle}
-            previousBtnTextStyle={buttonTextStyle}>
-            <GroupInfoForm
-              handleGroupName={this.props.updateGroupName}
-              handleGroupDescription={this.props.updateGroupDescription}
-              groupName={this.props.groupName}
-              groupDescription={this.props.groupDescription}
-            />
-          </ProgressStep>
+        <ScrollView>
+          <ProgressSteps {...progressStepsStyle}>
+            <ProgressStep
+              label="Group"
+              onNext={this.onNextStep}
+              previousBtnDisabled
+              nextBtnDisabled={!this.props.groupName}
+              scrollViewProps={defaultScrollViewProps}
+              nextBtnTextStyle={buttonTextStyle}
+              previousBtnTextStyle={buttonTextStyle}>
+              <GroupInfoForm
+                handleGroupName={this.props.updateGroupName}
+                handleGroupDescription={this.props.updateGroupDescription}
+                groupName={this.props.groupName}
+                groupDescription={this.props.groupDescription}
+              />
+            </ProgressStep>
 
-          <ProgressStep
-            label="Meeting"
-            nextBtnText="Done"
-            onNext={this.createNewMeeting}
-            onPrevious={this.onPrevStep}
-            nextBtnDisabled={!this.props.meetingDuration}
-            scrollViewProps={this.defaultScrollViewProps}
-            nextBtnTextStyle={buttonTextStyle}
-            previousBtnTextStyle={buttonTextStyle}>
-            <GroupMeetingForm
-              handleMeetingDuration={this.props.updateMeetingDuration}
-              handleMeetingFrequency={this.props.updateMeetingFrequency}
-              handleMeetingLocation={this.props.updateMeetingLocation}
-              meetingDuration={this.props.meetingDuration}
-              meetingFrequency={this.props.meetingFrequency}
-              meetingLocation={this.props.meetingLocation}
-            />
-          </ProgressStep>
+            <ProgressStep
+              label="Meeting"
+              nextBtnText="Done"
+              onNext={this.createNewMeeting}
+              onPrevious={this.onPrevStep}
+              nextBtnDisabled={!this.props.meetingDuration}
+              scrollViewProps={this.defaultScrollViewProps}
+              nextBtnTextStyle={buttonTextStyle}
+              previousBtnTextStyle={buttonTextStyle}>
+              <GroupMeetingForm
+                handleMeetingDuration={this.props.updateMeetingDuration}
+                handleMeetingFrequency={this.props.updateMeetingFrequency}
+                handleMeetingLocation={this.props.updateMeetingLocation}
+                meetingDuration={this.props.meetingDuration}
+                meetingFrequency={this.props.meetingFrequency}
+                meetingLocation={this.props.meetingLocation}
+              />
+            </ProgressStep>
 
-          <ProgressStep
-            label="Share"
-            finishBtnText="Continue"
-            scrollViewProps={this.defaultScrollViewProps}
-            nextBtnStyle={hideButton}
-            previousBtnStyle={hideButton}>
-            <GroupShareCodeForm meetingCode={this.props.meetingCode} />
-          </ProgressStep>
-        </ProgressSteps>
+            <ProgressStep
+              label="Share"
+              finishBtnText="Continue"
+              scrollViewProps={this.defaultScrollViewProps}
+              nextBtnStyle={hideButton}
+              previousBtnStyle={hideButton}>
+              <GroupShareCodeForm meetingCode={this.props.meetingCode} />
+            </ProgressStep>
+          </ProgressSteps>
+        </ScrollView>
       </View>
     );
   }
