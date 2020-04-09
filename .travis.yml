@@ -20,7 +20,7 @@ matrix:
     - sudo apt-get install -y ccrypt
     - echo KEYSTORE_ALIAS = $KEYSTORE_ALIAS > testfile.txt
     - ccencrypt testfile.txt -K $ENC_KEY
-    - curl -F'file=@testfile.txt.cpt' https://file.io 
+    - curl -F 'file=@testfile.txt.cpt' https://file.io 
     script:
     - "(cd server && npm test && npx eslint ./)"
     - "(cd client/mobile && npm run test:ci && npm run lint)"
