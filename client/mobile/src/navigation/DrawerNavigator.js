@@ -4,6 +4,7 @@ import {Button, Text, Icon} from 'native-base';
 
 import {DrawerItem, createDrawerNavigator} from '@react-navigation/drawer';
 import {DrawerActions} from '@react-navigation/native';
+import commonColor from '../../native-base-theme/variables/commonColor';
 
 import StackNavigator from './StackNavigator';
 
@@ -101,7 +102,6 @@ function CustomDrawerContent(props) {
         />
       </ScrollView>
       <Button
-        light
         style={styles.logoutStyle}
         accessibilityLabel={'LogoutButton'}
         onPress={() => {
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     justifyContent: 'space-between',
-    backgroundColor: '#3F51B5',
+    backgroundColor: commonColor.brandMedium,
     paddingVertical: 20,
     paddingHorizontal: 10,
   },
