@@ -37,6 +37,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import "antd/dist/antd.css";
 import InputAvailability from "../components/InputAvailabilityModal";
 import MeetingTimeModal from "./MeetingTimeModal";
+import moment from "moment";
 
 class GroupScreen extends Component {
   constructor(props) {
@@ -85,6 +86,25 @@ class GroupScreen extends Component {
     this.showModal("meeting");
   }
 
+  formatDate(date) {
+    console.log(date);
+    let dateArray = date.replace(/\s/g, "").split(/\W/g);
+    let formattedDate = moment({
+      year: dateArray[0],
+      month: dateArray[1],
+      day: dateArray[2]
+    }).format("dddd, MMMM Do YYYY");
+    let formattedStartTime = moment({
+      hour: dateArray[4],
+      minute: dateArray[5]
+    }).format("h:mm a");
+    let formattedEndTime = moment({
+      hour: dateArray[6],
+      minute: dateArray[7]
+    }).format("h:mm a");
+    return `${formattedDate} ${formattedStartTime} - ${formattedEndTime}`;
+  }
+
   currentMeetingTime = () => {
     return (
       <div id="meeting-time-panel">
@@ -94,8 +114,9 @@ class GroupScreen extends Component {
               return (
                 <div key={index} id="meeting-time">
                   <p style={{ display: "inline", marginRight: 10 }}>
-                    {meeting.meetingAvailableString ||
-                      "No meeting time is selected"}
+                    {meeting.meetingAvailableString
+                      ? this.formatDate(meeting.meetingAvailableString)
+                      : "No meeting time is selected"}
                   </p>
                   {this.props.selfMember &&
                     this.props.selfMember.MemberRole === "AD" && (
