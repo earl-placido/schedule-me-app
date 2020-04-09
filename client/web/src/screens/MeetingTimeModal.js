@@ -2,16 +2,6 @@ import React, { Component } from "react";
 import moment from "moment";
 import PropTypes from "prop-types";
 
-const NUMBER_TO_DAY = [
-  "Sunday",
-  "Monday",
-  "Tuesday",
-  "Wednesday",
-  "Thursday",
-  "Friday",
-  "Saturday"
-];
-
 class MeetingTimeModal extends Component {
   state = { currentSelected: null };
 
@@ -28,19 +18,19 @@ class MeetingTimeModal extends Component {
       const timeRange = timeInformation[1].split("_");
       const startTime = parseFloat(timeRange[0]).toFixed(2);
       const endTime = parseFloat(timeRange[1]).toFixed(2);
-
-      const startTimeString = ("0" + startTime.toString())
-        .substr(startTime.length + 1 - 5)
-        .replace(".", ""); // format number to print
-      const endTimeString = ("0" + endTime.toString())
-        .substr(endTime.length + 1 - 5)
-        .replace(".", ""); // format number to print
+      const startArray = startTime.split(".");
+      const endArray = endTime.split(".");
+      const startTimeString = moment({
+        hour: startArray[0],
+        minute: startArray[1]
+      }).format("h:mm a");
+      const endTimeString = moment({
+        hour: endArray[0],
+        minute: endArray[1]
+      }).format("h:mm a");
       const count = optimalTime[1];
-
-      const currentDay = moment(currentDate).day();
-      const currentDayString = NUMBER_TO_DAY[currentDay];
-
-      const meetingDateString = `${currentDate}(${currentDayString})`;
+      const theDate = moment(currentDate).format("dddd, MMMM Do YYYY");
+      const meetingDateString = `${theDate}`;
       const meetingRangeString = `${startTimeString} - ${endTimeString}`;
       const availableString = `${count} available`;
 

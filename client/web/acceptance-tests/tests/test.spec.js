@@ -269,10 +269,10 @@ context("Acceptance test", () => {
     cy.get("#change-meeting-time").click();
     cy.get("#meeting-modal-title").should("contain", "Choose a meeting time");
     cy.get(".optimal-time-display")
-      .contains("0400 - 0500")
+      .contains("4:00 am - 5:00 am")
       .click();
     cy.get("#meeting-modal-done-button").click();
-    cy.get("#meeting-time-detail").should("contain", "04:00 - 05:00");
+    cy.get("#meeting-time-detail").should("contain", "4:00 am - 5:00 am");
   });
 
   it("Can remove availability", () => {
@@ -286,7 +286,7 @@ context("Acceptance test", () => {
     cy.get("#availability-done-button").click();
     cy.get("#change-meeting-time").click();
     cy.get(".optimal-time-display")
-      .contains("0000 - 0100")
+      .contains("12:00 am - 1:00 am")
       .should("not.exist");
   });
 
