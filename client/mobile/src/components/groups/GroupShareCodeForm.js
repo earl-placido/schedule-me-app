@@ -25,7 +25,7 @@ class GroupShareCodeForm extends Component {
   copyCode = () => {
     Clipboard.setString(this.props.meetingCode);
     Toast.show({
-      text: "Code copied to your clipboard!"
+      text: 'Code copied to your clipboard!',
     });
   };
 
