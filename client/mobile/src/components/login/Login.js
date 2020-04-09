@@ -26,10 +26,12 @@ const Form = t.form.Form;
 const userOptions = {
   fields: {
     email: {
-      error: 'Please input email',
+      error: 'Please enter a valid email address',
+      keyboardType: 'email-address',
+      textContentType: 'emailAddress',
     },
     password: {
-      error: 'Please input password',
+      error: 'Please enter your password',
       password: true,
       secureTextEntry: true,
     },
@@ -65,6 +67,7 @@ class Login extends Component {
       text: message,
       buttonText: 'OK',
       duration: 3000,
+      position: 'top',
     });
   };
 

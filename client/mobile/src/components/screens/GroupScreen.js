@@ -95,8 +95,7 @@ class GroupDetail extends Component {
             return (
               <View key={index}>
                 <Text style={styles.timeStyle}>
-                  {meeting.meetingTimeString ||
-                    'Meeting time is currently empty'}
+                  {meeting.meetingTimeString || 'No meeting time selected'}
                 </Text>
                 {this.props.selfMember &&
                   this.props.selfMember.MemberRole === 'AD' && (
@@ -125,6 +124,12 @@ class GroupDetail extends Component {
     this.props.toggleMeetingModal(this.props.isMeetingModalVisible);
   }
 
+  removeSeconds(timeString) {
+    if (timeString) {
+      return timeString.substring(0, timeString.lastIndexOf(':'));
+    }
+  }
+
   render() {
     return (
       <Container>
@@ -134,32 +139,52 @@ class GroupDetail extends Component {
             <View style={styles.headerStyle}>
               <CardItem header>
                 <Body style={{alignItems: 'center'}}>
-                  <View style={{paddingBottom: 10}}>
+                  <View style={{paddingBottom: 15}}>
                     <Text style={styles.titleStyle}>
                       Group: {this.props.group.GroupName}
                     </Text>
+                    {this.props.group.GroupDescription && (
+                      <Text style={{textAlign: 'center'}}>
+                        {this.props.group.GroupDescription}
+                      </Text>
+                    )}
                   </View>
-
-                  <Text>GroupID: {this.props.group.GroupId}</Text>
-                  <Text>
-                    Meeting Duration: {this.props.group.MeetingDuration}
-                  </Text>
-                  <Text>
-                    Meeting Location:{' '}
-                    {this.props.group.MeetingLocation
-                      ? this.props.group.MeetingLocation
-                      : 'Not Specified'}
-                  </Text>
-                  <Text>
-                    Meeting Frequency:{' '}
-                    {this.props.group.MeetingFrequency
-                      ? this.props.group.MeetingFrequency
-                      : 'Not Specified'}
-                  </Text>
+                  <View>
+                    <Text style={styles.propertyStyle}>
+                      <Text style={styles.boldStyle}>Meeting Duration:</Text>
+                      <Text>
+                        {' '}
+                        {this.removeSeconds(this.props.group.MeetingDuration)}
+                      </Text>
+                    </Text>
+                    <Text style={styles.propertyStyle}>
+                      <Text style={styles.boldStyle}>Meeting Frequency:</Text>
+                      <Text>
+                        {' '}
+                        {this.props.group.MeetingFrequency
+                          ? this.props.group.MeetingFrequency
+                          : 'Not Specified'}
+                      </Text>
+                    </Text>
+                    <Text style={styles.propertyStyle}>
+                      <Text style={styles.boldStyle}>Meeting Location:</Text>
+                      <Text>
+                        {' '}
+                        {this.props.group.MeetingLocation
+                          ? this.props.group.MeetingLocation
+                          : 'Not Specified'}
+                      </Text>
+                    </Text>
+                  </View>
                 </Body>
               </CardItem>
             </View>
-
+            <View style={styles.headerStyle}>
+              <Text style={styles.shareCodeStyle}>
+                Share this code for others to join the group:
+              </Text>
+              <Text style={styles.codeStyle}>{this.props.group.GroupId}</Text>
+            </View>
             <View>
               <CardItem>
                 <Body style={{alignItems: 'center'}}>
@@ -249,18 +274,35 @@ class GroupDetail extends Component {
 }
 
 const styles = StyleSheet.create({
+  boldStyle: {
+    fontWeight: 'bold',
+  },
+  codeStyle: {
+    fontSize: 20,
+    textAlign: 'center',
+    paddingBottom: 15,
+  },
   headerStyle: {
     flexDirection: 'column',
     borderBottomColor: 'black',
     borderBottomWidth: 0.5,
   },
+  propertyStyle: {
+    textAlign: 'left',
+  },
   titleStyle: {
+    textAlign: 'center',
     fontWeight: 'bold',
     fontSize: 25,
   },
   timeStyle: {
     // fontWeight: 'bold',
     fontSize: 15,
+  },
+  shareCodeStyle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    paddingTop: 15,
   },
   subHeaderStyle: {
     fontWeight: 'bold',
