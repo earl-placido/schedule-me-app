@@ -92,11 +92,7 @@ matrix:
     deploy:
       provider: releases
       api_key: "$GITHUB_API_KEY"
-      file: 
-        - /home/travis/build/Syndrical/scheduler-app/client/mobile/android/app/build/outputs/apk/debug/app-debug.apk
-        - client/mobile/android/app/build/outputs/apk/debug/app-debug.apk
-        - /home/travis/build/Syndrical/scheduler-app/client/mobile/android/app/build/*
-        - client/mobile/android/app
+      file: "/home/travis/build/Syndrical/scheduler-app/client/mobile/android/app/build/outputs/apk/debug/app-debug.apk"
       skip_cleanup: true
       name: build-$TRAVIS_BRANCH
       body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
