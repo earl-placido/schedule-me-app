@@ -102,7 +102,12 @@ class GroupScreen extends Component {
       hour: dateArray[6],
       minute: dateArray[7]
     }).format("h:mm a");
-    return `${formattedDate} ${formattedStartTime} - ${formattedEndTime}`;
+    let formattedTime = `${formattedStartTime} - ${formattedEndTime}`;
+    return (
+      <span>
+        {formattedDate} &nbsp;&nbsp;<b>{formattedTime}</b>
+      </span>
+    );
   }
 
   currentMeetingTime = () => {
