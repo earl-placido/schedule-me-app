@@ -156,10 +156,10 @@ export class NavigationBar extends Component {
               )}
             </SubMenu>
             <Menu.Item id="create-group-web">
-              <a href="/createGroup/">Create A Group</a>
+              <a href="/createGroup/">Create a Group</a>
             </Menu.Item>
             <Menu.Item id="join-group-web" onClick={this.showJoinGroupModal}>
-              Join A Group
+              Join a Group
             </Menu.Item>
             {this.userNavigation()}
           </Menu>
@@ -236,13 +236,13 @@ export class NavigationBar extends Component {
                 )}
               </SubMenu>
               <Menu.Item id="create-group-mobile">
-                <a href="/createGroup/">Create A Group</a>
+                <a href="/createGroup/">Create a Group</a>
               </Menu.Item>
               <Menu.Item
                 id="join-group-mobile"
                 onClick={this.showJoinGroupModal}
               >
-                Join A Group
+                Join a Group
               </Menu.Item>
               <Menu.Item onClick={this.logoutUser} id="logout-button">
                 Log Out
