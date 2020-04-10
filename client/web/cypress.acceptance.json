@@ -1,0 +1,13 @@
+{
+  "baseUrl": "http://localhost:3000",
+  "integrationFolder": "acceptance-tests/tests",
+  "supportFile": "acceptance-tests/support/index",
+  "pluginsFile": false,
+  "fixturesFolder": false,
+  "videosFolder": "acceptance-tests/videos",
+  "screenshotsFolder:": "acceptance-tests/images",
+  "projectId": "hrvwfk",
+  "viewportWidth": 1920,
+  "viewportHeight": 1080
+
+}

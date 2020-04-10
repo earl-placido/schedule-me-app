@@ -53,7 +53,7 @@ describe("CreateGroup, test groupInfoForm", () => {
   it("should run goNextPage in CreateGroup", () => {
     component
       .dive()
-      .find("#nextButton")
+      .find("#next-button")
       .simulate("click");
     expect(store.getActions()[0].type).toEqual(GO_NEXT_PAGE);
   });
@@ -61,7 +61,7 @@ describe("CreateGroup, test groupInfoForm", () => {
   it("should run goPreviousPage in CreateGroup", () => {
     component
       .dive()
-      .find("#previousButton")
+      .find("#previous-button")
       .simulate("click");
     expect(store.getActions()[0].type).toEqual(GO_PREVIOUS_PAGE);
   });
@@ -71,7 +71,7 @@ describe("CreateGroup, test groupInfoForm", () => {
       .dive()
       .find("GroupInfoForm")
       .dive()
-      .find("#groupNameInput")
+      .find("#group-name-input")
       .simulate("change", { target: { value: "changed" } });
     expect(store.getActions()[0].type).toEqual(UPDATE_GROUP_NAME);
   });
@@ -81,7 +81,7 @@ describe("CreateGroup, test groupInfoForm", () => {
       .dive()
       .find("GroupInfoForm")
       .dive()
-      .find("#groupDescriptionInput")
+      .find("#group-description-input")
       .simulate("change", { target: { value: "changed" } });
     expect(store.getActions()[0].type).toEqual(UPDATE_GROUP_DESCRIPTION);
   });
