@@ -40,6 +40,7 @@ class GroupCodeModal extends Component {
                 maxLength={7}
                 onChange={e => this.handleChange(e.target.value)}
                 min={0}
+                id="group-code-input"
                 placeholder={"0000000"}
               ></Input>
             </Row>
@@ -47,7 +48,11 @@ class GroupCodeModal extends Component {
               {this.props.errorGroupCodeMessage}
             </Row>
             <Row justify="center" style={okayButtonStyle}>
-              <Button type="primary" onClick={this.onEnter}>
+              <Button
+                type="primary"
+                id="group-code-okay-button"
+                onClick={this.onEnter}
+              >
                 Okay
               </Button>
             </Row>
@@ -58,7 +63,11 @@ class GroupCodeModal extends Component {
               You have successfully joined {this.props.groupName}!
             </Row>
             <Row justify="center" style={goToGroupButtonStyle}>
-              <Button type="primary" href={this.props.link}>
+              <Button
+                type="primary"
+                id="group-code-go-to-group-button"
+                href={this.props.link}
+              >
                 Go to Group
               </Button>
             </Row>

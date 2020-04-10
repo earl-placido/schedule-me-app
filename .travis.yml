@@ -22,7 +22,7 @@ matrix:
     - docker exec web /bin/sh -c "eslint src"
     - docker exec web /bin/sh -c "npm run test:ci"
     - "(cd server && npm start) &"
-    - "(cd client/web && npm run cypress:run)"
+    - "(cd client/web && npm run test:ui:ci)"
     - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run
       build_prod && mv build/index.html build/200.html"; fi
     - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run

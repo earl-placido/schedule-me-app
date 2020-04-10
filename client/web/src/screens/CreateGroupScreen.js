@@ -133,7 +133,7 @@ class CreateGroupScreen extends Component {
               {this.props.currentPage !== 2 && (
                 <div style={buttonContainerStyle}>
                   <Button
-                    id="previousButton"
+                    id="previous-button"
                     disabled={this.props.currentPage === 0}
                     onClick={this.goPreviousPage.bind(this)}
                   >
@@ -142,7 +142,7 @@ class CreateGroupScreen extends Component {
                   </Button>
 
                   <Button
-                    id="nextButton"
+                    id="next-button"
                     type="primary"
                     onClick={this.goNextPage.bind(this)}
                   >
