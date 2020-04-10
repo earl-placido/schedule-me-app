@@ -104,7 +104,10 @@ class CreateGroup extends Component {
               scrollViewProps={this.defaultScrollViewProps}
               nextBtnStyle={hideButton}
               previousBtnStyle={hideButton}>
-              <GroupShareCodeForm meetingCode={this.props.meetingCode} />
+              <GroupShareCodeForm
+                meetingCode={this.props.meetingCode}
+                navigation={this.props.navigation}
+              />
             </ProgressStep>
           </ProgressSteps>
         </ScrollView>
