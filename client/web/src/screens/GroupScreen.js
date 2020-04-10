@@ -118,7 +118,10 @@ class GroupScreen extends Component {
             this.props.meetings.map((meeting, index) => {
               return (
                 <div key={index} id="meeting-time">
-                  <p style={{ display: "inline", marginRight: 10 }}>
+                  <p
+                    style={{ display: "inline", marginRight: 10 }}
+                    id="meeting-time-detail"
+                  >
                     {meeting.meetingAvailableString
                       ? this.formatDate(meeting.meetingAvailableString)
                       : "No meeting time is selected"}
@@ -172,25 +175,35 @@ class GroupScreen extends Component {
             </Title>
           </Row>
           {this.props.group.GroupDescription && (
-            <Row justify="center">
+            <Row justify="center" id="group-desc-detail">
               <h4>{this.props.group.GroupDescription}</h4>
             </Row>
           )}
           <Row justify="center" style={marginTop15}>
-            <b>Meeting Duration:&nbsp;</b>{" "}
-            {this.removeSeconds(this.props.group.MeetingDuration)}
+            <span id="meeting-duration-detail">
+              <b>Meeting Duration:</b>{" "}
+              {this.removeSeconds(this.props.group.MeetingDuration)}
+            </span>
           </Row>
           <Row justify="center" style={noMarginStyle}>
-            <b>Meeting Frequency:&nbsp;</b>{" "}
-            {this.props.group.MeetingFrequency !== null
-              ? this.props.group.MeetingFrequency
-              : "Not Specified"}
+            <span id="meeting-frequency-detail">
+              <b>Meeting Frequency:</b>{" "}
+              {this.props.group.MeetingFrequency !== null
+                ? this.props.group.MeetingFrequency
+                : "Not Specified"}
+            </span>
           </Row>
-          <Row justify="center" style={marginBottom10}>
-            <b>Meeting Location:&nbsp;</b>
-            {this.props.group.MeetingLocation !== null
-              ? this.props.group.MeetingLocation
-              : "Not Specified"}
+          <Row
+            justify="center"
+            style={marginBottom10}
+            id="meeting-location-detail"
+          >
+            <span>
+              <b>Meeting Location:</b>{" "}
+              {this.props.group.MeetingLocation !== null
+                ? this.props.group.MeetingLocation
+                : "Not Specified"}
+            </span>
           </Row>
           {!this.state.showCode ? (
             <Row justify="center" style={marginTop25}>
@@ -210,7 +223,9 @@ class GroupScreen extends Component {
               </Row>
               <Row justify="center">
                 <Col offset={2} style={oldAntColStyle}>
-                  <Title level={2}>{this.props.match.params.id}</Title>
+                  <Title level={2} id="share-group-code">
+                    {this.props.match.params.id}
+                  </Title>
                 </Col>
                 <Col offset={1} style={oldAntColStyle}>
                   <CopyToClipboard
@@ -234,6 +249,7 @@ class GroupScreen extends Component {
           <Row justify="center">
             <List
               itemLayout="horizontal"
+              id="group-members-list"
               dataSource={this.props.groupMembers}
               renderItem={item => (
                 <List.Item>
@@ -263,6 +279,7 @@ class GroupScreen extends Component {
                 style={buttonStyle}
                 type="primary"
                 key="done"
+                id="availability-done-button"
                 onClick={this.handleDone}
               >
                 Done
@@ -282,6 +299,7 @@ class GroupScreen extends Component {
                 style={buttonStyle}
                 type="primary"
                 key="done"
+                id="meeting-modal-done-button"
                 onClick={this.handleDoneMeeting}
               >
                 Done

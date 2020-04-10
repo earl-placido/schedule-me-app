@@ -27,7 +27,7 @@ class GroupShareComponent extends Component {
         </Row>
         <Row justify="center">
           <Col offset={2} style={oldAntColStyle}>
-            <Title level={2} style={marginTop15}>
+            <Title level={2} style={marginTop15} id="created-group-code">
               {this.retrieveCodeFromLink(this.props.link)}
             </Title>
           </Col>
@@ -41,7 +41,7 @@ class GroupShareComponent extends Component {
           </Col>
         </Row>
         <Row justify="center" style={marginTop15}>
-          <Button type="primary" href={this.props.link}>
+          <Button type="primary" href={this.props.link} id="go-to-group-button">
             Go to Group
           </Button>
         </Row>
