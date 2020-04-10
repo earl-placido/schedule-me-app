@@ -63,7 +63,22 @@ class MeetingModal extends Component {
       : null;
   }
 
+  formatTime(optimalTime) {
+    if (optimalTime === undefined) return;
+
+    const timeArray = optimalTime.split(':');
+    let formattedTime = moment({
+      hour: timeArray[0],
+      minute: timeArray[1],
+    }).format('h:mm a');
+
+    return formattedTime;
+  }
+
   optimalTimeRender(optimalTime, index) {
+    const startTime = this.formatTime(optimalTime[1].split(' ')[1]);
+    const endTime = this.formatTime(optimalTime[1].split(' ')[3]);
+    const time = 'Time: ' + startTime + ' - ' + endTime;
     return (
       <CardItem
         bordered
@@ -73,7 +88,7 @@ class MeetingModal extends Component {
         <Body>
           <View style={{flexDirection: 'column'}}>
             <Text>{optimalTime[0]}</Text>
-            <Text>{optimalTime[1]}</Text>
+            <Text>{time}</Text>
           </View>
         </Body>
         <Right>

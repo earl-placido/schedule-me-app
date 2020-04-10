@@ -32,8 +32,8 @@ export const formatDateToString = (startTime, endTime, lastUpdatedTime) => {
   const day = startTime.format('YYYY-MM-DD (dddd)');
   const startTimeString = startTime.format('HH:mm');
   const endTimeString = endTime.format('HH:mm');
-  const lastUpdatedTimeString = lastUpdatedTime.format('YYYY-MM-DD HH:mm');
-  const meetingAvailableString = `Date: ${day} ${'\nTime: '}${startTimeString} - ${endTimeString}\nLast Updated: ${lastUpdatedTimeString}`;
+  const lastUpdatedTimeString = lastUpdatedTime.format('YYYY-MM-DD (HH:mm)');
+  const meetingAvailableString = `Date: ${day} ${'\nTime: '}${startTimeString} - ${endTimeString} - Last Updated: ${lastUpdatedTimeString}`;
   return meetingAvailableString;
 };
 

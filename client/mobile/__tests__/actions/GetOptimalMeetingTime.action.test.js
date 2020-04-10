@@ -64,15 +64,15 @@ describe('test get optimal meeting time action', () => {
           MeetingId: 1,
           meetingTimeString:
             'Date: 2020-04-07 (Tuesday) \n' +
-            'Time: 12:00 - 01:00\n' +
-            'Last Updated: 2020-04-07 01:00',
+            'Time: 12:00 - 01:00' +
+            ' - Last Updated: 2020-04-07 (01:00)',
         },
         {
           MeetingId: 2,
           meetingTimeString:
             'Date: 2020-04-07 (Tuesday) \n' +
-            'Time: 12:00 - 01:00\n' +
-            'Last Updated: 2020-04-07 01:00',
+            'Time: 12:00 - 01:00' +
+            ' - Last Updated: 2020-04-07 (01:00)',
         },
       ],
     });

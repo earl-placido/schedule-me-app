@@ -47,7 +47,7 @@ export default class GroupMeetingForm extends Component {
           ref={_form => (this.form = _form)}
           options={meetingOptions}
           type={Meeting}
-          onChange={this.handleGroupMeetingChange}
+          onChange={() => this.handleGroupMeetingChange()}
           value={{
             duration: this.props.meetingDuration,
             frequency: this.props.meetingFrequency,
