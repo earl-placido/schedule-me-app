@@ -54,11 +54,11 @@ const currentDateOptimalTime = (startTimes, endTimes) => {
   return intersections;
 };
 
-
 const findOptimalTime = availabilities => {
-
   let availabilityPerDate = toAvailabilityPerDate(availabilities);
-  let optimalAvailabilityPerDate = findBestAvailabilityPerDate(availabilityPerDate);
+  let optimalAvailabilityPerDate = findBestAvailabilityPerDate(
+    availabilityPerDate
+  );
 
   // sort in descending order
   optimalAvailabilityPerDate.sort((first, second) => {
@@ -86,7 +86,7 @@ const toAvailabilityPerDate = availabilities => {
   }
 
   return availabilityPerDate;
-}
+};
 
 const toStartEndTimes = availabilities => {
   const startTimes = [];
@@ -96,16 +96,17 @@ const toStartEndTimes = availabilities => {
     startTimes.push(availability[0]);
     endTimes.push(availability[1]);
   }
-  return [startTimes, endTimes];
-}
+  return { startTimes, endTimes };
+};
 
 const findBestAvailabilityPerDate = availabilityPerDates => {
   let optimalAvailabilityPerDate = [];
 
   // for each day, find the best availability
   for (let currentDate of Object.keys(availabilityPerDates)) {
-    
-    let (startTimes, endTimes) = toStartEndTimes(availabilityPerDates[currentDate]);
+    let { startTimes, endTimes } = toStartEndTimes(
+      availabilityPerDates[currentDate]
+    );
 
     // get optimal time for current date
     const optimalTime = currentDateOptimalTime(startTimes, endTimes);
@@ -117,7 +118,8 @@ const findBestAvailabilityPerDate = availabilityPerDates => {
       ]);
     });
   }
-}
+  return optimalAvailabilityPerDate;
+};
 
 module.exports = {
   findOptimalTime
