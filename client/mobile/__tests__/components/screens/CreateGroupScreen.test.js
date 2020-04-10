@@ -5,6 +5,10 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import {ProgressSteps, ProgressStep} from 'react-native-progress-steps';
 
+import GroupInfoForm from '../../../src/components/groups/GroupInfoForm';
+import GroupMeetingForm from '../../../src/components/groups/GroupMeetingForm';
+import GroupShareCodeForm from '../../../src/components/groups/GroupShareCodeForm';
+
 configure({adapter: new Adapter()});
 
 const props = {
@@ -22,7 +26,7 @@ const props = {
 }
 
 const setUp = () => {
-  const component = shallow(<CreateGroupScreen.WrappedComponent prop={props}/>);
+  const component = shallow(<CreateGroupScreen.WrappedComponent {...props}/>);
   return component;
 };
 
@@ -45,5 +49,22 @@ describe('Testing <CreateGroupScreen />', () => {
     expect(component.find(ProgressStep)).toHaveLength(3);
   });
 
+  it('Test if <GroupInfoForm /> renders', () => {
+    expect(component.find(GroupInfoForm)).toHaveLength(1);
+  });
+
+  it('Test if <GroupMeetingForm /> renders', () => {
+    expect(component.find(GroupMeetingForm)).toHaveLength(1);
+  });
+
+  it('Test if <GroupShareCodeForm /> renders', () => {
+    expect(component.find(GroupShareCodeForm)).toHaveLength(1);
+  });
+  
+  it('Test submit meeting', () => {
+    component.instance().createNewMeeting();
+    expect(props.submitMeetingCreation.mock.calls.length).toBe(1);
+    expect(props.resetCreateGroup.mock.calls.length).toBe(1);
+  });
 });
 
