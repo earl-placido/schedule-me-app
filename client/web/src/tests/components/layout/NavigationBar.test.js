@@ -38,8 +38,8 @@ describe("Testing the <NavigationBar />", () => {
       expect(component.find(Row)).toHaveLength(1);
       expect(component.find("#auth-button")).toHaveLength(1);
       expect(component.find("#groupSubMenuWeb")).toHaveLength(1);
-      expect(component.find("#createGroupWeb")).toHaveLength(1);
-      expect(component.find("#joinGroupWeb")).toHaveLength(1);
+      expect(component.find("#create-group-web")).toHaveLength(1);
+      expect(component.find("#join-group-web")).toHaveLength(1);
       expect(component.find(Modal)).toHaveLength(2);
     });
 
@@ -86,7 +86,7 @@ describe("Testing the <NavigationBar />", () => {
     it("Checks if user details render when logged in", () => {
       expect(component.find("#auth-button")).toHaveLength(0);
       expect(component.find("#icon")).toHaveLength(1);
-      expect(component.find("#userName")).toHaveLength(1);
+      expect(component.find("#username")).toHaveLength(1);
       expect(props.getGroupList.mock.calls.length).toBe(1);
     });
 

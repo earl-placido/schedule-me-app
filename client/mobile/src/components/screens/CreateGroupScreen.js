@@ -97,7 +97,7 @@ class CreateGroup extends Component {
                 meetingLocation={this.props.meetingLocation}
               />
             </ProgressStep>
-      
+
             <ProgressStep
               label="Share"
               finishBtnText="Continue"

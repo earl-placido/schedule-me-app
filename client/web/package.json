@@ -32,13 +32,17 @@
     "test": "jest --config ./jest.config.json",
     "test:coverage": "jest --config ./jest.config.json --coverage",
     "test:ci": "CI=true react-scripts test",
+    "test:integration:open": "./node_modules/.bin/cypress open --config-file cypress.integration.json",
+    "test:integration:run": "./node_modules/.bin/cypress run --config-file cypress.integration.json",
+    "test:acceptance:open": "./node_modules/.bin/cypress open --config-file cypress.acceptance.json",
+    "test:acceptance:run": "./node_modules/.bin/cypress run --config-file cypress.acceptance.json",
+    "test:ui": "npm run test:integration:run && npm run test:acceptance:run",
+    "test:ui:ci": "start-server-and-test start http://localhost:3000 test:ui",
     "eject": "react-scripts eject",
     "deploy_dev": "surge --domain schedule-me-up-dev.surge.sh build",
     "scss": "node-sass --watch src/scss -o src/css",
     "precommit": "lint-staged",
-    "lint": "eslint --fix .",
-    "cypress:open": "./node_modules/.bin/cypress open",
-    "cypress:run": "./node_modules/.bin/cypress run"
+    "lint": "eslint --fix ."
   },
   "resolutions": {
     "terser": "4.6.7"
