@@ -192,6 +192,7 @@ class AvailabilityModal extends Component {
           }}>
           <View style={{paddingRight: 10, paddingTop: 10}}>
             <Button
+              id="delete-availability-button"
               small
               danger
               rounded
@@ -202,7 +203,12 @@ class AvailabilityModal extends Component {
             </Button>
           </View>
           <View style={{paddingTop: 10}}>
-            <Button small success rounded onPress={() => this.addRangeHour()}>
+            <Button
+              id="add-range-hour-button"
+              success
+              small
+              rounded
+              onPress={() => this.addRangeHour()}>
               <Text>Add</Text>
             </Button>
           </View>
@@ -213,6 +219,7 @@ class AvailabilityModal extends Component {
           <Right>
             <View style={{flexDirection: 'row'}}>
               <Button
+                id="cancel-availability-button"
                 small
                 light
                 onPress={() =>
@@ -220,7 +227,10 @@ class AvailabilityModal extends Component {
                 }>
                 <Text>Cancel</Text>
               </Button>
-              <Button small onPress={() => this.addAvailability()}>
+              <Button
+                id="add-availability-button"
+                small
+                onPress={() => this.addAvailability()}>
                 <Text>OK</Text>
               </Button>
             </View>
