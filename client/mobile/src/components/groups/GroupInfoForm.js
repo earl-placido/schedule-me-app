@@ -51,7 +51,7 @@ export default class GroupInfoForm extends Component {
           ref={_form => (this.form = _form)}
           options={groupOptions}
           type={Group}
-          onChange={this.handleGroupInfoChange}
+          onChange={() => this.handleGroupInfoChange()}
           value={{
             name: this.props.groupName,
             description: this.props.groupDescription,

@@ -50,7 +50,9 @@ class GroupShareCodeForm extends Component {
           small
           block
           style={{alignSelf: 'center', width: 200, margin: 10}}
-          onPress={() => this.copyCode()}>
+          onPress={() => this.copyCode()}
+          accessibilityLabel={'Copy Code'}>
+          >
           <Text style={styles.buttonText}>Copy Code</Text>
         </Button>
 
@@ -58,7 +60,9 @@ class GroupShareCodeForm extends Component {
           small
           block
           style={{alignSelf: 'center', width: 200, margin: 20}}
-          onPress={() => this.goToGroup()}>
+          onPress={() => this.goToGroup()}
+          accessibilityLabel={'Go to group'}>
+          >
           <Text style={styles.buttonText}>Go to Group</Text>
         </Button>
       </Content>
@@ -77,9 +81,9 @@ const styles = StyleSheet.create({
 GroupShareCodeForm.propTypes = {
   meetingCode: PropTypes.any,
   navigation: PropTypes.shape({
-    navigate: PropTypes.func.isRequired,
-    push: PropTypes.func.isRequired,
-  }).isRequired,
+    navigate: PropTypes.func,
+    push: PropTypes.func,
+  })
 };
 
 export default connect(null, {})(GroupShareCodeForm);
