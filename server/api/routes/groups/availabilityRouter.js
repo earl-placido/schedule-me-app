@@ -78,6 +78,6 @@ module.exports = availabilityModel => {
         .catch(next);
     }
   );
-  
+
   return router;
 };

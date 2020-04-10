@@ -55,7 +55,7 @@ describe("test group", () => {
     component
       .dive()
       .instance()
-      .onSelect(moment());
+      .onSelect(moment().add(1, "days"));
     expect(store.getActions()[0].type).toEqual(SELECT_DATE);
     expect(store.getActions()[1].type).toEqual(SHOW_MODAL);
   });
