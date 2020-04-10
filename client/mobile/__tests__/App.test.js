@@ -25,6 +25,7 @@ const setUp = (props = {}, store = {}) => {
 };
 
 describe('Test app', () => {
+  let component;
 
   beforeEach(() => {
     component = setUp();
@@ -37,5 +38,33 @@ describe('Test app', () => {
     });
     const wrapper = shallow(<Root store={store} />).dive();
     expect(wrapper.dive().find(App)).toHaveLength(1);
+  });
+
+  it('Test unauthenticaed', () => {
+    const mockStore = configureStore();
+    const store = mockStore({
+      auth: {},
+    });
+    component = setUp({isAuthenticated: false}, store);
+
+    expect(
+      component
+        .findWhere(node => node.prop('id') === 'AuthStack')
+        .prop('initialRouteName'),
+    ).toEqual('Home');
+  });
+
+  it('Test authenticated', () => {
+    const mockStore = configureStore();
+    const store = mockStore({
+      auth: {},
+    });
+    component = setUp({isAuthenticated: true}, store);
+
+    expect(
+      component
+        .findWhere(node => node.prop('id') === 'AuthStack')
+        .prop('initialRouteName'),
+    ).toEqual('Drawer');
   });
 });

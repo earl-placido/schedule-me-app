@@ -119,6 +119,7 @@ class GroupCodeForm extends Component {
             </Body>
           </CardItem>
         </View>
+
         <View style={styles.codeStyle}>
           <t.form.Form
             style={styles.innerCodeStyle}
@@ -133,6 +134,7 @@ class GroupCodeForm extends Component {
         </View>
         <View style={styles.buttonStyle}>
           <Button
+            id="join-group-button"
             onPress={() => {
               this.handleOnSubmit();
             }}
