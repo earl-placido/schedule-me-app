@@ -143,9 +143,9 @@ describe("Groups Router Tests", () => {
     });
 
     test("should return error", done => {
-      let invalidGroupMemberId = -1;
+      let invalidGroupId = -1;
       request(server)
-        .post(`/api/v1/groups/${invalidGroupMemberId}/members`)
+        .post(`/api/v1/groups/${invalidGroupId}/members`)
         .set("Authorization", `Bearer ${nonOwnerToken}`)
         .expect(responses.BAD_REQUEST, done);
     });

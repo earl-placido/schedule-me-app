@@ -1,3 +1,5 @@
+const express = require("express");
+const router = express.Router();
 const responses = require("../../util/responses");
 const {
   availabilityRules,
@@ -5,16 +7,16 @@ const {
   groupMemberIdRules,
   validate
 } = require("../../middleware/validationMiddleware");
-const AvailabilityModel = require("../../model/availabilityModel");
 
-module.exports = router => {
+module.exports = availabilityModel => {
   router.get(
     "/members/:groupMemberId/availability",
     groupMemberIdRules(),
     validate,
     (req, res, next) => {
       const { groupMemberId } = req.params;
-      return AvailabilityModel.getAvailability(groupMemberId)
+      return availabilityModel
+        .getAvailability(groupMemberId)
         .then(result => {
           if (result.length > 0) {
             res.status(responses.SUCCESS).json(result);
@@ -35,17 +37,13 @@ module.exports = router => {
     validate,
     (req, res, next) => {
       const { groupMemberId, availabilityIds, startTimes, endTimes } = req.body;
-      return AvailabilityModel.addAvailability(
-        groupMemberId,
-        availabilityIds,
-        startTimes,
-        endTimes
-      )
+      return availabilityModel
+        .addAvailability(groupMemberId, availabilityIds, startTimes, endTimes)
         .then(result => {
-          if (result.errno) {
+          if (result.error) {
             res.status(responses.SERVER_ERROR);
             res.send({
-              error: `could not add availability: ${result.sqlMessage}`
+              error: `could not add availability: ${result.error}`
             });
           } else {
             // get the ids of inserted availability
@@ -68,9 +66,10 @@ module.exports = router => {
     (req, res, next) => {
       const { availabilityIds } = req.body;
 
-      AvailabilityModel.deleteAvailability(availabilityIds)
+      availabilityModel
+        .deleteAvailability(availabilityIds)
         .then(result => {
-          if (!result.errno)
+          if (!result.error)
             res.status(responses.SUCCESS).json({ success: true });
           else {
             res.status(responses.SERVER_ERROR).json({ error: true });
@@ -79,4 +78,6 @@ module.exports = router => {
         .catch(next);
     }
   );
+  
+  return router;
 };
