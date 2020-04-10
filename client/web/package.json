@@ -30,6 +30,7 @@
     "build_prod": "NODE_ENV=production react-scripts build",
     "build_dev": "NODE_ENV=development react-scripts build",
     "test": "jest --config ./jest.config.json",
+    "test:coverage": "jest --config ./jest.config.json --coverage",
     "test:ci": "CI=true react-scripts test",
     "test:integration:open": "./node_modules/.bin/cypress open --config-file cypress.integration.json",
     "test:integration:run": "./node_modules/.bin/cypress run --config-file cypress.integration.json",

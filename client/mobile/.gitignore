@@ -61,5 +61,10 @@ buck-out/
 # env
 .env
 
-# integration tests output
-__integration_tests_errors__
+
+=======
+# system tests output
+__system_tests_errors__
+
+# Jest
+coverage
