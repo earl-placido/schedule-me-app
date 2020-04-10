@@ -33,7 +33,8 @@ class InputAvailabilityModal extends Component {
     this.props.selectDate(value, this.props.availabilities);
     if (
       value.year() === this.props.selectedDate.year() &&
-      value.month() === this.props.selectedDate.month()
+      value.month() === this.props.selectedDate.month() &&
+      !this.disabledDate(value)
     )
       this.showModal();
   };
@@ -119,6 +120,11 @@ class InputAvailabilityModal extends Component {
     this.props.closeErrorModal();
   };
 
+  disabledDate(current) {
+    // Can not select days before today and today
+    return current && current < moment().endOf("day");
+  }
+
   render() {
     const { Title } = Typography;
     const { availabilityStyle, calendarStyle } = styles;
@@ -143,6 +149,7 @@ class InputAvailabilityModal extends Component {
         <div style={calendarStyle}>
           <Calendar
             id="availability-calendar"
+            disabledDate={this.disabledDate}
             onSelect={this.onSelect}
             mode="month"
             dateCellRender={this.dateCellRender}
