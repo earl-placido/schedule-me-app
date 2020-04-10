@@ -1,35 +1,30 @@
-const mysql = require("promise-mysql");
+module.exports = mysql => {
+  const availabilityModel = {};
 
-const MYSQLDB = {
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME,
-  multipleStatements: true
-};
-
-module.exports = {
-  getAvailability(groupMemberId) {
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(
-          `
+  availabilityModel.getAvailability = groupMemberId => {
+    return mysql
+      .query(
+        `
                     SELECT AvailabilityId, CAST(StartTime as char), CAST(EndTime as char) FROM 
                     \`Availability\` WHERE GroupMemberId = ?;
                 `,
-          [groupMemberId]
-        )
-        .then(res => {
-          conn.end();
+        [groupMemberId]
+      )
+      .then(res => {
+        if (res.errno) {
+          return { error: res.sqlMessage };
+        } else {
           return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
-    });
-  },
-  addAvailability(groupMemberId, availabilityIds, startTimes, endTimes) {
+        }
+      });
+  };
+
+  availabilityModel.addAvailability = (
+    groupMemberId,
+    availabilityIds,
+    startTimes,
+    endTimes
+  ) => {
     // check is made in router to ensure they are all same length
     let query = `
       ${availabilityIds
@@ -52,21 +47,16 @@ module.exports = {
         .join(`\n`)}
       `;
 
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(query)
-        .then(res => {
-          conn.end();
-          return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
+    return mysql.query(query).then(res => {
+      if (res.errno) {
+        return { error: res.sqlMessage };
+      } else {
+        return res;
+      }
     });
-  },
+  };
 
-  deleteAvailability(availabilityIds) {
+  availabilityModel.deleteAvailability = availabilityIds => {
     // check is made in router to ensure they are all same length
     let query = `
       ${availabilityIds
@@ -77,17 +67,14 @@ module.exports = {
         )
         .join(`\n`)}`;
 
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(query)
-        .then(res => {
-          conn.end();
-          return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
+    return mysql.query(query).then(res => {
+      if (res.errno) {
+        return { error: res.sqlMessage };
+      } else {
+        return res;
+      }
     });
-  }
+  };
+
+  return availabilityModel;
 };
