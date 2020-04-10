@@ -55,42 +55,10 @@ const currentDateOptimalTime = (startTimes, endTimes) => {
 };
 
 const findOptimalTime = availabilities => {
-  let availabilityPerDates = {};
-  let optimalAvailabilityPerDate = [];
-
-  // convert each availabilities to the appropriate format
-  for (let availability of availabilities) {
-    const startTime = moment(availability["CAST(A.StartTime as char)"]);
-    const endTime = moment(availability["CAST(A.EndTime as char)"]);
-    const currentDate = startTime.format("YYYY-MM-DD");
-
-    const startTimeRange = parseFloat(startTime.format("HH.mm"));
-    const endTimeRange = parseFloat(endTime.format("HH.mm"));
-
-    if (availabilityPerDates[currentDate] !== undefined)
-      availabilityPerDates[currentDate].push([startTimeRange, endTimeRange]);
-    else availabilityPerDates[currentDate] = [[startTimeRange, endTimeRange]];
-  }
-
-  // for each day, find the best availability
-  for (let currentDate of Object.keys(availabilityPerDates)) {
-    const listOfAvailabilities = availabilityPerDates[currentDate];
-    const startTimes = [];
-    const endTimes = [];
-    // listOfAvailabilities: [[start, end], [start, end], [start, end]]
-    for (const listOfAvailability of listOfAvailabilities) {
-      startTimes.push(listOfAvailability[0]);
-      endTimes.push(listOfAvailability[1]);
-    }
-    // get optimal time for current day
-    const optimalTime = currentDateOptimalTime(startTimes, endTimes);
-    Object.keys(optimalTime).map(key => {
-      optimalAvailabilityPerDate.push([
-        `${currentDate}:${key}`,
-        optimalTime[key]
-      ]);
-    });
-  }
+  let availabilityPerDate = toAvailabilityPerDate(availabilities);
+  let optimalAvailabilityPerDate = findBestAvailabilityPerDate(
+    availabilityPerDate
+  );
 
   // sort in descending order
   optimalAvailabilityPerDate.sort((first, second) => {
@@ -99,6 +67,58 @@ const findOptimalTime = availabilities => {
 
   return optimalAvailabilityPerDate; // [[date:starthours.startminute_endhours.endminute],
   //   date:starthours.startminute_endhours.endminute ...]]
+};
+
+const toAvailabilityPerDate = availabilities => {
+  let availabilityPerDate = {};
+
+  for (let availability of availabilities) {
+    const startTime = moment(availability["CAST(A.StartTime as char)"]);
+    const endTime = moment(availability["CAST(A.EndTime as char)"]);
+    const currentDate = startTime.format("YYYY-MM-DD");
+
+    const startTimeRange = parseFloat(startTime.format("HH.mm"));
+    const endTimeRange = parseFloat(endTime.format("HH.mm"));
+
+    if (availabilityPerDate[currentDate] !== undefined)
+      availabilityPerDate[currentDate].push([startTimeRange, endTimeRange]);
+    else availabilityPerDate[currentDate] = [[startTimeRange, endTimeRange]];
+  }
+
+  return availabilityPerDate;
+};
+
+const toStartEndTimes = availabilities => {
+  const startTimes = [];
+  const endTimes = [];
+  // availabilities: [[start, end], [start, end], [start, end]]
+  for (const availability of availabilities) {
+    startTimes.push(availability[0]);
+    endTimes.push(availability[1]);
+  }
+  return { startTimes, endTimes };
+};
+
+const findBestAvailabilityPerDate = availabilityPerDates => {
+  let optimalAvailabilityPerDate = [];
+
+  // for each day, find the best availability
+  for (let currentDate of Object.keys(availabilityPerDates)) {
+    let { startTimes, endTimes } = toStartEndTimes(
+      availabilityPerDates[currentDate]
+    );
+
+    // get optimal time for current date
+    const optimalTime = currentDateOptimalTime(startTimes, endTimes);
+
+    Object.keys(optimalTime).map(key => {
+      optimalAvailabilityPerDate.push([
+        `${currentDate}:${key}`,
+        optimalTime[key]
+      ]);
+    });
+  }
+  return optimalAvailabilityPerDate;
 };
 
 module.exports = {
