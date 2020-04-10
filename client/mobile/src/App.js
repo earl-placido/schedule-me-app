@@ -34,6 +34,7 @@ class App extends Component {
             <Container>
               <NavigationContainer>
                 <AuthStack.Navigator
+                  id="AuthStack"
                   initialRouteName={
                     !this.props.isAuthenticated ? 'Home' : 'Drawer'
                   }>

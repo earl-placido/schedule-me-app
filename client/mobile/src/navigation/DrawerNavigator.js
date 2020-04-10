@@ -61,6 +61,7 @@ function CustomDrawerContent(props) {
               }}
             />
           )}
+          keyExtractor={item => item.id}
         />
         {count < props.groupList.length && (
           <DrawerItem

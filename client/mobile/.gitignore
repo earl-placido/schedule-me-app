@@ -63,3 +63,6 @@ buck-out/
 
 # system tests output
 __system_tests_errors__
+
+# Jest
+coverage
