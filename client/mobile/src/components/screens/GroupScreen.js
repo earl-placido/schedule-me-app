@@ -2,6 +2,7 @@ import {FloatingAction} from 'react-native-floating-action';
 import Dialog from 'react-native-dialog';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import React, {Component} from 'react';
 import {FlatList, StyleSheet} from 'react-native';
@@ -83,6 +84,42 @@ class GroupDetail extends Component {
     this.setState({dialogVisible: false});
   };
 
+  formatDate(date) {
+    if (date === undefined) return;
+
+    let dateArray = date.replace(/\s/g, '').split(/\W/g);
+    let formattedDate = moment({
+      year: dateArray[1],
+      month: dateArray[2],
+      day: dateArray[3],
+    }).format('dddd, MMMM Do YYYY');
+    let formattedStartTime = moment({
+      hour: dateArray[6],
+      minute: dateArray[7],
+    }).format('h:mm a');
+    let formattedEndTime = moment({
+      hour: dateArray[8],
+      minute: dateArray[9],
+    }).format('h:mm a');
+
+    let formattedDateLastUpdated = moment({
+      year: dateArray[11],
+      month: dateArray[12],
+      day: dateArray[13],
+    }).format('MMMM Do YYYY');
+
+    let formattedHourLastUpdated = moment({
+      hour: dateArray[14],
+      minute: dateArray[15],
+    }).format('h:mm a');
+
+    let formattedTime = `${formattedStartTime} - ${formattedEndTime}`;
+    let formattedTimeLastUpdated = `Last Updated: ${formattedDateLastUpdated} ${formattedHourLastUpdated}`;
+    return (
+      formattedDate + ' ' + formattedTime + '\n\n' + formattedTimeLastUpdated
+    );
+  }
+
   currentMeetingTime() {
     return (
       <View>
@@ -95,7 +132,8 @@ class GroupDetail extends Component {
             return (
               <View key={index}>
                 <Text style={styles.timeStyle}>
-                  {meeting.meetingTimeString || 'No meeting time selected'}
+                  {this.formatDate(meeting.meetingTimeString) ||
+                    'No meeting time selected'}
                 </Text>
                 {this.props.selfMember &&
                   this.props.selfMember.MemberRole === 'AD' && (

@@ -203,6 +203,7 @@ describe('Testing Group Screen', () => {
   });
 
   it('Tests modals', () => {
+    component.instance().date = jest.fn();
     component.setState({finishedLoadingGroupDetails: true});
     expect(component.find('#meeting-modal')).toHaveLength(1);
     expect(component.find('#availability-modal')).toHaveLength(1);

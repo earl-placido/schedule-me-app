@@ -82,7 +82,7 @@ class CreateGroup extends Component {
             <ProgressStep
               label="Meeting"
               nextBtnText="Done"
-              onNext={() => this.createNewMeeting}
+              onNext={() => this.createNewMeeting()}
               onPrevious={this.onPrevStep}
               nextBtnDisabled={!this.props.meetingDuration}
               scrollViewProps={this.defaultScrollViewProps}
