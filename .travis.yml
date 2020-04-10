@@ -82,7 +82,7 @@ matrix:
     - nvm install 12
     - node --version
     - (cd client/mobile && echo "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT" > .env
-      && echo "REACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env )
+      && echo "REACT_APP_GOOGLE_CLIENT_ID=$MOBILE_GOOGLE_CLIENT_ID" > .env )
     before_script:
     - "(cd client/mobile && npm install && npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res)"
     script:
