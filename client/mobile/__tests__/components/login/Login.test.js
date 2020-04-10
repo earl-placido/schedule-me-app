@@ -44,7 +44,7 @@ describe('Testing <Login />', () => {
   it('Test login button press', () => {
     component.instance().userLogin = jest.fn();
     component
-      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .findWhere(node => node.prop('accessibilityLabel') === 'Login Button')
       .simulate('press');
     expect(component.instance().userLogin).toHaveBeenCalled();
   });
@@ -56,7 +56,7 @@ describe('Testing <Login />', () => {
     component.instance().showToast = jest.fn();
     jest.useFakeTimers();
     component
-      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .findWhere(node => node.prop('accessibilityLabel') === 'Login Button')
       .simulate('press');
 
     expect(component.state().isSigninInProgress).toEqual(true);
@@ -70,7 +70,7 @@ describe('Testing <Login />', () => {
     };
     jest.useFakeTimers();
     component
-      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .findWhere(node => node.prop('accessibilityLabel') === 'Login Button')
       .simulate('press');
 
     expect(component.state().isSigninInProgress).toEqual(false);
@@ -85,7 +85,7 @@ describe('Testing <Login />', () => {
     component.instance().showToast = jest.fn();
     jest.useFakeTimers();
     component
-      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .findWhere(node => node.prop('accessibilityLabel') === 'Login Button')
       .simulate('press');
     jest.advanceTimersByTime(1000);
 
@@ -99,7 +99,7 @@ describe('Testing <Login />', () => {
     };
     jest.useFakeTimers();
     component
-      .findWhere(node => node.prop('accessibilityLabel') === 'LoginButton')
+      .findWhere(node => node.prop('accessibilityLabel') === 'Login Button')
       .simulate('press');
     jest.advanceTimersByTime(1000);
 
