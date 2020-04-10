@@ -124,7 +124,7 @@ class CreateAccount extends Component {
             <Text
               style={{color: '#3F51B5'}}
               onPress={() => this.toggleCreate()}
-              accessibilityLabel={'SignupButton'}>
+              accessibilityLabel={'Sign Up Button'}>
               Sign Up
             </Text>
           </View>
@@ -137,7 +137,7 @@ class CreateAccount extends Component {
           <ScrollView>
             <Card
               style={styles.modalStyle}
-              accessibilityLabel={'CreateAccountForm'}>
+              accessibilityLabel={'Create Account Form'}>
               <Form
                 ref={_form => (this.form = _form)}
                 options={userOptions}
@@ -167,7 +167,7 @@ class CreateAccount extends Component {
                     block
                     primary
                     onPress={() => this.userSignup()}
-                    accessibilityLabel={'SignupSubmitButton'}>
+                    accessibilityLabel={'Sign Up Submit Button'}>
                     <Text>Submit</Text>
                     {this.state.isSpinnerVisible && <Spinner color="white" />}
                   </Button>

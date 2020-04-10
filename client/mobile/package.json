@@ -9,7 +9,7 @@
     "test": "jest --config jest.config.js",
     "test:coverage": "jest --config jest.config.js --coverage",
     "test:ci": "set CI=true && jest --config jest.config.js",
-    "test:system": "node launchSystemTests",
+    "test:integration": "node launchIntegrationTests",
     "lint": "eslint --fix src",
     "precommit": "lint-staged"
   },

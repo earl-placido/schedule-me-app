@@ -24,7 +24,7 @@ class GroupList extends Component {
     return (
       <Container>
         <View>
-          <CardItem header boardered accessibilityLabel={'YourGroupsTitle'}>
+          <CardItem header boardered accessibilityLabel={'Your Groups'}>
             <Body style={{alignItems: 'center'}}>
               <Text style={({fontWeight: 'bold'}, {fontSize: 30})}>
                 Your Groups

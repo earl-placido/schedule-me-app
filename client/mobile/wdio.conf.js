@@ -1,6 +1,6 @@
 exports.config = {
   runner: 'local',
-  specs: ['./__system_tests__/specs/*.spec.js'],
+  specs: ['./__integration_tests__/specs/*.spec.js'],
   exclude: [],
   maxInstances: 10,
   port: 4723,
@@ -30,7 +30,7 @@ exports.config = {
         return;
       }
       browser.saveScreenshot(
-        `./__system_tests_errors__/assertionError_${assertion.error.message}.png`,
+        `./__integration_tests_errors__/assertionError_${assertion.error.message}.png`,
       );
     },
   },

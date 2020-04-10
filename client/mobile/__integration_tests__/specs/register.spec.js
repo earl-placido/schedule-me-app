@@ -1,22 +1,26 @@
-const userUtil = require('../util/userUtil');
+const {generateUser} = require('../util/userUtil');
 
 describe('Test register functionality', () => {
-  var generatedUser = userUtil.generateUser();
+  let generatedUser = generateUser();
 
   it('Cannot create user with empty form', () => {
-    $('~HomeContainer').waitForExist();
-    $('~SignupButton').click();
+    $('~Home').waitForExist();
+    $('~Sign Up Button').click();
 
     $('~First name').clearValue();
     $('~Last name').clearValue();
     $('~Email').clearValue();
     $('~Password').clearValue();
+    // keyboard blocks appium from finding the form input
+    driver.hideKeyboard();
     $('~Confirm password').clearValue();
 
-    $('~SignupSubmitButton').click();
-    $('~CreateAccountForm').isDisplayed();
+    // Need to click twice
+    $('~Sign Up Submit Button').click();
+    $('~Sign Up Submit Button').click();
+    $('~Create Account Form').isDisplayed();
     browser.back();
-    $('~SignupButton').isDisplayed();
+    $('~Sign Up Button').isDisplayed();
   });
 
   it('Cannot create user with invalid passwords', () => {
@@ -25,8 +29,8 @@ describe('Test register functionality', () => {
       'longharactersabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz';
     let shortPassword = 'short';
 
-    $('~HomeContainer').waitForExist();
-    $('~SignupButton').click();
+    $('~Home').waitForExist();
+    $('~Sign Up Button').click();
 
     $('~First name').setValue(generatedUser.fName);
     $('~Last name').setValue(generatedUser.lName);
@@ -34,49 +38,54 @@ describe('Test register functionality', () => {
 
     // length over 100
     $('~Password').setValue(longPassword);
+    // keyboard blocks appium from finding the form input
+    driver.hideKeyboard();
     $('~Confirm password').setValue(longPassword);
-    $('~SignupSubmitButton').click();
+
+    // Need to click twice the first time
+    $('~Sign Up Submit Button').click();
+    $('~Sign Up Submit Button').click();
 
     // Android alert
     $('android.widget.Button').waitForDisplayed();
     alertMessages = $$('android.widget.TextView');
-    expect(alertMessages[0].getText()).toEqual('Invalid input');
+    expect(alertMessages[0].getText()).toEqual("Couldn't sign you up ");
     expect(alertMessages[1].getText()).toEqual(
       'Password must be between 8 and 100 characters',
     );
     $('android.widget.Button').click();
-    $('~SignupSubmitButton').waitForDisplayed();
+    $('~Sign Up Submit Button').waitForDisplayed();
 
     // length less than 8
     $('~Password').setValue(shortPassword);
     $('~Confirm password').setValue(shortPassword);
-    $('~SignupSubmitButton').click();
+    $('~Sign Up Submit Button').click();
 
     // Android alert
     $('android.widget.Button').waitForDisplayed();
     alertMessages = $$('android.widget.TextView');
-    expect(alertMessages[0].getText()).toEqual('Invalid input');
+    expect(alertMessages[0].getText()).toEqual("Couldn't sign you up ");
     expect(alertMessages[1].getText()).toEqual(
       'Password must be between 8 and 100 characters',
     );
     $('android.widget.Button').click();
-    $('~SignupSubmitButton').waitForDisplayed();
+    $('~Sign Up Submit Button').waitForDisplayed();
 
     // passwords not matching
     $('~Password').setValue(generatedUser.password);
     $('~Confirm password').setValue(`${generatedUser.password}2`);
-    $('~SignupSubmitButton').click();
+    $('~Sign Up Submit Button').click();
 
     // Android alert
     $('android.widget.Button').waitForDisplayed();
     alertMessages = $$('android.widget.TextView');
-    expect(alertMessages[0].getText()).toEqual('Invalid input');
+    expect(alertMessages[0].getText()).toEqual("Couldn't sign you up ");
     expect(alertMessages[1].getText()).toEqual('Password mismatch');
     $('android.widget.Button').click();
-    $('~SignupSubmitButton').waitForDisplayed();
+    $('~Sign Up Submit Button').waitForDisplayed();
 
     browser.back();
-    $('~SignupButton').isDisplayed();
+    $('~Sign Up Button').isDisplayed();
   });
 
   it('Cannot create user with invalid email', () => {
@@ -92,72 +101,82 @@ describe('Test register functionality', () => {
       'this is"really"notallowed@example.com',
     ];
 
-    $('~HomeContainer').waitForExist();
-    $('~SignupButton').click();
+    $('~Home').waitForExist();
+    $('~Sign Up Button').click();
 
     $('~First name').setValue(generatedUser.fName);
     $('~Last name').setValue(generatedUser.lName);
     $('~Password').setValue(generatedUser.password);
+    // keyboard blocks appium from finding the form input
+    driver.hideKeyboard();
     $('~Confirm password').setValue(generatedUser.password);
+    $('~Sign Up Submit Button').click();
 
     invalidEmails.forEach(email => {
       $('~Email').setValue(email);
-      $('~SignupSubmitButton').click();
+      $('~Sign Up Submit Button').click();
 
       // Android alert
       $('android.widget.Button').waitForDisplayed();
       let alertMessages = $$('android.widget.TextView');
-      expect(alertMessages[0].getText()).toEqual('Invalid input');
+      expect(alertMessages[0].getText()).toEqual("Couldn't sign you up ");
       expect(alertMessages[1].getText()).toEqual('Must follow email format');
       $('android.widget.Button').click();
-      $('~SignupSubmitButton').waitForDisplayed();
+      $('~Sign Up Submit Button').waitForDisplayed();
     });
 
     browser.back();
-    $('~SignupButton').isDisplayed();
+    $('~Sign Up Button').isDisplayed();
   });
 
   it('Can register', () => {
-    $('~HomeContainer').waitForExist();
-    $('~SignupButton').click();
+    $('~Home').waitForExist();
+    $('~Sign Up Button').click();
 
     $('~First name').setValue(generatedUser.fName);
     $('~Last name').setValue(generatedUser.lName);
     $('~Email').setValue(generatedUser.email);
     $('~Password').setValue(generatedUser.password);
+    // keyboard blocks appium from finding the form input
+    driver.hideKeyboard();
     $('~Confirm password').setValue(generatedUser.password);
 
-    $('~SignupSubmitButton').click();
-    $('~YourGroupsTitle').waitForDisplayed();
-    $('~DrawerButton').click();
-    $('~LogoutButton').waitForDisplayed();
-    $('~LogoutButton').click();
-    $('~SignupButton').waitForDisplayed();
+    $('~Sign Up Submit Button').click();
+    $('~Sign Up Submit Button').click();
+    $('~Your Groups').waitForDisplayed();
+    $('~Menu').click();
+    $('~Logout Button').waitForDisplayed();
+    $('~Logout Button').click();
+    $('~Sign Up Button').waitForDisplayed();
   });
 
   it('Cannot create user with same email', () => {
-    $('~HomeContainer').waitForExist();
-    $('~SignupButton').click();
+    $('~Home').waitForExist();
+    $('~Sign Up Button').click();
 
     $('~First name').setValue(generatedUser.fName);
     $('~Last name').setValue(generatedUser.lName);
     $('~Email').setValue(generatedUser.email);
     $('~Password').setValue(generatedUser.password);
+    // keyboard blocks appium from finding the form input
+    driver.hideKeyboard();
     $('~Confirm password').setValue(generatedUser.password);
 
-    $('~SignupSubmitButton').click();
+    $('~Sign Up Submit Button').click();
+    $('~Sign Up Submit Button').click();
 
     // Android alert
     $('android.widget.Button').waitForDisplayed();
     let alertMessages = $$('android.widget.TextView');
-    expect(alertMessages[0].getText()).toEqual('Invalid input');
+    expect(alertMessages[0].getText()).toEqual("Couldn't sign you up ");
     expect(alertMessages[1].getText()).toEqual(
       'Email address entered is taken.',
     );
 
     $('android.widget.Button').click();
 
+    browser.pause(2000);
     browser.back();
-    $('~SignupButton').waitForDisplayed();
+    $('~Sign Up Button').waitForDisplayed();
   });
 });

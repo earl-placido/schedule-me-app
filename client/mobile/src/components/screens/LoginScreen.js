@@ -12,7 +12,7 @@ import commonColor from '../../../native-base-theme/variables/commonColor';
 class Home extends Component {
   render() {
     return (
-      <Container style={styles.container} accessibilityLabel={'HomeContainer'}>
+      <Container style={styles.container} accessibilityLabel={'Home'}>
         <Text style={styles.title}>
           <Text style={styles.title}>Schedule </Text>
           <Text style={styles.titleNegative}>Me Up</Text>
