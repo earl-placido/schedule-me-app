@@ -152,7 +152,7 @@ CreateGroup.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
-  }).isRequired,
+  }),
 };
 
 export default connect(mapStateToProps, {
