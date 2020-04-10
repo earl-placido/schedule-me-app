@@ -87,7 +87,6 @@ class GroupScreen extends Component {
   }
 
   formatDate(date) {
-    console.log(date);
     let dateArray = date.replace(/\s/g, "").split(/\W/g);
     let formattedDate = moment({
       year: dateArray[0],
