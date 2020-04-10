@@ -181,11 +181,9 @@ class GroupDetail extends Component {
                     <Text style={styles.titleStyle}>
                       Group: {this.props.group.GroupName}
                     </Text>
-                    {this.props.group.GroupDescription && (
-                      <Text style={{textAlign: 'center'}}>
-                        {this.props.group.GroupDescription}
-                      </Text>
-                    )}
+                    <Text style={{textAlign: 'center'}}>
+                      {this.props.group.GroupDescription || ''}
+                    </Text>
                   </View>
                   <View>
                     <Text style={styles.propertyStyle}>
