@@ -9,35 +9,33 @@ const MYSQLDB = {
 
 module.exports = {
   query(query, params) {
-    if(params === undefined){
+    if (params === undefined) {
       return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(query)
-        .then(res => {
-          conn.end();
-          return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
-      });  
-    }
-    else {
+        return conn
+          .query(query)
+          .then(res => {
+            conn.end();
+            return res;
+          })
+          .catch(err => {
+            conn.end();
+            return err;
+          });
+      });
+    } else {
       return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(query, [...params])
-        .then(res => {
-          conn.end();
-          return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
+        return conn
+          .query(query, [...params])
+          .then(res => {
+            conn.end();
+            return res;
+          })
+          .catch(err => {
+            conn.end();
+            return err;
+          });
       });
     }
-    
   },
 
   format(query, params) {

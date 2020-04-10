@@ -83,7 +83,7 @@ module.exports = mysql => {
             `,
         [groupId]
       )
-       .then(res => {
+      .then(res => {
         if (res.errno) {
           return { error: res.sqlMessage };
         } else {

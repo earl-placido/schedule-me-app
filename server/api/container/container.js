@@ -20,7 +20,12 @@ bottle.constant("comparePasswordAsync", comparePasswordAsync);
 bottle.serviceFactory("availabilityModel", availabilityModel, "sqlService");
 bottle.serviceFactory("groupMemberModel", groupMemberModel, "sqlService");
 bottle.serviceFactory("groupsModel", groupsModel, "sqlService");
-bottle.serviceFactory("userModel", userModel, "sqlService", "comparePasswordAsync");
+bottle.serviceFactory(
+  "userModel",
+  userModel,
+  "sqlService",
+  "comparePasswordAsync"
+);
 
 bottle.serviceFactory(
   "groupsRouter",
