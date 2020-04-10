@@ -18,73 +18,6 @@
       }
     },
     "paths": {
-      "/example/{id}": {
-        "get": {
-          "tags": [
-            "example"
-          ],
-          "summary": "Get data based on id",
-          "parameters": [
-              {
-                "name": "id",
-                "in": "path",
-                "description": "ID",
-                "required": true,
-                "type": "integer",
-                "format": "int64"
-              }
-          ],
-          "description": "Returns data based on its id",
-          "produces": [
-            "application/json"
-          ],
-          "responses": {
-            "200": {
-              "description": "OK"
-            }
-          }
-        },
-        "post": {
-          "tags":[
-            "example"
-          ],
-          "summary": "Add/update data for certain ID",
-          "description": "",
-          "consumes": [
-            "application/x-www-form-urlencoded"
-          ],
-          "produces": [
-            "application/json"
-          ],
-          "security": [
-            {
-              "Bearer": []
-            }
-          ],
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "description": "ID of data that needs to be inserted/updated",
-              "required": true,
-              "type": "integer",
-              "format": "int64"
-            },
-            {
-              "name": "data",
-              "in": "formData",
-              "description": "Data",
-              "required": true,
-              "type": "string"
-            }
-          ],
-          "responses": {
-            "405": {
-              "description": "Invalid input"
-            }
-          }
-        }
-      },
       "/auth/signup": {
         "post": {
           "tags":[
@@ -228,6 +161,7 @@
           "tags":[
             "Groups"
           ],
+          
           "summary": "Add a new group",
           "description": "",
           "produces": [
@@ -485,6 +419,35 @@
           "responses": {
             "200": {
               "description": "OK"
+            }
+          }
+        },
+        "post": {
+          "tags":[
+            "Groups"
+          ],
+          "security": [
+            {
+              "Bearer": []
+            }
+          ],
+          "summary": "Add user to group",
+          "description": "",
+          "produces": [
+            "application/json"
+          ],
+          "parameters": [
+            {
+              "name": "groupId",
+              "in": "path",
+              "type":"integer",
+              "format": "int64",
+              "required": true
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Returns the group member id.  It will return 0 if the user has already joined the group, otherwise it will return a positive non-zero number."
             }
           }
         }

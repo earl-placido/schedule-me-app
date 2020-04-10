@@ -9,11 +9,12 @@ import {
   GoogleSignin,
   GoogleSigninButton,
 } from '@react-native-community/google-signin';
-import {loginGoogle, loginUser} from '../../actions/components/Auth.action';
+import {loginGoogle, loginUser} from '../../actions/Auth.action';
 import {compose} from 'redux';
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router';
 import Divider from '../styles/Divider';
+import {Alert} from 'react-native';
 
 GoogleSignin.configure({
   webClientId: Config.REACT_APP_GOOGLE_CLIENT_ID,
@@ -25,10 +26,12 @@ const Form = t.form.Form;
 const userOptions = {
   fields: {
     email: {
-      error: 'Please input email',
+      error: 'Please enter a valid email address',
+      keyboardType: 'email-address',
+      textContentType: 'emailAddress',
     },
     password: {
-      error: 'Please input password',
+      error: 'Please enter your password',
       password: true,
       secureTextEntry: true,
     },
@@ -63,21 +66,25 @@ class Login extends Component {
     Toast.show({
       text: message,
       buttonText: 'OK',
-      duration: 3000,
+      duration: 4000,
+      position: 'top',
     });
   };
 
   googleLogin = () => {
-    GoogleSignin.signIn().then(() => {
-      this.toggleSignInProgress();
-
-      GoogleSignin.getTokens().then(response => {
-        this.props.loginGoogle(response);
-        setTimeout(() => {
-          this.attemptLogin();
-        }, 3000);
+    GoogleSignin.signIn()
+      .then(() => {
+        this.toggleSignInProgress();
+        GoogleSignin.getTokens().then(response => {
+          this.props.loginGoogle(response);
+          setTimeout(() => {
+            this.attemptLogin();
+          }, 3000);
+        });
+      })
+      .catch(() => {
+        Alert.alert('Cannot connect to google login');
       });
-    });
   };
 
   userLogin = () => {
@@ -104,6 +111,8 @@ class Login extends Component {
         this.showToast(this.props.message.errors[0].msg);
       } else if (this.props.message.err) {
         this.showToast(this.props.message.err);
+      } else {
+        this.showToast(this.props.message);
       }
     }
     this.toggleSignInProgress();
@@ -127,7 +136,8 @@ class Login extends Component {
           small
           block
           primary
-          onPress={() => this.userLogin()}>
+          onPress={() => this.userLogin()}
+          accessibilityLabel={'Login Button'}>
           <Text>Log In</Text>
           {this.state.isSpinnerVisible && <Spinner color="white" />}
         </Button>

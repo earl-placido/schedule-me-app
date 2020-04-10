@@ -9,8 +9,6 @@ matrix:
     cache:
       directories:
       - "./client/web/node_modules"
-      - "./client/mobile/node_modules"
-      - "./server/node_modules"
     before_install:
     - (cd client/web && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" > .env.production) 
     - "(cd client/web && travis_wait docker-compose up -d)"
@@ -24,7 +22,7 @@ matrix:
     - docker exec web /bin/sh -c "eslint src"
     - docker exec web /bin/sh -c "npm run test:ci"
     - "(cd server && npm start) &"
-    - "(cd client/web && npm run cypress:ci)"
+    - "(cd client/web && npm run test:ui:ci)"
     - if [ "$TRAVIS_BRANCH" = "master" ]; then docker exec web /bin/sh -c "npm run
       build_prod && mv build/index.html build/200.html"; fi
     - if [ "$TRAVIS_BRANCH" = "develop" ]; then docker exec web /bin/sh -c "npm run
@@ -66,3 +64,43 @@ matrix:
       skip_cleanup: true
       on:
         branch: master
+  - if: "((branch = master) OR (branch = develop)) AND NOT type = pull_request"
+    language: android
+    dist: trusty
+    android:
+      components:
+      - tools
+      - platform-tools
+      - build-tools-28.0.3
+      - android-28
+      - extra-google-google_play_services
+      - extra-google-m2repository
+      - extra-android-m2repository
+      - sys-img-x86-android-28
+      - sys-img-armeabi-v7a-android-17
+    before_install:
+    - (cd client/mobile/android && yes | sdkmanager "platforms;android-28")
+    - nvm install 12
+    - node --version
+    - (cd client/mobile && echo -e "REACT_APP_SERVER_ENDPOINT=$SERVER_ENDPOINT\r\nREACT_APP_GOOGLE_CLIENT_ID=$MOBILE_GOOGLE_CLIENT_ID" > .env )
+    before_script:
+    - "(cd client/mobile && npm install && npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res)"
+    script:
+    - (cd client/mobile/android && ./gradlew assembleDebug)
+    before_deploy:
+      - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')-($TRAVIS_COMMIT)}
+      - git tag $TRAVIS_TAG
+    deploy:
+      provider: releases
+      api_key: "$GITHUB_API_KEY"
+      file: "/home/travis/build/Syndrical/scheduler-app/client/mobile/android/app/build/outputs/apk/debug/app-debug.apk"
+      skip_cleanup: true
+      name: build-$TRAVIS_BRANCH
+      body: Automatic build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI
+        on $(date +'%F %T %Z').
+      prerelease: true
+      overwrite: true
+      file_glob: true
+      tag_name: $TRAVIS_TAG
+      on: 
+        all_branches: true

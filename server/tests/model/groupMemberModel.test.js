@@ -1,47 +1,41 @@
-require("dotenv").config();
-const mysql = require("promise-mysql");
-const testUtil = require("../test-utils/testUtil");
+const sqlService = require("../../api/container/services/sqlService");
 const groupmemberModel = require("../../api/model/groupMemberModel");
-const data = require("../test-utils/testdata/groupsModel.testdata");
 
-const MYSQLDB = {
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME,
-  multipleStatements: true
-};
+jest.mock("../../api/container/services/sqlService");
 
 describe("test group member model", () => {
-  beforeAll(async () => {
-    const conn = await mysql.createConnection(MYSQLDB);
-    const query =
-      testUtil.insertUsersQuery(data.users) +
-      testUtil.insertGroupsQuery(data.groups) +
-      testUtil.insertGroupMembersQuery(data.groupMembers);
-    const result = conn.query(query);
-    conn.end();
-    return result;
-  });
-
-  afterAll(async () => {
-    const conn = await mysql.createConnection(MYSQLDB);
-    const query = `
-                SET FOREIGN_KEY_CHECKS=0;
-                ${testUtil.resetUsersQuery}
-                ${testUtil.resetGroupsQuery}
-                ${testUtil.resetGroupMembersQuery}
-                SET FOREIGN_KEY_CHECKS=1;
-            `;
-    const result = conn.query(query);
-    conn.end();
-    return result;
-  });
-
   it("returns the correct group member id", async () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve([
+        {
+          GroupMemberId: 1
+        }
+      ]);
+    });
+
     const groupId = 1000000;
     const userId = 1;
-    const data = await groupmemberModel.getGroupMemberId(groupId, userId);
+    const data = await groupmemberModel(sqlService).getGroupMemberId(
+      groupId,
+      userId
+    );
     expect(data[0].GroupMemberId).toEqual(1);
+  });
+
+  it("returns error when getting group member id", async () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        errno: 1,
+        sqlMessage: "sql error"
+      });
+    });
+
+    const groupId = 1000000;
+    const userId = 1;
+    const data = await groupmemberModel(sqlService).getGroupMemberId(
+      groupId,
+      userId
+    );
+    expect(data.error).toEqual("sql error");
   });
 });

@@ -8,7 +8,6 @@ import { toggleModal } from "../../actions/components/login/Modal.action";
 class LoginModal extends Component {
   constructor(props) {
     super(props);
-    this.state = { signUpSelected: false };
   }
 
   close() {
@@ -17,16 +16,14 @@ class LoginModal extends Component {
 
   render() {
     return (
-      <div>
-        <Modal
-          title={"Login"}
-          visible={this.props.modalVisible}
-          onCancel={this.close}
-          footer={null}
-        >
-          <Login />
-        </Modal>
-      </div>
+      <Modal
+        title={"Login"}
+        visible={this.props.modalVisible}
+        onCancel={this.close}
+        footer={null}
+      >
+        <Login />
+      </Modal>
     );
   }
 }

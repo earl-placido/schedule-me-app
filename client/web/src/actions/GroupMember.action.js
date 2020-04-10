@@ -13,13 +13,14 @@ export const getMemberIdWithEmail = async (groupId, userEmail) => {
   const memberInformation = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`
   );
-  const memberId = memberInformation.data.groupMembers[0].GroupMemberId;
-  return memberId;
+  const groupMember = memberInformation.data.groupMembers[0];
+  return groupMember;
 };
 
 export const getMemberId = async (groupId, userId) => {
-  const memberId = await axios.get(
+  const memberInformation = await axios.get(
     `${process.env.REACT_APP_SERVER_ENDPOINT}api/v1/groups/${groupId}/members/${userId}`
   );
-  return memberId;
+  const groupMember = memberInformation.data.groupMembers[0];
+  return groupMember;
 };

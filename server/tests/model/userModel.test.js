@@ -1,40 +1,10 @@
-require("dotenv").config();
-const mysql = require("promise-mysql");
-const testUtil = require("../test-utils/testUtil");
+const sqlService = require("../../api/container/services/sqlService");
+const { comparePasswordAsync } = require("../../api/util/bcryptHelper");
 const userModel = require("../../api/model/userModel");
-const data = require("../test-utils/testdata/userModel.testdata");
+const { generateUser } = require("../test-utils/userUtil");
 
-const MYSQLDB = {
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME,
-  multipleStatements: true
-};
-
-let numOfUsersAdded = 0;
-
-beforeAll(() => {
-  return mysql.createConnection(MYSQLDB).then(conn => {
-    const query = testUtil.insertUsersQuery(data.users);
-    const result = conn.query(query);
-    conn.end();
-    return result;
-  });
-});
-
-afterAll(() => {
-  return mysql.createConnection(MYSQLDB).then(conn => {
-    const query = `
-      SET FOREIGN_KEY_CHECKS=0;
-      ${testUtil.resetUsersQuery}
-      SET FOREIGN_KEY_CHECKS=1;
-    `;
-    const result = conn.query(query);
-    conn.end();
-    return result;
-  });
-});
+jest.mock("../../api/container/services/sqlService");
+jest.mock("../../api/util/bcryptHelper");
 
 describe(`createUser tests`, () => {
   it(`Returns correct userId when creating a new user`, () => {
@@ -43,9 +13,14 @@ describe(`createUser tests`, () => {
     let newFName = "john";
     let newLName = "doe";
 
-    numOfUsersAdded++;
-    const expectedID = data.users.length + numOfUsersAdded;
-    return userModel
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        insertId: 1
+      });
+    });
+
+    const expectedID = 1;
+    return userModel(sqlService)
       .createUser(newEmail, newPassword, newFName, newLName)
       .then(generatedUserId => {
         expect(generatedUserId).toBe(expectedID);
@@ -53,27 +28,42 @@ describe(`createUser tests`, () => {
   });
 
   it(`Returns error when given missing data`, () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        errno: 1,
+        sqlMessage: "sql error"
+      });
+    });
+
     let newEmail = "error@createUser.com";
     let newPassword = "password";
     let newFName = "john";
 
-    return userModel.createUser(newEmail, newPassword, newFName).then(err => {
-      expect(err).toHaveProperty("error");
-    });
+    return userModel(sqlService)
+      .createUser(newEmail, newPassword, newFName)
+      .then(err => {
+        expect(err).toHaveProperty("error");
+      });
   });
 });
 
 describe(`createGoogleUser tests`, () => {
   it(`Returns correct userId when creating a new user`, () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        insertId: 1
+      });
+    });
+
     let newEmail = "googleUser@createGoogleUser.com";
     let newFName = "john";
     let newLName = "doe";
     let newOAuthProvider = "google";
     let newOAuthUID = 109614695133908857889;
 
-    numOfUsersAdded++;
-    const expectedID = data.users.length + numOfUsersAdded;
-    return userModel
+    const expectedID = 1;
+
+    return userModel(sqlService)
       .createGoogleUser(
         newEmail,
         newFName,
@@ -87,13 +77,19 @@ describe(`createGoogleUser tests`, () => {
   });
 
   it(`Returns error when given missing data`, () => {
-    let newEmail = "googleUser@createGoogleUser.com";
-    let newFName = "john";
-    let newLName = "doe";
-    let newOAuthProvider = "google";
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        errno: 1,
+        sqlMessage: "sql error"
+      });
+    });
 
-    return userModel
-      .createGoogleUser(newEmail, newFName, newLName, newOAuthProvider)
+    let newEmail = "error@createUser.com";
+    let newPassword = "password";
+    let newFName = "john";
+
+    return userModel(sqlService)
+      .createGoogleUser(newEmail, newPassword, newFName)
       .then(err => {
         expect(err).toHaveProperty("error");
       });
@@ -102,76 +98,191 @@ describe(`createGoogleUser tests`, () => {
 
 describe(`getUserByEmail tests`, () => {
   it(`Returns the correct user`, () => {
-    let user = data.users[0];
-    return userModel.getUserByEmail(user.email).then(receivedUser => {
-      expect(receivedUser[0].UserFName).toBe(user.firstName);
-      expect(receivedUser[0].UserLName).toBe(user.lastName);
-      expect(receivedUser[0].UserEmail).toBe(user.email);
-      expect(receivedUser[0].UserPassword).toBe(user.password);
-      expect(receivedUser[0].OAuthProvider).toBe(user.oAuthProvider);
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve([
+        {
+          UserFName: generatedUser.fName,
+          UserLName: generatedUser.lName,
+          UserEmail: generatedUser.email,
+          UserPassword: generatedUser.password,
+          OAuthProvider: "google"
+        }
+      ]);
     });
+
+    let generatedUser = generateUser();
+
+    return userModel(sqlService)
+      .getUserByEmail(generatedUser.email)
+      .then(receivedUser => {
+        expect(receivedUser[0].UserFName).toBe(generatedUser.fName);
+        expect(receivedUser[0].UserLName).toBe(generatedUser.lName);
+        expect(receivedUser[0].UserEmail).toBe(generatedUser.email);
+        expect(receivedUser[0].UserPassword).toBe(generatedUser.password);
+        expect(receivedUser[0].OAuthProvider).toBe("google");
+      });
+  });
+
+  it(`Returns error`, () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        errno: 1,
+        sqlMessage: "sql error"
+      });
+    });
+
+    let generatedUser = generateUser();
+
+    return userModel(sqlService)
+      .getUserByEmail(generatedUser.email)
+      .then(err => {
+        expect(err).toHaveProperty("error");
+      });
   });
 });
 
 describe(`getUserByUserId tests`, () => {
   it(`Returns the correct user information`, () => {
-    let user = data.users[0];
-    return userModel.getUserByUserId(user.userId).then(receivedUser => {
-      expect(receivedUser[0].UserFName).toBe(user.firstName);
-      expect(receivedUser[0].UserLName).toBe(user.lastName);
-      expect(receivedUser[0].UserEmail).toBe(user.email);
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve([
+        {
+          UserFName: generatedUser.fName,
+          UserLName: generatedUser.lName,
+          UserEmail: generatedUser.email
+        }
+      ]);
     });
+
+    let generatedUser = generateUser();
+
+    return userModel(sqlService)
+      .getUserByUserId(1)
+      .then(receivedUser => {
+        expect(receivedUser[0].UserFName).toBe(generatedUser.fName);
+        expect(receivedUser[0].UserLName).toBe(generatedUser.lName);
+        expect(receivedUser[0].UserEmail).toBe(generatedUser.email);
+      });
   });
 
-  it(`Returns nothing when userId does not exist`, () => {
-    let nonExistantUserId = -1;
-    return userModel.getUserByUserId(nonExistantUserId).then(receivedUser => {
-      expect(receivedUser.length).toBe(0);
+  it(`Returns error`, () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        errno: 1,
+        sqlMessage: "sql error"
+      });
     });
+
+    return userModel(sqlService)
+      .getUserByUserId(1)
+      .then(err => {
+        expect(err).toHaveProperty("error");
+      });
   });
 });
 
 describe(`validateUser tests`, () => {
+  let generatedUser = generateUser();
+
   it(`Returns email not found`, () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({});
+    });
+
     let email = "notFound@email.com";
     let password = "password";
 
-    return userModel.validateUser(email, password).then(response => {
-      expect(response.isValid).toBe(false);
-      expect(response.msg).toBe(`Account with email ${email} not found`);
-    });
+    return userModel(sqlService)
+      .validateUser(email, password)
+      .then(response => {
+        expect(response.isValid).toBe(false);
+        expect(response.msg).toBe(`Account with email ${email} not found`);
+      });
   });
 
   it(`Returns account attached to oAuth provider`, () => {
-    let email = data.users[1].email;
-    let password = "";
-    let expectedOAuthProvider = data.users[1].oAuthProvider;
-
-    return userModel.validateUser(email, password).then(response => {
-      expect(response.isValid).toBe(false);
-      expect(response.msg).toBe(
-        `${email} is attached to a ${expectedOAuthProvider} user. Please login through ${expectedOAuthProvider}`
-      );
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve([
+        {
+          OAuthProvider: "google",
+          Email: generatedUser.email
+        }
+      ]);
     });
+
+    return userModel(sqlService)
+      .validateUser(generatedUser.email, generatedUser.password)
+      .then(response => {
+        expect(response.isValid).toBe(false);
+        expect(response.msg).toBe(
+          `${generatedUser.email} is attached to a google user. Please login through google`
+        );
+      });
   });
 
   it(`Returns incorrect password`, () => {
-    let email = data.users[0].email;
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve([
+        {
+          UserFName: generatedUser.fName,
+          UserLName: generatedUser.lName,
+          UserEmail: generatedUser.email,
+          UserPassword: generatedUser.password,
+          OAuthProvider: "none"
+        }
+      ]);
+    });
+
+    comparePasswordAsync.mockImplementation(() => {
+      return Promise.resolve(false);
+    });
+
     let password = "incorrectpassword";
 
-    return userModel.validateUser(email, password).then(response => {
-      expect(response.isValid).toBe(false);
-      expect(response.msg).toBe(`Incorrect password`);
-    });
+    return userModel(sqlService, comparePasswordAsync)
+      .validateUser(generatedUser.email, password)
+      .then(response => {
+        expect(response.isValid).toBe(false);
+        expect(response.msg).toBe(`Incorrect password`);
+      });
   });
 
   it(`Returns login successful`, () => {
-    let email = data.users[0].email;
-    let password = "password";
-
-    return userModel.validateUser(email, password).then(response => {
-      expect(response.isValid).toBe(true);
-      expect(response.msg).toBe(`Login successful`);
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve([
+        {
+          UserFName: generatedUser.fName,
+          UserLName: generatedUser.lName,
+          UserEmail: generatedUser.email,
+          UserPassword: generatedUser.password,
+          OAuthProvider: "none"
+        }
+      ]);
     });
+
+    comparePasswordAsync.mockImplementation(() => {
+      return Promise.resolve(true);
+    });
+
+    return userModel(sqlService, comparePasswordAsync)
+      .validateUser(generatedUser.email, generatedUser.password)
+      .then(response => {
+        expect(response.isValid).toBe(true);
+        expect(response.msg).toBe(`Login successful`);
+      });
+  });
+
+  it(`Returns error`, () => {
+    sqlService.query.mockImplementation(() => {
+      return Promise.resolve({
+        errno: 1,
+        sqlMessage: "sql error"
+      });
+    });
+
+    return userModel(sqlService)
+      .validateUser(generatedUser.email, generatedUser.password)
+      .then(response => {
+        expect(response.error).toEqual("sql error");
+      });
   });
 });

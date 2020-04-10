@@ -16,7 +16,7 @@ class GroupShareComponent extends Component {
 
   render() {
     const { Title } = Typography;
-    const { marginTop20, marginTop15 } = styles;
+    const { marginTop20, marginTop15, oldAntColStyle } = styles;
     return (
       <div className="center-container">
         <Row justify="center">
@@ -26,12 +26,12 @@ class GroupShareComponent extends Component {
           <h3>Share this code for others to join the group:</h3>
         </Row>
         <Row justify="center">
-          <Col offset={2}>
-            <Title level={2} style={marginTop15}>
+          <Col offset={2} style={oldAntColStyle}>
+            <Title level={2} style={marginTop15} id="created-group-code">
               {this.retrieveCodeFromLink(this.props.link)}
             </Title>
           </Col>
-          <Col offset={1}>
+          <Col offset={1} style={oldAntColStyle}>
             <CopyToClipboard
               onCopy={() => this.success()}
               text={this.retrieveCodeFromLink(this.props.link)}
@@ -41,7 +41,7 @@ class GroupShareComponent extends Component {
           </Col>
         </Row>
         <Row justify="center" style={marginTop15}>
-          <Button type="primary" href={this.props.link}>
+          <Button type="primary" href={this.props.link} id="go-to-group-button">
             Go to Group
           </Button>
         </Row>
@@ -57,6 +57,10 @@ const styles = {
 
   marginTop15: {
     marginTop: 15
+  },
+
+  oldAntColStyle: {
+    flex: "0 1 auto"
   }
 };
 

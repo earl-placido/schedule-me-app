@@ -1,13 +1,5 @@
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE IF EXISTS `Example`;
-CREATE TABLE `Example` 
-(
-  ExampleID INT NOT NULL,
-  ExampleData varchar(50),
-  PRIMARY KEY (ExampleID)
-);
-
 DROP TABLE IF EXISTS `User`;
 CREATE TABLE `User` 
 (

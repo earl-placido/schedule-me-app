@@ -52,7 +52,6 @@ export const updateMeetingLocation = location => {
   };
 };
 
-// return true if success, false if fail
 export const goNextPage = (
   groupName,
   groupDescription,
@@ -62,47 +61,86 @@ export const goNextPage = (
   currentPage
 ) => {
   // pass in meeting and share parameters once done
-  if (currentPage === 0) return groupPageLogic(groupName, currentPage);
-  else
-    return submitGroupCreation(
+  if (currentPage === 0) {
+    return inputGroupInfo(currentPage, groupName, groupDescription);
+  } else if (currentPage === 1) {
+    return inputMeetingInfo(
+      currentPage,
       groupName,
       groupDescription,
       duration,
       frequency,
-      location,
-      currentPage
+      location
     );
+  }
 };
 
-const groupPageLogic = (groupName, currentPage) => {
-  if (groupName.length === 0)
+const inputGroupInfo = (currentPage, groupName, groupDesc) => {
+  if (groupName.length === 0) {
     // must have a value for group name
-    return { type: GO_NEXT_PAGE, payload: { success: false } };
-  else
+    return { type: GO_NEXT_PAGE, payload: { success: false, hasAName: false } };
+  } else if (groupDesc.length > 225) {
     return {
       type: GO_NEXT_PAGE,
-      payload: { success: true, currentPage: currentPage + 1 }
+      payload: { success: false, hasAName: true, descriptionTooLong: true }
     };
+  }
+  return {
+    type: GO_NEXT_PAGE,
+    payload: {
+      success: true,
+      hasAName: true,
+      descriptionTooLong: false,
+      currentPage: currentPage + 1
+    }
+  };
 };
+
+const inputMeetingInfo = (
+  currentPage,
+  groupName,
+  groupDescription,
+  duration,
+  frequency,
+  location
+) => {
+  if (duration === null || duration === 0) {
+    return {
+      type: SUBMIT_GROUP_CREATION,
+      payload: { success: false, hasMeetingDuration: false }
+    };
+  }
+  return submitGroupCreation(
+    groupName,
+    groupDescription,
+    duration,
+    frequency,
+    location,
+    currentPage
+  );
+};
+
+function convertToServerDuration(meetingDuration) {
+  const hours = Math.trunc(meetingDuration / 60)
+    .toString()
+    .padStart(2, "0");
+  const mins = (meetingDuration % 60).toString().padStart(2, "0");
+  meetingDuration = hours + mins + "00";
+
+  return meetingDuration;
+}
 
 /***** submit group/meeting form *****/
 const submitGroupCreation = (
   groupName,
   groupDesc,
-  duration,
+  meetingDuration,
   meetingFrequency,
   meetingLocation,
   currentPage
 ) => async dispatch => {
-  if (duration === null)
-    return { type: SUBMIT_GROUP_CREATION, payload: { success: false } };
+  meetingDuration = convertToServerDuration(meetingDuration);
 
-  const dateDuration = duration.toDate(); // to format to 2 decimals
-  const hours = ("0" + dateDuration.getHours()).slice(-2);
-  const minutes = ("0" + dateDuration.getMinutes()).slice(-2);
-  const seconds = ("0" + dateDuration.getSeconds()).slice(-2);
-
-  const meetingDuration = hours + minutes + seconds;
   const groupCreation = {
     groupName,
     groupDesc,
@@ -178,8 +216,11 @@ const INITIAL_STATE = {
   meetingLocation: null,
   link: "",
   response: null,
-  success: true,
   currentPage: 0,
+  success: true,
+  hasMeetingDuration: true,
+  hasAName: true,
+  descriptionTooLong: false,
   showErrorModal: false
 };
 

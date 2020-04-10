@@ -1,16 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
-// API endpoints
-const example = require("./routes/exampleRouter");
-const authRouter = require("./routes/authRouter");
-const groups = require("./routes/groups/groupsRouter");
-const users = require("./routes/usersRouter");
+const container = require("./container/container");
 
 // Attach routes
-router.use("/example", example);
-router.use("/users", users);
-router.use("/groups", groups);
-router.use("/auth", authRouter);
+router.use("/users", container.usersRouter);
+router.use("/groups", container.groupsRouter);
+router.use("/groups", container.availabilityRouter);
+router.use("/auth", container.authRouter);
 
 module.exports = router;

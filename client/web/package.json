@@ -10,6 +10,7 @@
     "antd": "^4.0.3",
     "axios": "^0.19.2",
     "axios-mock-adapter": "^1.17.0",
+    "jwt-decode": "^2.2.0",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
@@ -18,7 +19,7 @@
     "react-google-login": "^5.1.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0",
+    "react-scripts": "3.4.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "start-server-and-test": "^1.10.10"
@@ -29,15 +30,22 @@
     "build_prod": "NODE_ENV=production react-scripts build",
     "build_dev": "NODE_ENV=development react-scripts build",
     "test": "jest --config ./jest.config.json",
+    "test:coverage": "jest --config ./jest.config.json --coverage",
     "test:ci": "CI=true react-scripts test",
+    "test:integration:open": "./node_modules/.bin/cypress open --config-file cypress.integration.json",
+    "test:integration:run": "./node_modules/.bin/cypress run --config-file cypress.integration.json",
+    "test:acceptance:open": "./node_modules/.bin/cypress open --config-file cypress.acceptance.json",
+    "test:acceptance:run": "./node_modules/.bin/cypress run --config-file cypress.acceptance.json",
+    "test:ui": "npm run test:integration:run && npm run test:acceptance:run",
+    "test:ui:ci": "start-server-and-test start http://localhost:3000 test:ui",
     "eject": "react-scripts eject",
     "deploy_dev": "surge --domain schedule-me-up-dev.surge.sh build",
     "scss": "node-sass --watch src/scss -o src/css",
     "precommit": "lint-staged",
-    "lint": "eslint --fix .",
-    "cypress:open": "./node_modules/.bin/cypress open",
-    "cypress:run": "./node_modules/.bin/cypress run --key 5d6f9006-9249-48ca-a317-a9372fcdbb7d",
-    "cypress:ci": "start-server-and-test start http://localhost:3000 cypress:run"
+    "lint": "eslint --fix ."
+  },
+  "resolutions": {
+    "terser": "4.6.7"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,9 +72,6 @@
       "last 1 safari version"
     ]
   },
-  "resolutions": {
-    "@babel/preset-env": "^7.8.7"
-  },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
@@ -84,7 +89,6 @@
     "husky": "^4.2.1",
     "jest": "^24.9.0",
     "lint-staged": "^10.0.8",
-    "npm-force-resolutions": "0.0.3",
     "prettier": "^1.19.1",
     "react-test-renderer": "^16.12.0",
     "redux-mock-store": "^1.5.4"

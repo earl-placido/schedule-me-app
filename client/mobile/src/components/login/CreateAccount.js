@@ -1,11 +1,20 @@
 import React, {Component} from 'react';
-import {StyleSheet, Alert} from 'react-native';
-import {View, Button, Text, Card, Spinner, Toast} from 'native-base';
+import {Alert, ScrollView, StyleSheet} from 'react-native';
+import {
+  Button,
+  Card,
+  Left,
+  Right,
+  Spinner,
+  Text,
+  Toast,
+  View,
+} from 'native-base';
 import Modal from 'react-native-modal';
 import PropTypes from 'prop-types';
 import t from 'tcomb-form-native';
 
-import {signupUser} from '../../actions/components/Auth.action';
+import {signupUser} from '../../actions/Auth.action';
 import {connect} from 'react-redux';
 
 const Form = t.form.Form;
@@ -13,21 +22,24 @@ const Form = t.form.Form;
 const userOptions = {
   fields: {
     firstName: {
-      error: 'Please input first name',
+      autoFocus: true,
+      error: 'Please enter your first name',
     },
     lastName: {
-      error: 'Please input last name',
+      error: 'Please enter your last name',
     },
     email: {
-      error: 'Please input email',
+      error: 'Please enter a valid email address',
+      keyboardType: 'email-address',
+      textContentType: 'emailAddress',
     },
     password: {
-      error: 'Please input password',
+      error: 'Please enter a password',
       password: true,
       secureTextEntry: true,
     },
     confirmPassword: {
-      error: 'Please confirm password',
+      error: 'Please confirm your password',
       password: true,
       secureTextEntry: true,
     },
@@ -88,13 +100,16 @@ class CreateAccount extends Component {
       this.props.navigation.navigate('Drawer');
       this.toggleCreate();
     } else {
+      let message;
       if (this.props.message.errors) {
-        Alert.alert(this.props.message.errors[0].msg);
+        message = this.props.message.errors[0].msg;
       } else if (this.props.message.err) {
-        Alert.alert(this.props.message.err);
+        message = this.props.message.err;
       } else if (this.props.message) {
-        Alert.alert(this.props.message);
+        message = this.props.message;
       }
+
+      Alert.alert("Couldn't sign you up\n", message);
     }
   };
 
@@ -108,7 +123,8 @@ class CreateAccount extends Component {
           <View>
             <Text
               style={{color: '#3F51B5'}}
-              onPress={() => this.toggleCreate()}>
+              onPress={() => this.toggleCreate()}
+              accessibilityLabel={'Sign Up Button'}>
               Sign Up
             </Text>
           </View>
@@ -116,25 +132,49 @@ class CreateAccount extends Component {
 
         <Modal
           isVisible={this.state.isCreateVisible}
-          onBackdropPress={this.toggleCreate}>
-          <Card style={styles.modalStyle}>
-            <Form
-              ref={_form => (this.form = _form)}
-              options={userOptions}
-              type={user}
-              value={{
-                firstName: this.props.signupFields.firstName,
-                lastName: this.props.signupFields.lastName,
-                email: this.props.signupFields.email,
-                password: this.props.signupFields.password,
-                confirmPassword: this.props.signupFields.confirmPassword,
-              }}
-            />
-            <Button small block primary onPress={() => this.userSignup()}>
-              <Text>Submit</Text>
-              {this.state.isSpinnerVisible && <Spinner color="white" />}
-            </Button>
-          </Card>
+          onRequestClose={() => this.toggleCreate()}
+          accessibilityLabel={'CreateAccountModal'}>
+          <ScrollView>
+            <Card
+              style={styles.modalStyle}
+              accessibilityLabel={'Create Account Form'}>
+              <Form
+                ref={_form => (this.form = _form)}
+                options={userOptions}
+                type={user}
+                value={{
+                  firstName: this.props.signupFields.firstName,
+                  lastName: this.props.signupFields.lastName,
+                  email: this.props.signupFields.email,
+                  password: this.props.signupFields.password,
+                  confirmPassword: this.props.signupFields.confirmPassword,
+                }}
+              />
+              <View style={{flexDirection: 'row'}}>
+                <Left>
+                  <Button
+                    small
+                    block
+                    primary
+                    onPress={() => this.toggleCreate()}
+                    style={{margin: 10}}>
+                    <Text>Cancel</Text>
+                  </Button>
+                </Left>
+                <Right>
+                  <Button
+                    small
+                    block
+                    primary
+                    onPress={() => this.userSignup()}
+                    accessibilityLabel={'Sign Up Submit Button'}>
+                    <Text>Submit</Text>
+                    {this.state.isSpinnerVisible && <Spinner color="white" />}
+                  </Button>
+                </Right>
+              </View>
+            </Card>
+          </ScrollView>
         </Modal>
       </View>
     );

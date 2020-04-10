@@ -1,75 +1,80 @@
-const mysql = require("promise-mysql");
+module.exports = mysql => {
+  const availabilityModel = {};
 
-const MYSQLDB = {
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME,
-  multipleStatements: true
-};
-
-module.exports = {
-  getAvailability(groupMemberId) {
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(
-          `
+  availabilityModel.getAvailability = groupMemberId => {
+    return mysql
+      .query(
+        `
                     SELECT AvailabilityId, CAST(StartTime as char), CAST(EndTime as char) FROM 
                     \`Availability\` WHERE GroupMemberId = ?;
                 `,
-          [groupMemberId]
-        )
-        .then(res => {
-          conn.end();
+        [groupMemberId]
+      )
+      .then(res => {
+        if (res.errno) {
+          return { error: res.sqlMessage };
+        } else {
           return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
-    });
-  },
-  addAvailability(groupMemberId, availabilityIds, startTimes, endTimes) {
-    let query = "";
-    // check is made in router to ensure they are all same length
-    for (let index = 0; index < availabilityIds.length; index++) {
-      query +=
-        availabilityIds[index] === -1
-          ? `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (${groupMemberId}, '${startTimes[index]}', '${endTimes[index]}');`
-          : `UPDATE \`Availability\` SET StartTime='${startTimes[index]}', EndTime='${endTimes[index]}' WHERE AvailabilityId=${availabilityIds[index]};`;
-    }
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(query)
-        .then(res => {
-          conn.end();
-          return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
-    });
-  },
+        }
+      });
+  };
 
-  deleteAvailability(availabilityIds) {
-    let query = "";
+  availabilityModel.addAvailability = (
+    groupMemberId,
+    availabilityIds,
+    startTimes,
+    endTimes
+  ) => {
     // check is made in router to ensure they are all same length
-    for (let index = 0; index < availabilityIds.length; index++) {
-      query += `DELETE FROM \`Availability\` WHERE AvailabilityId=${availabilityIds[index]};`;
-    }
-    console.log(query);
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(query)
-        .then(res => {
-          conn.end();
-          return res;
+    let query = `
+      ${availabilityIds
+        .map((availabilityId, index) => {
+          let availabilityQuery;
+          if (availabilityId === -1) {
+            availabilityQuery = mysql.format(
+              `INSERT INTO \`Availability\` (GroupMemberId, StartTime, EndTime) VALUES (?, ?, ?);`,
+              [groupMemberId, startTimes[index], endTimes[index]]
+            );
+          } else {
+            availabilityQuery = mysql.format(
+              `UPDATE \`Availability\` SET StartTime=?, EndTime=? WHERE AvailabilityId=?;`,
+              [startTimes[index], endTimes[index], availabilityId]
+            );
+          }
+
+          return availabilityQuery;
         })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
+        .join(`\n`)}
+      `;
+
+    return mysql.query(query).then(res => {
+      if (res.errno) {
+        return { error: res.sqlMessage };
+      } else {
+        return res;
+      }
     });
-  }
+  };
+
+  availabilityModel.deleteAvailability = availabilityIds => {
+    // check is made in router to ensure they are all same length
+    let query = `
+      ${availabilityIds
+        .map(availabilityId =>
+          mysql.format(`DELETE FROM \`Availability\` WHERE AvailabilityId=?;`, [
+            availabilityId
+          ])
+        )
+        .join(`\n`)}`;
+
+    return mysql.query(query).then(res => {
+      if (res.errno) {
+        return { error: res.sqlMessage };
+      } else {
+        return res;
+      }
+    });
+  };
+
+  return availabilityModel;
 };

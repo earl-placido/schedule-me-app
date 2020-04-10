@@ -1,31 +1,22 @@
-const mysql = require("promise-mysql");
+module.exports = mysql => {
+  const groupMemberModel = {};
 
-const MYSQLDB = {
-  host: process.env.RDS_HOSTNAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.RDS_DB_NAME,
-  multipleStatements: true
-};
-
-module.exports = {
-  getGroupMemberId(groupId, userId) {
-    return mysql.createConnection(MYSQLDB).then(conn => {
-      return conn
-        .query(
-          `
-                SELECT GroupMemberId FROM \`GroupMember\` WHERE GroupId = ? AND UserId = ?;
+  groupMemberModel.getGroupMemberId = (groupId, userId) => {
+    return mysql
+      .query(
+        `
+                SELECT GroupMemberId, MemberRole FROM \`GroupMember\` WHERE GroupId = ? AND UserId = ?;
                 `,
-          [groupId, userId]
-        )
-        .then(res => {
-          conn.end();
+        [groupId, userId]
+      )
+      .then(res => {
+        if (res.errno) {
+          return { error: res.sqlMessage };
+        } else {
           return res;
-        })
-        .catch(err => {
-          conn.end();
-          return err;
-        });
-    });
-  }
+        }
+      });
+  };
+
+  return groupMemberModel;
 };
