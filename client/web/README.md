@@ -116,7 +116,7 @@ docker exec -it web /bin/sh
 
 Once you get access into the docker container, you can install the node dependencies for the web project.
 
-# System/Integration Tests
+# Integration and Acceptance Tests
 
 - Uses Cypress.io to run automated UI tests on our web client
 
@@ -126,10 +126,20 @@ Once you get access into the docker container, you can install the node dependen
 
 ## How to run:
 
-- To open cypress, run: `npm run cypress:open`
+- To open cypress, run: 
+
+    - Integration tests: `npm run test:integration:open`
+
+    - Acceptance tests: `npm run test:acceptance:open`
 
     This will display the cypress test runner
 
     ![](https://docs.cypress.io/img/dashboard/runs-list-in-desktop-gui.c0a8a677.png)
 
-- To run the tests, run: `npm run cypress:run`
+- To run the tests in a headless browser, run:
+
+    - Integration tests: `npm run test:integration:run`
+
+    - Acceptance tests: `npm run test:acceptance:run`
+
+- **Note:** Make sure that the server is running

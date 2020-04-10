@@ -23,7 +23,7 @@ export default class GroupInfoForm extends Component {
           {
             <div>
               <Input
-                id="groupNameInput"
+                id="group-name-input"
                 onChange={this.handleGroupNameChange.bind(this)}
                 prefix={
                   <Icon
@@ -45,7 +45,7 @@ export default class GroupInfoForm extends Component {
           {
             <div>
               <TextArea
-                id="groupDescriptionInput"
+                id="group-description-input"
                 onChange={this.handleGroupDescriptionChange.bind(this)}
                 placeholder="Enter a description for your group (optional)"
                 rows={7}

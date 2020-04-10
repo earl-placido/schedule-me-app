@@ -1,5 +1,5 @@
 /// <reference types="cypress" />
-const userUtil = require("../util/userUtil");
+const { generateUser } = require("../util/userUtil");
 
 const createUser = user => {
   cy.visit("/");
@@ -16,7 +16,7 @@ const createUser = user => {
 };
 
 context("Test login functionality", () => {
-  var generatedUser = userUtil.generateUser();
+  var generatedUser = generateUser();
 
   before(() => {
     createUser(generatedUser);
