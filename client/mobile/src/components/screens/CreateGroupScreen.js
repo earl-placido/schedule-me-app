@@ -82,7 +82,7 @@ class CreateGroup extends Component {
             <ProgressStep
               label="Meeting"
               nextBtnText="Done"
-              onNext={this.createNewMeeting}
+              onNext={() => this.createNewMeeting()}
               onPrevious={this.onPrevStep}
               nextBtnDisabled={!this.props.meetingDuration}
               scrollViewProps={this.defaultScrollViewProps}
@@ -152,7 +152,7 @@ CreateGroup.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
     push: PropTypes.func.isRequired,
-  }).isRequired,
+  }),
 };
 
 export default connect(mapStateToProps, {
