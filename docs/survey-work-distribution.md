@@ -6,13 +6,13 @@ This survey was performed at the end of the project.
 
 ## Considering the project as a whole (group activities, coding, etc), do you think the distribution of work was fair?
 
-![](C:\Users\Brenna\AppData\Roaming\Typora\typora-user-images\image-20200414191846338.png)
+![](wd-1.png)
 
 
 
 ## For this project as a whole (coding, group activities...), you would consider that you:
 
-![image-20200414192101801](C:\Users\Brenna\AppData\Roaming\Typora\typora-user-images\image-20200414192101801.png)
+![](wd-2.png)
 
 
 

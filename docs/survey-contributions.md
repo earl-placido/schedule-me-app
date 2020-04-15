@@ -2,13 +2,13 @@
 
 This survey was performed at the end of the project about the following graph (collective commits to the repository):
 
-![image-20200414191047873](C:\Users\Brenna\AppData\Roaming\Typora\typora-user-images\image-20200414191047873.png)
+![contributions](contributions.png)
 
 
 
 ## Have you seen this graph before?
 
-![image-20200414191228217](C:\Users\Brenna\AppData\Roaming\Typora\typora-user-images\image-20200414191228217.png)
+![](contributions-1.png)
 
 
 

@@ -8,7 +8,7 @@ This survey was performed at the end of the project.
 
  ![img](https://lh3.googleusercontent.com/w3Q576osyqLAximEXzKfbsHmyHebXeEoaQWQNYcPkN6HJMyHK4_nMwTYGLxhnDalaN3zC-6n2ugLupIe2kNNA74FmdAXwQncLwR-DORAcKdNySQRV29o3es9ecCpp_Ds4x_4Tgu3)
 
-![image-20200414193458678](C:\Users\Brenna\AppData\Roaming\Typora\typora-user-images\image-20200414193458678.png)
+![](tc-1.png)
 
 
 
@@ -18,7 +18,7 @@ This survey was performed at the end of the project.
 
 ![img](https://lh6.googleusercontent.com/ckvqEok1izwvDQDtQwFxqabGUPZZzJ7FwvUW1TfZ-5L2nbKWaiuMwE27S2olc4IYnFjIk5hhOXNjJvtDbs-vIV-UWmRbynuavnKcEGQdTS31LXb-AU64Dwku6HBQWTkolJFduYOr)
 
-![image-20200414193416376](C:\Users\Brenna\AppData\Roaming\Typora\typora-user-images\image-20200414193416376.png)
+![](tc-3.png)
 
 
 
