@@ -40,10 +40,13 @@ A scheduler application for a group project in COMP 4350 at the University of Ma
 
 ---
 
+
 ## Mobile
 
 - [How to setup](./client/mobile/README.md)
+- Download APK: [github.com/Syndrical/scheduler-app/releases](https://github.com/Syndrical/scheduler-app/releases)
 
+---
 
 
 ## Documentation
@@ -55,5 +58,11 @@ A scheduler application for a group project in COMP 4350 at the University of Ma
 - [Docs](docs)
   - [Architecture](docs/architecture.md)
   - [Technologies used](docs/technologies-used.md)
-  - [Retrospective](docs/retrospective.md)
+  - Retrospectives
+    - [First Retrospective](docs/retrospective-1.md)
+    - [Final Retrospective](docs/retrospective-2.md)
+  - Surveys
+    - [GitHub commits](docs/survey-contributions.md)
+    - [Technologies chosen](docs/survey-technologies-chosen.md)
+    - [Work distribution](docs/survey-work-distribution.md)
   - [Information on Version Control Flow/Contributing](docs/contributing.md)
